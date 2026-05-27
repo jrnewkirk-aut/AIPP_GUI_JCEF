@@ -409,3 +409,78 @@
     color:#444;
     background:#fff;
   }
+
+/* Editable tree controls */
+.treeEditInput,
+.treeEditSelect,
+.treeEditTextarea{
+  box-sizing:border-box;
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:3px 6px;
+  font-family:inherit;
+  font-size:12px;
+  min-width:120px;
+  max-width:100%;
+}
+.treeEditInput[type="number"]{
+  width:120px;
+}
+.treeEditTextarea{
+  width:100%;
+  min-height:54px;
+  resize:vertical;
+  font-family:Consolas, Menlo, Monaco, monospace;
+}
+.treePrimitiveRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.treePathHint{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* Editable code view */
+#codePane{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding:0;
+}
+#codeToolbar{
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px;
+  border-bottom:1px solid var(--line);
+  background:#fafafa;
+  box-sizing:border-box;
+}
+#codeEditor{
+  flex:1;
+  width:100%;
+  min-height:0;
+  resize:none;
+  border:none;
+  outline:none;
+  padding:10px;
+  box-sizing:border-box;
+  background:#0f1720;
+  color:#e6edf3;
+  font-family:Consolas, Menlo, Monaco, monospace;
+  font-size:12px;
+  line-height:1.5;
+  tab-size:2;
+}
+#codeError{
+  font-family:Consolas, Menlo, Monaco, monospace;
+  font-size:12px;
+}
+.bad{ color:var(--danger); }
+

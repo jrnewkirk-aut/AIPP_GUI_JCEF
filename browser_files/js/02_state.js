@@ -3,16 +3,23 @@
    ============================================================ */
 let fullJson = null;
 let currentTab = "tree";
-
 let treeOpenAll = false;
-let treeUserOpen = new Set();   // remember open paths when not global expand
+let treeUserOpen = new Set();
 
-// visualization state
-let simNodes = []; // {id,type,label,x,y,fx,fy,data}
-let simEdges = []; // {a,b,type,label}
+// Code editor state. The textarea may contain unapplied edits.
+let codeEditorDirty = false;
+let lastValidCodeText = "";
+
+// Visualization state
+let simNodes = [];
+let simEdges = [];
 let raf = null;
 
-// popup state
+// Popup state
 let popupNode = null;
+let popupPath = null;
 let popupWorkingCopy = null;
 let popupOriginalCopy = null;
+
+// Overall model state
+let jsonDirty = false;

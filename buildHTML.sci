@@ -14,9 +14,7 @@ function out = buildHTML(html_dir)
 
     html = mgetl(main_file);
 
-    // ------------------------------------------------------------
     // Inline CSS
-    // ------------------------------------------------------------
     css_file = fullfile(html_dir, "styles", "main.css");
     css = mgetl(css_file);
     css_block = cat(1, "<style>", css, "</style>");
@@ -26,11 +24,8 @@ function out = buildHTML(html_dir)
         html = cat(1, html(1:ind_css-1), css_block, html(ind_css+1:$));
     end
 
-    // ------------------------------------------------------------
     // Load components in filename order.
     // listfiles may return reverse order, so flipdim is used.
-    // Prefix component filenames with 01_, 02_, etc. to control order.
-    // ------------------------------------------------------------
     components = [];
     component_files = listfiles(fullfile(html_dir, "components", "*.html"));
     component_files = flipdim(component_files, 1);
@@ -39,10 +34,7 @@ function out = buildHTML(html_dir)
         components = cat(1, components, mgetl(component_files(i)));
     end
 
-    // ------------------------------------------------------------
     // Load JavaScript in filename order.
-    // Prefix JS filenames with 01_, 02_, etc. to control dependency order.
-    // ------------------------------------------------------------
     java = [];
     java_files = listfiles(fullfile(html_dir, "js", "*.js"));
     java_files = flipdim(java_files, 1);
@@ -53,10 +45,7 @@ function out = buildHTML(html_dir)
 
     script_block = cat(1, "<script>", java, "</script>");
 
-    // ------------------------------------------------------------
     // Replace index body contents with components + scripts.
-    // This follows the hybrid HTML handling convention.
-    // ------------------------------------------------------------
     ind_start = grep(html, "<body>");
     ind_stop  = grep(html, "</body>");
 
@@ -74,7 +63,6 @@ function out = buildHTML(html_dir)
         script_block, ...
         html(ind_stop:$));
 
-    // Write output. The dist directory is included in the project structure.
     mputl(html, bundle_file);
     out = html;
 endfunction

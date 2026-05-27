@@ -417,6 +417,81 @@
     color:#444;
     background:#fff;
   }
+
+/* Editable tree controls */
+.treeEditInput,
+.treeEditSelect,
+.treeEditTextarea{
+  box-sizing:border-box;
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:3px 6px;
+  font-family:inherit;
+  font-size:12px;
+  min-width:120px;
+  max-width:100%;
+}
+.treeEditInput[type="number"]{
+  width:120px;
+}
+.treeEditTextarea{
+  width:100%;
+  min-height:54px;
+  resize:vertical;
+  font-family:Consolas, Menlo, Monaco, monospace;
+}
+.treePrimitiveRow{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.treePathHint{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* Editable code view */
+#codePane{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding:0;
+}
+#codeToolbar{
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px;
+  border-bottom:1px solid var(--line);
+  background:#fafafa;
+  box-sizing:border-box;
+}
+#codeEditor{
+  flex:1;
+  width:100%;
+  min-height:0;
+  resize:none;
+  border:none;
+  outline:none;
+  padding:10px;
+  box-sizing:border-box;
+  background:#0f1720;
+  color:#e6edf3;
+  font-family:Consolas, Menlo, Monaco, monospace;
+  font-size:12px;
+  line-height:1.5;
+  tab-size:2;
+}
+#codeError{
+  font-family:Consolas, Menlo, Monaco, monospace;
+  font-size:12px;
+}
+.bad{ color:var(--danger); }
+
 </style>
 </head>
 <body>
@@ -446,7 +521,14 @@
       <div class="tab" id="tabCode" onclick="setTab('code')">Code</div>
     </div>
     <div id="treePane"></div>
-    <div id="codePane" style="display:none;"><pre id="codePre"></pre></div>
+    <div id="codePane" style="display:none;">
+      <div id="codeToolbar">
+        <button class="smallBtn" onclick="applyCodeEdits()">Apply JSON</button>
+        <button class="smallBtn secondary" onclick="resetCodeEditor()">Reset</button>
+        <span id="codeError" class="bad"></span>
+      </div>
+      <textarea id="codeEditor" spellcheck="false"></textarea>
+    </div>
   </div>
 
   <div id="right">
@@ -494,9 +576,11 @@ function toScilabMsg(obj){
   const s = JSON.stringify(obj);
   window.toScilab(s);
 }
+
 function selectFile(){
   toScilabMsg({type:"select_file"});
 }
+
 function asciiToString(arr){
   return arr.map(c => String.fromCharCode(c)).join('');
 }
@@ -505,27 +589,134 @@ function asciiToString(arr){
    ============================================================ */
 let fullJson = null;
 let currentTab = "tree";
-
 let treeOpenAll = false;
-let treeUserOpen = new Set();   // remember open paths when not global expand
+let treeUserOpen = new Set();
 
-// visualization state
-let simNodes = []; // {id,type,label,x,y,fx,fy,data}
-let simEdges = []; // {a,b,type,label}
+// Code editor state. The textarea may contain unapplied edits.
+let codeEditorDirty = false;
+let lastValidCodeText = "";
+
+// Visualization state
+let simNodes = [];
+let simEdges = [];
 let raf = null;
 
-// popup state
+// Popup state
 let popupNode = null;
+let popupPath = null;
 let popupWorkingCopy = null;
 let popupOriginalCopy = null;
+
+// Overall model state
+let jsonDirty = false;
+/* ============================================================
+   Model synchronization layer
+   One source of truth: fullJson
+   ============================================================ */
+function deepCopy(x){
+  return JSON.parse(JSON.stringify(x));
+}
+
+function pathToAttr(path){
+  return escapeHtml(JSON.stringify(path));
+}
+
+function attrToPath(s){
+  return JSON.parse(s);
+}
+
+function getJsonAtPath(path){
+  let ref = fullJson;
+  for (const key of path){
+    if (ref === null || ref === undefined) return undefined;
+    ref = ref[key];
+  }
+  return ref;
+}
+
+function setJsonAtPath(path, value, source){
+  if (!fullJson) return;
+  if (!Array.isArray(path)) return;
+
+  if (path.length === 0){
+    fullJson = value;
+  } else {
+    let ref = fullJson;
+    for (let i=0;i<path.length-1;i++){
+      ref = ref[path[i]];
+    }
+    ref[path[path.length-1]] = value;
+  }
+
+  jsonDirty = true;
+  refreshAllViews(source || "edit");
+}
+
+function replaceFullJson(newJson, source){
+  fullJson = newJson;
+  jsonDirty = source !== "load";
+  refreshAllViews(source || "replace");
+}
+
+function refreshAllViews(source){
+  // Every committed edit method writes to fullJson first, then all views
+  // are regenerated from fullJson so tree/code/popup/graph cannot drift.
+  renderTree();
+  updateCodeTextFromModel();
+
+  if (fullJson){
+    buildGraph(fullJson);
+  } else {
+    clearSvg();
+  }
+
+  syncOpenPopupFromModel();
+}
+
+function getAssemblyInfo(parsed){
+  if (parsed && parsed.aipp_calculation && parsed.aipp_calculation.assembly){
+    return {
+      assembly: parsed.aipp_calculation.assembly,
+      basePath: ["aipp_calculation", "assembly"]
+    };
+  }
+
+  if (parsed && parsed.assembly){
+    return {
+      assembly: parsed.assembly,
+      basePath: ["assembly"]
+    };
+  }
+
+  return {
+    assembly: null,
+    basePath: []
+  };
+}
+
+function syncOpenPopupFromModel(){
+  if (!popupPath) return;
+  const popup = document.getElementById("popup");
+  if (!popup || popup.style.display === "none") return;
+
+  const current = getJsonAtPath(popupPath);
+  if (current === undefined) return;
+
+  popupWorkingCopy = deepCopy(current);
+  popupOriginalCopy = deepCopy(current);
+  renderInspector();
+}
 /* ============================================================
    Status
    ============================================================ */
 function setStatus(msg, ok){
-  document.getElementById("statusLeft").textContent = msg;
-  const r = document.getElementById("statusRight");
-  r.textContent = ok ? "OK" : "ERROR";
-  r.className = ok ? "ok" : "bad";
+  const left = document.getElementById("statusLeft");
+  const right = document.getElementById("statusRight");
+  if (!left || !right) return;
+
+  left.textContent = msg;
+  right.textContent = ok ? "OK" : "ERROR";
+  right.className = ok ? "ok" : "bad";
 }
 /* ============================================================
    Tabs
@@ -535,93 +726,105 @@ function setTab(tab){
   document.getElementById("tabTree").classList.toggle("active", tab==="tree");
   document.getElementById("tabCode").classList.toggle("active", tab==="code");
   document.getElementById("treePane").style.display = (tab==="tree") ? "block" : "none";
-  document.getElementById("codePane").style.display = (tab==="code") ? "block" : "none";
-  if (tab === "code") renderCode();
+  document.getElementById("codePane").style.display = (tab==="code") ? "flex" : "none";
+
+  if (tab === "code" && !codeEditorDirty){
+    updateCodeTextFromModel();
+  }
 }
 /* ============================================================
-   Tree rendering (collapsible + search)
+   Tree rendering and tree editing
    ============================================================ */
-function expandAll(){ treeOpenAll = true; renderTree(); }
-function collapseAll(){ treeOpenAll = false; treeUserOpen.clear(); renderTree(); }
+function expandAll(){
+  treeOpenAll = true;
+  renderTree();
+}
+
+function collapseAll(){
+  treeOpenAll = false;
+  treeUserOpen.clear();
+  renderTree();
+}
 
 function matchSearch(text){
-  const q = (document.getElementById("searchBox").value || "").trim().toLowerCase();
+  const box = document.getElementById("searchBox");
+  const q = ((box ? box.value : "") || "").trim().toLowerCase();
   if (!q) return true;
   return String(text).toLowerCase().includes(q);
 }
 
-function isObject(x){ return x && typeof x === "object" && !Array.isArray(x); }
-
-function fmtValue(v){
-  if (v === null) return '<span class="v-null">null</span>';
-  if (typeof v === "string") return '<span class="v-string">"' + escapeHtml(v) + '"</span>';
-  if (typeof v === "number") return '<span class="v-number">' + v + '</span>';
-  if (typeof v === "boolean") return '<span class="v-bool">' + v + '</span>';
-  return '<span class="t">' + escapeHtml(String(v)) + '</span>';
-}
-
 function escapeHtml(s){
-  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
-function shouldOpen(path){
+function escapeValue(s){
+  return escapeHtml(String(s));
+}
+
+function shouldOpen(pathKey){
   if (treeOpenAll) return true;
-  return treeUserOpen.has(path);
+  return treeUserOpen.has(pathKey);
 }
 
-function togglePath(path, open){
-  if (open) treeUserOpen.add(path);
-  else treeUserOpen.delete(path);
+function togglePath(pathKey, open){
+  if (open) treeUserOpen.add(pathKey);
+  else treeUserOpen.delete(pathKey);
 }
 
 function renderTree(){
   const pane = document.getElementById("treePane");
+  if (!pane) return;
+
   if (!fullJson){
     pane.innerHTML = '<div class="node t">Load a JSON file to view contents.</div>';
     return;
   }
-  const html = renderNode(fullJson, "root", 0);
+
+  const html = renderNode(fullJson, [], "root");
   pane.innerHTML = html || '<div class="node t">No matches.</div>';
 
-  // attach listeners to details toggles
-  pane.querySelectorAll("details[data-path]").forEach(d=>{
-    d.addEventListener("toggle", ()=>{
-      togglePath(d.getAttribute("data-path"), d.open);
+  pane.querySelectorAll("details[data-path-key]").forEach(d => {
+    d.open = shouldOpen(d.getAttribute("data-path-key"));
+    d.addEventListener("toggle", () => {
+      togglePath(d.getAttribute("data-path-key"), d.open);
     });
-    d.open = shouldOpen(d.getAttribute("data-path"));
   });
+
+  attachTreeEditHandlers();
 }
 
-function renderNode(value, path, depth, keyName){
-  // Search: include node if it matches itself or any child matches
-  const matchesSelf = matchSearch(keyName || "") || matchSearch(value === null ? "null" : (typeof value === "object" ? "" : value));
+function renderNode(value, path, keyName){
+  const pathKey = JSON.stringify(path);
+  const primitiveText = value === null ? "null" : (typeof value === "object" ? "" : value);
+  const matchesSelf = matchSearch(keyName || "") || matchSearch(primitiveText);
 
-  // Primitive
   if (value === null || typeof value !== "object"){
     if (!matchesSelf) return "";
-    const k = keyName !== undefined ? '<span class="k">' + escapeHtml(keyName) + '</span>: ' : "";
-    return '<div class="node">' + k + fmtValue(value) + '</div>';
+    return renderEditablePrimitive(keyName, value, path);
   }
 
-  // Arrays / Objects
   const isArr = Array.isArray(value);
-  const keys = isArr ? value.map((_,i)=>String(i)) : Object.keys(value);
-
+  const keys = isArr ? value.map((_, i) => i) : Object.keys(value);
   let childHtml = "";
+
   for (const k of keys){
-    const child = isArr ? value[Number(k)] : value[k];
-    const p = path + "." + k;
-    childHtml += renderNode(child, p, depth+1, k);
+    const child = value[k];
+    childHtml += renderNode(child, path.concat([k]), String(k));
   }
 
-  // If no child matches and self doesn't match, hide
   if (!childHtml && !matchesSelf) return "";
 
-  const labelKey = (keyName !== undefined) ? ('<span class="k">' + escapeHtml(keyName) + '</span>') : '<span class="k">root</span>';
-  const badge = isArr ? ('<span class="pill">array[' + value.length + ']</span>') : ('<span class="pill">object{' + keys.length + '}</span>');
+  const labelKey = '<span class="k">' + escapeHtml(keyName !== undefined ? keyName : "root") + '</span>';
+  const badge = isArr
+    ? '<span class="pill">array[' + value.length + ']</span>'
+    : '<span class="pill">object{' + keys.length + '}</span>';
 
   return `
-    <details class="node" data-path="${escapeHtml(path)}">
+    <details class="node" data-path-key="${escapeHtml(pathKey)}">
       <summary>
         <div class="summaryLine">
           <span class="caret"></span>
@@ -634,53 +837,133 @@ function renderNode(value, path, depth, keyName){
     </details>
   `;
 }
-/* ============================================================
-   Code view with simple syntax highlighting
-   ============================================================ */
-function renderCode(){
-  if (!fullJson){
-    document.getElementById("codePre").textContent = "";
-    return;
+
+function renderEditablePrimitive(keyName, value, path){
+  const key = keyName !== undefined ? '<span class="k">' + escapeHtml(keyName) + '</span>: ' : "";
+  const pathAttr = pathToAttr(path);
+  const type = value === null ? "null" : typeof value;
+  let editor = "";
+
+  if (typeof value === "boolean"){
+    editor = `<select class="treeEditSelect" data-kind="boolean" data-path="${pathAttr}">
+      <option value="true" ${value ? "selected" : ""}>true</option>
+      <option value="false" ${!value ? "selected" : ""}>false</option>
+    </select>`;
+  } else if (typeof value === "number"){
+    editor = `<input class="treeEditInput" type="number" step="any" data-kind="number" data-path="${pathAttr}" value="${escapeValue(value)}" />`;
+  } else if (value === null){
+    editor = `<input class="treeEditInput" type="text" data-kind="null" data-path="${pathAttr}" value="null" />`;
+  } else {
+    const txt = String(value);
+    if (txt.length > 80){
+      editor = `<textarea class="treeEditTextarea" data-kind="string" data-path="${pathAttr}">${escapeHtml(txt)}</textarea>`;
+    } else {
+      editor = `<input class="treeEditInput" type="text" data-kind="string" data-path="${pathAttr}" value="${escapeValue(txt)}" />`;
+    }
   }
-  const raw = JSON.stringify(fullJson, null, 2);
-  document.getElementById("codePre").innerHTML = highlightJson(raw);
+
+  return `<div class="node treePrimitiveRow">${key}${editor}<span class="treePathHint">${escapeHtml(type)}</span></div>`;
 }
 
-function highlightJson(s){
-  // Escape HTML first
-  let t = escapeHtml(s);
+function attachTreeEditHandlers(){
+  document.querySelectorAll("#treePane [data-path]").forEach(el => {
+    el.addEventListener("change", () => {
+      const path = attrToPath(el.getAttribute("data-path"));
+      const kind = el.getAttribute("data-kind");
+      const value = parseTreeEditorValue(el.value, kind);
+      setJsonAtPath(path, value, "tree");
+      setStatus("JSON updated from tree editor.", true);
+    });
+  });
+}
 
-  // Highlight keys: "key":
-  t = t.replace(/&quot;([^&]|&amp;|&lt;|&gt;)*?&quot;(?=\s*:)/g, (m)=>'<span class="hl-k">'+m+'</span>');
+function parseTreeEditorValue(raw, kind){
+  if (kind === "boolean") return raw === "true";
+  if (kind === "number"){
+    const n = Number(raw);
+    return Number.isNaN(n) ? 0 : n;
+  }
+  if (kind === "null") return parseLoose(raw);
+  return raw;
+}
+/* ============================================================
+   Editable code view
+   ============================================================ */
+function updateCodeTextFromModel(){
+  const editor = document.getElementById("codeEditor");
+  const err = document.getElementById("codeError");
+  if (!editor) return;
 
-  // Highlight strings (remaining quoted)
-  t = t.replace(/&quot;([^&]|&amp;|&lt;|&gt;)*?&quot;/g, (m)=>'<span class="hl-s">'+m+'</span>');
+  if (!fullJson){
+    editor.value = "";
+    lastValidCodeText = "";
+    codeEditorDirty = false;
+    if (err) err.textContent = "";
+    return;
+  }
 
-  // Highlight numbers
-  t = t.replace(/\b-?\d+(\.\d+)?([eE][+-]?\d+)?\b/g, (m)=>'<span class="hl-n">'+m+'</span>');
+  const raw = JSON.stringify(fullJson, null, 2);
+  editor.value = raw;
+  lastValidCodeText = raw;
+  codeEditorDirty = false;
+  if (err) err.textContent = "";
+}
 
-  // Highlight booleans/null
-  t = t.replace(/\b(true|false|null)\b/g, (m)=>'<span class="hl-b">'+m+'</span>');
+function renderCode(){
+  updateCodeTextFromModel();
+}
 
-  return t;
+function applyCodeEdits(){
+  const editor = document.getElementById("codeEditor");
+  const err = document.getElementById("codeError");
+  if (!editor) return;
+
+  try{
+    const parsed = JSON.parse(editor.value);
+    if (err) err.textContent = "";
+    codeEditorDirty = false;
+    replaceFullJson(parsed, "code");
+    setStatus("JSON updated from code editor.", true);
+  } catch(e){
+    if (err) err.textContent = "Invalid JSON: " + e.message;
+    setStatus("Invalid JSON in code editor: " + e.message, false);
+  }
+}
+
+function resetCodeEditor(){
+  updateCodeTextFromModel();
+  setStatus("Code editor reset to current model.", true);
+}
+
+function attachCodeEditorHandlers(){
+  const editor = document.getElementById("codeEditor");
+  const err = document.getElementById("codeError");
+  if (!editor) return;
+
+  editor.addEventListener("input", () => {
+    codeEditorDirty = true;
+    if (err) err.textContent = "Unapplied changes";
+    setStatus("Code editor has unapplied changes. Click Apply JSON to update the model.", true);
+  });
 }
 /* ============================================================
    Flowchart visualization (SVG + simple force layout)
    Nodes: chambers (ellipse), orifices (rect), walls (diamond)
-   No "Env" nodes (per request)
    ============================================================ */
 function buildGraph(parsed){
   simNodes = [];
   simEdges = [];
 
-  const assembly = (parsed && parsed.aipp_calculation && parsed.aipp_calculation.assembly) ? parsed.aipp_calculation.assembly : parsed.assembly;
+  const info = getAssemblyInfo(parsed);
+  const assembly = info.assembly;
+  const basePath = info.basePath;
+
   if (!assembly || !assembly.chambers){
     clearSvg();
     setStatus("No assembly/chambers found for visualization.", false);
     return;
   }
 
-  // Chambers as base nodes (id = "c1", "c2"...)
   for (let i=0;i<assembly.chambers.length;i++){
     simNodes.push({
       id:"c"+(i+1),
@@ -688,11 +971,11 @@ function buildGraph(parsed){
       label:"Ch "+(i+1),
       x:150 + i*180,
       y:260 + (i%2)*40,
+      path:basePath.concat(["chambers", i]),
       data:assembly.chambers[i]
     });
   }
 
-  // Orifices as nodes (id = "o1"...), edges chamber->orifice->chamber
   if (assembly.orifices){
     for (let i=0;i<assembly.orifices.length;i++){
       const o = assembly.orifices[i];
@@ -701,8 +984,10 @@ function buildGraph(parsed){
       if (!from || !to) continue;
 
       const oid = "o"+(i+1);
-      const midX = (getNode("c"+from).x + getNode("c"+to).x)/2;
-      const midY = (getNode("c"+from).y + getNode("c"+to).y)/2;
+      const fromNode = getNode("c"+from);
+      const toNode = getNode("c"+to);
+      const midX = (fromNode.x + toNode.x)/2;
+      const midY = (fromNode.y + toNode.y)/2;
 
       simNodes.push({
         id:oid,
@@ -710,22 +995,20 @@ function buildGraph(parsed){
         label:"Orf "+(i+1),
         x:midX,
         y:midY - 70,
+        path:basePath.concat(["orifices", i]),
         data:o
       });
-
       simEdges.push({a:"c"+from, b:oid, type:"flow"});
       simEdges.push({a:oid, b:"c"+to, type:"flow"});
     }
   }
 
-  // Walls as nodes (id = "w1"...), connect to chambers based on chamber_index fields only
   if (assembly.walls){
     for (let i=0;i<assembly.walls.length;i++){
       const w = assembly.walls[i];
       const wid = "w"+(i+1);
-
-      // place walls near their left chamber if possible
       let anchor = null;
+
       if (w.left_connection && w.left_connection.chamber_index){
         anchor = getNode("c"+w.left_connection.chamber_index);
       } else if (w.right_connection && w.right_connection.chamber_index){
@@ -737,7 +1020,8 @@ function buildGraph(parsed){
         type:"wall",
         label:"Wall "+(i+1),
         x: anchor ? (anchor.x - 70) : (120 + i*90),
-        y: anchor ? (anchor.y + 120) : (460),
+        y: anchor ? (anchor.y + 120) : 460,
+        path:basePath.concat(["walls", i]),
         data:w
       });
 
@@ -747,39 +1031,35 @@ function buildGraph(parsed){
       if (w.right_connection && w.right_connection.chamber_index){
         simEdges.push({a:wid, b:"c"+w.right_connection.chamber_index, type:"wall"});
       }
-      // If right_connection is environment (no chamber_index), we do nothing (no env nodes).
     }
   }
 
-  // run a short force layout to spread nodes and avoid overlaps
   runForceLayout(220);
   drawSvg();
-
   setStatus(`Loaded ${simNodes.length} nodes, ${simEdges.length} links.`, true);
 }
 
 function getNode(id){
-  const n = simNodes.find(x=>x.id===id);
-  return n || {x:500,y:350};
+  const n = simNodes.find(x => x.id === id);
+  return n || {x:500, y:350};
 }
 
 function clearSvg(){
-  document.getElementById("edges").innerHTML = "";
-  document.getElementById("nodes").innerHTML = "";
+  const edges = document.getElementById("edges");
+  const nodes = document.getElementById("nodes");
+  if (edges) edges.innerHTML = "";
+  if (nodes) nodes.innerHTML = "";
 }
 
 function runForceLayout(iter){
-  // Basic repulsion + spring attraction
   const kRepel = 4800;
   const kSpring = 0.02;
   const springLen = 150;
   const damp = 0.85;
 
-  // velocities
   for (const n of simNodes){ n.vx = 0; n.vy = 0; }
 
   for (let t=0;t<iter;t++){
-    // repulsion
     for (let i=0;i<simNodes.length;i++){
       for (let j=i+1;j<simNodes.length;j++){
         const a = simNodes[i], b = simNodes[j];
@@ -794,7 +1074,6 @@ function runForceLayout(iter){
       }
     }
 
-    // springs
     for (const e of simEdges){
       const a = getNode(e.a), b = getNode(e.b);
       const dx = b.x - a.x;
@@ -808,13 +1087,10 @@ function runForceLayout(iter){
       b.vx -= fx; b.vy -= fy;
     }
 
-    // integrate
     for (const n of simNodes){
       n.vx *= damp; n.vy *= damp;
       n.x += n.vx * 0.0012;
       n.y += n.vy * 0.0012;
-
-      // bounds
       n.x = Math.max(60, Math.min(940, n.x));
       n.y = Math.max(60, Math.min(640, n.y));
     }
@@ -823,9 +1099,10 @@ function runForceLayout(iter){
 
 function drawSvg(){
   clearSvg();
-
-  // edges
   const edgesG = document.getElementById("edges");
+  const nodesG = document.getElementById("nodes");
+  if (!edgesG || !nodesG) return;
+
   for (const e of simEdges){
     const a = getNode(e.a), b = getNode(e.b);
     const cls = (e.type === "wall") ? "edge edgeWall" : "edge";
@@ -835,17 +1112,14 @@ function drawSvg(){
     );
   }
 
-  // nodes
-  const nodesG = document.getElementById("nodes");
   for (const n of simNodes){
     nodesG.insertAdjacentHTML("beforeend", nodeSvg(n));
   }
 
-  // attach dblclick handlers
-  simNodes.forEach(n=>{
+  simNodes.forEach(n => {
     const el = document.getElementById("node_"+n.id);
     if (!el) return;
-    el.addEventListener("dblclick", (evt)=>{
+    el.addEventListener("dblclick", evt => {
       evt.preventDefault();
       evt.stopPropagation();
       openPopup(n);
@@ -854,49 +1128,41 @@ function drawSvg(){
 }
 
 function nodeSvg(n){
-  // Use different shapes
   if (n.type === "chamber"){
     return `
       <g id="node_${n.id}" style="cursor:pointer;">
         <ellipse class="nodeChamber" cx="${n.x}" cy="${n.y}" rx="52" ry="26"></ellipse>
         <text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-      </g>
-    `;
+      </g>`;
   }
+
   if (n.type === "orifice"){
     return `
       <g id="node_${n.id}" style="cursor:pointer;">
         <rect class="nodeOrifice" x="${n.x-46}" y="${n.y-18}" width="92" height="36" rx="6"></rect>
         <text class="label labelDark" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-      </g>
-    `;
+      </g>`;
   }
-  // wall (diamond)
+
   return `
     <g id="node_${n.id}" style="cursor:pointer;">
-      <path class="nodeWall" d="
-        M ${n.x} ${n.y-24}
-        L ${n.x+30} ${n.y}
-        L ${n.x} ${n.y+24}
-        L ${n.x-30} ${n.y}
-        Z"></path>
+      <path class="nodeWall" d="M ${n.x} ${n.y-24} L ${n.x+30} ${n.y} L ${n.x} ${n.y+24} L ${n.x-30} ${n.y} Z"></path>
       <text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-    </g>
-  `;
+    </g>`;
 }
 /* ============================================================
-   Popup inspector: draggable + interactive editing (no external libs)
+   Popup inspector: draggable + interactive editing
    ============================================================ */
-function deepCopy(x){ return JSON.parse(JSON.stringify(x)); }
-
 function openPopup(node){
   popupNode = node;
-  popupOriginalCopy = deepCopy(node.data);
-  popupWorkingCopy = deepCopy(node.data);
+  popupPath = node.path || null;
+
+  const sourceData = popupPath ? getJsonAtPath(popupPath) : node.data;
+  popupOriginalCopy = deepCopy(sourceData);
+  popupWorkingCopy = deepCopy(sourceData);
 
   document.getElementById("popupTitle").textContent = `${node.label} (${node.type})`;
-  document.getElementById("popupInfo").textContent = "Edits update the in-memory model. Click Apply to commit.";
-
+  document.getElementById("popupInfo").textContent = "Edits update the shared JSON model. Click Apply to commit.";
   renderInspector();
   document.getElementById("popup").style.display = "block";
 }
@@ -904,6 +1170,7 @@ function openPopup(node){
 function closePopup(){
   document.getElementById("popup").style.display = "none";
   popupNode = null;
+  popupPath = null;
   popupWorkingCopy = null;
   popupOriginalCopy = null;
 }
@@ -912,53 +1179,21 @@ function revertPopup(){
   if (!popupOriginalCopy) return;
   popupWorkingCopy = deepCopy(popupOriginalCopy);
   renderInspector();
-  setStatus("Reverted changes.", true);
+  setStatus("Reverted popup changes.", true);
 }
 
 function applyPopup(){
-  if (!popupNode) return;
-
-  // commit edits back to node
-  popupNode.data = deepCopy(popupWorkingCopy);
-
-  // also commit back into fullJson at the correct location when possible
-  commitNodeToFullJson(popupNode);
-
-  // refresh UI
-  renderTree();
-  if (currentTab === "code") renderCode();
-  buildGraph(fullJson);
-
-  setStatus("Applied changes.", true);
-}
-
-function commitNodeToFullJson(node){
-  // Only if structure matches expected assembly layout
-  if (!fullJson) return;
-  const assembly = fullJson.aipp_calculation && fullJson.aipp_calculation.assembly ? fullJson.aipp_calculation.assembly : fullJson.assembly;
-  if (!assembly) return;
-
-  if (node.type === "chamber"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.chambers && assembly.chambers[idx]) assembly.chambers[idx] = deepCopy(node.data);
-  }
-  if (node.type === "orifice"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.orifices && assembly.orifices[idx]) assembly.orifices[idx] = deepCopy(node.data);
-  }
-  if (node.type === "wall"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.walls && assembly.walls[idx]) assembly.walls[idx] = deepCopy(node.data);
-  }
+  if (!popupPath) return;
+  setJsonAtPath(popupPath, deepCopy(popupWorkingCopy), "popup");
+  setStatus("JSON updated from popup editor.", true);
 }
 
 function renderInspector(){
-  const root = popupWorkingCopy;
   const body = document.getElementById("popupBody");
+  if (!body) return;
   body.innerHTML = "";
-
-  const tree = buildInspectorGroup("Object", root, []);
-  body.appendChild(tree);
+  if (popupWorkingCopy === null || popupWorkingCopy === undefined) return;
+  body.appendChild(buildInspectorGroup("Object", popupWorkingCopy, []));
 }
 
 function buildInspectorGroup(title, obj, path){
@@ -975,7 +1210,7 @@ function buildInspectorGroup(title, obj, path){
   group.appendChild(body);
 
   let open = true;
-  header.addEventListener("click", ()=>{
+  header.addEventListener("click", () => {
     open = !open;
     body.style.display = open ? "block" : "none";
   });
@@ -987,29 +1222,21 @@ function buildInspectorGroup(title, obj, path){
 
   if (Array.isArray(obj)){
     for (let i=0;i<obj.length;i++){
-      const val = obj[i];
-      const subPath = path.concat([i]);
-      body.appendChild(buildAnyRow("["+i+"]", val, subPath));
+      body.appendChild(buildAnyRow("["+i+"]", obj[i], path.concat([i])));
     }
     return group;
   }
 
-  const keys = Object.keys(obj);
-  keys.sort();
+  const keys = Object.keys(obj).sort();
   for (const k of keys){
-    const val = obj[k];
-    const subPath = path.concat([k]);
-    body.appendChild(buildAnyRow(k, val, subPath));
+    body.appendChild(buildAnyRow(k, obj[k], path.concat([k])));
   }
-
   return group;
 }
 
 function buildAnyRow(key, val, path){
   if (val !== null && typeof val === "object"){
-    // nested group
-    const title = key;
-    return buildInspectorGroup(title, val, path);
+    return buildInspectorGroup(key, val, path);
   }
   return buildPrimitiveRow(key, val, path);
 }
@@ -1025,23 +1252,19 @@ function buildPrimitiveRow(key, val, path){
   const v = document.createElement("div");
   v.className = "val";
 
-  // choose editor by type
   const t = typeof val;
-
   if (t === "boolean"){
     const sel = document.createElement("select");
     sel.innerHTML = `<option value="true">true</option><option value="false">false</option>`;
     sel.value = val ? "true" : "false";
-    sel.addEventListener("change", ()=>{
-      setAtPath(path, sel.value === "true");
-    });
+    sel.addEventListener("change", () => setAtPath(path, sel.value === "true"));
     v.appendChild(sel);
   } else if (t === "number"){
     const inp = document.createElement("input");
     inp.type = "number";
     inp.step = "any";
     inp.value = String(val);
-    inp.addEventListener("input", ()=>{
+    inp.addEventListener("input", () => {
       const n = Number(inp.value);
       if (!Number.isNaN(n)) setAtPath(path, n);
     });
@@ -1050,24 +1273,20 @@ function buildPrimitiveRow(key, val, path){
     const inp = document.createElement("input");
     inp.type = "text";
     inp.value = "null";
-    inp.addEventListener("input", ()=>{
-      // allow changing null to string/number/bool by raw text
-      setAtPath(path, parseLoose(inp.value));
-    });
+    inp.addEventListener("input", () => setAtPath(path, parseLoose(inp.value)));
     v.appendChild(inp);
   } else {
-    // string (or unknown)
     const txt = String(val);
     if (txt.length > 80){
       const ta = document.createElement("textarea");
       ta.value = txt;
-      ta.addEventListener("input", ()=> setAtPath(path, ta.value));
+      ta.addEventListener("input", () => setAtPath(path, ta.value));
       v.appendChild(ta);
     } else {
       const inp = document.createElement("input");
       inp.type = "text";
       inp.value = txt;
-      inp.addEventListener("input", ()=> setAtPath(path, inp.value));
+      inp.addEventListener("input", () => setAtPath(path, inp.value));
       v.appendChild(inp);
     }
   }
@@ -1084,8 +1303,11 @@ function typeLabel(x){
 }
 
 function setAtPath(path, value){
-  // Update popupWorkingCopy at path
   let ref = popupWorkingCopy;
+  if (path.length === 0){
+    popupWorkingCopy = value;
+    return;
+  }
   for (let i=0;i<path.length-1;i++){
     ref = ref[path[i]];
   }
@@ -1101,25 +1323,23 @@ function parseLoose(s){
   return t;
 }
 
-/* Draggable popup */
 (function enableDrag(){
   const popup = document.getElementById("popup");
   const header = document.getElementById("popupHeader");
-  let dragging=false, offX=0, offY=0;
+  if (!popup || !header) return;
 
-  header.addEventListener("mousedown", (e)=>{
+  let dragging=false, offX=0, offY=0;
+  header.addEventListener("mousedown", e => {
     dragging = true;
     offX = e.clientX - popup.offsetLeft;
     offY = e.clientY - popup.offsetTop;
   });
-
-  document.addEventListener("mousemove", (e)=>{
+  document.addEventListener("mousemove", e => {
     if (!dragging) return;
     popup.style.left = (e.clientX - offX) + "px";
-    popup.style.top  = (e.clientY - offY) + "px";
+    popup.style.top = (e.clientY - offY) + "px";
   });
-
-  document.addEventListener("mouseup", ()=>{
+  document.addEventListener("mouseup", () => {
     dragging=false;
   });
 })();
@@ -1129,33 +1349,33 @@ function parseLoose(s){
 function fromScilab(msg){
   try{
     const outer = JSON.parse(msg);
-    if (!outer || outer.type !== "json_ascii") return;
 
-    const jsonText = asciiToString(outer.data);
-    const parsed = JSON.parse(jsonText);
+    if (!outer || !outer.type){
+      setStatus("Message from Scilab missing type.", false);
+      return;
+    }
 
-    fullJson = parsed;
+    if (outer.type === "json_ascii"){
+      const jsonText = asciiToString(outer.data);
+      const parsed = JSON.parse(jsonText);
+      replaceFullJson(parsed, "load");
+      setStatus("JSON loaded successfully.", true);
+      return;
+    }
 
-    // render UI
-    renderTree();
-    renderCode(); // keep code ready
-    buildGraph(fullJson);
-
-    setStatus("JSON loaded successfully.", true);
+    setStatus("Unknown message type from Scilab: " + outer.type, false);
   } catch(e){
-    setStatus("Failed to parse JSON: " + e.message, false);
+    setStatus("Failed to parse JSON from Scilab: " + e.message, false);
   }
 }
 /* ============================================================
    Browser init notify
    ============================================================ */
 window.onload = function(){
-  // Initial empty panes
   renderTree();
-  renderCode();
+  updateCodeTextFromModel();
+  attachCodeEditorHandlers();
   setStatus("Ready. Click Open JSON File.", true);
-
-  // Notify Scilab
   window.toScilab("loaded");
 };
 </script>

@@ -5,7 +5,14 @@
       <div class="tab" id="tabCode" onclick="setTab('code')">Code</div>
     </div>
     <div id="treePane"></div>
-    <div id="codePane" style="display:none;"><pre id="codePre"></pre></div>
+    <div id="codePane" style="display:none;">
+      <div id="codeToolbar">
+        <button class="smallBtn" onclick="applyCodeEdits()">Apply JSON</button>
+        <button class="smallBtn secondary" onclick="resetCodeEditor()">Reset</button>
+        <span id="codeError" class="bad"></span>
+      </div>
+      <textarea id="codeEditor" spellcheck="false"></textarea>
+    </div>
   </div>
 
   <div id="right">

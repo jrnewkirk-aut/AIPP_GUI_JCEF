@@ -1,16 +1,16 @@
 /* ============================================================
-   Popup inspector: draggable + interactive editing (no external libs)
+   Popup inspector: draggable + interactive editing
    ============================================================ */
-function deepCopy(x){ return JSON.parse(JSON.stringify(x)); }
-
 function openPopup(node){
   popupNode = node;
-  popupOriginalCopy = deepCopy(node.data);
-  popupWorkingCopy = deepCopy(node.data);
+  popupPath = node.path || null;
+
+  const sourceData = popupPath ? getJsonAtPath(popupPath) : node.data;
+  popupOriginalCopy = deepCopy(sourceData);
+  popupWorkingCopy = deepCopy(sourceData);
 
   document.getElementById("popupTitle").textContent = `${node.label} (${node.type})`;
-  document.getElementById("popupInfo").textContent = "Edits update the in-memory model. Click Apply to commit.";
-
+  document.getElementById("popupInfo").textContent = "Edits update the shared JSON model. Click Apply to commit.";
   renderInspector();
   document.getElementById("popup").style.display = "block";
 }
@@ -18,6 +18,7 @@ function openPopup(node){
 function closePopup(){
   document.getElementById("popup").style.display = "none";
   popupNode = null;
+  popupPath = null;
   popupWorkingCopy = null;
   popupOriginalCopy = null;
 }
@@ -26,53 +27,21 @@ function revertPopup(){
   if (!popupOriginalCopy) return;
   popupWorkingCopy = deepCopy(popupOriginalCopy);
   renderInspector();
-  setStatus("Reverted changes.", true);
+  setStatus("Reverted popup changes.", true);
 }
 
 function applyPopup(){
-  if (!popupNode) return;
-
-  // commit edits back to node
-  popupNode.data = deepCopy(popupWorkingCopy);
-
-  // also commit back into fullJson at the correct location when possible
-  commitNodeToFullJson(popupNode);
-
-  // refresh UI
-  renderTree();
-  if (currentTab === "code") renderCode();
-  buildGraph(fullJson);
-
-  setStatus("Applied changes.", true);
-}
-
-function commitNodeToFullJson(node){
-  // Only if structure matches expected assembly layout
-  if (!fullJson) return;
-  const assembly = fullJson.aipp_calculation && fullJson.aipp_calculation.assembly ? fullJson.aipp_calculation.assembly : fullJson.assembly;
-  if (!assembly) return;
-
-  if (node.type === "chamber"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.chambers && assembly.chambers[idx]) assembly.chambers[idx] = deepCopy(node.data);
-  }
-  if (node.type === "orifice"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.orifices && assembly.orifices[idx]) assembly.orifices[idx] = deepCopy(node.data);
-  }
-  if (node.type === "wall"){
-    const idx = parseInt(node.id.substring(1)) - 1;
-    if (assembly.walls && assembly.walls[idx]) assembly.walls[idx] = deepCopy(node.data);
-  }
+  if (!popupPath) return;
+  setJsonAtPath(popupPath, deepCopy(popupWorkingCopy), "popup");
+  setStatus("JSON updated from popup editor.", true);
 }
 
 function renderInspector(){
-  const root = popupWorkingCopy;
   const body = document.getElementById("popupBody");
+  if (!body) return;
   body.innerHTML = "";
-
-  const tree = buildInspectorGroup("Object", root, []);
-  body.appendChild(tree);
+  if (popupWorkingCopy === null || popupWorkingCopy === undefined) return;
+  body.appendChild(buildInspectorGroup("Object", popupWorkingCopy, []));
 }
 
 function buildInspectorGroup(title, obj, path){
@@ -89,7 +58,7 @@ function buildInspectorGroup(title, obj, path){
   group.appendChild(body);
 
   let open = true;
-  header.addEventListener("click", ()=>{
+  header.addEventListener("click", () => {
     open = !open;
     body.style.display = open ? "block" : "none";
   });
@@ -101,29 +70,21 @@ function buildInspectorGroup(title, obj, path){
 
   if (Array.isArray(obj)){
     for (let i=0;i<obj.length;i++){
-      const val = obj[i];
-      const subPath = path.concat([i]);
-      body.appendChild(buildAnyRow("["+i+"]", val, subPath));
+      body.appendChild(buildAnyRow("["+i+"]", obj[i], path.concat([i])));
     }
     return group;
   }
 
-  const keys = Object.keys(obj);
-  keys.sort();
+  const keys = Object.keys(obj).sort();
   for (const k of keys){
-    const val = obj[k];
-    const subPath = path.concat([k]);
-    body.appendChild(buildAnyRow(k, val, subPath));
+    body.appendChild(buildAnyRow(k, obj[k], path.concat([k])));
   }
-
   return group;
 }
 
 function buildAnyRow(key, val, path){
   if (val !== null && typeof val === "object"){
-    // nested group
-    const title = key;
-    return buildInspectorGroup(title, val, path);
+    return buildInspectorGroup(key, val, path);
   }
   return buildPrimitiveRow(key, val, path);
 }
@@ -139,23 +100,19 @@ function buildPrimitiveRow(key, val, path){
   const v = document.createElement("div");
   v.className = "val";
 
-  // choose editor by type
   const t = typeof val;
-
   if (t === "boolean"){
     const sel = document.createElement("select");
     sel.innerHTML = `<option value="true">true</option><option value="false">false</option>`;
     sel.value = val ? "true" : "false";
-    sel.addEventListener("change", ()=>{
-      setAtPath(path, sel.value === "true");
-    });
+    sel.addEventListener("change", () => setAtPath(path, sel.value === "true"));
     v.appendChild(sel);
   } else if (t === "number"){
     const inp = document.createElement("input");
     inp.type = "number";
     inp.step = "any";
     inp.value = String(val);
-    inp.addEventListener("input", ()=>{
+    inp.addEventListener("input", () => {
       const n = Number(inp.value);
       if (!Number.isNaN(n)) setAtPath(path, n);
     });
@@ -164,24 +121,20 @@ function buildPrimitiveRow(key, val, path){
     const inp = document.createElement("input");
     inp.type = "text";
     inp.value = "null";
-    inp.addEventListener("input", ()=>{
-      // allow changing null to string/number/bool by raw text
-      setAtPath(path, parseLoose(inp.value));
-    });
+    inp.addEventListener("input", () => setAtPath(path, parseLoose(inp.value)));
     v.appendChild(inp);
   } else {
-    // string (or unknown)
     const txt = String(val);
     if (txt.length > 80){
       const ta = document.createElement("textarea");
       ta.value = txt;
-      ta.addEventListener("input", ()=> setAtPath(path, ta.value));
+      ta.addEventListener("input", () => setAtPath(path, ta.value));
       v.appendChild(ta);
     } else {
       const inp = document.createElement("input");
       inp.type = "text";
       inp.value = txt;
-      inp.addEventListener("input", ()=> setAtPath(path, inp.value));
+      inp.addEventListener("input", () => setAtPath(path, inp.value));
       v.appendChild(inp);
     }
   }
@@ -198,8 +151,11 @@ function typeLabel(x){
 }
 
 function setAtPath(path, value){
-  // Update popupWorkingCopy at path
   let ref = popupWorkingCopy;
+  if (path.length === 0){
+    popupWorkingCopy = value;
+    return;
+  }
   for (let i=0;i<path.length-1;i++){
     ref = ref[path[i]];
   }
@@ -215,25 +171,23 @@ function parseLoose(s){
   return t;
 }
 
-/* Draggable popup */
 (function enableDrag(){
   const popup = document.getElementById("popup");
   const header = document.getElementById("popupHeader");
-  let dragging=false, offX=0, offY=0;
+  if (!popup || !header) return;
 
-  header.addEventListener("mousedown", (e)=>{
+  let dragging=false, offX=0, offY=0;
+  header.addEventListener("mousedown", e => {
     dragging = true;
     offX = e.clientX - popup.offsetLeft;
     offY = e.clientY - popup.offsetTop;
   });
-
-  document.addEventListener("mousemove", (e)=>{
+  document.addEventListener("mousemove", e => {
     if (!dragging) return;
     popup.style.left = (e.clientX - offX) + "px";
-    popup.style.top  = (e.clientY - offY) + "px";
+    popup.style.top = (e.clientY - offY) + "px";
   });
-
-  document.addEventListener("mouseup", ()=>{
+  document.addEventListener("mouseup", () => {
     dragging=false;
   });
 })();
