@@ -1,25 +1,6 @@
-/* ============================================================
-   App state
-   ============================================================ */
-let fullJson = null;
-let currentTab = "tree";
-let treeOpenAll = false;
-let treeUserOpen = new Set();
-
-// Code editor state. The textarea may contain unapplied edits.
-let codeEditorDirty = false;
-let lastValidCodeText = "";
-
-// Visualization state
-let simNodes = [];
-let simEdges = [];
-let raf = null;
-
-// Popup state
-let popupNode = null;
-let popupPath = null;
-let popupWorkingCopy = null;
-let popupOriginalCopy = null;
-
-// Overall model state
-let jsonDirty = false;
+let fullJson=null,currentTab="tree",treeOpenAll=false,treeUserOpen=new Set(),selectedJsonPath=null;
+let codeEditorDirty=false,lastValidCodeText="";
+let simNodes=[],simEdges=[],raf=null;
+let popupNode=null,popupPath=null,popupWorkingCopy=null,popupOriginalCopy=null;
+let pendingCdCsvImport=null;
+let jsonDirty=false;

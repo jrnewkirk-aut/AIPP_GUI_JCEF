@@ -431,9 +431,7 @@
   min-width:120px;
   max-width:100%;
 }
-.treeEditInput[type="number"]{
-  width:120px;
-}
+.treeEditInput[type="number"]{ width:120px; }
 .treeEditTextarea{
   width:100%;
   min-height:54px;
@@ -446,10 +444,10 @@
   gap:6px;
   flex-wrap:wrap;
 }
-.treePathHint{
-  color:var(--muted);
-  font-size:11px;
-}
+.treePathHint{ color:var(--muted); font-size:11px; }
+.treeSelectable{ border-radius:4px; padding:2px 3px; }
+.treeSelectable:hover{ background:#f2f7ff; outline:1px solid rgba(0,84,149,0.18); }
+.treeSelected{ background:#eaf4ff; outline:1px solid rgba(0,84,149,0.35); }
 
 /* Editable code view */
 #codePane{
@@ -486,11 +484,34 @@
   line-height:1.5;
   tab-size:2;
 }
-#codeError{
-  font-family:Consolas, Menlo, Monaco, monospace;
-  font-size:12px;
-}
+#codeError{ font-family:Consolas, Menlo, Monaco, monospace; font-size:12px; }
 .bad{ color:var(--danger); }
+
+/* Popup smart controls */
+.smartSelect{
+  width:100%;
+  box-sizing:border-box;
+  padding:7px 8px;
+  border:1px solid var(--autoliv-blue);
+  border-radius:4px;
+  font-family:inherit;
+  font-size:13px;
+  background:#f7fbff;
+}
+.smartHint{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+.smartGroupBadge{
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:999px;
+  border:1px solid rgba(0,84,149,0.25);
+  color:var(--autoliv-blue);
+  background:#eaf4ff;
+}
 
 </style>
 </head>
@@ -569,815 +590,75 @@
   </div>
 </div>
 <script>
-/* ============================================================
-   Scilab comm
-   ============================================================ */
-function toScilabMsg(obj){
-  const s = JSON.stringify(obj);
-  window.toScilab(s);
-}
-
-function selectFile(){
-  toScilabMsg({type:"select_file"});
-}
-
-function asciiToString(arr){
-  return arr.map(c => String.fromCharCode(c)).join('');
-}
-/* ============================================================
-   App state
-   ============================================================ */
-let fullJson = null;
-let currentTab = "tree";
-let treeOpenAll = false;
-let treeUserOpen = new Set();
-
-// Code editor state. The textarea may contain unapplied edits.
-let codeEditorDirty = false;
-let lastValidCodeText = "";
-
-// Visualization state
-let simNodes = [];
-let simEdges = [];
-let raf = null;
-
-// Popup state
-let popupNode = null;
-let popupPath = null;
-let popupWorkingCopy = null;
-let popupOriginalCopy = null;
-
-// Overall model state
-let jsonDirty = false;
-/* ============================================================
-   Model synchronization layer
-   One source of truth: fullJson
-   ============================================================ */
-function deepCopy(x){
-  return JSON.parse(JSON.stringify(x));
-}
-
-function pathToAttr(path){
-  return escapeHtml(JSON.stringify(path));
-}
-
-function attrToPath(s){
-  return JSON.parse(s);
-}
-
-function getJsonAtPath(path){
-  let ref = fullJson;
-  for (const key of path){
-    if (ref === null || ref === undefined) return undefined;
-    ref = ref[key];
-  }
-  return ref;
-}
-
-function setJsonAtPath(path, value, source){
-  if (!fullJson) return;
-  if (!Array.isArray(path)) return;
-
-  if (path.length === 0){
-    fullJson = value;
-  } else {
-    let ref = fullJson;
-    for (let i=0;i<path.length-1;i++){
-      ref = ref[path[i]];
-    }
-    ref[path[path.length-1]] = value;
-  }
-
-  jsonDirty = true;
-  refreshAllViews(source || "edit");
-}
-
-function replaceFullJson(newJson, source){
-  fullJson = newJson;
-  jsonDirty = source !== "load";
-  refreshAllViews(source || "replace");
-}
-
-function refreshAllViews(source){
-  // Every committed edit method writes to fullJson first, then all views
-  // are regenerated from fullJson so tree/code/popup/graph cannot drift.
-  renderTree();
-  updateCodeTextFromModel();
-
-  if (fullJson){
-    buildGraph(fullJson);
-  } else {
-    clearSvg();
-  }
-
-  syncOpenPopupFromModel();
-}
-
-function getAssemblyInfo(parsed){
-  if (parsed && parsed.aipp_calculation && parsed.aipp_calculation.assembly){
-    return {
-      assembly: parsed.aipp_calculation.assembly,
-      basePath: ["aipp_calculation", "assembly"]
-    };
-  }
-
-  if (parsed && parsed.assembly){
-    return {
-      assembly: parsed.assembly,
-      basePath: ["assembly"]
-    };
-  }
-
-  return {
-    assembly: null,
-    basePath: []
-  };
-}
-
-function syncOpenPopupFromModel(){
-  if (!popupPath) return;
-  const popup = document.getElementById("popup");
-  if (!popup || popup.style.display === "none") return;
-
-  const current = getJsonAtPath(popupPath);
-  if (current === undefined) return;
-
-  popupWorkingCopy = deepCopy(current);
-  popupOriginalCopy = deepCopy(current);
-  renderInspector();
-}
-/* ============================================================
-   Status
-   ============================================================ */
-function setStatus(msg, ok){
-  const left = document.getElementById("statusLeft");
-  const right = document.getElementById("statusRight");
-  if (!left || !right) return;
-
-  left.textContent = msg;
-  right.textContent = ok ? "OK" : "ERROR";
-  right.className = ok ? "ok" : "bad";
-}
-/* ============================================================
-   Tabs
-   ============================================================ */
-function setTab(tab){
-  currentTab = tab;
-  document.getElementById("tabTree").classList.toggle("active", tab==="tree");
-  document.getElementById("tabCode").classList.toggle("active", tab==="code");
-  document.getElementById("treePane").style.display = (tab==="tree") ? "block" : "none";
-  document.getElementById("codePane").style.display = (tab==="code") ? "flex" : "none";
-
-  if (tab === "code" && !codeEditorDirty){
-    updateCodeTextFromModel();
-  }
-}
-/* ============================================================
-   Tree rendering and tree editing
-   ============================================================ */
-function expandAll(){
-  treeOpenAll = true;
-  renderTree();
-}
-
-function collapseAll(){
-  treeOpenAll = false;
-  treeUserOpen.clear();
-  renderTree();
-}
-
-function matchSearch(text){
-  const box = document.getElementById("searchBox");
-  const q = ((box ? box.value : "") || "").trim().toLowerCase();
-  if (!q) return true;
-  return String(text).toLowerCase().includes(q);
-}
-
-function escapeHtml(s){
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
-
-function escapeValue(s){
-  return escapeHtml(String(s));
-}
-
-function shouldOpen(pathKey){
-  if (treeOpenAll) return true;
-  return treeUserOpen.has(pathKey);
-}
-
-function togglePath(pathKey, open){
-  if (open) treeUserOpen.add(pathKey);
-  else treeUserOpen.delete(pathKey);
-}
-
-function renderTree(){
-  const pane = document.getElementById("treePane");
-  if (!pane) return;
-
-  if (!fullJson){
-    pane.innerHTML = '<div class="node t">Load a JSON file to view contents.</div>';
-    return;
-  }
-
-  const html = renderNode(fullJson, [], "root");
-  pane.innerHTML = html || '<div class="node t">No matches.</div>';
-
-  pane.querySelectorAll("details[data-path-key]").forEach(d => {
-    d.open = shouldOpen(d.getAttribute("data-path-key"));
-    d.addEventListener("toggle", () => {
-      togglePath(d.getAttribute("data-path-key"), d.open);
-    });
-  });
-
-  attachTreeEditHandlers();
-}
-
-function renderNode(value, path, keyName){
-  const pathKey = JSON.stringify(path);
-  const primitiveText = value === null ? "null" : (typeof value === "object" ? "" : value);
-  const matchesSelf = matchSearch(keyName || "") || matchSearch(primitiveText);
-
-  if (value === null || typeof value !== "object"){
-    if (!matchesSelf) return "";
-    return renderEditablePrimitive(keyName, value, path);
-  }
-
-  const isArr = Array.isArray(value);
-  const keys = isArr ? value.map((_, i) => i) : Object.keys(value);
-  let childHtml = "";
-
-  for (const k of keys){
-    const child = value[k];
-    childHtml += renderNode(child, path.concat([k]), String(k));
-  }
-
-  if (!childHtml && !matchesSelf) return "";
-
-  const labelKey = '<span class="k">' + escapeHtml(keyName !== undefined ? keyName : "root") + '</span>';
-  const badge = isArr
-    ? '<span class="pill">array[' + value.length + ']</span>'
-    : '<span class="pill">object{' + keys.length + '}</span>';
-
-  return `
-    <details class="node" data-path-key="${escapeHtml(pathKey)}">
-      <summary>
-        <div class="summaryLine">
-          <span class="caret"></span>
-          ${labelKey} <span class="t">:</span> ${badge}
-        </div>
-      </summary>
-      <div style="margin-left:14px;">
-        ${childHtml}
-      </div>
-    </details>
-  `;
-}
-
-function renderEditablePrimitive(keyName, value, path){
-  const key = keyName !== undefined ? '<span class="k">' + escapeHtml(keyName) + '</span>: ' : "";
-  const pathAttr = pathToAttr(path);
-  const type = value === null ? "null" : typeof value;
-  let editor = "";
-
-  if (typeof value === "boolean"){
-    editor = `<select class="treeEditSelect" data-kind="boolean" data-path="${pathAttr}">
-      <option value="true" ${value ? "selected" : ""}>true</option>
-      <option value="false" ${!value ? "selected" : ""}>false</option>
-    </select>`;
-  } else if (typeof value === "number"){
-    editor = `<input class="treeEditInput" type="number" step="any" data-kind="number" data-path="${pathAttr}" value="${escapeValue(value)}" />`;
-  } else if (value === null){
-    editor = `<input class="treeEditInput" type="text" data-kind="null" data-path="${pathAttr}" value="null" />`;
-  } else {
-    const txt = String(value);
-    if (txt.length > 80){
-      editor = `<textarea class="treeEditTextarea" data-kind="string" data-path="${pathAttr}">${escapeHtml(txt)}</textarea>`;
-    } else {
-      editor = `<input class="treeEditInput" type="text" data-kind="string" data-path="${pathAttr}" value="${escapeValue(txt)}" />`;
-    }
-  }
-
-  return `<div class="node treePrimitiveRow">${key}${editor}<span class="treePathHint">${escapeHtml(type)}</span></div>`;
-}
-
-function attachTreeEditHandlers(){
-  document.querySelectorAll("#treePane [data-path]").forEach(el => {
-    el.addEventListener("change", () => {
-      const path = attrToPath(el.getAttribute("data-path"));
-      const kind = el.getAttribute("data-kind");
-      const value = parseTreeEditorValue(el.value, kind);
-      setJsonAtPath(path, value, "tree");
-      setStatus("JSON updated from tree editor.", true);
-    });
-  });
-}
-
-function parseTreeEditorValue(raw, kind){
-  if (kind === "boolean") return raw === "true";
-  if (kind === "number"){
-    const n = Number(raw);
-    return Number.isNaN(n) ? 0 : n;
-  }
-  if (kind === "null") return parseLoose(raw);
-  return raw;
-}
-/* ============================================================
-   Editable code view
-   ============================================================ */
-function updateCodeTextFromModel(){
-  const editor = document.getElementById("codeEditor");
-  const err = document.getElementById("codeError");
-  if (!editor) return;
-
-  if (!fullJson){
-    editor.value = "";
-    lastValidCodeText = "";
-    codeEditorDirty = false;
-    if (err) err.textContent = "";
-    return;
-  }
-
-  const raw = JSON.stringify(fullJson, null, 2);
-  editor.value = raw;
-  lastValidCodeText = raw;
-  codeEditorDirty = false;
-  if (err) err.textContent = "";
-}
-
-function renderCode(){
-  updateCodeTextFromModel();
-}
-
-function applyCodeEdits(){
-  const editor = document.getElementById("codeEditor");
-  const err = document.getElementById("codeError");
-  if (!editor) return;
-
-  try{
-    const parsed = JSON.parse(editor.value);
-    if (err) err.textContent = "";
-    codeEditorDirty = false;
-    replaceFullJson(parsed, "code");
-    setStatus("JSON updated from code editor.", true);
-  } catch(e){
-    if (err) err.textContent = "Invalid JSON: " + e.message;
-    setStatus("Invalid JSON in code editor: " + e.message, false);
-  }
-}
-
-function resetCodeEditor(){
-  updateCodeTextFromModel();
-  setStatus("Code editor reset to current model.", true);
-}
-
-function attachCodeEditorHandlers(){
-  const editor = document.getElementById("codeEditor");
-  const err = document.getElementById("codeError");
-  if (!editor) return;
-
-  editor.addEventListener("input", () => {
-    codeEditorDirty = true;
-    if (err) err.textContent = "Unapplied changes";
-    setStatus("Code editor has unapplied changes. Click Apply JSON to update the model.", true);
-  });
-}
-/* ============================================================
-   Flowchart visualization (SVG + simple force layout)
-   Nodes: chambers (ellipse), orifices (rect), walls (diamond)
-   ============================================================ */
-function buildGraph(parsed){
-  simNodes = [];
-  simEdges = [];
-
-  const info = getAssemblyInfo(parsed);
-  const assembly = info.assembly;
-  const basePath = info.basePath;
-
-  if (!assembly || !assembly.chambers){
-    clearSvg();
-    setStatus("No assembly/chambers found for visualization.", false);
-    return;
-  }
-
-  for (let i=0;i<assembly.chambers.length;i++){
-    simNodes.push({
-      id:"c"+(i+1),
-      type:"chamber",
-      label:"Ch "+(i+1),
-      x:150 + i*180,
-      y:260 + (i%2)*40,
-      path:basePath.concat(["chambers", i]),
-      data:assembly.chambers[i]
-    });
-  }
-
-  if (assembly.orifices){
-    for (let i=0;i<assembly.orifices.length;i++){
-      const o = assembly.orifices[i];
-      const from = parseInt(o.from);
-      const to = parseInt(o.to);
-      if (!from || !to) continue;
-
-      const oid = "o"+(i+1);
-      const fromNode = getNode("c"+from);
-      const toNode = getNode("c"+to);
-      const midX = (fromNode.x + toNode.x)/2;
-      const midY = (fromNode.y + toNode.y)/2;
-
-      simNodes.push({
-        id:oid,
-        type:"orifice",
-        label:"Orf "+(i+1),
-        x:midX,
-        y:midY - 70,
-        path:basePath.concat(["orifices", i]),
-        data:o
-      });
-      simEdges.push({a:"c"+from, b:oid, type:"flow"});
-      simEdges.push({a:oid, b:"c"+to, type:"flow"});
-    }
-  }
-
-  if (assembly.walls){
-    for (let i=0;i<assembly.walls.length;i++){
-      const w = assembly.walls[i];
-      const wid = "w"+(i+1);
-      let anchor = null;
-
-      if (w.left_connection && w.left_connection.chamber_index){
-        anchor = getNode("c"+w.left_connection.chamber_index);
-      } else if (w.right_connection && w.right_connection.chamber_index){
-        anchor = getNode("c"+w.right_connection.chamber_index);
-      }
-
-      simNodes.push({
-        id:wid,
-        type:"wall",
-        label:"Wall "+(i+1),
-        x: anchor ? (anchor.x - 70) : (120 + i*90),
-        y: anchor ? (anchor.y + 120) : 460,
-        path:basePath.concat(["walls", i]),
-        data:w
-      });
-
-      if (w.left_connection && w.left_connection.chamber_index){
-        simEdges.push({a:"c"+w.left_connection.chamber_index, b:wid, type:"wall"});
-      }
-      if (w.right_connection && w.right_connection.chamber_index){
-        simEdges.push({a:wid, b:"c"+w.right_connection.chamber_index, type:"wall"});
-      }
-    }
-  }
-
-  runForceLayout(220);
-  drawSvg();
-  setStatus(`Loaded ${simNodes.length} nodes, ${simEdges.length} links.`, true);
-}
-
-function getNode(id){
-  const n = simNodes.find(x => x.id === id);
-  return n || {x:500, y:350};
-}
-
-function clearSvg(){
-  const edges = document.getElementById("edges");
-  const nodes = document.getElementById("nodes");
-  if (edges) edges.innerHTML = "";
-  if (nodes) nodes.innerHTML = "";
-}
-
-function runForceLayout(iter){
-  const kRepel = 4800;
-  const kSpring = 0.02;
-  const springLen = 150;
-  const damp = 0.85;
-
-  for (const n of simNodes){ n.vx = 0; n.vy = 0; }
-
-  for (let t=0;t<iter;t++){
-    for (let i=0;i<simNodes.length;i++){
-      for (let j=i+1;j<simNodes.length;j++){
-        const a = simNodes[i], b = simNodes[j];
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy + 0.01;
-        const f = kRepel / d2;
-        const fx = f * dx;
-        const fy = f * dy;
-        a.vx += fx; a.vy += fy;
-        b.vx -= fx; b.vy -= fy;
-      }
-    }
-
-    for (const e of simEdges){
-      const a = getNode(e.a), b = getNode(e.b);
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const d = Math.sqrt(dx*dx + dy*dy) + 0.01;
-      const diff = d - springLen;
-      const f = kSpring * diff;
-      const fx = f * (dx/d);
-      const fy = f * (dy/d);
-      a.vx += fx; a.vy += fy;
-      b.vx -= fx; b.vy -= fy;
-    }
-
-    for (const n of simNodes){
-      n.vx *= damp; n.vy *= damp;
-      n.x += n.vx * 0.0012;
-      n.y += n.vy * 0.0012;
-      n.x = Math.max(60, Math.min(940, n.x));
-      n.y = Math.max(60, Math.min(640, n.y));
-    }
-  }
-}
-
-function drawSvg(){
-  clearSvg();
-  const edgesG = document.getElementById("edges");
-  const nodesG = document.getElementById("nodes");
-  if (!edgesG || !nodesG) return;
-
-  for (const e of simEdges){
-    const a = getNode(e.a), b = getNode(e.b);
-    const cls = (e.type === "wall") ? "edge edgeWall" : "edge";
-    const arrow = (e.type === "flow") ? ' marker-end="url(#arrow)" ' : '';
-    edgesG.insertAdjacentHTML("beforeend",
-      `<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${arrow}></line>`
-    );
-  }
-
-  for (const n of simNodes){
-    nodesG.insertAdjacentHTML("beforeend", nodeSvg(n));
-  }
-
-  simNodes.forEach(n => {
-    const el = document.getElementById("node_"+n.id);
-    if (!el) return;
-    el.addEventListener("dblclick", evt => {
-      evt.preventDefault();
-      evt.stopPropagation();
-      openPopup(n);
-    });
-  });
-}
-
-function nodeSvg(n){
-  if (n.type === "chamber"){
-    return `
-      <g id="node_${n.id}" style="cursor:pointer;">
-        <ellipse class="nodeChamber" cx="${n.x}" cy="${n.y}" rx="52" ry="26"></ellipse>
-        <text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-      </g>`;
-  }
-
-  if (n.type === "orifice"){
-    return `
-      <g id="node_${n.id}" style="cursor:pointer;">
-        <rect class="nodeOrifice" x="${n.x-46}" y="${n.y-18}" width="92" height="36" rx="6"></rect>
-        <text class="label labelDark" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-      </g>`;
-  }
-
-  return `
-    <g id="node_${n.id}" style="cursor:pointer;">
-      <path class="nodeWall" d="M ${n.x} ${n.y-24} L ${n.x+30} ${n.y} L ${n.x} ${n.y+24} L ${n.x-30} ${n.y} Z"></path>
-      <text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text>
-    </g>`;
-}
-/* ============================================================
-   Popup inspector: draggable + interactive editing
-   ============================================================ */
-function openPopup(node){
-  popupNode = node;
-  popupPath = node.path || null;
-
-  const sourceData = popupPath ? getJsonAtPath(popupPath) : node.data;
-  popupOriginalCopy = deepCopy(sourceData);
-  popupWorkingCopy = deepCopy(sourceData);
-
-  document.getElementById("popupTitle").textContent = `${node.label} (${node.type})`;
-  document.getElementById("popupInfo").textContent = "Edits update the shared JSON model. Click Apply to commit.";
-  renderInspector();
-  document.getElementById("popup").style.display = "block";
-}
-
-function closePopup(){
-  document.getElementById("popup").style.display = "none";
-  popupNode = null;
-  popupPath = null;
-  popupWorkingCopy = null;
-  popupOriginalCopy = null;
-}
-
-function revertPopup(){
-  if (!popupOriginalCopy) return;
-  popupWorkingCopy = deepCopy(popupOriginalCopy);
-  renderInspector();
-  setStatus("Reverted popup changes.", true);
-}
-
-function applyPopup(){
-  if (!popupPath) return;
-  setJsonAtPath(popupPath, deepCopy(popupWorkingCopy), "popup");
-  setStatus("JSON updated from popup editor.", true);
-}
-
-function renderInspector(){
-  const body = document.getElementById("popupBody");
-  if (!body) return;
-  body.innerHTML = "";
-  if (popupWorkingCopy === null || popupWorkingCopy === undefined) return;
-  body.appendChild(buildInspectorGroup("Object", popupWorkingCopy, []));
-}
-
-function buildInspectorGroup(title, obj, path){
-  const group = document.createElement("div");
-  group.className = "insGroup";
-
-  const header = document.createElement("div");
-  header.className = "insGroupHeader";
-  header.innerHTML = `<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;
-  group.appendChild(header);
-
-  const body = document.createElement("div");
-  body.className = "insGroupBody";
-  group.appendChild(body);
-
-  let open = true;
-  header.addEventListener("click", () => {
-    open = !open;
-    body.style.display = open ? "block" : "none";
-  });
-
-  if (obj === null || typeof obj !== "object"){
-    body.appendChild(buildPrimitiveRow("(value)", obj, path));
-    return group;
-  }
-
-  if (Array.isArray(obj)){
-    for (let i=0;i<obj.length;i++){
-      body.appendChild(buildAnyRow("["+i+"]", obj[i], path.concat([i])));
-    }
-    return group;
-  }
-
-  const keys = Object.keys(obj).sort();
-  for (const k of keys){
-    body.appendChild(buildAnyRow(k, obj[k], path.concat([k])));
-  }
-  return group;
-}
-
-function buildAnyRow(key, val, path){
-  if (val !== null && typeof val === "object"){
-    return buildInspectorGroup(key, val, path);
-  }
-  return buildPrimitiveRow(key, val, path);
-}
-
-function buildPrimitiveRow(key, val, path){
-  const row = document.createElement("div");
-  row.className = "row";
-
-  const k = document.createElement("div");
-  k.className = "key";
-  k.textContent = key;
-
-  const v = document.createElement("div");
-  v.className = "val";
-
-  const t = typeof val;
-  if (t === "boolean"){
-    const sel = document.createElement("select");
-    sel.innerHTML = `<option value="true">true</option><option value="false">false</option>`;
-    sel.value = val ? "true" : "false";
-    sel.addEventListener("change", () => setAtPath(path, sel.value === "true"));
-    v.appendChild(sel);
-  } else if (t === "number"){
-    const inp = document.createElement("input");
-    inp.type = "number";
-    inp.step = "any";
-    inp.value = String(val);
-    inp.addEventListener("input", () => {
-      const n = Number(inp.value);
-      if (!Number.isNaN(n)) setAtPath(path, n);
-    });
-    v.appendChild(inp);
-  } else if (val === null){
-    const inp = document.createElement("input");
-    inp.type = "text";
-    inp.value = "null";
-    inp.addEventListener("input", () => setAtPath(path, parseLoose(inp.value)));
-    v.appendChild(inp);
-  } else {
-    const txt = String(val);
-    if (txt.length > 80){
-      const ta = document.createElement("textarea");
-      ta.value = txt;
-      ta.addEventListener("input", () => setAtPath(path, ta.value));
-      v.appendChild(ta);
-    } else {
-      const inp = document.createElement("input");
-      inp.type = "text";
-      inp.value = txt;
-      inp.addEventListener("input", () => setAtPath(path, inp.value));
-      v.appendChild(inp);
-    }
-  }
-
-  row.appendChild(k);
-  row.appendChild(v);
-  return row;
-}
-
-function typeLabel(x){
-  if (x === null) return "null";
-  if (Array.isArray(x)) return "array";
-  return typeof x;
-}
-
-function setAtPath(path, value){
-  let ref = popupWorkingCopy;
-  if (path.length === 0){
-    popupWorkingCopy = value;
-    return;
-  }
-  for (let i=0;i<path.length-1;i++){
-    ref = ref[path[i]];
-  }
-  ref[path[path.length-1]] = value;
-}
-
-function parseLoose(s){
-  const t = String(s).trim();
-  if (t === "null") return null;
-  if (t === "true") return true;
-  if (t === "false") return false;
-  if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t)) return Number(t);
-  return t;
-}
-
-(function enableDrag(){
-  const popup = document.getElementById("popup");
-  const header = document.getElementById("popupHeader");
-  if (!popup || !header) return;
-
-  let dragging=false, offX=0, offY=0;
-  header.addEventListener("mousedown", e => {
-    dragging = true;
-    offX = e.clientX - popup.offsetLeft;
-    offY = e.clientY - popup.offsetTop;
-  });
-  document.addEventListener("mousemove", e => {
-    if (!dragging) return;
-    popup.style.left = (e.clientX - offX) + "px";
-    popup.style.top = (e.clientY - offY) + "px";
-  });
-  document.addEventListener("mouseup", () => {
-    dragging=false;
-  });
-})();
-/* ============================================================
-   fromScilab handler
-   ============================================================ */
-function fromScilab(msg){
-  try{
-    const outer = JSON.parse(msg);
-
-    if (!outer || !outer.type){
-      setStatus("Message from Scilab missing type.", false);
-      return;
-    }
-
-    if (outer.type === "json_ascii"){
-      const jsonText = asciiToString(outer.data);
-      const parsed = JSON.parse(jsonText);
-      replaceFullJson(parsed, "load");
-      setStatus("JSON loaded successfully.", true);
-      return;
-    }
-
-    setStatus("Unknown message type from Scilab: " + outer.type, false);
-  } catch(e){
-    setStatus("Failed to parse JSON from Scilab: " + e.message, false);
-  }
-}
-/* ============================================================
-   Browser init notify
-   ============================================================ */
-window.onload = function(){
-  renderTree();
-  updateCodeTextFromModel();
-  attachCodeEditorHandlers();
-  setStatus("Ready. Click Open JSON File.", true);
-  window.toScilab("loaded");
-};
+function toScilabMsg(obj){ window.toScilab(JSON.stringify(obj)); }
+function selectFile(){ toScilabMsg({type:"select_file"}); }
+function selectCsvFile(){ toScilabMsg({type:"select_csv"}); }
+function asciiToString(arr){ return arr.map(c => String.fromCharCode(c)).join(''); }
+let fullJson=null,currentTab="tree",treeOpenAll=false,treeUserOpen=new Set(),selectedJsonPath=null;
+let codeEditorDirty=false,lastValidCodeText="";
+let simNodes=[],simEdges=[],raf=null;
+let popupNode=null,popupPath=null,popupWorkingCopy=null,popupOriginalCopy=null;
+let pendingCdCsvImport=null;
+let jsonDirty=false;
+function deepCopy(x){return JSON.parse(JSON.stringify(x));}
+function pathToAttr(path){return escapeHtml(JSON.stringify(path));}
+function attrToPath(s){return JSON.parse(s);}
+function pathToDisplay(path){if(!path||path.length===0)return"root";return path.map((p,i)=>typeof p==="number"?`[${p}]`:(i===0?p:"."+p)).join("");}
+function getJsonAtPath(path){let ref=fullJson;for(const key of path){if(ref===null||ref===undefined)return undefined;ref=ref[key];}return ref;}
+function setJsonAtPath(path,value,source){if(!fullJson||!Array.isArray(path))return;if(path.length===0)fullJson=value;else{let ref=fullJson;for(let i=0;i<path.length-1;i++)ref=ref[path[i]];ref[path[path.length-1]]=value;}jsonDirty=true;refreshAllViews(source||"edit");}
+function replaceFullJson(newJson,source){fullJson=newJson;jsonDirty=source!=="load";if(!selectedJsonPath||getJsonAtPath(selectedJsonPath)===undefined)selectedJsonPath=null;refreshAllViews(source||"replace");}
+function selectJsonPath(path,source){selectedJsonPath=Array.isArray(path)?path:null;highlightSelectedTreePath();if(selectedJsonPath)setStatus("Selected "+pathToDisplay(selectedJsonPath)+".",true);}
+function refreshAllViews(source){renderTree();updateCodeTextFromModel();if(fullJson)buildGraph(fullJson);else clearSvg();syncOpenPopupFromModel();}
+function getAssemblyInfo(parsed){if(parsed&&parsed.aipp_calculation&&parsed.aipp_calculation.assembly)return{assembly:parsed.aipp_calculation.assembly,basePath:["aipp_calculation","assembly"]};if(parsed&&parsed.assembly)return{assembly:parsed.assembly,basePath:["assembly"]};return{assembly:null,basePath:[]};}
+function syncOpenPopupFromModel(){if(!popupPath)return;const popup=document.getElementById("popup");if(!popup||popup.style.display==="none")return;const current=getJsonAtPath(popupPath);if(current===undefined)return;popupWorkingCopy=deepCopy(current);popupOriginalCopy=deepCopy(current);renderInspector();}
+const AIPP_CD_BASIS_OPTIONS=["constant","time","pressure"];
+const AIPP_CD_TEMPLATES={constant:{basis:"constant",Cd_value:0.7},time:{basis:"time",time_units:"s",time_array:[0.0,0.01],Cd_array:[0.75,0.5],continuity:"interpolate"},pressure:{basis:"pressure",pressure_units:"MPa",pressure_array:[25,50],Cd_array:[0.75,0.5],continuity:"discrete"}};
+function makeDischargeCoefficientTemplate(basis){if(!AIPP_CD_TEMPLATES[basis])basis="constant";return deepCopy(AIPP_CD_TEMPLATES[basis]);}
+function orderedKeysForObject(title,obj){const keys=Object.keys(obj);if(title==="discharge_coefficient"){const preferred=["basis","Cd_value","time_units","pressure_units","continuity","time_array","pressure_array","Cd_array"];const ordered=[];for(const k of preferred)if(keys.includes(k))ordered.push(k);for(const k of keys.sort())if(!ordered.includes(k))ordered.push(k);return ordered;}return keys.sort();}
+function setStatus(msg,ok){const left=document.getElementById("statusLeft"),right=document.getElementById("statusRight");if(!left||!right)return;left.textContent=msg;right.textContent=ok?"OK":"ERROR";right.className=ok?"ok":"bad";}
+function setTab(tab){currentTab=tab;document.getElementById("tabTree").classList.toggle("active",tab==="tree");document.getElementById("tabCode").classList.toggle("active",tab==="code");document.getElementById("treePane").style.display=(tab==="tree")?"block":"none";document.getElementById("codePane").style.display=(tab==="code")?"flex":"none";if(tab==="code")updateCodeTextFromModel();}
+function expandAll(){treeOpenAll=true;renderTree();}function collapseAll(){treeOpenAll=false;treeUserOpen.clear();renderTree();}
+function matchSearch(text){const box=document.getElementById("searchBox");const q=((box?box.value:"")||"").trim().toLowerCase();if(!q)return true;return String(text).toLowerCase().includes(q);}
+function escapeHtml(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
+function escapeValue(s){return escapeHtml(String(s));}function shouldOpen(pathKey){return treeOpenAll||treeUserOpen.has(pathKey);}function togglePath(pathKey,open){if(open)treeUserOpen.add(pathKey);else treeUserOpen.delete(pathKey);}
+function renderTree(){const pane=document.getElementById("treePane");if(!pane)return;if(!fullJson){pane.innerHTML='<div class="node t">Load a JSON file to view contents.</div>';return;}const html=renderNode(fullJson,[],"root");pane.innerHTML=html||'<div class="node t">No matches.</div>';pane.querySelectorAll("details[data-path-key]").forEach(d=>{d.open=shouldOpen(d.getAttribute("data-path-key"));d.addEventListener("toggle",()=>togglePath(d.getAttribute("data-path-key"),d.open));});pane.querySelectorAll("[data-select-path]").forEach(el=>{el.addEventListener("click",evt=>{if(evt.target&&evt.target.hasAttribute("data-path"))return;evt.stopPropagation();selectJsonPath(attrToPath(el.getAttribute("data-select-path")),"tree_select");});});attachTreeEditHandlers();highlightSelectedTreePath();}
+function renderNode(value,path,keyName){const pathKey=JSON.stringify(path);const primitiveText=value===null?"null":(typeof value==="object"?"":value);const matchesSelf=matchSearch(keyName||"")||matchSearch(primitiveText);if(value===null||typeof value!=="object"){if(!matchesSelf)return"";return renderEditablePrimitive(keyName,value,path);}const isArr=Array.isArray(value);const keys=isArr?value.map((_,i)=>i):Object.keys(value);let childHtml="";for(const k of keys)childHtml+=renderNode(value[k],path.concat([k]),String(k));if(!childHtml&&!matchesSelf)return"";const labelKey='<span class="k">'+escapeHtml(keyName!==undefined?keyName:"root")+'</span>';const badge=isArr?'<span class="pill">array['+value.length+']</span>':'<span class="pill">object{'+keys.length+'}</span>';return `<details class="node treeSelectable" data-path-key="${escapeHtml(pathKey)}" data-select-path="${pathToAttr(path)}"><summary><div class="summaryLine"><span class="caret"></span>${labelKey} <span class="t">:</span> ${badge}</div></summary><div style="margin-left:14px;">${childHtml}</div></details>`;}
+function renderEditablePrimitive(keyName,value,path){const key=keyName!==undefined?'<span class="k">'+escapeHtml(keyName)+'</span>: ':"";const pathAttr=pathToAttr(path);const type=value===null?"null":typeof value;let editor="";if(typeof value==="boolean")editor=`<select class="treeEditSelect" data-kind="boolean" data-path="${pathAttr}"><option value="true" ${value?"selected":""}>true</option><option value="false" ${!value?"selected":""}>false</option></select>`;else if(typeof value==="number")editor=`<input class="treeEditInput" type="number" step="any" data-kind="number" data-path="${pathAttr}" value="${escapeValue(value)}" />`;else if(value===null)editor=`<input class="treeEditInput" type="text" data-kind="null" data-path="${pathAttr}" value="null" />`;else{const txt=String(value);editor=txt.length>80?`<textarea class="treeEditTextarea" data-kind="string" data-path="${pathAttr}">${escapeHtml(txt)}</textarea>`:`<input class="treeEditInput" type="text" data-kind="string" data-path="${pathAttr}" value="${escapeValue(txt)}" />`;}return `<div class="node treePrimitiveRow treeSelectable" data-select-path="${pathAttr}">${key}${editor}<span class="treePathHint">${escapeHtml(type)}</span></div>`;}
+function attachTreeEditHandlers(){document.querySelectorAll("#treePane [data-path]").forEach(el=>{el.addEventListener("change",()=>{const path=attrToPath(el.getAttribute("data-path"));const kind=el.getAttribute("data-kind");const value=parseTreeEditorValue(el.value,kind);selectedJsonPath=path;setJsonAtPath(path,value,"tree");setStatus("JSON updated from tree editor.",true);});});}
+function parseTreeEditorValue(raw,kind){if(kind==="boolean")return raw==="true";if(kind==="number"){const n=Number(raw);return Number.isNaN(n)?0:n;}if(kind==="null")return parseLoose(raw);return raw;}
+function highlightSelectedTreePath(){document.querySelectorAll("#treePane .treeSelected").forEach(el=>el.classList.remove("treeSelected"));if(!selectedJsonPath)return;const target=JSON.stringify(selectedJsonPath);document.querySelectorAll("#treePane [data-select-path]").forEach(el=>{try{if(JSON.stringify(attrToPath(el.getAttribute("data-select-path")))===target)el.classList.add("treeSelected");}catch(e){}});}
+function updateCodeTextFromModel(){const editor=document.getElementById("codeEditor"),err=document.getElementById("codeError");if(!editor)return;if(!fullJson){editor.value="";lastValidCodeText="";codeEditorDirty=false;if(err)err.textContent="";return;}const raw=JSON.stringify(fullJson,null,2);editor.value=raw;lastValidCodeText=raw;codeEditorDirty=false;if(err)err.textContent="";}
+function renderCode(){updateCodeTextFromModel();}
+function applyCodeEdits(){const editor=document.getElementById("codeEditor"),err=document.getElementById("codeError");if(!editor)return;try{const parsed=JSON.parse(editor.value);if(err)err.textContent="";codeEditorDirty=false;replaceFullJson(parsed,"code");setStatus("JSON updated from code editor.",true);}catch(e){if(err)err.textContent="Invalid JSON: "+e.message;setStatus("Invalid JSON in code editor: "+e.message,false);}}
+function resetCodeEditor(){updateCodeTextFromModel();setStatus("Code editor reset to current model.",true);}
+function attachCodeEditorHandlers(){const editor=document.getElementById("codeEditor"),err=document.getElementById("codeError");if(!editor)return;editor.addEventListener("input",()=>{codeEditorDirty=true;if(err)err.textContent="Unapplied changes";setStatus("Code editor has unapplied changes. Click Apply JSON to update the model.",true);});}
+function buildGraph(parsed){simNodes=[];simEdges=[];const info=getAssemblyInfo(parsed),assembly=info.assembly,basePath=info.basePath;if(!assembly||!assembly.chambers){clearSvg();setStatus("No assembly/chambers found for visualization.",false);return;}for(let i=0;i<assembly.chambers.length;i++)simNodes.push({id:"c"+(i+1),type:"chamber",label:"Ch "+(i+1),x:150+i*180,y:260+(i%2)*40,path:basePath.concat(["chambers",i]),data:assembly.chambers[i]});if(assembly.orifices){for(let i=0;i<assembly.orifices.length;i++){const o=assembly.orifices[i],from=parseInt(o.from),to=parseInt(o.to);if(!from||!to)continue;const oid="o"+(i+1),a=getNode("c"+from),b=getNode("c"+to);simNodes.push({id:oid,type:"orifice",label:"Orf "+(i+1),x:(a.x+b.x)/2,y:(a.y+b.y)/2-70,path:basePath.concat(["orifices",i]),data:o});simEdges.push({a:"c"+from,b:oid,type:"flow"});simEdges.push({a:oid,b:"c"+to,type:"flow"});}}if(assembly.walls){for(let i=0;i<assembly.walls.length;i++){const w=assembly.walls[i],wid="w"+(i+1);let anchor=null;if(w.left_connection&&w.left_connection.chamber_index)anchor=getNode("c"+w.left_connection.chamber_index);else if(w.right_connection&&w.right_connection.chamber_index)anchor=getNode("c"+w.right_connection.chamber_index);simNodes.push({id:wid,type:"wall",label:"Wall "+(i+1),x:anchor?anchor.x-70:120+i*90,y:anchor?anchor.y+120:460,path:basePath.concat(["walls",i]),data:w});if(w.left_connection&&w.left_connection.chamber_index)simEdges.push({a:"c"+w.left_connection.chamber_index,b:wid,type:"wall"});if(w.right_connection&&w.right_connection.chamber_index)simEdges.push({a:wid,b:"c"+w.right_connection.chamber_index,type:"wall"});}}runForceLayout(220);drawSvg();setStatus(`Loaded ${simNodes.length} nodes, ${simEdges.length} links.`,true);}
+function getNode(id){return simNodes.find(x=>x.id===id)||{x:500,y:350};}function clearSvg(){const e=document.getElementById("edges"),n=document.getElementById("nodes");if(e)e.innerHTML="";if(n)n.innerHTML="";}
+function runForceLayout(iter){const kRepel=4800,kSpring=0.02,springLen=150,damp=0.85;for(const n of simNodes){n.vx=0;n.vy=0;}for(let t=0;t<iter;t++){for(let i=0;i<simNodes.length;i++)for(let j=i+1;j<simNodes.length;j++){const a=simNodes[i],b=simNodes[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+0.01,f=kRepel/d2,fx=f*dx,fy=f*dy;a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;}for(const e of simEdges){const a=getNode(e.a),b=getNode(e.b),dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)+0.01,diff=d-springLen,f=kSpring*diff,fx=f*(dx/d),fy=f*(dy/d);a.vx+=fx;a.vy+=fy;b.vx-=fx;b.vy-=fy;}for(const n of simNodes){n.vx*=damp;n.vy*=damp;n.x+=n.vx*0.0012;n.y+=n.vy*0.0012;n.x=Math.max(60,Math.min(940,n.x));n.y=Math.max(60,Math.min(640,n.y));}}}
+function drawSvg(){clearSvg();const edgesG=document.getElementById("edges"),nodesG=document.getElementById("nodes");if(!edgesG||!nodesG)return;for(const e of simEdges){const a=getNode(e.a),b=getNode(e.b),cls=e.type==="wall"?"edge edgeWall":"edge",arrow=e.type==="flow"?' marker-end="url(#arrow)" ':'';edgesG.insertAdjacentHTML("beforeend",`<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" ${arrow}></line>`);}for(const n of simNodes)nodesG.insertAdjacentHTML("beforeend",nodeSvg(n));simNodes.forEach(n=>{const el=document.getElementById("node_"+n.id);if(!el)return;el.addEventListener("dblclick",evt=>{evt.preventDefault();evt.stopPropagation();selectJsonPath(n.path,"graph");openPopup(n);});});}
+function nodeSvg(n){if(n.type==="chamber")return`<g id="node_${n.id}" style="cursor:pointer;"><ellipse class="nodeChamber" cx="${n.x}" cy="${n.y}" rx="52" ry="26"></ellipse><text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text></g>`;if(n.type==="orifice")return`<g id="node_${n.id}" style="cursor:pointer;"><rect class="nodeOrifice" x="${n.x-46}" y="${n.y-18}" width="92" height="36" rx="6"></rect><text class="label labelDark" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text></g>`;return`<g id="node_${n.id}" style="cursor:pointer;"><path class="nodeWall" d="M ${n.x} ${n.y-24} L ${n.x+30} ${n.y} L ${n.x} ${n.y+24} L ${n.x-30} ${n.y} Z"></path><text class="label" x="${n.x}" y="${n.y+4}" text-anchor="middle">${escapeHtml(n.label)}</text></g>`;}
+function openPopup(node){popupNode=node;popupPath=node.path||null;const source=popupPath?getJsonAtPath(popupPath):node.data;popupOriginalCopy=deepCopy(source);popupWorkingCopy=deepCopy(source);document.getElementById("popupTitle").textContent=`${node.label} (${node.type})`;document.getElementById("popupInfo").textContent="Edits update the in-memory JSON object. Click Apply to commit.";renderInspector();document.getElementById("popup").style.display="block";}
+function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;popupWorkingCopy=null;popupOriginalCopy=null;pendingCdCsvImport=null;}
+function revertPopup(){if(!popupOriginalCopy)return;popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();setStatus("Reverted popup changes.",true);}
+function applyPopup(){if(!popupPath)return;setJsonAtPath(popupPath,deepCopy(popupWorkingCopy),"popup");setStatus("JSON updated from popup editor.",true);}
+function renderInspector(){const body=document.getElementById("popupBody");if(!body)return;body.innerHTML="";if(popupWorkingCopy===null||popupWorkingCopy===undefined)return;body.appendChild(buildInspectorGroup("Object",popupWorkingCopy,[]));}
+function buildInspectorGroup(title,obj,path){if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildDischargeCoefficientEditor(title,obj,path);const group=document.createElement("div");group.className="insGroup";const header=document.createElement("div");header.className="insGroupHeader";header.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;group.appendChild(header);const body=document.createElement("div");body.className="insGroupBody";group.appendChild(body);let open=true;header.addEventListener("click",()=>{open=!open;body.style.display=open?"block":"none";});if(obj===null||typeof obj!=="object"){body.appendChild(buildPrimitiveRow("(value)",obj,path));return group;}if(Array.isArray(obj)){for(let i=0;i<obj.length;i++)body.appendChild(buildAnyRow("["+i+"]",obj[i],path.concat([i])));return group;}for(const k of orderedKeysForObject(title,obj))body.appendChild(buildAnyRow(k,obj[k],path.concat([k])));return group;}
+function buildDischargeCoefficientEditor(title,obj,path){const group=document.createElement("div");group.className="insGroup";const header=document.createElement("div");header.className="insGroupHeader";header.innerHTML=`<span>${escapeHtml(title)}</span><span class="smartGroupBadge">smart Cd table editor</span>`;group.appendChild(header);const body=document.createElement("div");body.className="insGroupBody";group.appendChild(body);let open=true;header.addEventListener("click",()=>{open=!open;body.style.display=open?"block":"none";});const basis=AIPP_CD_BASIS_OPTIONS.includes(obj.basis)?obj.basis:"constant";body.appendChild(makeSmartRow("basis",makeBasisSelect(path,basis)));if(basis==="constant"){body.appendChild(makeSmartRow("Cd_value",makeSmartInput(obj.Cd_value??0.7,val=>{obj.Cd_value=parseLoose(val);})));}else if(basis==="pressure"){body.appendChild(makeSmartRow("pressure_units",makeSmartInput(obj.pressure_units??"MPa",val=>{obj.pressure_units=val;})));body.appendChild(makeSmartRow("continuity",makeContinuitySelect(obj.continuity??"discrete",val=>{obj.continuity=val;})));body.appendChild(makeCdTable(path,obj,"pressure"));}else if(basis==="time"){body.appendChild(makeSmartRow("time_units",makeSmartInput(obj.time_units??"s",val=>{obj.time_units=val;})));body.appendChild(makeSmartRow("continuity",makeContinuitySelect(obj.continuity??"interpolate",val=>{obj.continuity=val;})));body.appendChild(makeCdTable(path,obj,"time"));}const hint=document.createElement("span");hint.className="smartHint";hint.textContent="CSV import expects two columns. First row is units. Remaining rows are values.";body.appendChild(hint);return group;}
+function makeSmartRow(label,control){const row=document.createElement("div");row.className="row";const k=document.createElement("div");k.className="key";k.textContent=label;const v=document.createElement("div");v.className="val";v.appendChild(control);row.appendChild(k);row.appendChild(v);return row;}
+function makeBasisSelect(path,basis){const sel=document.createElement("select");sel.className="smartSelect";sel.innerHTML=`<option value="constant">constant</option><option value="time">time</option><option value="pressure">pressure</option>`;sel.value=basis;sel.addEventListener("change",()=>{setAtPath(path,makeDischargeCoefficientTemplate(sel.value));renderInspector();setStatus("Popup discharge coefficient changed to "+sel.value+". Click Apply to commit.",true);});return sel;}
+function makeContinuitySelect(value,onChange){const sel=document.createElement("select");sel.className="smartSelect";sel.innerHTML=`<option value="discrete">discrete</option><option value="interpolate">interpolate</option>`;sel.value=(value==="discrete"||value==="interpolate")?value:"interpolate";sel.addEventListener("change",()=>onChange(sel.value));return sel;}
+function makeSmartInput(value,onChange){const inp=document.createElement("input");inp.className="smartInput";inp.type="text";inp.value=value===undefined?"":String(value);inp.addEventListener("input",()=>onChange(inp.value));return inp;}
+function makeCdTable(path,obj,mode){const wrap=document.createElement("div");const xKey=mode==="pressure"?"pressure_array":"time_array";const xLabel=mode==="pressure"?"Pressure":"Time";if(!Array.isArray(obj[xKey]))obj[xKey]=[];if(!Array.isArray(obj.Cd_array))obj.Cd_array=[];const n=Math.max(obj[xKey].length,obj.Cd_array.length,1);while(obj[xKey].length<n)obj[xKey].push(0);while(obj.Cd_array.length<n)obj.Cd_array.push(1);const tbl=document.createElement("table");tbl.className="cdTable";tbl.innerHTML=`<thead><tr><th>${xLabel}</th><th>Cd</th></tr></thead>`;const tbody=document.createElement("tbody");for(let i=0;i<n;i++){const tr=document.createElement("tr"),tdX=document.createElement("td"),tdCd=document.createElement("td"),inX=document.createElement("input"),inCd=document.createElement("input");inX.type="number";inX.step="any";inX.value=obj[xKey][i];inX.addEventListener("input",()=>{const v=Number(inX.value);obj[xKey][i]=Number.isNaN(v)?0:v;});inCd.type="number";inCd.step="any";inCd.value=obj.Cd_array[i];inCd.addEventListener("input",()=>{const v=Number(inCd.value);obj.Cd_array[i]=Number.isNaN(v)?0:v;});tdX.appendChild(inX);tdCd.appendChild(inCd);tr.appendChild(tdX);tr.appendChild(tdCd);tbody.appendChild(tr);}tbl.appendChild(tbody);wrap.appendChild(tbl);const tools=document.createElement("div");tools.className="cdTableTools";const add=document.createElement("button");add.className="cdMiniBtn";add.textContent="Add Row";add.type="button";add.addEventListener("click",()=>{const lastX=obj[xKey].length?obj[xKey][obj[xKey].length-1]:0,lastCd=obj.Cd_array.length?obj.Cd_array[obj.Cd_array.length-1]:1;obj[xKey].push(lastX);obj.Cd_array.push(lastCd);renderInspector();});const remove=document.createElement("button");remove.className="cdMiniBtn";remove.textContent="Remove Last Row";remove.type="button";remove.addEventListener("click",()=>{if(obj[xKey].length>1){obj[xKey].pop();obj.Cd_array.pop();renderInspector();}});const imp=document.createElement("button");imp.className="cdMiniBtn";imp.textContent="Import CSV";imp.type="button";imp.addEventListener("click",()=>requestCdCsvImport(path,mode));tools.appendChild(add);tools.appendChild(remove);tools.appendChild(imp);wrap.appendChild(tools);return wrap;}
+function requestCdCsvImport(path,mode){pendingCdCsvImport={path:path.slice(),mode:mode};selectCsvFile();setStatus("Select a two-column CSV file for the Cd table.",true);}
+function applyCdCsvText(csvText){if(!pendingCdCsvImport){setStatus("No pending Cd CSV import target.",false);return;}const target=getPopupObjectAtPath(pendingCdCsvImport.path);if(!target){setStatus("Could not find Cd import target in popup.",false);return;}const parsed=parseTwoColumnCsv(csvText);if(!parsed.ok){setStatus(parsed.message,false);return;}const xKey=pendingCdCsvImport.mode==="pressure"?"pressure_array":"time_array";const unitsKey=pendingCdCsvImport.mode==="pressure"?"pressure_units":"time_units";target[unitsKey]=parsed.unit1;target[xKey]=parsed.col1;target.Cd_array=parsed.col2;pendingCdCsvImport=null;renderInspector();setStatus("Imported "+parsed.col1.length+" Cd table rows from CSV. Click Apply to commit.",true);}
+function parseTwoColumnCsv(text){const rows=text.replace(/\r/g,"").split("\n").map(r=>r.trim()).filter(r=>r.length>0);if(rows.length<2)return{ok:false,message:"CSV must include a unit row and at least one data row."};const data=rows.map(parseCsvLine);if(data[0].length<2)return{ok:false,message:"CSV header row must have two unit entries."};const unit1=String(data[0][0]).trim(),unit2=String(data[0][1]).trim();const col1=[],col2=[];for(let i=1;i<data.length;i++){if(data[i].length<2)continue;const a=Number(String(data[i][0]).trim()),b=Number(String(data[i][1]).trim());if(Number.isNaN(a)||Number.isNaN(b))return{ok:false,message:"CSV row "+(i+1)+" contains nonnumeric data."};col1.push(a);col2.push(b);}if(col1.length===0)return{ok:false,message:"CSV contains no numeric data rows."};return{ok:true,unit1:unit1,unit2:unit2,col1:col1,col2:col2};}
+function parseCsvLine(line){const out=[];let cur="",q=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(ch===','&&!q){out.push(cur);cur="";}else cur+=ch;}out.push(cur);return out;}
+function getPopupObjectAtPath(path){let ref=popupWorkingCopy;for(const key of path){if(ref===null||ref===undefined)return null;ref=ref[key];}return ref;}
+function buildAnyRow(key,val,path){if(val!==null&&typeof val==="object")return buildInspectorGroup(key,val,path);return buildPrimitiveRow(key,val,path);}function buildPrimitiveRow(key,val,path){const row=document.createElement("div");row.className="row";const k=document.createElement("div");k.className="key";k.textContent=key;const v=document.createElement("div");v.className="val";const t=typeof val;if(t==="boolean"){const sel=document.createElement("select");sel.innerHTML=`<option value="true">true</option><option value="false">false</option>`;sel.value=val?"true":"false";sel.addEventListener("change",()=>setAtPath(path,sel.value==="true"));v.appendChild(sel);}else if(t==="number"){const inp=document.createElement("input");inp.type="number";inp.step="any";inp.value=String(val);inp.addEventListener("input",()=>{const n=Number(inp.value);if(!Number.isNaN(n))setAtPath(path,n);});v.appendChild(inp);}else if(val===null){const inp=document.createElement("input");inp.type="text";inp.value="null";inp.addEventListener("input",()=>setAtPath(path,parseLoose(inp.value)));v.appendChild(inp);}else{const txt=String(val);if(txt.length>80){const ta=document.createElement("textarea");ta.value=txt;ta.addEventListener("input",()=>setAtPath(path,ta.value));v.appendChild(ta);}else{const inp=document.createElement("input");inp.type="text";inp.value=txt;inp.addEventListener("input",()=>setAtPath(path,inp.value));v.appendChild(inp);}}row.appendChild(k);row.appendChild(v);return row;}
+function typeLabel(x){if(x===null)return"null";if(Array.isArray(x))return"array";return typeof x;}function setAtPath(path,value){let ref=popupWorkingCopy;if(path.length===0){popupWorkingCopy=value;return;}for(let i=0;i<path.length-1;i++)ref=ref[path[i]];ref[path[path.length-1]]=value;}function parseLoose(s){const t=String(s).trim();if(t==="null")return null;if(t==="true")return true;if(t==="false")return false;if(/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t))return Number(t);return t;}
+(function enableDrag(){const popup=document.getElementById("popup"),header=document.getElementById("popupHeader");if(!popup||!header)return;let dragging=false,offX=0,offY=0;header.addEventListener("mousedown",e=>{dragging=true;offX=e.clientX-popup.offsetLeft;offY=e.clientY-popup.offsetTop;});document.addEventListener("mousemove",e=>{if(!dragging)return;popup.style.left=(e.clientX-offX)+"px";popup.style.top=(e.clientY-offY)+"px";});document.addEventListener("mouseup",()=>{dragging=false;});})();
+function fromScilab(msg){try{const outer=JSON.parse(msg);if(!outer||!outer.type){setStatus("Message from Scilab missing type.",false);return;}if(outer.type==="json_ascii"){const jsonText=asciiToString(outer.data);const parsed=JSON.parse(jsonText);selectedJsonPath=null;replaceFullJson(parsed,"load");setStatus("JSON loaded successfully.",true);return;}if(outer.type==="csv_ascii"){const csvText=asciiToString(outer.data);applyCdCsvText(csvText);return;}setStatus("Unknown message type from Scilab: "+outer.type,false);}catch(e){setStatus("Failed to parse message from Scilab: "+e.message,false);}}
+window.onload=function(){renderTree();updateCodeTextFromModel();attachCodeEditorHandlers();setStatus("Ready. Click Open JSON File.",true);window.toScilab("loaded");};
 </script>
 </body>
 </html>

@@ -423,9 +423,7 @@
   min-width:120px;
   max-width:100%;
 }
-.treeEditInput[type="number"]{
-  width:120px;
-}
+.treeEditInput[type="number"]{ width:120px; }
 .treeEditTextarea{
   width:100%;
   min-height:54px;
@@ -438,10 +436,10 @@
   gap:6px;
   flex-wrap:wrap;
 }
-.treePathHint{
-  color:var(--muted);
-  font-size:11px;
-}
+.treePathHint{ color:var(--muted); font-size:11px; }
+.treeSelectable{ border-radius:4px; padding:2px 3px; }
+.treeSelectable:hover{ background:#f2f7ff; outline:1px solid rgba(0,84,149,0.18); }
+.treeSelected{ background:#eaf4ff; outline:1px solid rgba(0,84,149,0.35); }
 
 /* Editable code view */
 #codePane{
@@ -478,9 +476,32 @@
   line-height:1.5;
   tab-size:2;
 }
-#codeError{
-  font-family:Consolas, Menlo, Monaco, monospace;
-  font-size:12px;
-}
+#codeError{ font-family:Consolas, Menlo, Monaco, monospace; font-size:12px; }
 .bad{ color:var(--danger); }
+
+/* Popup smart controls */
+.smartSelect{
+  width:100%;
+  box-sizing:border-box;
+  padding:7px 8px;
+  border:1px solid var(--autoliv-blue);
+  border-radius:4px;
+  font-family:inherit;
+  font-size:13px;
+  background:#f7fbff;
+}
+.smartHint{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+.smartGroupBadge{
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:999px;
+  border:1px solid rgba(0,84,149,0.25);
+  color:var(--autoliv-blue);
+  background:#eaf4ff;
+}
 

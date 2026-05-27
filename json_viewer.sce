@@ -107,7 +107,32 @@ function browserCallback(data, cb)
 
         set(browser, "data", jsonOut);
         cb(jsonOut);
+    case "select_csv" then
 
+        [file, path] = uigetfile("*.csv", "Select CSV File");
+    
+        if file == "" then
+            return;
+        end
+    
+        csvpath = path + "\" + file;
+    
+        lines = mgetl(csvpath);
+        csvText = strcat(lines, ascii(10));
+        csvText = strsubst(csvText, ascii(13), "");
+    
+        asciiData = asciimat(csvText);
+        if size(asciiData, 1) > 1 then
+            asciiData = asciiData';
+        end
+    
+        response = struct();
+        response.type = "csv_ascii";
+        response.data = asciiData;
+    
+        jsonOut = toJSON(response);
+        set(browser, "data", jsonOut);
+        cb(jsonOut);
     else
         disp("Unknown type");
         disp(msg.type);
