@@ -1,0 +1,684 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Autoliv | Inflator Model Viewer</title>
+
+<style>
+  :root{
+    /* Brand palette (from manual) */
+    --autoliv-blue:#005495;   /* primary brand color */ /* 【1-f5fa37】 */
+    --autoliv-cyan:#009fe3;   /* complementary cyan */  /* 【1-f5fa37】 */
+    --autoliv-dark:#163b77;   /* complementary dark */  /* 【1-f5fa37】 */
+    --bg:#ffffff;
+    --panel:#f5f6f7;
+    --line:#d9d9d9;
+    --text:#1a1a1a;
+    --muted:#5b5b5b;
+    --danger:#c80000;
+    --ok:#147a1e;
+  }
+
+  html, body{
+    margin:0;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Archivo", Arial, sans-serif; /* Archivo primary, Arial fallback */ /* 【1-f5fa37】 */
+    overflow:hidden;
+  }
+
+  /* Header */
+  #header{
+    height:56px;
+    background:var(--autoliv-blue);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 14px;
+    box-sizing:border-box;
+  }
+  #brandLeft{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:340px;
+  }
+  #logo{
+    height:26px;
+    width:auto;
+    display:block;
+  }
+  #title{
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.2px;
+    white-space:nowrap;
+  }
+  #tagline{
+    font-size:12px;
+    opacity:0.9;
+    white-space:nowrap;
+  }
+
+  /* Toolbar */
+  #toolbar{
+    height:54px;
+    background:var(--panel);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 14px;
+    box-sizing:border-box;
+  }
+  .btn{
+    background:var(--autoliv-blue);
+    color:#fff;
+    border:none;
+    padding:9px 12px;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+  }
+  .btn:hover{ background:#00457c; }
+  .btn.secondary{
+    background:#ffffff;
+    color:var(--autoliv-blue);
+    border:1px solid rgba(0,84,149,0.35);
+  }
+  .btn.secondary:hover{ background:#f2f7ff; }
+  .spacer{ flex:1; }
+
+  .field{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    color:var(--muted);
+  }
+  .field input{
+    height:30px;
+    width:260px;
+    padding:0 10px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    outline:none;
+    font-family:inherit;
+  }
+
+  /* Main layout */
+  #main{
+    height:calc(100% - 56px - 54px - 30px);
+    display:flex;
+    min-height:0;
+  }
+  #left{
+    width:50%;
+    border-right:2px solid #eee;
+    display:flex;
+    flex-direction:column;
+    min-width:420px;
+  }
+  #right{
+    width:50%;
+    display:flex;
+    flex-direction:column;
+    min-width:420px;
+  }
+
+  /* Left: tabs */
+  #tabs{
+    height:40px;
+    display:flex;
+    align-items:flex-end;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    padding:0 10px;
+    gap:6px;
+    box-sizing:border-box;
+  }
+  .tab{
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    background:#fafafa;
+    cursor:pointer;
+    font-weight:600;
+    font-size:12px;
+    color:#333;
+  }
+  .tab.active{
+    background:#fff;
+    color:var(--autoliv-blue);
+  }
+
+  #treePane, #codePane{
+    flex:1;
+    overflow:auto;
+    padding:10px 12px;
+    box-sizing:border-box;
+    background:#fff;
+  }
+
+  /* Tree view */
+  .node{
+    font-size:13px;
+    line-height:1.35;
+    margin:2px 0;
+  }
+  .k{ color:#1f3b5c; font-weight:600; }
+  .t{ color:#666; }
+  .v-string{ color:#0b6b1e; }
+  .v-number{ color:#2b4ddb; }
+  .v-bool{ color:#b4009e; }
+  .v-null{ color:#999; font-style:italic; }
+
+  details{
+    margin-left:14px;
+  }
+  summary{
+    cursor:pointer;
+    user-select:none;
+    outline:none;
+  }
+  summary::-webkit-details-marker { display:none; }
+
+  .summaryLine{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .caret{
+    width:10px;
+    height:10px;
+    display:inline-block;
+    border-right:2px solid #666;
+    border-bottom:2px solid #666;
+    transform:rotate(-45deg);
+    margin-right:4px;
+  }
+  details[open] > summary .caret{
+    transform:rotate(45deg);
+  }
+
+  /* Code view */
+  pre{
+    margin:0;
+    padding:10px;
+    background:#0f1720;
+    color:#e6edf3;
+    border-radius:8px;
+    overflow:auto;
+    font-family:Consolas, Menlo, Monaco, monospace;
+    font-size:12px;
+    line-height:1.5;
+  }
+  .hl-k{ color:#7dd3fc; }   /* keys */
+  .hl-s{ color:#86efac; }   /* strings */
+  .hl-n{ color:#93c5fd; }   /* numbers */
+  .hl-b{ color:#fda4af; }   /* booleans/null */
+
+  /* Right: flowchart */
+  #vizHeader{
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding:0 12px;
+    box-sizing:border-box;
+    background:#fff;
+  }
+  #vizHeader .h{
+    font-weight:600;
+    color:var(--autoliv-blue);
+    font-size:13px;
+  }
+  #vizHeader .hint{
+    color:var(--muted);
+    font-size:12px;
+  }
+
+  #vizWrap{
+    flex:1;
+    position:relative;
+    background:#fff;
+  }
+  svg{ width:100%; height:100%; display:block; }
+
+  .edge{
+    stroke:#6b7280;
+    stroke-width:1.5;
+    opacity:0.95;
+  }
+  .edgeWall{
+    stroke:#9aa3ad;
+    stroke-dasharray:4 3;
+  }
+
+  .nodeChamber{ fill:var(--autoliv-blue); }
+  .nodeOrifice{ fill:var(--autoliv-cyan); }
+  .nodeWall{ fill:var(--autoliv-dark); }
+
+  .label{
+    fill:#fff;
+    font-weight:600;
+    font-size:12px;
+    pointer-events:none;
+  }
+  .labelDark{
+    fill:#0b1220;
+    font-weight:700;
+  }
+
+  /* Status bar */
+  #status{
+    height:30px;
+    border-top:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 10px;
+    box-sizing:border-box;
+    background:#fff;
+    font-family:Consolas, Menlo, Monaco, monospace;
+    font-size:12px;
+  }
+  #status .ok{ color:var(--ok); }
+  #status .bad{ color:var(--danger); }
+  #status .muted{ color:var(--muted); }
+
+  /* Popup inspector (draggable + editable form) */
+  #popup{
+    position:absolute;
+    top:90px;
+    left:90px;
+    width:520px;
+    height:560px;
+    background:#fff;
+    border:2px solid var(--autoliv-blue);
+    box-shadow:0 10px 30px rgba(0,0,0,0.22);
+    display:none;
+    z-index:1000;
+  }
+  #popupHeader{
+    height:42px;
+    background:var(--autoliv-blue);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 10px;
+    box-sizing:border-box;
+    cursor:move;
+    user-select:none;
+    font-weight:600;
+  }
+  #popupBody{
+    height:calc(100% - 42px - 50px);
+    overflow:auto;
+    padding:10px;
+    box-sizing:border-box;
+    background:#fff;
+  }
+  #popupFooter{
+    height:50px;
+    border-top:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 10px;
+    box-sizing:border-box;
+    background:#fafafa;
+  }
+  .xbtn{
+    background:#fff;
+    color:var(--autoliv-blue);
+    border:none;
+    border-radius:4px;
+    padding:6px 10px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  .smallBtn{
+    background:var(--autoliv-blue);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    padding:8px 10px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .smallBtn.secondary{
+    background:#fff;
+    color:var(--autoliv-blue);
+    border:1px solid rgba(0,84,149,0.35);
+  }
+  .smallBtn:hover{ filter:brightness(0.95); }
+
+  /* Inspector form */
+  .insGroup{
+    border:1px solid #eee;
+    border-radius:8px;
+    margin:8px 0;
+    overflow:hidden;
+  }
+  .insGroupHeader{
+    background:#f6f8fb;
+    padding:8px 10px;
+    font-weight:700;
+    color:#213547;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .insGroupBody{
+    padding:8px 10px;
+    display:block;
+  }
+  .row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin:6px 0;
+  }
+  .row .key{
+    width:180px;
+    font-weight:700;
+    color:#1f3b5c;
+    word-break:break-word;
+  }
+  .row .val{
+    flex:1;
+    min-width:0;
+  }
+  .row input, .row select, .row textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:7px 8px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:inherit;
+    font-size:13px;
+  }
+  .row textarea{ min-height:60px; resize:vertical; }
+  .pill{
+    font-size:11px;
+    padding:2px 6px;
+    border-radius:999px;
+    border:1px solid #e3e3e3;
+    color:#444;
+    background:#fff;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="header">
+  <div id="brandLeft">
+    <img id="logo" src="Autoliv.png" alt="Autoliv" />
+    <div id="title">Inflator Model Viewer</div>
+  </div>
+  <div id="tagline">More Lives Saved – More Life Lived</div>
+</div>
+
+<div id="toolbar">
+  <button class="btn" onclick="selectFile()">Open JSON File</button>
+  <button class="btn secondary" onclick="expandAll()">Expand All</button>
+  <button class="btn secondary" onclick="collapseAll()">Collapse All</button>
+
+  <div class="spacer"></div>
+<button class="btn" onclick="addChamberUI()">+ Chamber</button>
+<button class="btn" onclick="addOrificeUI()">+ Orifice</button>
+
+
+  <div class="field">
+    <span>Search:</span>
+    <input id="searchBox" placeholder="key / value..." oninput="renderTree()" />
+  </div>
+</div>
+
+<div id="main">
+  <div id="left">
+    <div id="tabs">
+      <div class="tab active" id="tabTree" onclick="setTab('tree')">Tree</div>
+      <div class="tab" id="tabCode" onclick="setTab('code')">Code</div>
+    </div>
+    <div id="treePane"></div>
+    <div id="codePane" style="display:none;"><pre id="codePre"></pre></div>
+  </div>
+
+  <div id="right">
+    <div id="vizHeader">
+      <div class="h">Assembly Flow</div>
+      <div class="hint">Double‑click any node to inspect & edit</div>
+    </div>
+    <div id="vizWrap">
+      <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#6b7280"></path>
+          </marker>
+        </defs>
+        <g id="edges"></g>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div id="status">
+  <div id="statusLeft" class="muted">Ready.</div>
+  <div id="statusRight" class="ok">OK</div>
+</div>
+
+<!-- Draggable inspector -->
+<div id="popup">
+  <div id="popupHeader">
+    <div id="popupTitle">Inspector</div>
+    <button class="xbtn" onclick="closePopup()">X</button>
+  </div>
+  <div id="popupBody"></div>
+  <div id="popupFooter">
+    <span id="popupInfo" class="muted">Edits update the in‑memory model.</span>
+    <div style="display:flex; gap:8px;">
+      <button class="smallBtn secondary" onclick="revertPopup()">Revert</button>
+      <button class="smallBtn" onclick="applyPopup()">Apply</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+/* ============================================================
+   EXISTING STATE (keep yours, just ADD below simNodes)
+============================================================ */
+
+let simNodes = [];
+let simEdges = [];
+
+// ✅ ADDED (dragging state)
+let draggedNodeId = null;
+let fixedPositions = {};
+
+
+/* ============================================================
+   MODIFY buildGraph (REPLACE ONLY node creation lines)
+============================================================ */
+
+// --- change chamber creation ---
+for (let i=0;i<assembly.chambers.length;i++){
+  let id = "c"+(i+1);
+
+  simNodes.push({
+    id,
+    type:"chamber",
+    label:"Ch "+(i+1),
+    x: fixedPositions[id]?.x ?? (150 + i*180),
+    y: fixedPositions[id]?.y ?? (260 + (i%2)*40),
+    data:assembly.chambers[i]
+  });
+}
+
+
+// --- change orifice creation ---
+const oid = "o"+(i+1);
+
+simNodes.push({
+  id:oid,
+  type:"orifice",
+  label:"Orf "+(i+1),
+  x: fixedPositions[oid]?.x ?? midX,
+  y: fixedPositions[oid]?.y ?? midY,
+  data:o
+});
+
+
+/* ============================================================
+   MODIFY drawSvg (ADD at end of function)
+============================================================ */
+
+function drawSvg(){
+  clearSvg();
+
+  // ... your existing edge + node drawing code ...
+
+  // ✅ KEEP your dblclick inspector handler
+
+  simNodes.forEach(n=>{
+    const el = document.getElementById("node_"+n.id);
+    if (!el) return;
+
+    el.addEventListener("dblclick", (evt)=>{
+      evt.preventDefault();
+      evt.stopPropagation();
+      openPopup(n);
+    });
+  });
+
+  // ✅ ADD THIS LINE
+  enableNodeDragging();
+}
+
+
+/* ============================================================
+   NEW: DRAGGING SYSTEM (ADD THIS WHOLE BLOCK)
+============================================================ */
+
+function enableNodeDragging(){
+
+  const svg = document.getElementById("svg");
+
+  // mouse down on node
+  svg.querySelectorAll("[id^='node_']").forEach(el=>{
+    el.onmousedown = (e)=>{
+      draggedNodeId = el.id.replace("node_","");
+      e.stopPropagation();
+    };
+  });
+
+  // move
+  svg.onmousemove = (e)=>{
+    if(!draggedNodeId) return;
+
+    let pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+
+    let cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
+
+    let node = simNodes.find(n=>n.id === draggedNodeId);
+
+    if(node){
+      node.x = cursor.x;
+      node.y = cursor.y;
+
+      // ✅ persist position
+      fixedPositions[node.id] = {
+        x: node.x,
+        y: node.y
+      };
+
+      drawSvg();
+    }
+  };
+
+  // release
+  window.onmouseup = ()=>{
+    draggedNodeId = null;
+  };
+}
+
+
+/* ============================================================
+   OPTIONAL (HIGHLY RECOMMENDED)
+   Prevent force layout from overriding manual placement
+============================================================ */
+
+function runForceLayout(iter){
+
+  const kRepel = 4800;
+  const kSpring = 0.02;
+  const springLen = 150;
+  const damp = 0.85;
+
+  for (const n of simNodes){
+    n.vx = 0;
+    n.vy = 0;
+  }
+
+  for (let t=0;t<iter;t++){
+
+    for (let i=0;i<simNodes.length;i++){
+      for (let j=i+1;j<simNodes.length;j++){
+        const a = simNodes[i], b = simNodes[j];
+
+        // ✅ DON'T move nodes user placed
+        if(fixedPositions[a.id] && fixedPositions[b.id]) continue;
+
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d2 = dx*dx + dy*dy + 0.01;
+
+        const f = kRepel / d2;
+
+        a.vx += f * dx;
+        a.vy += f * dy;
+        b.vx -= f * dx;
+        b.vy -= f * dy;
+      }
+    }
+
+    for (const n of simNodes){
+
+      // ✅ skip fixed nodes
+      if(fixedPositions[n.id]) continue;
+
+      n.vx *= damp;
+      n.vy *= damp;
+
+      n.x += n.vx * 0.0012;
+      n.y += n.vy * 0.0012;
+
+      n.x = Math.max(60, Math.min(940, n.x));
+      n.y = Math.max(60, Math.min(640, n.y));
+    }
+  }
+}
+
+</script>
+
+
+</body>
+</html>
