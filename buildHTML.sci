@@ -1,46 +1,80 @@
 function out = buildHTML(html_dir)
-    main = fullfile(html_dir,"index.html");
-    html = mgetl(main);
-    
-    //Import style information from CSS
-    CSS = mgetl(fullfile(html_dir, "styles", "main.css"));
-    
-    //Find the line that calls out the style file
-    ind = grep(html, "styles/main.css");
-    //Replace the line with the style information
-    html = cat(1, html(1:ind-1), "<style>", CSS, "</style>", html(ind+1:$));
-    
-    //Find index where the <body> starts in the index file
-    ind_start = grep(html, "<body>");
-    //Find the index wher the </body> stops
-    ind_stop = grep(html, "</body>");
-    
-    //Load all of the components
+    // Build one self-contained HTML document for the Scilab JCEF browser.
+    // Development files are kept modular in:
+    //   index.html
+    //   styles/main.css
+    //   components/*.html
+    //   js/*.js
+    // Runtime output is written to:
+    //   dist/bundle.html
+
+    main_file = fullfile(html_dir, "index.html");
+    dist_dir = fullfile(html_dir, "dist");
+    bundle_file = fullfile(dist_dir, "bundle.html");
+
+    html = mgetl(main_file);
+
+    // ------------------------------------------------------------
+    // Inline CSS
+    // ------------------------------------------------------------
+    css_file = fullfile(html_dir, "styles", "main.css");
+    css = mgetl(css_file);
+    css_block = cat(1, "<style>", css, "</style>");
+
+    ind_css = grep(html, "styles/main.css");
+    if ind_css <> [] then
+        html = cat(1, html(1:ind_css-1), css_block, html(ind_css+1:$));
+    end
+
+    // ------------------------------------------------------------
+    // Load components in filename order.
+    // listfiles may return reverse order, so flipdim is used.
+    // Prefix component filenames with 01_, 02_, etc. to control order.
+    // ------------------------------------------------------------
     components = [];
-    component_files = listfiles(html_dir + "/components/*.html");
+    component_files = listfiles(fullfile(html_dir, "components", "*.html"));
     component_files = flipdim(component_files, 1);
-    
-    for i=1:1:size(component_files,"*")
+
+    for i = 1:1:size(component_files, "*")
         components = cat(1, components, mgetl(component_files(i)));
     end
-    
-    //Load all of the Java files
-    java = []
-    java_files = listfiles(html_dir + "/js/*.js");
+
+    // ------------------------------------------------------------
+    // Load JavaScript in filename order.
+    // Prefix JS filenames with 01_, 02_, etc. to control dependency order.
+    // ------------------------------------------------------------
+    java = [];
+    java_files = listfiles(fullfile(html_dir, "js", "*.js"));
     java_files = flipdim(java_files, 1);
-    
-    for i=1:1:size(java_files,"*")
+
+    for i = 1:1:size(java_files, "*")
         java = cat(1, java, mgetl(java_files(i)));
     end
-    
+
+    script_block = cat(1, "<script>", java, "</script>");
+
+    // ------------------------------------------------------------
+    // Replace index body contents with components + scripts.
+    // This follows the hybrid HTML handling convention.
+    // ------------------------------------------------------------
+    ind_start = grep(html, "<body>");
+    ind_stop  = grep(html, "</body>");
+
+    if ind_start == [] then
+        error("buildHTML: index.html missing <body> line");
+    end
+
+    if ind_stop == [] then
+        error("buildHTML: index.html missing </body> line");
+    end
+
     html = cat(1, ...
-               html(1:ind_start), ...
-               components, ...
-               "<script>", ...
-               java, ...
-               "</script>", ...
-               html(ind_stop:$));
-    
-    csvWrite(html, fullfile(html_dir, "dist",  "bundle.html"));
+        html(1:ind_start), ...
+        components, ...
+        script_block, ...
+        html(ind_stop:$));
+
+    // Write output. The dist directory is included in the project structure.
+    mputl(html, bundle_file);
     out = html;
 endfunction

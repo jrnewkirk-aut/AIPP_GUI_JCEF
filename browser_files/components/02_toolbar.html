@@ -1,0 +1,12 @@
+<div id="toolbar">
+  <button class="btn" onclick="selectFile()">Open JSON File</button>
+  <button class="btn secondary" onclick="expandAll()">Expand All</button>
+  <button class="btn secondary" onclick="collapseAll()">Collapse All</button>
+
+  <div class="spacer"></div>
+
+  <div class="field">
+    <span>Search:</span>
+    <input id="searchBox" placeholder="key / value..." oninput="renderTree()" />
+  </div>
+</div>

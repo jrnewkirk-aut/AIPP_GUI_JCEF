@@ -1,0 +1,28 @@
+<div id="main">
+  <div id="left">
+    <div id="tabs">
+      <div class="tab active" id="tabTree" onclick="setTab('tree')">Tree</div>
+      <div class="tab" id="tabCode" onclick="setTab('code')">Code</div>
+    </div>
+    <div id="treePane"></div>
+    <div id="codePane" style="display:none;"><pre id="codePre"></pre></div>
+  </div>
+
+  <div id="right">
+    <div id="vizHeader">
+      <div class="h">Assembly Flow</div>
+      <div class="hint">Double‑click any node to inspect & edit</div>
+    </div>
+    <div id="vizWrap">
+      <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#6b7280"></path>
+          </marker>
+        </defs>
+        <g id="edges"></g>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+  </div>
+</div>
