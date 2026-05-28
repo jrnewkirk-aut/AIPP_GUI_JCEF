@@ -1,1 +1,0 @@
-window.onload=function(){renderTree();updateCodeTextFromModel();attachCodeEditorHandlers();initFlowZoomControls();initPopupDrag();setStatus("Ready. Click Open JSON File.",true);window.toScilab("loaded");};

@@ -412,3 +412,138 @@
   }
 
 #codePane{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}#codeToolbar{min-height:42px;display:flex;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--line);background:#fafafa}#codeEditor{flex:1;width:100%;resize:none;border:0;outline:0;padding:10px;background:#0f1720;color:#e6edf3;font-family:Consolas,Menlo,Monaco,monospace;font-size:12px;line-height:1.5}.treePrimitiveRow{display:flex;gap:6px;flex-wrap:wrap}.edgeWall{stroke:#8a8a8a;stroke-dasharray:5 3}.smartSelect,.smartInput{width:100%;box-sizing:border-box;padding:7px 8px;border:1px solid var(--line);border-radius:4px;font-family:inherit;font-size:13px;background:#fff}.smartSelect{border-color:#005495;background:#f7fbff}.smartGroupBadge{font-size:11px;padding:2px 6px;border-radius:999px;border:1px solid rgba(0,84,149,.25);color:#005495;background:#eaf4ff}.smartInlinePair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}.smartInlinePair .row{margin:0;display:grid;grid-template-columns:70px 1fr;gap:8px}.smartTable{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}.smartTable th{background:#f6f8fb;color:#005495;text-align:left;font-weight:700;border:1px solid var(--line);padding:5px 6px}.smartTable td{border:1px solid var(--line);padding:4px 5px}.smartTable input{width:100%;box-sizing:border-box;border:1px solid #e3e3e3;border-radius:3px;padding:5px 6px}.smartTableTools{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.smartMiniBtn{background:#fff;color:#005495;border:1px solid rgba(0,84,149,.35);border-radius:4px;padding:6px 8px;font-weight:700;cursor:pointer;font-size:12px}.sumOk{color:#14a01e;font-weight:700}.sumWarn{color:#f3b100;font-weight:700}.sumBad{color:#ff0000;font-weight:700}.initFieldList{font-size:11px;color:var(--muted);padding:6px 8px;background:#f7fbff;border:1px solid rgba(0,84,149,.15);border-radius:4px;margin-top:6px}.flowZoomControls{position:absolute;right:14px;top:14px;display:flex;gap:6px;z-index:5;background:rgba(255,255,255,.94);border:1px solid #d0d0d0;border-radius:6px;padding:6px}.flowZoomControls button{font-family:Arial,sans-serif;font-weight:700;color:#005495;background:#fff;border:1px solid #d0d0d0;border-radius:4px;padding:4px 8px;cursor:pointer}.flowZoomHint{font-family:Arial,sans-serif;font-size:11px;color:#005495;align-self:center;padding:0 4px}.chamberCard{fill:#fff;stroke:#005495;stroke-width:3}.chamberTitleBand{fill:#005495}.chamberTitle{fill:#fff;font-family:Arial,sans-serif;font-weight:700;font-size:14px}.chamberVolumeBadge{fill:#009fe3;stroke:#005495;stroke-width:1.5}.chamberPanel{fill:#ededed;stroke:#d0d0d0;stroke-width:1.5}.chamberInfoText{fill:#005495;font-family:Arial,sans-serif;font-size:11px}.chamberInfoHeader{fill:#005495;font-family:Arial,sans-serif;font-size:12px;font-weight:700}.chamberBadgeText{fill:#001669;font-family:Arial,sans-serif;font-size:12px;font-weight:700}#popupHeader,#popupTitle{cursor:move;user-select:none}#popup{resize:both;overflow:auto}
+
+/* Cytoscape prototype toggle and container */
+#vizHeader{
+  gap:10px;
+}
+
+.vizHeaderTools{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-left:auto;
+  min-width:0;
+}
+
+.graphEngineToggle{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.graphEngineLabel{
+  font-weight:700;
+  color:#005495;
+  font-size:12px;
+}
+
+#graphEngineStatus{
+  font-size:11px;
+  white-space:nowrap;
+}
+
+#cyGraph{
+  position:absolute;
+  inset:0;
+  background:#fff;
+  display:none;
+  z-index:3;
+  overflow:hidden;
+  cursor:grab;
+}
+#cyGraph:active{cursor:grabbing;}
+#cyGraph .cyMissing{
+  padding:16px;
+  color:#005495;
+  font-family:Arial,sans-serif;
+  font-size:13px;
+}
+#cyChamberOverlayLayer{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  pointer-events:none;
+}
+.cyChamberCardOverlay{
+  position:absolute;
+  box-sizing:border-box;
+  border:3px solid #005495;
+  border-radius:9px;
+  background:#fff;
+  color:#001669;
+  font-family:Arial,sans-serif;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:9px 12px;
+  overflow:hidden;
+  text-align:center;
+}
+.cyChamberTitle{
+  font-weight:800;
+  font-size:13px;
+  line-height:1.15;
+  color:#005495;
+  margin-bottom:5px;
+}
+.cyChamberVolume{
+  font-weight:700;
+  font-size:12px;
+  line-height:1.2;
+  color:#001669;
+  margin-bottom:5px;
+  white-space:nowrap;
+}
+.cyChamberSection{
+  width:100%;
+  display:grid;
+  grid-template-columns:44px 1fr;
+  column-gap:5px;
+  align-items:start;
+  font-size:11px;
+  line-height:1.2;
+  margin-top:2px;
+  text-align:left;
+}
+.cySectionTitle{
+  color:#005495;
+  font-weight:800;
+}
+.cySectionValue{
+  color:#001669;
+  font-weight:700;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#graphEngineStatus{
+  font-size:11px;
+  white-space:nowrap;
+}
+
+
+/* Cytoscape-only layout v4 refinements */
+#vizHeader{gap:10px;}
+.vizHeaderTools{display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0;}
+.cyLayoutControls{display:inline-flex;align-items:center;gap:6px;}
+.cyMiniBtn{padding:5px 8px !important;font-size:11px !important;line-height:1.1;}
+#cyGraph{position:absolute;inset:0;background:#fff;display:block;z-index:3;overflow:hidden;cursor:grab;}
+#cyGraph:active{cursor:grabbing;}
+#cyGraph .cyMissing{padding:16px;color:#005495;font-family:Arial,sans-serif;font-size:13px;}
+#cyChamberOverlayLayer{position:absolute;inset:0;z-index:10;pointer-events:none;}
+.cyChamberCardOverlay{position:absolute;box-sizing:border-box;border:3px solid #005495;border-radius:10px;background:#fff;color:#001669;font-family:Arial,sans-serif;box-shadow:0 1px 2px rgba(0,0,0,.08);pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 10px;overflow:hidden;text-align:center;}
+.cyChamberTitle{font-weight:800;font-size:14px;line-height:1.15;color:#005495;margin-bottom:4px;}
+.cyChamberVolume{font-weight:800;font-size:11px;line-height:1.2;color:#001669;margin-bottom:4px;white-space:nowrap;}
+.cyChamberSection{width:100%;display:grid;grid-template-columns:48px 1fr;column-gap:5px;align-items:start;font-size:11px;line-height:1.2;margin-top:2px;text-align:left;}
+.cySectionTitle{color:#005495;font-weight:900;}.cySectionValue{color:#001669;font-weight:800;overflow:hidden;text-overflow:ellipsis;}
+
+
+/* Cytoscape zoom/size v5 patch */
+.cyChamberCardOverlay{border-width:3px;border-radius:10px;padding:8px 10px;}
+.cyChamberTitle{font-size:14px;margin-bottom:4px;}
+.cyChamberVolume{font-size:11px;margin-bottom:4px;}
+.cyChamberSection{grid-template-columns:48px 1fr;font-size:11px;}

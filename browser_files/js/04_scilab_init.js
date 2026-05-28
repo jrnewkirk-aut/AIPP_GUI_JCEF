@@ -1,1 +1,2 @@
 function fromScilab(msg){try{const o=JSON.parse(msg);if(o.type==="json_ascii"){fullJson=JSON.parse(asciiToString(o.data));refreshAllViews();setStatus("JSON loaded successfully.",true);}else if(o.type==="csv_ascii")applyCdCsvText(asciiToString(o.data));else setStatus("Unknown message type: "+o.type,false);}catch(e){setStatus("Failed to parse message: "+e.message,false);}}
+window.onload=function(){renderTree();updateCodeTextFromModel();attachCodeEditorHandlers();initFlowZoomControls();initPopupDrag();setStatus("Ready. Click Open JSON File.",true);window.toScilab("loaded");};
