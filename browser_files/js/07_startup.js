@@ -1,0 +1,1 @@
+window.onload=function(){renderTree();updateCodeTextFromModel();attachCodeEditorHandlers();initPopupDrag();requestPyroList();renderCytoscapePrototype();setStatus("Ready. Click Open JSON File.",true);if(window.toScilab)window.toScilab("loaded");};

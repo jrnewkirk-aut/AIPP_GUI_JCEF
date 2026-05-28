@@ -133,6 +133,18 @@ function browserCallback(data, cb)
         jsonOut = toJSON(response);
         set(browser, "data", jsonOut);
         cb(jsonOut);
+    case "request_pyrolist" then
+        pyrofile = fullfile(pwd(), "aipp_files", "pyrolist.json");
+        response = struct();
+        if isfile(pyrofile) then
+            lines = mgetl(pyrofile); txt = strcat(lines, ascii(10)); txt = strsubst(txt, ascii(13), "");
+            asciiData = asciimat(txt); if size(asciiData, 1) > 1 then asciiData = asciiData'; end
+            response.type = "pyrolist_ascii"; response.data = asciiData;
+        else
+            response.type = "pyrolist_error"; response.message = "Could not find " + pyrofile;
+        end
+        jsonOut = toJSON(response); set(browser, "data", jsonOut); cb(jsonOut);
+
     else
         disp("Unknown type");
         disp(msg.type);
