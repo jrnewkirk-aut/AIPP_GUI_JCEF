@@ -1754,6 +1754,42 @@
 <li>Insert orifice, if added later, remaps filter <code>orifices</code> arrays and <code>O#</code> event strings</li>
 <li>Insert wall, if added later, remaps wall connection <code>wall_index</code> values</li>
 </ul>
+<h2 id="flow-chart-visualization">Flow Chart Visualization</h2>
+<p>This section is intended to dictate how the entities should appear in the flow chart and what items should be displayed in the entity box for ease of use.</p>
+<h3 id="chambers">Chambers</h3>
+<p>Each chamber entity should be a rectangle with rounded edges include the following text in order:</p>
+<ul>
+<li>&quot;Chamber &quot; + the chamber index</li>
+<li>If a label exists, add the label. If the label is blank just put &quot;-&quot;</li>
+<li>Add the initializiation type
+<ul>
+<li>show the required inputs for that initialization type in a table like format with values and units</li>
+</ul>
+</li>
+<li>show all the pyros in the chamber. If there are no pyros, do not add any verbiage
+<ul>
+<li>each pyro should show the following:
+<ul>
+<li>formulation - shape - quantity
+<ul>
+<li>if the quantity is a mass show the value and the units</li>
+<li>if the quantity is a shape just put and x and then the quantity</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>show all filters in the chamber. If there are no filters, do not add any verbiage.
+<ul>
+<li>Each filter should show the following:
+<ul>
+<li>material - weight - method:coefficient</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
             
             <script async type="text/javascript">

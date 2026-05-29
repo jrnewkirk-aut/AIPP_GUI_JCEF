@@ -1572,3 +1572,25 @@ The dependency scanner must be tested with these cases:
 - Insert chamber does not change wall indices
 - Insert orifice, if added later, remaps filter `orifices` arrays and `O#` event strings
 - Insert wall, if added later, remaps wall connection `wall_index` values
+
+## Flow Chart Visualization
+
+This section is intended to dictate how the entities should appear in the flow chart and what items should be displayed in the entity box for ease of use.
+
+
+### Chambers
+
+Each chamber entity should be a rectangle with rounded edges include the following text in order:
+
+- "Chamber " + the chamber index
+- If a label exists, add the label. If the label is blank just put "-"
+- Add the initializiation type
+  - show the required inputs for that initialization type in a table like format with values and units
+- show all the pyros in the chamber. If there are no pyros, do not add any verbiage
+  - each pyro should show the following:
+    - formulation - shape - quantity
+      - if the quantity is a mass show the value and the units
+      - if the quantity is a shape just put and x and then the quantity
+- show all filters in the chamber. If there are no filters, do not add any verbiage.
+  - Each filter should show the following:
+    - material - weight - method:coefficient
