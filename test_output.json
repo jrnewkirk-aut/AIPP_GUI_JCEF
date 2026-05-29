@@ -42,7 +42,7 @@
       "operating_temperature": "294.15 K",
       "chambers": [
         {
-          "label": "Initiator_______________________________",
+          "label": "Initiator",
           "init_type": "PVT",
           "volume": "1500 mm^3",
           "temperature": "294.15 K",
