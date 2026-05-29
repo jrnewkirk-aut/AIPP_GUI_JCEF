@@ -10,6 +10,27 @@ exec("buildHTML.sci", -1);
 
 global browser;
 
+
+function trackVersions()
+    //Read latest bundled version
+    new = mgetl(fullpath("./browser_files/dist/bundle.html"));
+    //Find the most recent version in saved_bundles
+    bundles = listfiles(fullpath("./saved_bundles" + "/*.html"));
+    filenames = fileparts(bundles, "fname")
+    versions = strtod(strsubst(filenames, "v", ""));
+    ind = find(max(versions))
+    //Read in the latest version
+    old = mgetl(bundles(ind));
+    check = string(unique(new == old))
+ 
+    if grep(check, "F") ~= [] then
+       new_version = max(versions) + 1;
+       copyfile(fullpath("./browser_files/dist/bundle.html"), ...
+                fullpath("./saved_bundles/") + ...
+                msprintf("v%i.html", new_version));
+    end
+endfunction
+
 // ===============================
 // GUI
 // ===============================
@@ -28,6 +49,7 @@ frame = uicontrol(f, ...
 
 html_dir = fullfile(pwd(), "browser_files");
 buildHTML(html_dir);
+trackVersions()
 
 browser = uicontrol(frame, ...
     "style", "browser", ...
@@ -152,4 +174,5 @@ function browserCallback(data, cb)
     end
 
 endfunction
+
 

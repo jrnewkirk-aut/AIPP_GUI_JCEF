@@ -47,6 +47,7 @@
                "volume": "1500 mm^3",
                "temperature": "294.15 K",
                "pressure": "101325 Pa",
+               "random_key": "so much stuff",
                "mol_fractions": {
                   "N2": 0.8,
                   "O2": 0.2
@@ -67,7 +68,7 @@
                      },
                      "burn_rate_modifications": {
                         "reference_burn_rate": "100.0 mm/s",
-                        "burn_rate_temperature_sensitivity": "0.000 1/K"
+                        "temperature_sensitivity": "0.000 1/K"
                      }
                   }
                ]
@@ -101,7 +102,7 @@
                      },
                      "burn_rate_modifications": {
                         "reference_burn_rate": "20.61 mm/s",
-                        "burn_rate_temperature_sensitivity": "0.00155 1/K"
+                        "temperature_sensitivity": "0.00155 1/K"
                      }
                   }
                ]
@@ -131,7 +132,8 @@
                   "material": "steel",
                   "method": "PERCENTAGE",
                   "coefficient": 0.41,
-                  "orifices": [4]
+                  "orifices": [4],
+                  "unknown_key": 1
                }
             },
             {
