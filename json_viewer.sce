@@ -9,6 +9,33 @@ cd(get_absolute_file_path());
 exec("buildHTML.sci", -1);
 
 global browser;
+global currentJsonPath;
+global currentJsonDir;
+currentJsonPath = "";
+currentJsonDir = pwd();
+
+// Helper: convert a numeric ASCII vector from browser JSON into a Scilab string.
+function txt = aippAsciiToText(a)
+    txt = "";
+    if size(a, "*") == 0 then
+        return;
+    end
+    // Browser sends row-vector-compatible JSON numeric array.
+    for k = 1:size(a, "*")
+        txt = txt + ascii(a(k));
+    end
+endfunction
+
+
+// Helper: send a struct response to the browser using the existing JSON -> ASCII pattern.
+// If your launcher already has a send-to-browser helper, use that instead.
+function aippSendBrowserStruct(s, cb)
+    msgJson = toJSON(s);
+    // The existing GUI fromScilab handler expects JSON text, not ASCII, for simple status messages.
+    // If your launcher standardizes Scilab->browser as ASCII, wrap this in your existing helper.
+    set(browser, "data", msgJson);
+    cb(msgJson);
+endfunction
 
 
 function trackVersions()
@@ -166,6 +193,71 @@ function browserCallback(data, cb)
             response.type = "pyrolist_error"; response.message = "Could not find " + pyrofile;
         end
         jsonOut = toJSON(response); set(browser, "data", jsonOut); cb(jsonOut);
+    case "save_json_ascii" then
+         try
+            jsonText = aippAsciiToText(msg.data);
+        catch
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Unable to decode JSON ASCII payload from browser.";
+            aippSendBrowserStruct(r, cb);
+            return;
+        end
+    
+        startDir = currentJsonDir;
+        if startDir == "" then
+            startDir = pwd();
+        end
+    
+        // uiputfile starts in the directory passed as the directory argument.
+        // Use the same directory as the input JSON file.
+        try
+            [outName, outDir] = uiputfile(["*.json", "JSON files"], startDir, "Save updated AIPP JSON as");
+        catch
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "uiputfile failed while selecting output path.";
+            aippSendBrowserStruct(r, cb);
+            return;
+        end
+    
+        if outName == "" then
+            r = struct();
+            r.type = "save_json_cancelled";
+            r.message = "User cancelled save dialog.";
+            aippSendBrowserStruct(r, cb);
+            return;
+        end
+    
+        outPath = outDir + filesep() + outName;
+    
+        // Ensure .json extension when user omits it.
+        [p, n, ext] = fileparts(outPath);
+        if ext == "" then
+            outPath = outPath + ".json";
+        end
+    
+        try
+            // mputl writes a string vector. jsonText may contain line breaks, so split on LF.
+            jsonText = strsubst(jsonText, ascii(13), "");
+            lines = tokens(jsonText, ascii(10));
+            mputl(lines, outPath);
+        catch
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Failed to write selected JSON output file.";
+            aippSendBrowserStruct(r, cb);
+            return;
+        end
+    
+        // Update current directory so subsequent Save dialogs start from the most recent output location.
+        currentJsonPath = outPath;
+        currentJsonDir = p;
+    
+        r = struct();
+        r.type = "save_json_success";
+        r.path = strsubst(outPath, "\", "/");
+        aippSendBrowserStruct(r, cb);
 
     else
         disp("Unknown type");

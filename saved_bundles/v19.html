@@ -359,33 +359,21 @@ function applyRemovalFromPreview(){
 
   setTimeout(injectChamberCardCss,0);
 })();
-/* 12_flow_chart_overlay_sync_v2.js
-   Replacement for 12_flow_chart_overlay_sync_v1.js.
+/* 12_flow_chart_overlay_sync_v1.js
+   Temporary flow-chart overlay synchronization patch.
    Load after 11_flow_chart_chamber_cards_v1.js.
 
-   Root cause fixed:
-   - v1 referenced window.cyPrototype, but cyPrototype is declared with top-level `let` in the bundle.
-   - Top-level `let` variables are not properties of window, so v1 frequently saw no graph instance.
-   - This replacement uses the lexical cyPrototype variable used by the existing graph engine.
-
    Purpose:
-   - Keep HTML chamber detail cards aligned to Cytoscape chamber nodes during pan/zoom/fit/layout.
+   - Keep HTML chamber detail cards exactly aligned to the Cytoscape chamber node during pan/zoom/fit/layout.
    - Resize the detail card to match the rendered Cytoscape chamber rectangle.
-   - Remove stale overlay cards after graph rebuilds.
+   - Prevent stale/ghost overlay artifacts by updating on viewport changes and removing cards for missing nodes.
 */
 (function(){
-  if(window.__aippFlowChartOverlaySyncV2Applied) return;
-  window.__aippFlowChartOverlaySyncV2Applied = true;
+  if(window.__aippFlowChartOverlaySyncV1Applied) return;
+  window.__aippFlowChartOverlaySyncV1Applied = true;
 
   var overlaySyncRaf = null;
   var listenersInstalledFor = null;
-
-  function getCy(){
-    try{
-      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
-    }catch(e){}
-    return null;
-  }
 
   function requestOverlaySync(){
     if(overlaySyncRaf) cancelAnimationFrame(overlaySyncRaf);
@@ -393,13 +381,12 @@ function applyRemovalFromPreview(){
   }
 
   function installOverlaySyncListeners(){
-    var cy = getCy();
-    if(!cy || listenersInstalledFor === cy) return;
-    listenersInstalledFor = cy;
+    if(!window.cyPrototype || listenersInstalledFor === window.cyPrototype) return;
+    listenersInstalledFor = window.cyPrototype;
     try{
-      cy.on('pan zoom viewport resize render', requestOverlaySync);
-      cy.on('position drag free', 'node', requestOverlaySync);
-      cy.ready(function(){ requestOverlaySync(); });
+      window.cyPrototype.on('pan zoom viewport resize render', requestOverlaySync);
+      window.cyPrototype.on('position drag free', 'node', requestOverlaySync);
+      window.cyPrototype.ready(function(){ requestOverlaySync(); });
     }catch(e){
       try{ console.warn('AIPP overlay sync listener install failed', e); }catch(_e){}
     }
@@ -407,21 +394,21 @@ function applyRemovalFromPreview(){
 
   function syncOverlayToRenderedNodes(){
     overlaySyncRaf = null;
-    var cy = getCy();
-    if(!cy) return;
+    if(!window.cyPrototype) return;
     var layer = document.getElementById('cyChamberOverlayLayer');
     if(!layer) return;
 
+    // Remove stale cards if graph was rebuilt and an overlay remained for a missing node.
     var liveIds = {};
     try{
-      cy.nodes('[type="chamber"]').forEach(function(node){ liveIds['cyOverlay_'+node.id()] = true; });
+      window.cyPrototype.nodes('[type="chamber"]').forEach(function(node){ liveIds['cyOverlay_'+node.id()] = true; });
       layer.querySelectorAll('.cyChamberCardOverlay').forEach(function(card){
-        if(!liveIds[card.id] && card.parentNode) card.parentNode.removeChild(card);
+        if(!liveIds[card.id]) card.remove();
       });
     }catch(e){}
 
     try{
-      cy.nodes('[type="chamber"]').forEach(function(node){
+      window.cyPrototype.nodes('[type="chamber"]').forEach(function(node){
         var card = document.getElementById('cyOverlay_'+node.id());
         if(!card) return;
         var bb = node.renderedBoundingBox({includeLabels:false});
@@ -441,13 +428,19 @@ function applyRemovalFromPreview(){
     }
   }
 
+  // Override the global update hook used by the graph engine and wheel zoom code.
   window.updateCytoscapeOverlayPositions = syncOverlayToRenderedNodes;
 
   var originalSchedule = window.scheduleCytoscapeOverlayUpdate;
   window.scheduleCytoscapeOverlayUpdate = function(){
     installOverlaySyncListeners();
     requestOverlaySync();
-    // Do not call the older scheduler here; it can schedule the pre-v2 updater and fight the new sync.
+    if(typeof originalSchedule === 'function'){
+      // Do not call the older scheduler if it points back to this function, but allow unrelated side effects.
+      try{
+        if(originalSchedule !== window.scheduleCytoscapeOverlayUpdate) originalSchedule();
+      }catch(e){}
+    }
   };
 
   var originalBuild = window.buildCytoscapeChamberOverlays;
@@ -455,8 +448,6 @@ function applyRemovalFromPreview(){
     if(typeof originalBuild === 'function') originalBuild();
     installOverlaySyncListeners();
     requestOverlaySync();
-    setTimeout(requestOverlaySync, 0);
-    setTimeout(requestOverlaySync, 60);
   };
 
   var originalRender = window.renderCytoscapePrototype;
@@ -483,101 +474,8 @@ function applyRemovalFromPreview(){
     });
   };
 
+  // Defensive periodic cleanup for JCEF repaint edge cases after heavy pan/zoom.
   setTimeout(function(){ installOverlaySyncListeners(); requestOverlaySync(); }, 0);
-})();
-/* 13_save_json_to_local_file_v1.js
-   Temporary save-to-local-file patch.
-   Load after current GUI patches.
-
-   Browser role:
-   - Add a Save JSON button to the toolbar.
-   - Serialize the current in-memory JSON using the existing pretty stringifier when available.
-   - Send the JSON text to Scilab as an ASCII array inside a JSON message.
-
-   Scilab role:
-   - Receive type="save_json_ascii".
-   - Convert ASCII back to text.
-   - Prompt with uiputfile(), starting in the same directory as the JSON file that was opened.
-   - Write the selected file.
-   - Return save_json_success or save_json_error to the browser.
-*/
-(function(){
-  if(window.__aippSaveJsonLocalFileV1Applied) return;
-  window.__aippSaveJsonLocalFileV1Applied = true;
-
-  function stringToAsciiArray(s){
-    s = String(s == null ? '' : s);
-    var out = [];
-    for(var i=0;i<s.length;i++) out.push(s.charCodeAt(i));
-    return out;
-  }
-
-  function saveJsonToLocalFile(){
-    try{
-      if(typeof fullJson === 'undefined' || !fullJson){
-        setStatus('No JSON model is loaded to save.', false);
-        return;
-      }
-      if(typeof applyPopup === 'function'){
-        // Do not automatically apply popup edits here because applyPopup closes over the active popup
-        // workflow and may surprise the user. The save operation writes the current in-memory model.
-      }
-      var jsonText = (typeof stringifyAippJsonPretty === 'function') ? stringifyAippJsonPretty(fullJson) : JSON.stringify(fullJson, null, 2);
-      var msg = {
-        type: 'save_json_ascii',
-        data: stringToAsciiArray(jsonText),
-        suggested_name: 'aipp_input_updated.json'
-      };
-      toScilabMsg(msg);
-      setStatus('Save requested. Choose output file in Scilab dialog.', true);
-    }catch(e){
-      setStatus('Save request failed: '+e.message, false);
-    }
-  }
-
-  function ensureSaveButton(){
-    var toolbar = document.getElementById('toolbar');
-    if(!toolbar || document.getElementById('saveJsonBtn')) return;
-    var btn = document.createElement('button');
-    btn.id = 'saveJsonBtn';
-    btn.className = 'btn secondary';
-    btn.textContent = 'Save JSON';
-    btn.onclick = saveJsonToLocalFile;
-
-    // Place Save JSON immediately after Open JSON File when possible.
-    var buttons = toolbar.querySelectorAll('button');
-    if(buttons && buttons.length) buttons[0].insertAdjacentElement('afterend', btn);
-    else toolbar.insertBefore(btn, toolbar.firstChild);
-  }
-
-  var originalFromScilab = window.fromScilab;
-  window.fromScilab = function(msg){
-    try{
-      var o = (typeof msg === 'string') ? JSON.parse(msg) : msg;
-      if(o && o.type === 'save_json_success'){
-        setStatus('Saved JSON: '+(o.path || o.file || 'selected file'), true);
-        return;
-      }
-      if(o && o.type === 'save_json_error'){
-        setStatus('Save JSON failed: '+(o.message || 'unknown error'), false);
-        if(window.alert) window.alert('Save JSON failed: '+(o.message || 'unknown error'));
-        return;
-      }
-      if(o && o.type === 'save_json_cancelled'){
-        setStatus('Save JSON cancelled.', true);
-        return;
-      }
-    }catch(e){
-      // Fall through to original handler; some existing messages may not be plain JSON strings.
-    }
-    if(typeof originalFromScilab === 'function') return originalFromScilab(msg);
-  };
-
-  window.saveJsonToLocalFile = saveJsonToLocalFile;
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureSaveButton);
-  else ensureSaveButton();
-  setTimeout(ensureSaveButton, 0);
 })();
 </script>
 </body>

@@ -1,0 +1,313 @@
+{
+  "aipp_calculation": {
+    "header": {
+      "request_number": "N/A",
+      "title": "ADP-6 Demo",
+      "system": "ADP-6",
+      "part_number": "N/A",
+      "description": "A demonstration testcase for an ADP-6 inflator operating at ambiant (294.15 K)."
+    },
+    "auxiliary_files": {
+      "species_library": "auxiliary_files/species_library.json",
+      "pyro_formulations": "auxiliary_files/pyrolist.json",
+      "materials": "auxiliary_files/material_list.json"
+    },
+    "time_specs": {
+      "end_time": "150 ms",
+      "output_time_step": "0.1 ms",
+      "simulation_time_step": "1e-06 s",
+      "run_simulation": true,
+      "stepper": "RKF",
+      "RKF_config_file": "auxiliary_files/RKF_config.json"
+    },
+    "reaction_specs": {
+      "reactions_list": [
+        "H2_combustion"
+      ],
+      "reactions_method": {
+        "choice": "mass_action_arrhenius",
+        "options": [
+          "constant",
+          "mass_action",
+          "mass_action_arrhenius"
+        ]
+      },
+      "speed_scaling": 1,
+      "onoff_switch": false,
+      "enforce_LDB": true,
+      "reactions_file": "auxiliary_files/basic_reactions.json"
+    },
+    "assembly": {
+      "tank_id": 5,
+      "operating_temperature": "294.15 K",
+      "chambers": [
+        {
+          "label": "Initiator_______________________________",
+          "init_type": "PVT",
+          "volume": "1500 mm^3",
+          "temperature": "294.15 K",
+          "pressure": "101325 Pa",
+          "random_key": "so much stuff",
+          "mol_fractions": {
+            "N2": 0.8,
+            "O2": 0.2
+          },
+          "pyro": [
+            {
+              "formulation": "PIP1226K_20250528",
+              "mass": "0.48 g",
+              "piles": 1,
+              "flame_spread_time": "0.0 ms",
+              "ignition_time": {
+                "triggering_event": "SimStart",
+                "time_delay": "0.0001 s"
+              },
+              "shape": {
+                "geometry": "sphere",
+                "radius": "0.05 mm"
+              },
+              "burn_rate_modifications": {
+                "reference_burn_rate": "100.0 mm/s",
+                "temperature_sensitivity": "0.000 1/K"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Combustion_______________________________",
+          "init_type": "PVT",
+          "pressure": "101325 Pa",
+          "volume": "40000 mm^3",
+          "temperature": "294.15 K",
+          "mol_fractions": {
+            "N2": 0.8,
+            "O2": 0.2
+          },
+          "pyro": [
+            {
+              "formulation": "MNP358B1Production_20250528",
+              "mass": "39.5 g",
+              "piles": 1,
+              "flame_spread_time": "0.0 ms",
+              "ignition_time": {
+                "triggering_event": "SimStart",
+                "time_delay": "0.001 s"
+              },
+              "shape": {
+                "geometry": "tablet",
+                "total_height": "2.2 mm",
+                "diameter": "5.7 mm",
+                "dome_height": "0.08 mm"
+              },
+              "burn_rate_modifications": {
+                "reference_burn_rate": "20.61 mm/s",
+                "temperature_sensitivity": "0.00155 1/K"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Internal filter_______________________________",
+          "init_type": "PVT",
+          "pressure": "101325 Pa",
+          "volume": "2500 mm^3",
+          "temperature": "294.15 K",
+          "mol_fractions": {
+            "N2": 1
+          }
+        },
+        {
+          "label": "Diffuser_______________________________",
+          "init_type": "PVT",
+          "volume": "11700 mm^3",
+          "temperature": "294.15 K",
+          "pressure": "101325 Pa",
+          "mol_fractions": {
+            "N2": 1
+          },
+          "filter": {
+            "mass": "27.5 g",
+            "material": "steel",
+            "method": "PERCENTAGE",
+            "coefficient": 0.41,
+            "orifices": [
+              4
+            ],
+            "unknown_key": 1
+          }
+        },
+        {
+          "label": "Tank_______________________________",
+          "init_type": "PVT",
+          "pressure": "101325 Pa",
+          "volume": "60.00 L",
+          "temperature": "294.15 K",
+          "mol_fractions": {
+            "N2": 1
+          }
+        }
+      ],
+      "orifices": [
+        {
+          "label": "initiator to combustion___________________________",
+          "diameter": "1.7 mm",
+          "num_orif": 4,
+          "discharge_coefficient": {
+            "basis": "constant",
+            "Cd_value": 1
+          },
+          "from": 1,
+          "to": 2,
+          "viscous_flow_factor": 1,
+          "opens_at": "20 MPa",
+          "open": false,
+          "one_way": false
+        },
+        {
+          "label": "combustion to internal filter___________________________",
+          "diameter": "7.2 mm",
+          "num_orif": 1,
+          "discharge_coefficient": {
+            "basis": "constant",
+            "Cd_value": 1
+          },
+          "from": 2,
+          "to": 3,
+          "viscous_flow_factor": 1,
+          "opens_at": "22 MPa",
+          "open": false,
+          "one_way": false
+        },
+        {
+          "label": "internal filter to diffuser___________________________",
+          "diameter": "9.15 mm",
+          "num_orif": 1,
+          "discharge_coefficient": {
+            "basis": "time",
+            "time_units": "s",
+            "time_array": [
+              0,
+              0.02,
+              0.03,
+              0.04,
+              0.08,
+              0.2
+            ],
+            "Cd_array": [
+              1,
+              0.74,
+              0.62,
+              0.55,
+              0.48,
+              0.48
+            ],
+            "continuity": "interpolate"
+          },
+          "from": 3,
+          "to": 4,
+          "viscous_flow_factor": 1,
+          "opens_at": "0.1 MPa",
+          "open": true,
+          "one_way": false
+        },
+        {
+          "label": "diffuser to tank___________________________",
+          "diameter": "4.15 mm",
+          "num_orif": 14,
+          "discharge_coefficient": {
+            "basis": "constant",
+            "Cd_value": 0.63
+          },
+          "from": 4,
+          "to": 5,
+          "viscous_flow_factor": 1,
+          "opens_at": "0.1 MPa",
+          "open": true,
+          "one_way": false
+        }
+      ],
+      "walls": [
+        {
+          "label": "wall initiator___________________________",
+          "area": "1585 mm^2",
+          "thickness": "1.00 mm",
+          "material": "steel",
+          "temperature": "294.15 K",
+          "left_connection": {
+            "type": "VARIABLE_COEFFICIENT",
+            "chamber_index": 1,
+            "scale_factor": 5
+          },
+          "right_connection": {
+            "type": "CONSTANT_HEAT",
+            "heat": "0.0 W"
+          }
+        },
+        {
+          "label": "wall combustion___________________________",
+          "area": "14142 mm^2",
+          "thickness": "1.50 mm",
+          "material": "steel",
+          "temperature": "294.15 K",
+          "left_connection": {
+            "type": "VARIABLE_COEFFICIENT",
+            "chamber_index": 2,
+            "scale_factor": 5
+          },
+          "right_connection": {
+            "type": "CONSTANT_HEAT",
+            "heat": "0.0 W"
+          }
+        },
+        {
+          "label": "wall internal filter___________________________",
+          "area": "2227 mm^2",
+          "thickness": "1.80 mm",
+          "material": "steel",
+          "temperature": "294.15 K",
+          "left_connection": {
+            "type": "VARIABLE_COEFFICIENT",
+            "chamber_index": 3,
+            "scale_factor": 5
+          },
+          "right_connection": {
+            "type": "CONSTANT_HEAT",
+            "heat": "0.0 W"
+          }
+        },
+        {
+          "label": "wall diffuser___________________________",
+          "area": "6230 mm^2",
+          "thickness": "1.80 mm",
+          "material": "steel",
+          "temperature": "294.15 K",
+          "left_connection": {
+            "type": "VARIABLE_COEFFICIENT",
+            "chamber_index": 4,
+            "scale_factor": 5
+          },
+          "right_connection": {
+            "type": "CONSTANT_HEAT",
+            "heat": "0.0 W"
+          }
+        },
+        {
+          "label": "wall tank___________________________",
+          "area": "18529.26958842049 cm^2",
+          "thickness": "10.00 mm",
+          "material": "steel",
+          "temperature": "294.15 K",
+          "left_connection": {
+            "type": "CONSTANT_COEFFICIENT",
+            "chamber_index": 5,
+            "heat_transfer_coefficient": "50.0 W/(m^2 K)"
+          },
+          "right_connection": {
+            "type": "CONSTANT_HEAT",
+            "heat": "0.0 W"
+          }
+        }
+      ]
+    }
+  }
+}
