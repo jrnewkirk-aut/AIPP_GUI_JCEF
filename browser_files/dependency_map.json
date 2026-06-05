@@ -1,7 +1,7 @@
 {
   "system": "AIPP_JSON_Viewer",
-  "version": "1.0-patch3C",
-  "patch": "patch_3C_modular_chunked_save_json_transport",
+  "version": "1.0-transport-cleanup",
+  "patch": "transport_module_rename_version_config_optional_diagnostics_dependency_map_update",
   "entry_points": {
     "scilab": "json_viewer.sce",
     "html": "browser_files/index.html",
@@ -11,13 +11,23 @@
     "execution_order_required": true,
     "module_system": "global_scope_ordered_load",
     "source_of_truth": "browser_json_state",
-    "communication": "chunked_save_transport_for_scilab_2025_1_0"
+    "communication": "version_configured_save_transport"
   },
-  "save_transport": {
-    "default_mode": "chunked",
-    "chunk_size": 1200,
-    "chunk_delay_ms": 5,
-    "direct_mode_available": true
+  "transport": {
+    "receive_compat_module": "19_transport_receive_compat_v1.js",
+    "save_transport_module": "20_save_json_transport_v1.js",
+    "optional_diagnostics_module": "browser_files/js_optional/21_save_transport_diagnostics_dev_v1.js",
+    "config_message": "transport_config",
+    "scilab_2025_1_0_default": {
+      "save_transport": "chunked",
+      "save_chunk_size": 1200,
+      "save_chunk_delay_ms": 5
+    },
+    "newer_scilab_default": {
+      "save_transport": "direct_ascii",
+      "save_chunk_size": 1200,
+      "save_chunk_delay_ms": 5
+    }
   },
   "message_types": {
     "browser_to_scilab": {
@@ -36,6 +46,7 @@
     },
     "scilab_to_browser": {
       "old_send_helper": [
+        "transport_config",
         "json_ascii",
         "csv_ascii",
         "pyrolist_ascii",
@@ -67,9 +78,8 @@
     "16_raw_json_vscode_editor_v2.js",
     "17_table_viewer_tab_v1.js",
     "18_toolbar_cleanup_move_add_v1.js",
-    "19_scilab_2025_quote_transport_v1.js",
-    "20_save_json_chunked_transport.js",
-    "21_save_transport_diagnostics.js",
+    "19_transport_receive_compat_v1.js",
+    "20_save_json_transport_v1.js",
     "cytoscape.min.js"
   ]
 }

@@ -1,9 +1,11 @@
-/* 21_save_transport_diagnostics.js
-   Patch 3B - Browser -> Scilab ASCII payload-size diagnostics.
+/* 21_save_transport_diagnostics_dev_v1.js
+   Optional development-only diagnostics.
+
+   To enable: copy this file into browser_files/js/ and rebuild the bundle.
 */
 (function(){
-  if(window.__aippSaveTransportDiagnosticsPatch3BApplied) return;
-  window.__aippSaveTransportDiagnosticsPatch3BApplied = true;
+  if(window.__aippSaveTransportDiagnosticsDevV1Applied) return;
+  window.__aippSaveTransportDiagnosticsDevV1Applied = true;
 
   function makePayload(n, value){
     n = Math.max(0, Number(n) || 0);
@@ -17,9 +19,9 @@
   window.aippTestToScilabAsciiPayloadSize = function(n){
     var data = makePayload(n, 65);
     var msg = { type: 'debug_payload', requested_size: Number(n) || 0, data: data };
-    console.log('[AIPP 3B] Sending debug_payload with data length:', data.length);
+    console.log('[AIPP DIAG] Sending debug_payload with data length:', data.length);
     if(typeof toScilabAsciiMsg !== 'function'){
-      console.error('[AIPP 3B] toScilabAsciiMsg is not available. Patch 3A is required.');
+      console.error('[AIPP DIAG] toScilabAsciiMsg is not available.');
       return;
     }
     toScilabAsciiMsg(msg);
@@ -32,9 +34,8 @@
     if(!Number.isFinite(delayMs) || delayMs < 0) delayMs = 750;
     var i = 0;
     function next(){
-      if(i >= sizes.length){ console.log('[AIPP 3B] Payload size sweep complete.'); return; }
+      if(i >= sizes.length){ console.log('[AIPP DIAG] Payload size sweep complete.'); return; }
       var n = sizes[i++];
-      console.log('[AIPP 3B] Sweep sending size:', n);
       window.aippTestToScilabAsciiPayloadSize(n);
       setTimeout(next, delayMs);
     }

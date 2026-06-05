@@ -1,13 +1,15 @@
-/* 20_save_json_chunked_transport.js
-   Patch 3C - Modular chunked Save JSON transport.
+/* 20_save_json_transport_v1.js
+   Modular Save JSON transport.
 
-   Default mode is chunked with max JSON text chunk size 1200 characters.
-   To force direct ASCII mode in newer Scilab versions, set before saving:
-     window.aippSaveTransportConfig.mode = 'direct_ascii';
+   Config is supplied by Scilab via transport_config on browser load:
+   - Scilab 2025.1.0 => chunked, chunk_size 1200
+   - newer Scilab => direct_ascii
+
+   Safe fallback before config arrives is chunked.
 */
 (function(){
-  if(window.__aippSaveJsonChunkedTransportPatch3CApplied) return;
-  window.__aippSaveJsonChunkedTransportPatch3CApplied = true;
+  if(window.__aippSaveJsonTransportV1Applied) return;
+  window.__aippSaveJsonTransportV1Applied = true;
 
   window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
   if(!window.aippSaveTransportConfig.mode) window.aippSaveTransportConfig.mode = 'chunked';
@@ -41,55 +43,40 @@
     var transferId = 'save_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
     var totalChunks = Math.max(1, Math.ceil(jsonText.length / chunkSize));
 
-    var beginMsg = {
+    toScilabAsciiMsg({
       type: 'save_json_begin',
       transfer_id: transferId,
       total_chars: jsonText.length,
       total_chunks: totalChunks,
       suggested_name: suggestedName,
       chunk_size: chunkSize
-    };
-
-    console.log('[AIPP SAVE] chunked save begin', beginMsg);
-    toScilabAsciiMsg(beginMsg);
+    });
 
     var chunkIndex = 1;
     function sendNextChunk(){
       if(chunkIndex > totalChunks){
-        var endMsg = {
-          type: 'save_json_end',
-          transfer_id: transferId
-        };
-        console.log('[AIPP SAVE] chunked save end', endMsg);
-        toScilabAsciiMsg(endMsg);
+        toScilabAsciiMsg({type: 'save_json_end', transfer_id: transferId});
         if(typeof setStatus === 'function') setStatus('Chunked save transfer complete. Choose output file in Scilab dialog.', true);
         return;
       }
-
       var start = (chunkIndex - 1) * chunkSize;
       var chunkText = jsonText.slice(start, start + chunkSize);
-      var chunkMsg = {
+      toScilabAsciiMsg({
         type: 'save_json_chunk',
         transfer_id: transferId,
         chunk_index: chunkIndex,
         total_chunks: totalChunks,
         data: stringToAsciiArrayForSaveTransport(chunkText)
-      };
-
-      console.log('[AIPP SAVE] sending chunk', chunkIndex, 'of', totalChunks, 'chars', chunkText.length);
-      toScilabAsciiMsg(chunkMsg);
+      });
       chunkIndex++;
       setTimeout(sendNextChunk, delayMs);
     }
-
     setTimeout(sendNextChunk, delayMs);
   }
 
   window.aippSendSaveJsonRequest = function(jsonText, suggestedName){
     var mode = (window.aippSaveTransportConfig && window.aippSaveTransportConfig.mode) || 'chunked';
-    if(mode === 'direct_ascii'){
-      return aippSendDirectSaveJson(jsonText, suggestedName);
-    }
+    if(mode === 'direct_ascii') return aippSendDirectSaveJson(jsonText, suggestedName);
     return aippSendChunkedSaveJson(jsonText, suggestedName);
   };
 })();

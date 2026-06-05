@@ -1,16 +1,9 @@
-/* 19_scilab_2025_quote_transport_v1.js
-   Patch 2A - Browser receive compatibility decoder.
-
-   Purpose:
-   - Preserve existing browser message handlers.
-   - Add support for future Scilab -> browser direct ASCII-array messages.
-   - Continue to support existing JSON-string envelopes, quote-token envelopes, and AIPP_ASCII frames.
-
-   This patch intentionally does NOT change browser -> Scilab sending.
+/* 19_transport_receive_compat_v1.js
+   Browser receive compatibility and transport config handler.
 */
 (function(){
-  if(window.__aippScilab2025QuoteTransportV1Patch2AApplied) return;
-  window.__aippScilab2025QuoteTransportV1Patch2AApplied = true;
+  if(window.__aippTransportReceiveCompatV1Applied) return;
+  window.__aippTransportReceiveCompatV1Applied = true;
 
   function aippAsciiArrayToString(a){
     if(!Array.isArray(a)) return '';
@@ -19,22 +12,38 @@
     return out;
   }
 
-  function aippDecodeScilabTransportPayload(payload){
-    if(Array.isArray(payload)){
-      return JSON.parse(aippAsciiArrayToString(payload));
+  function aippApplyTransportConfig(o){
+    window.aippTransportConfig = window.aippTransportConfig || {};
+    window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
+
+    window.aippTransportConfig.scilab_version = o.scilab_version || 'unknown';
+    window.aippTransportConfig.raw = o;
+
+    if(o.save_transport){
+      window.aippSaveTransportConfig.mode = o.save_transport;
+    }
+    if(o.save_chunk_size){
+      window.aippSaveTransportConfig.chunk_size = Number(o.save_chunk_size) || 1200;
+    }
+    if(o.save_chunk_delay_ms != null){
+      window.aippSaveTransportConfig.chunk_delay_ms = Number(o.save_chunk_delay_ms);
     }
 
+    console.log('[AIPP TRANSPORT] Applied transport config:', window.aippSaveTransportConfig);
+    if(typeof setStatus === 'function'){
+      setStatus('Transport configured: save=' + (window.aippSaveTransportConfig.mode || 'default'), true);
+    }
+  }
+
+  function aippDecodeScilabTransportPayload(payload){
+    if(Array.isArray(payload)) return JSON.parse(aippAsciiArrayToString(payload));
     if(payload && typeof payload === 'object' && typeof payload.length === 'number' && !payload.type){
       try{
         var arr = Array.prototype.slice.call(payload).map(Number);
         if(arr.length && arr.every(Number.isFinite)) return JSON.parse(aippAsciiArrayToString(arr));
       }catch(e){}
     }
-
-    if(payload && typeof payload === 'object'){
-      return payload;
-    }
-
+    if(payload && typeof payload === 'object') return payload;
     if(typeof payload === 'string'){
       var txt = payload;
       if(txt.indexOf('<-quote->') >= 0){
@@ -48,11 +57,14 @@
       }
       return JSON.parse(txt);
     }
-
     throw new Error('Unsupported Scilab transport payload type: ' + typeof payload);
   }
 
   function aippDispatchDecodedScilabMessage(o, originalPayload){
+    if(o && o.type === 'transport_config'){
+      aippApplyTransportConfig(o);
+      return;
+    }
     if(o && o.type === 'save_json_success'){
       if(typeof setStatus === 'function') setStatus('Saved JSON: ' + (o.path || o.file || 'selected file'), true);
       return;
@@ -67,11 +79,9 @@
       if(typeof setStatus === 'function') setStatus('Save JSON cancelled.', true);
       return;
     }
-
-    if(typeof window.__aippOriginalFromScilabBeforeTransportPatch2A === 'function'){
-      return window.__aippOriginalFromScilabBeforeTransportPatch2A(originalPayload);
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function'){
+      return window.__aippOriginalFromScilabBeforeTransportCompat(originalPayload);
     }
-
     if(o && o.type === 'json_ascii'){
       var jsonText = (typeof asciiToString === 'function') ? asciiToString(o.data) : aippAsciiArrayToString(o.data || []);
       fullJson = JSON.parse(jsonText);
@@ -94,31 +104,24 @@
       if(typeof setStatus === 'function') setStatus(o.message || 'Pyrolist load error.', false);
       return;
     }
-
     console.warn('[AIPP RX] Unhandled decoded Scilab message:', o);
   }
 
-  if(!window.__aippOriginalFromScilabBeforeTransportPatch2A && typeof window.fromScilab === 'function'){
-    window.__aippOriginalFromScilabBeforeTransportPatch2A = window.fromScilab;
+  if(!window.__aippOriginalFromScilabBeforeTransportCompat && typeof window.fromScilab === 'function'){
+    window.__aippOriginalFromScilabBeforeTransportCompat = window.fromScilab;
   }
-
   window.aippDecodeScilabTransportPayload = aippDecodeScilabTransportPayload;
+  window.aippApplyTransportConfig = aippApplyTransportConfig;
 
   window.fromScilab = function(payload){
     var decoded;
-    try{
-      decoded = aippDecodeScilabTransportPayload(payload);
-    }catch(e){
+    try{ decoded = aippDecodeScilabTransportPayload(payload); }
+    catch(e){
       console.error('[AIPP RX] Failed to decode Scilab payload:', e, payload);
-      if(typeof window.__aippOriginalFromScilabBeforeTransportPatch2A === 'function'){
-        return window.__aippOriginalFromScilabBeforeTransportPatch2A(payload);
-      }
+      if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return window.__aippOriginalFromScilabBeforeTransportCompat(payload);
       return;
     }
-
-    if(typeof window.__aippOriginalFromScilabBeforeTransportPatch2A === 'function'){
-      return aippDispatchDecodedScilabMessage(decoded, JSON.stringify(decoded));
-    }
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return aippDispatchDecodedScilabMessage(decoded, JSON.stringify(decoded));
     return aippDispatchDecodedScilabMessage(decoded, payload);
   };
 })();

@@ -43,7 +43,7 @@
       "chambers": [
         {
           "label": "Initiator_______________________________",
-          "init_type": "PVT",
+          "init_type": "nVT",
           "volume": "1500.00 mm^3",
           "temperature": "294.15 K",
           "pressure": "101325 Pa",
@@ -54,7 +54,7 @@
           },
           "pyro": [
             {
-              "formulation": "PIP1226K_20250528",
+              "formulation": "PNP684B1_20250528",
               "mass": "0.48 g",
               "piles": 1,
               "flame_spread_time": "0.0 ms",
@@ -71,7 +71,8 @@
                 "temperature_sensitivity": "0.000 1/K"
               }
             }
-          ]
+          ],
+          "moles": "0.0 mol"
         },
         {
           "label": "Combustion_______________________________",
@@ -117,7 +118,7 @@
           }
         },
         {
-          "label": "Diffuser_______________________________",
+        "label": "Diffuser_______________________________",
           "init_type": "PVT",
           "volume": "11700.00 mm^3",
           "temperature": "294.15 K",
@@ -290,7 +291,7 @@
             "type": "CONSTANT_HEAT",
             "heat": "0.0 W"
           }
-        },
+    },
         {
           "label": "wall tank___________________________",
           "area": "18529.26958842049 cm^2",

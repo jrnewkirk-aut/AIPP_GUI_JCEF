@@ -120,8 +120,32 @@ function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
 
     r = struct();
     r.type = "save_json_success";
-    r.path = strsubst(outPath, "\", "/");
+    r.path = strsubst(outPath, "\\", "/");
     aippSendToBrowser(r, cb);
+endfunction
+
+// Transport config helper. Scilab 2025.1.0 uses chunked save by default; newer versions use direct ASCII.
+function aippSendTransportConfig(cb)
+    try
+        v = getversion();
+        vstr = strcat(string(v), " ");
+    catch
+        vstr = "unknown";
+    end
+
+    cfg = struct();
+    cfg.type = "transport_config";
+    cfg.scilab_version = vstr;
+    cfg.save_chunk_size = 1200;
+    cfg.save_chunk_delay_ms = 5;
+
+    if grep(vstr, "2025.1.0") <> [] then
+        cfg.save_transport = "chunked";
+    else
+        cfg.save_transport = "direct_ascii";
+    end
+
+    aippSendToBrowser(cfg, cb);
 endfunction
 
 function trackVersions()
@@ -187,6 +211,7 @@ function browserCallback(data, cb)
     // --------------------------
     if data == "loaded" then
         disp("Browser ready");
+        aippSendTransportConfig(cb);
         return;
     end
     // Browser messages may arrive as either existing JSON strings or ASCII arrays.
