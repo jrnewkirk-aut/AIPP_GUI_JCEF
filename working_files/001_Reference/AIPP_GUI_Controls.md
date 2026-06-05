@@ -159,6 +159,12 @@ Scilab code and the JCEF browser development and communication must follow the g
 
 A comprehensive markdown document already exists with a user guide for AIPP. This GUI is intended to interface with the JSON files for AIPP and the user guide, `AIPP3_UserGuide.md`,should be referenced when developing new features.
 
+## File Open and Save Interfaces
+In the grey bar directly below the blue title bar there must be buttons to direct actions to open or save files.
+
+1. Open JSON File
+   - 
+
 ## Pop Up Interfaces
 
 ### Chamber

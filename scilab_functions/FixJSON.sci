@@ -2,16 +2,7 @@ function FixedJSON = FixJSON(InputJSON)
     
     for i =1:1:max(size(InputJSON))
         FixedJSON(i) = strsubst(InputJSON(i),"\/","/")
-    end    
-    
-    orifice_locs = grep(FixedJSON, "orifices")
-    
-    for i = 1:1:max(size(orifice_locs)) - 1
-        value = strsplit(FixedJSON(orifice_locs(i)),":")($)
-        cleaned = stripblanks(value)
-        cleaned = part(cleaned, 2:length(cleaned) - 1)
-        FixedJSON(orifice_locs(i)) = strsubst(FixedJSON(orifice_locs(i)), value, cleaned)
-    end
+    end        
 
     // add items in the JSON file that require a double instead of an int to the doubleVars 
     // array. This will likely need to be expanded as the JSON file

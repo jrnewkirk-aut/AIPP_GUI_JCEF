@@ -324,16 +324,25 @@ function browserCallback(data, cb)
 
     case "select_file" then
 
-        [file, path] = uigetfile("*.json", "Select JSON File");
+        [file, path] = uigetfile(["*.deck"; "*.json"]);
 
         if file == "" then
             return;
         end
 
-        fullpath = path + "\" + file;
+        
 
+        fullpath = path + "\" + file;
+        
+
+        if fileparts(fullpath, "extension") == ".deck" then
+            lines = deckToJSON(fullpath);
+        else
+            lines = mgetl(fullpath);
+        end
+        
         // Read file
-        lines = mgetl(fullpath);
+      
         jsonText = strcat(lines, ascii(10));
         jsonText = strsubst(jsonText, ascii(13), "");
 

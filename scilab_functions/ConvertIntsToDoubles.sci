@@ -2,16 +2,16 @@ function doubled_ints = ConvertIntsToDoublesJSON(json_txt, vars)
     for i=1:1:max(size(vars))
         regex.pre = '/\b'
         regex.post = '\b/'
-        rows = grep(json_txt, regex.pre + vars(i) + regex.post, 'r')
+        rows = grep(json_txt, regex.pre + """"  + vars(i) + """" + regex.post, 'r')
         if rows ~= []
             for j=1:1:max(size(rows))
+                // disp(json_txt(rows(j)))
                 colsindex = strindex(json_txt(rows(j)),":")
                 temp = strsplit(json_txt(rows(j)),":")(2)
                 numsindex = strindex(temp,"/[0-9]/",'r')
                 numsindex = numsindex+colsindex
                 start = min(numsindex)
                 stop = max(numsindex)
-
                 intval = part(json_txt(rows(j)),start:stop)
                 if strindex(intval,"^") ~=0
                     intval = strsplit(intval," ")(1)
