@@ -6,7 +6,7 @@ clear;
 clc();
 close(winsid());
 cd(get_absolute_file_path());
-exec("buildHTML.sci", -1);
+getd(fullpath("./scilab_functions"));
 
 global browser;
 global currentJsonPath;
@@ -14,29 +14,115 @@ global currentJsonDir;
 currentJsonPath = "";
 currentJsonDir = pwd();
 
+global aippSaveTransferId;
+global aippSaveChunks;
+global aippSaveExpectedChunks;
+global aippSaveSuggestedName;
+aippSaveTransferId = "";
+aippSaveChunks = [];
+aippSaveExpectedChunks = 0;
+aippSaveSuggestedName = "aipp_input_updated.json";
+
+
 // Helper: convert a numeric ASCII vector from browser JSON into a Scilab string.
 function txt = aippAsciiToText(a)
-    txt = "";
-    if size(a, "*") == 0 then
+     txt = "";
+     if size(a, "*") == 0 then
+         return;
+     end
+     // Browser sends row-vector-compatible JSON numeric array.
+     for k = 1:size(a, "*")
+         txt = txt + ascii(a(k));
+     end
+endfunction
+
+// Centralized Scilab -> browser send helper.
+function aippSendToBrowser(response, cb)
+    global browser;
+    jsonOut = toJSON(response);
+    jsonOut = sendSafeJSON(jsonOut);
+    set(browser, "data", jsonOut);
+    cb(jsonOut);
+endfunction
+
+// Direct ASCII Scilab -> browser send helper.
+function aippSendAsciiToBrowser(response, cb)
+    global browser;
+    jsonOut = toJSON(response);
+    asciiOut = asciimat(jsonOut);
+    if size(asciiOut, 1) > 1 then
+        asciiOut = asciiOut';
+    end
+    set(browser, "data", asciiOut);
+    cb(asciiOut);
+endfunction
+
+// Browser -> Scilab receive helper.
+function msg = aippReceiveFromBrowser(data)
+    if typeof(data) == "constant" then
+        JSONstring = asciimat(data);
+    else
+        JSONstring = data;
+        JSONstring = receiveSafeJSON(JSONstring);
+    end
+    msg = fromJSON(JSONstring);
+endfunction
+
+// Common save routine used by direct and chunked save transports.
+function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
+    global currentJsonPath;
+    global currentJsonDir;
+
+    startDir = currentJsonDir;
+    if startDir == "" then
+        startDir = pwd();
+    end
+
+    try
+        [outName, outDir] = uiputfile(["*.json", "JSON files"], startDir, "Save updated AIPP JSON as");
+    catch
+        r = struct();
+        r.type = "save_json_error";
+        r.message = "uiputfile failed while selecting output path.";
+        aippSendToBrowser(r, cb);
         return;
     end
-    // Browser sends row-vector-compatible JSON numeric array.
-    for k = 1:size(a, "*")
-        txt = txt + ascii(a(k));
+
+    if outName == "" then
+        r = struct();
+        r.type = "save_json_cancelled";
+        r.message = "User cancelled save dialog.";
+        aippSendAsciiToBrowser(r, cb);
+        return;
     end
+
+    outPath = outDir + filesep() + outName;
+    [p, n, ext] = fileparts(outPath);
+    if ext == "" then
+        outPath = outPath + ".json";
+    end
+
+    try
+        jsonText = strsubst(jsonText, ascii(13), "");
+        lines = tokens(jsonText, ascii(10));
+        lines = FixJSON(lines)
+        mputl(lines, outPath);
+    catch
+        r = struct();
+        r.type = "save_json_error";
+        r.message = "Failed to write selected JSON output file.";
+        aippSendAsciiToBrowser(r, cb);
+        return;
+    end
+
+    currentJsonPath = outPath;
+    currentJsonDir = p;
+
+    r = struct();
+    r.type = "save_json_success";
+    r.path = strsubst(outPath, "\", "/");
+    aippSendToBrowser(r, cb);
 endfunction
-
-
-// Helper: send a struct response to the browser using the existing JSON -> ASCII pattern.
-// If your launcher already has a send-to-browser helper, use that instead.
-function aippSendBrowserStruct(s, cb)
-    msgJson = toJSON(s);
-    // The existing GUI fromScilab handler expects JSON text, not ASCII, for simple status messages.
-    // If your launcher standardizes Scilab->browser as ASCII, wrap this in your existing helper.
-    set(browser, "data", msgJson);
-    cb(msgJson);
-endfunction
-
 
 function trackVersions()
     //Read latest bundled version
@@ -103,16 +189,16 @@ function browserCallback(data, cb)
         disp("Browser ready");
         return;
     end
-
-    // With updated README convention:
-    // Browser messages are expected to be valid JSON strings directly.
-    JSONstring = data;
-
+    // Browser messages may arrive as either existing JSON strings or ASCII arrays.
     try
-        msg = fromJSON(JSONstring);
+        msg = aippReceiveFromBrowser(data);
     catch
         disp("Invalid JSON from browser");
-        disp(JSONstring);
+        try
+            disp(string(data));
+        catch
+            disp("Unable to display browser payload.");
+        end
         return;
     end
 
@@ -124,6 +210,93 @@ function browserCallback(data, cb)
     select msg.type
 
     // ==========================
+    
+    case "debug_payload" then
+        disp("[AIPP DEBUG] debug_payload received");
+        try
+            disp("[AIPP DEBUG] requested_size = " + string(msg.requested_size));
+        catch
+            disp("[AIPP DEBUG] requested_size not provided");
+        end
+        try
+            disp("[AIPP DEBUG] size(msg.data,*) = " + string(size(msg.data, "*")));
+        catch
+            disp("[AIPP DEBUG] could not read msg.data size");
+        end
+        return;
+
+    case "save_json_begin" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        global aippSaveSuggestedName;
+        aippSaveTransferId = msg.transfer_id;
+        aippSaveExpectedChunks = int(msg.total_chunks);
+        aippSaveChunks = emptystr(1, aippSaveExpectedChunks);
+        if or(fieldnames(msg) == "suggested_name") then
+            aippSaveSuggestedName = msg.suggested_name;
+        else
+            aippSaveSuggestedName = "aipp_input_updated.json";
+        end
+        disp("[AIPP SAVE] begin chunked save: " + string(aippSaveExpectedChunks) + " chunks");
+        return;
+
+    case "save_json_chunk" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        if msg.transfer_id <> aippSaveTransferId then
+            disp("[AIPP SAVE] ignoring chunk with mismatched transfer_id");
+            return;
+        end
+        idxChunk = int(msg.chunk_index);
+        if idxChunk < 1 | idxChunk > aippSaveExpectedChunks then
+            disp("[AIPP SAVE] ignoring chunk with invalid index");
+            return;
+        end
+        try
+            aippSaveChunks(idxChunk) = asciimat(msg.data);
+        catch
+            disp("[AIPP SAVE] failed to decode chunk " + string(idxChunk));
+        end
+        return;
+
+    case "save_json_end" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        global aippSaveSuggestedName;
+        if msg.transfer_id <> aippSaveTransferId then
+            disp("[AIPP SAVE] save_json_end transfer_id mismatch");
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Chunked save transfer_id mismatch.";
+            aippSendToBrowser(r, cb);
+            return;
+        end
+        jsonText = "";
+        missing = [];
+        for ii = 1:aippSaveExpectedChunks
+            if aippSaveChunks(ii) == "" then
+                missing($+1) = ii;
+            else
+                jsonText = jsonText + aippSaveChunks(ii);
+            end
+        end
+        if missing <> [] then
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Chunked save missing one or more chunks.";
+            aippSendToBrowser(r, cb);
+            return;
+        end
+        disp("[AIPP SAVE] chunked save assembled successfully");
+        aippSaveJsonTextToLocalFile(jsonText, aippSaveSuggestedName, cb);
+        aippSaveTransferId = "";
+        aippSaveChunks = [];
+        aippSaveExpectedChunks = 0;
+        return;
+
     case "select_file" then
 
         [file, path] = uigetfile("*.json", "Select JSON File");
@@ -151,11 +324,7 @@ function browserCallback(data, cb)
         response = struct();
         response.type = "json_ascii";
         response.data = asciiData;
-
-        jsonOut = toJSON(response);
-
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "select_csv" then
 
         [file, path] = uigetfile("*.csv", "Select CSV File");
@@ -178,10 +347,7 @@ function browserCallback(data, cb)
         response = struct();
         response.type = "csv_ascii";
         response.data = asciiData;
-    
-        jsonOut = toJSON(response);
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "request_pyrolist" then
         pyrofile = fullfile(pwd(), "aipp_files", "pyrolist.json");
         response = struct();
@@ -192,15 +358,16 @@ function browserCallback(data, cb)
         else
             response.type = "pyrolist_error"; response.message = "Could not find " + pyrofile;
         end
-        jsonOut = toJSON(response); set(browser, "data", jsonOut); cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "save_json_ascii" then
          try
-            jsonText = aippAsciiToText(msg.data);
+            jsonText = asciimat(msg.data);
+            // jsonText = aippAsciiToText(msg.data);
         catch
             r = struct();
             r.type = "save_json_error";
             r.message = "Unable to decode JSON ASCII payload from browser.";
-            aippSendBrowserStruct(r, cb);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -217,7 +384,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_error";
             r.message = "uiputfile failed while selecting output path.";
-            aippSendBrowserStruct(r, cb);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -225,7 +392,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_cancelled";
             r.message = "User cancelled save dialog.";
-            aippSendBrowserStruct(r, cb);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -241,12 +408,13 @@ function browserCallback(data, cb)
             // mputl writes a string vector. jsonText may contain line breaks, so split on LF.
             jsonText = strsubst(jsonText, ascii(13), "");
             lines = tokens(jsonText, ascii(10));
+            lines = FixJSON(lines)
             mputl(lines, outPath);
         catch
             r = struct();
             r.type = "save_json_error";
             r.message = "Failed to write selected JSON output file.";
-            aippSendBrowserStruct(r, cb);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -257,7 +425,7 @@ function browserCallback(data, cb)
         r = struct();
         r.type = "save_json_success";
         r.path = strsubst(outPath, "\", "/");
-        aippSendBrowserStruct(r, cb);
+    aippSendToBrowser(r, cb);
 
     else
         disp("Unknown type");
@@ -266,5 +434,4 @@ function browserCallback(data, cb)
     end
 
 endfunction
-
 

@@ -36,12 +36,16 @@
         // workflow and may surprise the user. The save operation writes the current in-memory model.
       }
       var jsonText = (typeof stringifyAippJsonPretty === 'function') ? stringifyAippJsonPretty(fullJson) : JSON.stringify(fullJson, null, 2);
-      var msg = {
-        type: 'save_json_ascii',
-        data: stringToAsciiArray(jsonText),
-        suggested_name: 'aipp_input_updated.json'
-      };
-      toScilabMsg(msg);
+      if(typeof aippSendSaveJsonRequest === 'function'){
+        aippSendSaveJsonRequest(jsonText, 'aipp_input_updated.json');
+      }else{
+        var msg = {
+          type: 'save_json_ascii',
+          data: stringToAsciiArray(jsonText),
+          suggested_name: 'aipp_input_updated.json'
+        };
+        toScilabAsciiMsg(msg);
+      }
       setStatus('Save requested. Choose output file in Scilab dialog.', true);
     }catch(e){
       setStatus('Save request failed: '+e.message, false);

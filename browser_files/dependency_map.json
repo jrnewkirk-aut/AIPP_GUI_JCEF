@@ -1,0 +1,75 @@
+{
+  "system": "AIPP_JSON_Viewer",
+  "version": "1.0-patch3C",
+  "patch": "patch_3C_modular_chunked_save_json_transport",
+  "entry_points": {
+    "scilab": "json_viewer.sce",
+    "html": "browser_files/index.html",
+    "bundle": "browser_files/dist/bundle.html"
+  },
+  "global_rules": {
+    "execution_order_required": true,
+    "module_system": "global_scope_ordered_load",
+    "source_of_truth": "browser_json_state",
+    "communication": "chunked_save_transport_for_scilab_2025_1_0"
+  },
+  "save_transport": {
+    "default_mode": "chunked",
+    "chunk_size": 1200,
+    "chunk_delay_ms": 5,
+    "direct_mode_available": true
+  },
+  "message_types": {
+    "browser_to_scilab": {
+      "old_json_string_path": [
+        "select_file",
+        "select_csv",
+        "request_pyrolist"
+      ],
+      "ascii_array_path": [
+        "save_json_ascii",
+        "debug_payload",
+        "save_json_begin",
+        "save_json_chunk",
+        "save_json_end"
+      ]
+    },
+    "scilab_to_browser": {
+      "old_send_helper": [
+        "json_ascii",
+        "csv_ascii",
+        "pyrolist_ascii",
+        "pyrolist_error",
+        "save_json_success",
+        "save_json_error"
+      ],
+      "ascii_send_helper": [
+        "save_json_cancelled"
+      ]
+    }
+  },
+  "modules": [
+    "01_comm_state_schema_model.js",
+    "02_tree_code_graph_model.js",
+    "03_popup_smart_editors.js",
+    "04_orifice_wall_cd_editors.js",
+    "05_scilab_graph_engine.js",
+    "06_pyro_master_editor.js",
+    "07_startup_topology_dependency_base.js",
+    "08_clean_topology_graph_overrides.js",
+    "09_topology_removal_workflow.js",
+    "10_flow_chart_chamber_cards.js",
+    "11_flow_chart_overlay_sync.js",
+    "12_save_json_local.js",
+    "13_raw_json_viewer_phase1_v1.js",
+    "14_raw_json_viewer_phase2_v1.js",
+    "15_raw_json_and_tree_realign_v1.js",
+    "16_raw_json_vscode_editor_v2.js",
+    "17_table_viewer_tab_v1.js",
+    "18_toolbar_cleanup_move_add_v1.js",
+    "19_scilab_2025_quote_transport_v1.js",
+    "20_save_json_chunked_transport.js",
+    "21_save_transport_diagnostics.js",
+    "cytoscape.min.js"
+  ]
+}

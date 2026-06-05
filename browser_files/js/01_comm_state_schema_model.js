@@ -1,5 +1,18 @@
 
-function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
+function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}
+
+function toScilabAsciiMsg(o) {
+  if (!window.toScilab) return;
+
+  var json = JSON.stringify(o);
+  var out = [];
+  for (var i = 0; i < json.length; i++) {
+    out.push(json.charCodeAt(i));
+  }
+
+  window.toScilab(out);
+}
+function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
 let fullJson=null,currentTab="tree",treeOpenAll=false,simNodes=[],simEdges=[],popupNode=null,popupPath=null,popupWorkingCopy=null,popupOriginalCopy=null,popupDrag={active:false,dx:0,dy:0},pendingCdCsvImport=null,pendingRemovalPlan=null,lastRemovalSnapshot=null,applyEventRemapsOnRemoval=true,masterPyroList={},masterPyroNames=[],pyroListLoadState='not requested',activePyroCombo=null;
 const STANDARD_SPECIES=["Ar","CO","CO2","H2","H2O","He","N2","N2O","O2"],CHAMBER_INIT_TYPES=["mPT","PVT","mVT","nVT","rho_mVT"],CHAMBER_INIT_FIELDS={mPT:["mass","pressure","temperature"],PVT:["pressure","volume","temperature"],mVT:["mass","volume","temperature"],nVT:["moles","volume","temperature"],rho_mVT:["density","volume","temperature"]},CHAMBER_INIT_DEFAULTS={mass:"0.0 g",pressure:"0.101325 MPa",temperature:"300.0 K",volume:"1.0 L",density:"0.0 kg/m^3",moles:"0.0 mol"},AIPP_CD_TEMPLATES={constant:{basis:"constant",Cd_value:0.7},time:{basis:"time",time_units:"ms",time_array:[0,0.01],Cd_array:[0.75,0.5],continuity:"interpolate"},pressure:{basis:"pressure",pressure_units:"MPa",pressure_array:[25,50],Cd_array:[0.75,0.5],continuity:"discrete"}};
 const AIPP_WALL_CONNECTION_TYPES=["CONSTANT_TEMPERATURE","CONSTANT_HEAT","WALL","CONSTANT_COEFFICIENT","VARIABLE_COEFFICIENT"],AIPP_WALL_CONNECTION_SCHEMAS={CONSTANT_TEMPERATURE:{defaults:{type:"CONSTANT_TEMPERATURE",temperature:"294.15 K"},fields:[["temperature","text"]]},CONSTANT_HEAT:{defaults:{type:"CONSTANT_HEAT",heat:"0.0 W"},fields:[["heat","text"]]},WALL:{defaults:{type:"WALL",wall_index:1},fields:[["wall_index","wall_index"]]},CONSTANT_COEFFICIENT:{defaults:{type:"CONSTANT_COEFFICIENT",chamber_index:1,heat_transfer_coefficient:"1.0E+2 W/(m^2 K)"},fields:[["chamber_index","chamber_index"],["heat_transfer_coefficient","text"]]},VARIABLE_COEFFICIENT:{defaults:{type:"VARIABLE_COEFFICIENT",chamber_index:1,scale_factor:1},fields:[["chamber_index","chamber_index"],["scale_factor","number"]]}};

@@ -1,0 +1,321 @@
+
+{
+  "system": "AIPP_JSON_Viewer",
+  "version": "1.0",
+  "entry_points": {
+    "scilab": "json_viewer.sce",
+    "html": "browser_files/index.html",
+    "bundle": "browser_files/dist/bundle.html"
+  },
+
+  "global_rules": {
+    "execution_order_required": true,
+    "module_system": "global_scope_ordered_load",
+    "source_of_truth": "browser_json_state",
+    "communication": "json_ascii_via_callback"
+  },
+
+  "layers": {
+    "state": [
+      "01_comm_state_schema_model.js"
+    ],
+    "model": [
+      "02_tree_code_graph_model.js"
+    ],
+    "editors": [
+      "03_popup_smart_editors.js",
+      "04_orifice_wall_cd_editors.js",
+      "06_pyro_master_editor.js"
+    ],
+    "visualization": [
+      "05_scilab_graph_engine.js",
+      "10_flow_chart_chamber_cards.js",
+      "11_flow_chart_overlay_sync.js"
+    ],
+    "topology": [
+      "07_startup_topology_dependency_base.js",
+      "08_clean_topology_graph_overrides.js",
+      "09_topology_removal_workflow.js"
+    ],
+    "data_views": [
+      "13_raw_json_viewer_phase1_v1.js",
+      "14_raw_json_viewer_phase2_v1.js",
+      "15_raw_json_and_tree_realign_v1.js",
+      "16_raw_json_vscode_editor_v2.js",
+      "17_table_viewer_tab_v1.js"
+    ],
+    "control": [
+      "18_toolbar_cleanup_move_add_v1.js"
+    ],
+    "io": [
+      "12_save_json_local.js"
+    ],
+    "transport": [
+      "19_scilab_2025_quote_transport_v1.js"
+    ]
+  },
+
+  "modules": [
+    {
+      "name": "01_comm_state_schema_model.js",
+      "role": "state_root",
+      "depends_on": [],
+      "provides": [
+        "json_schema",
+        "validation_rules",
+        "global_state_object"
+      ],
+      "used_by": "ALL"
+    },
+
+    {
+      "name": "02_tree_code_graph_model.js",
+      "role": "data_model",
+      "depends_on": [
+        "01_comm_state_schema_model.js"
+      ],
+      "provides": [
+        "tree_model",
+        "graph_model"
+      ],
+      "used_by": [
+        "editors",
+        "visualization",
+        "data_views"
+      ]
+    },
+
+    {
+      "name": "03_popup_smart_editors.js",
+      "role": "generic_editor_framework",
+      "depends_on": [
+        "01_comm_state_schema_model.js",
+        "02_tree_code_graph_model.js"
+      ],
+      "provides": [
+        "popup_edit_logic",
+        "context_aware_editing"
+      ]
+    },
+
+    {
+      "name": "04_orifice_wall_cd_editors.js",
+      "role": "domain_specific_editors",
+      "depends_on": [
+        "03_popup_smart_editors.js"
+      ],
+      "provides": [
+        "orifice_editor",
+        "wall_editor",
+        "Cd_editor"
+      ]
+    },
+
+    {
+      "name": "05_scilab_graph_engine.js",
+      "role": "graph_renderer",
+      "depends_on": [
+        "02_tree_code_graph_model.js",
+        "vendor/cytoscape.min.js"
+      ],
+      "provides": [
+        "topology_graph_rendering"
+      ]
+    },
+
+    {
+      "name": "06_pyro_master_editor.js",
+      "role": "pyro_editor",
+      "depends_on": [
+        "01_comm_state_schema_model.js",
+        "02_tree_code_graph_model.js"
+      ],
+      "external_messages": [
+        "request_pyrolist",
+        "pyrolist_ascii"
+      ],
+      "provides": [
+        "pyro_editing_ui"
+      ]
+    },
+
+    {
+      "name": "07_startup_topology_dependency_base.js",
+      "role": "initialization",
+      "depends_on": [
+        "01_comm_state_schema_model.js",
+        "02_tree_code_graph_model.js",
+        "03_popup_smart_editors.js",
+        "04_orifice_wall_cd_editors.js",
+        "05_scilab_graph_engine.js",
+        "06_pyro_master_editor.js"
+      ],
+      "provides": [
+        "initial_topology_build"
+      ]
+    },
+
+    {
+      "name": "08_clean_topology_graph_overrides.js",
+      "role": "graph_cleanup",
+      "depends_on": [
+        "07_startup_topology_dependency_base.js"
+      ],
+      "provides": [
+        "topology_normalization"
+      ]
+    },
+
+    {
+      "name": "09_topology_removal_workflow.js",
+      "role": "deletion_logic",
+      "depends_on": [
+        "02_tree_code_graph_model.js",
+        "08_clean_topology_graph_overrides.js"
+      ],
+      "provides": [
+        "safe_removal_workflows"
+      ]
+    },
+
+    {
+      "name": "10_flow_chart_chamber_cards.js",
+      "role": "ui_visual_cards",
+      "depends_on": [
+        "02_tree_code_graph_model.js",
+        "05_scilab_graph_engine.js"
+      ],
+      "provides": [
+        "chamber_visual_cards"
+      ]
+    },
+
+    {
+      "name": "11_flow_chart_overlay_sync.js",
+      "role": "ui_sync",
+      "depends_on": [
+        "05_scilab_graph_engine.js",
+        "10_flow_chart_chamber_cards.js"
+      ],
+      "provides": [
+        "overlay_sync_logic"
+      ]
+    },
+
+    {
+      "name": "12_save_json_local.js",
+      "role": "io_save",
+      "depends_on": [
+        "01_comm_state_schema_model.js"
+      ],
+      "external_messages": [
+        "save_json_ascii",
+        "save_json_success",
+        "save_json_error"
+      ]
+    },
+
+    {
+      "name": "13_raw_json_viewer_phase1_v1.js",
+      "role": "raw_view_base",
+      "depends_on": [
+        "01_comm_state_schema_model.js"
+      ]
+    },
+
+    {
+      "name": "14_raw_json_viewer_phase2_v1.js",
+      "role": "raw_view_enhanced",
+      "depends_on": [
+        "13_raw_json_viewer_phase1_v1.js"
+      ]
+    },
+
+    {
+      "name": "15_raw_json_and_tree_realign_v1.js",
+      "role": "sync_engine",
+      "depends_on": [
+        "02_tree_code_graph_model.js",
+        "14_raw_json_viewer_phase2_v1.js"
+      ],
+      "provides": [
+        "tree_json_sync"
+      ]
+    },
+
+    {
+      "name": "16_raw_json_vscode_editor_v2.js",
+      "role": "advanced_editor",
+      "depends_on": [
+        "15_raw_json_and_tree_realign_v1.js"
+      ]
+    },
+
+    {
+      "name": "17_table_viewer_tab_v1.js",
+      "role": "table_view",
+      "depends_on": [
+        "01_comm_state_schema_model.js"
+      ]
+    },
+
+    {
+      "name": "18_toolbar_cleanup_move_add_v1.js",
+      "role": "ui_controller",
+      "depends_on": [
+        "ALL_UI_AND_MODEL_MODULES"
+      ],
+      "provides": [
+        "toolbar_actions",
+        "global_ui_controls"
+      ]
+    },
+
+    {
+      "name": "19_scilab_2025_quote_transport_v1.js",
+      "role": "transport_layer",
+      "depends_on": [
+        "communication_contract"
+      ],
+      "provides": [
+        "safe_json_transport",
+        "quote_handling_fixes"
+      ]
+    }
+  ],
+
+  "scilab_integration": {
+    "callback": "browserCallback",
+    "message_protocol": {
+      "required_field": "type",
+      "format": "JSON_only",
+      "encoding": "ASCII_array"
+    },
+    "message_types": {
+      "browser_to_scilab": [
+        "select_file",
+        "select_csv",
+        "request_pyrolist",
+        "save_json_ascii"
+      ],
+      "scilab_to_browser": [
+        "json_ascii",
+        "csv_ascii",
+        "pyrolist_ascii",
+        "save_json_success",
+        "save_json_error"
+      ]
+    }
+  },
+
+  "data_flow": {
+    "source_of_truth": "browser_json_state",
+    "pipelines": [
+      "JSON → tree_model",
+      "JSON → graph_model",
+      "JSON → editors",
+      "JSON ↔ raw_editor",
+      "JSON → table_view"
+    ]
+  }
+}
