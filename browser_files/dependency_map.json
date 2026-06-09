@@ -1,7 +1,7 @@
 {
   "system": "AIPP_JSON_Viewer",
-  "version": "1.0-popup-footer-visibility",
-  "patch": "popup_footer_apply_button_viewport_visibility",
+  "version": "1.0-breadthfirst-default-no-manual-ui",
+  "patch": "remove_manual_flow_chart_layout_option_set_breadthfirst_default",
   "entry_points": {
     "scilab": "json_viewer.sce",
     "html": "browser_files/index.html",
@@ -12,14 +12,31 @@
     "module_system": "global_scope_ordered_load",
     "source_of_truth": "browser_json_state"
   },
+  "graph_layout": {
+    "default_mode": "breadthfirst_auto",
+    "manual_ui_removed": true,
+    "new_module": "21_graph_layout_breadthfirst_default_v3.js",
+    "fallback": "original preset/manual layout is retained internally only if breadthfirst fails or if preset_manual is set in console for debug",
+    "user_selected_defaults": {
+      "bfDirection": "leftward",
+      "bfAvoidOverlap": true,
+      "bfDirected": false,
+      "bfCircle": false,
+      "bfGrid": true,
+      "bfSpacingFactor": 0.9,
+      "bfMaximal": true,
+      "bfFit": true,
+      "bfPadding": 1000,
+      "bfAnimate": true,
+      "bfAnimationDuration": 600,
+      "bfNodeDimensionsIncludeLabels": false,
+      "includeWallsInAutoLayout": true
+    },
+    "console_tuning": "Use getAippBreadthfirstLayoutOptions() and window.aippGraphLayoutConfig.* followed by applyAippCytoscapeLayout(true)."
+  },
   "popup_footer_visibility": {
-    "issue": "Apply button existed in #popupFooter but could be below the visible viewport on small laptop screens.",
-    "changed_files": [
-      "browser_files/styles/main.css",
-      "browser_files/js/03_popup_smart_editors.js"
-    ],
-    "behavior": "Popup opens as flex column, body scrolls, footer stays visible, and popup is clamped to viewport on open/resize.",
-    "requirements": "Chamber/orifice/wall popups retain visible Apply/Revert/Remove actions. applyPopup logic unchanged."
+    "fix": "v2 block-layout viewport clamp included; popup opens as display:block and remains reachable on small screens.",
+    "apply_logic": "applyPopup unchanged."
   },
   "modules": [
     "01_comm_state_schema_model.js",
@@ -42,7 +59,6 @@
     "18_toolbar_cleanup_move_add_v1.js",
     "19_transport_receive_compat_v1.js",
     "20_save_json_transport_v1.js",
-    "21_graph_layout_breadthfirst_tuned_v2.js",
-    "22_save_transport_diagnostics_dev_v1.js"
+    "21_graph_layout_breadthfirst_default_v3.js"
   ]
 }

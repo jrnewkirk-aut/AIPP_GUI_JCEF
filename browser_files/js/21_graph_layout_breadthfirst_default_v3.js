@@ -1,35 +1,22 @@
-/* 21_graph_layout_breadthfirst_tuned_v2.js
-   Optional Cytoscape breadthfirst layout with production defaults selected from JCEF tuning.
+/* 21_graph_layout_breadthfirst_default_v3.js
+   Default Cytoscape breadthfirst flow-chart layout.
 
-   Joseph-selected defaults:
-     bfDirection = 'leftward'
-     bfAvoidOverlap = true
-     bfDirected = false
-     bfCircle = false
-     bfGrid = true
-     bfSpacingFactor = 0.9
-     bfMaximal = true
-     bfFit = true
-     bfPadding = 1000
-     bfAnimate = true
-     bfAnimationDuration = 600
-     bfNodeDimensionsIncludeLabels = false
-     includeWallsInAutoLayout = true
-
-   Default mode remains the existing manual/preset layout.
+   This module removes the user-facing manual/preset layout toggle. The app now defaults to
+   breadthfirst_auto with Joseph-selected tuned settings. The original preset/manual layout is
+   retained only as an internal fallback if Cytoscape breadthfirst fails.
 */
 (function(){
-  if(window.__aippGraphLayoutBreadthfirstTunedV2Applied) return;
-  window.__aippGraphLayoutBreadthfirstTunedV2Applied = true;
+  if(window.__aippGraphLayoutBreadthfirstDefaultV3Applied) return;
+  window.__aippGraphLayoutBreadthfirstDefaultV3Applied = true;
 
   window.aippGraphLayoutConfig = window.aippGraphLayoutConfig || {};
   var cfg = window.aippGraphLayoutConfig;
 
-  if(!cfg.mode) cfg.mode = 'preset_manual';
-  if(!cfg.autoLayout) cfg.autoLayout = 'breadthfirst';
+  // New default: use the tuned Cytoscape breadthfirst layout.
+  cfg.mode = 'breadthfirst_auto';
+  cfg.autoLayout = 'breadthfirst';
 
-  // Tuned breadthfirst layout defaults.
-  // Valid direction values in current bundled Cytoscape: downward, leftward, upward, rightward.
+  // Tuned breadthfirst layout defaults selected in JCEF testing.
   if(cfg.bfDirection == null) cfg.bfDirection = 'leftward';
   if(cfg.bfAvoidOverlap == null) cfg.bfAvoidOverlap = true;
   if(cfg.bfDirected == null) cfg.bfDirected = false;
@@ -43,7 +30,7 @@
   if(cfg.bfPadding == null) cfg.bfPadding = 1000;
   if(cfg.bfNodeDimensionsIncludeLabels == null) cfg.bfNodeDimensionsIncludeLabels = false;
 
-  // AIPP-specific post processing.
+  // AIPP-specific behavior.
   if(cfg.tankRight == null) cfg.tankRight = true;
   if(cfg.includeWallsInAutoLayout == null) cfg.includeWallsInAutoLayout = true;
   if(cfg.wallYOffset == null) cfg.wallYOffset = 230;
@@ -53,9 +40,7 @@
   var originalApplyAippCytoscapeLayout = (typeof applyAippCytoscapeLayout === 'function') ? applyAippCytoscapeLayout : null;
 
   function getCy(){
-    try{
-      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
-    }catch(e){}
+    try{ if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype; }catch(e){}
     if(window.cyPrototype) return window.cyPrototype;
     return null;
   }
@@ -63,14 +48,12 @@
   function getAippTankNodeId(){
     try{
       var info = (typeof getAssemblyInfo === 'function') ? getAssemblyInfo(fullJson) : {assembly:null};
-      var assembly = info && info.assembly;
+      var a = info && info.assembly;
       var tankId = null;
-
-      if(assembly && assembly.tank_id != null) tankId = assembly.tank_id;
+      if(a && a.tank_id != null) tankId = a.tank_id;
       else if(fullJson && fullJson.tank_id != null) tankId = fullJson.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.tank_id != null) tankId = fullJson.aipp_calculation.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.assembly && fullJson.aipp_calculation.assembly.tank_id != null) tankId = fullJson.aipp_calculation.assembly.tank_id;
-
       var n = parseInt(tankId, 10);
       if(Number.isFinite(n) && n > 0) return 'c' + n;
     }catch(e){
@@ -82,7 +65,6 @@
   function getBreadthfirstRootsSelector(cy){
     var rootCfg = window.aippGraphLayoutConfig.bfRoots;
     if(rootCfg != null && rootCfg !== '') return rootCfg;
-
     var tankNodeId = getAippTankNodeId();
     if(tankNodeId && cy && cy.getElementById(tankNodeId).length) return '#' + tankNodeId;
     return undefined;
@@ -100,24 +82,22 @@
     if(!cy || !tankNodeId) return;
     var tank = cy.getElementById(tankNodeId);
     if(!tank || tank.empty || tank.empty()) return;
-
     var maxX = -Infinity;
     cy.nodes().forEach(function(n){
       var x = n.position('x');
       if(Number.isFinite(x) && x > maxX) maxX = x;
     });
     if(!Number.isFinite(maxX)) return;
-
     var margin = Number(window.aippGraphLayoutConfig.tankRightMargin) || 260;
     if(tank.position('x') < maxX - 1){
-      tank.position({x: maxX + margin, y: tank.position('y')});
+      tank.position({x:maxX + margin, y:tank.position('y')});
     }
   }
 
   function connectedChamberIdForWallNode(wallNode){
     try{
       var id = wallNode.id();
-      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){ return n.id === id; }) : null;
+      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){return n.id === id;}) : null;
       var w = sim && sim.data ? sim.data : {};
       var ci = null;
       if(w.left_connection && w.left_connection.chamber_index != null) ci = w.left_connection.chamber_index;
@@ -132,7 +112,6 @@
     if(!cy || window.aippGraphLayoutConfig.includeWallsInAutoLayout) return;
     var walls = cy.nodes('[type = "wall"]');
     if(!walls || walls.length === 0) return;
-
     walls.forEach(function(wall, i){
       var chamberId = connectedChamberIdForWallNode(wall);
       var anchor = chamberId ? cy.getElementById(chamberId) : null;
@@ -140,10 +119,7 @@
       var p = anchor.position();
       var spread = Number(window.aippGraphLayoutConfig.wallXSpread) || 115;
       var yoff = Number(window.aippGraphLayoutConfig.wallYOffset) || 230;
-      wall.position({
-        x: p.x + ((i % 3) - 1) * spread,
-        y: p.y + yoff + Math.floor(i / 3) * 55
-      });
+      wall.position({x:p.x + ((i % 3) - 1) * spread, y:p.y + yoff + Math.floor(i / 3) * 55});
     });
   }
 
@@ -195,13 +171,15 @@
       layout.run();
       overlaySync(shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) + 40 : 90);
     }catch(e){
-      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to preset layout:', e);
+      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to original preset/manual layout:', e);
       if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim);
     }
   }
 
+  // Public helpers retained for console tuning and rerunning layout.
   window.setAippGraphLayoutMode = function(mode){
-    window.aippGraphLayoutConfig.mode = mode || 'preset_manual';
+    // Manual mode is no longer exposed in the UI, but this remains for debug/fallback.
+    window.aippGraphLayoutConfig.mode = mode || 'breadthfirst_auto';
     if(typeof setStatus === 'function') setStatus('Graph layout mode: ' + window.aippGraphLayoutConfig.mode, true);
   };
 
@@ -210,65 +188,36 @@
     runBreadthfirstAutoLayout(anim !== false);
   };
 
-  window.applyAippPresetManualLayout = function(anim){
-    window.aippGraphLayoutConfig.mode = 'preset_manual';
-    if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim !== false);
-  };
-
   window.getAippBreadthfirstLayoutOptions = function(){
-    var cfg = window.aippGraphLayoutConfig || {};
+    var c = window.aippGraphLayoutConfig || {};
     return {
-      bfRoots: cfg.bfRoots,
-      bfAvoidOverlap: cfg.bfAvoidOverlap,
-      bfDirected: cfg.bfDirected,
-      bfCircle: cfg.bfCircle,
-      bfGrid: cfg.bfGrid,
-      bfSpacingFactor: cfg.bfSpacingFactor,
-      bfMaximal: cfg.bfMaximal,
-      bfDirection: cfg.bfDirection,
-      bfFit: cfg.bfFit,
-      bfPadding: cfg.bfPadding,
-      bfAnimate: cfg.bfAnimate,
-      bfAnimationDuration: cfg.bfAnimationDuration,
-      bfNodeDimensionsIncludeLabels: cfg.bfNodeDimensionsIncludeLabels,
-      includeWallsInAutoLayout: cfg.includeWallsInAutoLayout,
-      tankRight: cfg.tankRight,
-      tankRightMargin: cfg.tankRightMargin,
-      wallYOffset: cfg.wallYOffset,
-      wallXSpread: cfg.wallXSpread
+      bfRoots:c.bfRoots,
+      bfAvoidOverlap:c.bfAvoidOverlap,
+      bfDirected:c.bfDirected,
+      bfCircle:c.bfCircle,
+      bfGrid:c.bfGrid,
+      bfSpacingFactor:c.bfSpacingFactor,
+      bfMaximal:c.bfMaximal,
+      bfDirection:c.bfDirection,
+      bfFit:c.bfFit,
+      bfPadding:c.bfPadding,
+      bfAnimate:c.bfAnimate,
+      bfAnimationDuration:c.bfAnimationDuration,
+      bfNodeDimensionsIncludeLabels:c.bfNodeDimensionsIncludeLabels,
+      includeWallsInAutoLayout:c.includeWallsInAutoLayout,
+      tankRight:c.tankRight,
+      tankRightMargin:c.tankRightMargin,
+      wallYOffset:c.wallYOffset,
+      wallXSpread:c.wallXSpread
     };
   };
 
+  // Override existing Auto Layout handler. It now always uses tuned breadthfirst unless debug mode is manually set otherwise.
   applyAippCytoscapeLayout = function(anim){
-    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'breadthfirst_auto'){
-      return runBreadthfirstAutoLayout(anim);
+    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'preset_manual'){
+      // Debug-only fallback path. No UI button exposes this mode.
+      if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
     }
-    if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+    return runBreadthfirstAutoLayout(anim);
   };
-
-  function installLayoutButtons(){
-    var tools = document.querySelector('#vizHeader .vizHeaderTools') || document.getElementById('vizHeader');
-    if(!tools || document.getElementById('graphLayoutModeBtn')) return;
-
-    var btn = document.createElement('button');
-    btn.id = 'graphLayoutModeBtn';
-    btn.className = 'smallBtn secondary';
-    btn.textContent = 'Breadthfirst Layout';
-    btn.title = 'Toggle tuned Cytoscape breadthfirst layout anchored by tank_id.';
-    btn.onclick = function(){
-      var current = window.aippGraphLayoutConfig.mode;
-      if(current === 'breadthfirst_auto'){
-        window.applyAippPresetManualLayout(true);
-        btn.textContent = 'Breadthfirst Layout';
-      }else{
-        window.applyAippBreadthfirstLayout(true);
-        btn.textContent = 'Manual Layout';
-      }
-    };
-    tools.appendChild(btn);
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLayoutButtons);
-  else installLayoutButtons();
-  setTimeout(installLayoutButtons, 0);
 })();
