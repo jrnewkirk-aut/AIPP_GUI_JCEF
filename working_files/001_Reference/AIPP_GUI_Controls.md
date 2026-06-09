@@ -167,6 +167,8 @@ In the grey bar directly below the blue title bar there must be buttons to direc
 
 ## Pop Up Interfaces
 
+**All pop up interfaces must have a button to apply changes to the JSON.**
+
 ### Chamber
 
 `chambers` in the model are an array of 2 or more chamber objects. 

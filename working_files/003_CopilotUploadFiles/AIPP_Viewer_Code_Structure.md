@@ -11,10 +11,7 @@ Volume serial number is 7C78-A591
 D:.
 ¦   Copilot_Code_Summary.sce
 ¦   inputs_ADP-6.json
-¦   json_editor_sync_checks.json
 ¦   json_viewer.sce
-¦   json_viewer.sce~
-¦   modularization_checks.json
 ¦   pressure_Cd_array.csv
 ¦   test_output.json
 ¦   
@@ -56,7 +53,10 @@ D:.
 ¦   ¦       16_raw_json_vscode_editor_v2.js
 ¦   ¦       17_table_viewer_tab_v1.js
 ¦   ¦       18_toolbar_cleanup_move_add_v1.js
-¦   ¦       19_scilab_2025_quote_transport_v1.js
+¦   ¦       19_transport_receive_compat_v1.js
+¦   ¦       20_save_json_transport_v1.js
+¦   ¦       21_graph_layout_breadthfirst_tuned_v2.js
+¦   ¦       22_save_transport_diagnostics_dev_v1.js
 ¦   ¦       
 ¦   +---styles
 ¦   ¦       main.css
@@ -67,7 +67,21 @@ D:.
 +---saved_bundles
 ¦       v1.html
 ¦       v10.html
+¦       v100.html
+¦       v101.html
+¦       v102.html
+¦       v103.html
+¦       v104.html
+¦       v105.html
+¦       v106.html
+¦       v107.html
+¦       v108.html
+¦       v109.html
 ¦       v11.html
+¦       v110.html
+¦       v111.html
+¦       v112.html
+¦       v113.html
 ¦       v12.html
 ¦       v13.html
 ¦       v14.html
@@ -116,14 +130,59 @@ D:.
 ¦       v53.html
 ¦       v54.html
 ¦       v55.html
+¦       v56.html
+¦       v57.html
+¦       v58.html
+¦       v59.html
 ¦       v6.html
+¦       v60.html
+¦       v61.html
+¦       v62.html
+¦       v63.html
+¦       v64.html
+¦       v65.html
+¦       v66.html
+¦       v67.html
+¦       v68.html
+¦       v69.html
 ¦       v7.html
+¦       v70.html
+¦       v71.html
+¦       v72.html
+¦       v73.html
+¦       v74.html
+¦       v75.html
+¦       v76.html
+¦       v77.html
+¦       v78.html
+¦       v79.html
 ¦       v8.html
+¦       v80.html
+¦       v81.html
+¦       v82.html
+¦       v83.html
+¦       v84.html
+¦       v85.html
+¦       v86.html
+¦       v87.html
+¦       v88.html
+¦       v89.html
 ¦       v9.html
+¦       v90.html
+¦       v91.html
+¦       v92.html
+¦       v93.html
+¦       v94.html
+¦       v95.html
+¦       v96.html
+¦       v97.html
+¦       v98.html
+¦       v99.html
 ¦       
 +---scilab_functions
 ¦       buildHTML.sci
 ¦       ConvertIntsToDoubles.sci
+¦       deckToJson.sci
 ¦       FixJSON.sci
 ¦       ReceiveSafeJSON.sci
 ¦       SendSafeJSON.sci
@@ -167,6 +226,16 @@ global currentJsonDir;
 currentJsonPath = "";
 currentJsonDir = pwd();
 
+global aippSaveTransferId;
+global aippSaveChunks;
+global aippSaveExpectedChunks;
+global aippSaveSuggestedName;
+aippSaveTransferId = "";
+aippSaveChunks = [];
+aippSaveExpectedChunks = 0;
+aippSaveSuggestedName = "aipp_input_updated.json";
+
+
 // Helper: convert a numeric ASCII vector from browser JSON into a Scilab string.
 function txt = aippAsciiToText(a)
      txt = "";
@@ -177,6 +246,118 @@ function txt = aippAsciiToText(a)
      for k = 1:size(a, "*")
          txt = txt + ascii(a(k));
      end
+endfunction
+
+// Centralized Scilab -> browser send helper.
+function aippSendToBrowser(response, cb)
+    global browser;
+    jsonOut = toJSON(response);
+    jsonOut = sendSafeJSON(jsonOut);
+    set(browser, "data", jsonOut);
+    cb(jsonOut);
+endfunction
+
+// Direct ASCII Scilab -> browser send helper.
+function aippSendAsciiToBrowser(response, cb)
+    global browser;
+    jsonOut = toJSON(response);
+    asciiOut = asciimat(jsonOut);
+    if size(asciiOut, 1) > 1 then
+        asciiOut = asciiOut';
+    end
+    set(browser, "data", asciiOut);
+    cb(asciiOut);
+endfunction
+
+// Browser -> Scilab receive helper.
+function msg = aippReceiveFromBrowser(data)
+    if typeof(data) == "constant" then
+        JSONstring = asciimat(data);
+    else
+        JSONstring = data;
+        JSONstring = receiveSafeJSON(JSONstring);
+    end
+    msg = fromJSON(JSONstring);
+endfunction
+
+// Common save routine used by direct and chunked save transports.
+function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
+    global currentJsonPath;
+    global currentJsonDir;
+
+    startDir = currentJsonDir;
+    if startDir == "" then
+        startDir = pwd();
+    end
+
+    try
+        [outName, outDir] = uiputfile(["*.json", "JSON files"], startDir, "Save updated AIPP JSON as");
+    catch
+        r = struct();
+        r.type = "save_json_error";
+        r.message = "uiputfile failed while selecting output path.";
+        aippSendToBrowser(r, cb);
+        return;
+    end
+
+    if outName == "" then
+        r = struct();
+        r.type = "save_json_cancelled";
+        r.message = "User cancelled save dialog.";
+        aippSendAsciiToBrowser(r, cb);
+        return;
+    end
+
+    outPath = outDir + filesep() + outName;
+    [p, n, ext] = fileparts(outPath);
+    if ext == "" then
+        outPath = outPath + ".json";
+    end
+
+    try
+        jsonText = strsubst(jsonText, ascii(13), "");
+        lines = tokens(jsonText, ascii(10));
+        lines = FixJSON(lines)
+        mputl(lines, outPath);
+    catch
+        r = struct();
+        r.type = "save_json_error";
+        r.message = "Failed to write selected JSON output file.";
+        aippSendAsciiToBrowser(r, cb);
+        return;
+    end
+
+    currentJsonPath = outPath;
+    currentJsonDir = p;
+
+    r = struct();
+    r.type = "save_json_success";
+    r.path = strsubst(outPath, "\\", "/");
+    aippSendToBrowser(r, cb);
+endfunction
+
+// Transport config helper. Scilab 2025.1.0 uses chunked save by default; newer versions use direct ASCII.
+function aippSendTransportConfig(cb)
+    try
+        v = getversion();
+        vstr = strcat(string(v), " ");
+    catch
+        vstr = "unknown";
+    end
+
+    cfg = struct();
+    cfg.type = "transport_config";
+    cfg.scilab_version = vstr;
+    cfg.save_chunk_size = 1200;
+    cfg.save_chunk_delay_ms = 5;
+
+    if grep(vstr, "2025.1.0") <> [] then
+        cfg.save_transport = "chunked";
+    else
+        cfg.save_transport = "direct_ascii";
+    end
+
+    aippSendToBrowser(cfg, cb);
 endfunction
 
 function trackVersions()
@@ -242,18 +423,19 @@ function browserCallback(data, cb)
     // --------------------------
     if data == "loaded" then
         disp("Browser ready");
+        aippSendTransportConfig(cb);
         return;
     end
-
-    // With updated README convention:
-    // Browser messages are expected to be valid JSON strings directly.
-    JSONstring = data;
-
+    // Browser messages may arrive as either existing JSON strings or ASCII arrays.
     try
-        msg = fromJSON(JSONstring);
+        msg = aippReceiveFromBrowser(data);
     catch
         disp("Invalid JSON from browser");
-        disp(JSONstring);
+        try
+            disp(string(data));
+        catch
+            disp("Unable to display browser payload.");
+        end
         return;
     end
 
@@ -265,18 +447,114 @@ function browserCallback(data, cb)
     select msg.type
 
     // ==========================
+    
+    case "debug_payload" then
+        disp("[AIPP DEBUG] debug_payload received");
+        try
+            disp("[AIPP DEBUG] requested_size = " + string(msg.requested_size));
+        catch
+            disp("[AIPP DEBUG] requested_size not provided");
+        end
+        try
+            disp("[AIPP DEBUG] size(msg.data,*) = " + string(size(msg.data, "*")));
+        catch
+            disp("[AIPP DEBUG] could not read msg.data size");
+        end
+        return;
+
+    case "save_json_begin" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        global aippSaveSuggestedName;
+        aippSaveTransferId = msg.transfer_id;
+        aippSaveExpectedChunks = int(msg.total_chunks);
+        aippSaveChunks = emptystr(1, aippSaveExpectedChunks);
+        if or(fieldnames(msg) == "suggested_name") then
+            aippSaveSuggestedName = msg.suggested_name;
+        else
+            aippSaveSuggestedName = "aipp_input_updated.json";
+        end
+        disp("[AIPP SAVE] begin chunked save: " + string(aippSaveExpectedChunks) + " chunks");
+        return;
+
+    case "save_json_chunk" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        if msg.transfer_id <> aippSaveTransferId then
+            disp("[AIPP SAVE] ignoring chunk with mismatched transfer_id");
+            return;
+        end
+        idxChunk = int(msg.chunk_index);
+        if idxChunk < 1 | idxChunk > aippSaveExpectedChunks then
+            disp("[AIPP SAVE] ignoring chunk with invalid index");
+            return;
+        end
+        try
+            aippSaveChunks(idxChunk) = asciimat(msg.data);
+        catch
+            disp("[AIPP SAVE] failed to decode chunk " + string(idxChunk));
+        end
+        return;
+
+    case "save_json_end" then
+        global aippSaveTransferId;
+        global aippSaveChunks;
+        global aippSaveExpectedChunks;
+        global aippSaveSuggestedName;
+        if msg.transfer_id <> aippSaveTransferId then
+            disp("[AIPP SAVE] save_json_end transfer_id mismatch");
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Chunked save transfer_id mismatch.";
+            aippSendToBrowser(r, cb);
+            return;
+        end
+        jsonText = "";
+        missing = [];
+        for ii = 1:aippSaveExpectedChunks
+            if aippSaveChunks(ii) == "" then
+                missing($+1) = ii;
+            else
+                jsonText = jsonText + aippSaveChunks(ii);
+            end
+        end
+        if missing <> [] then
+            r = struct();
+            r.type = "save_json_error";
+            r.message = "Chunked save missing one or more chunks.";
+            aippSendToBrowser(r, cb);
+            return;
+        end
+        disp("[AIPP SAVE] chunked save assembled successfully");
+        aippSaveJsonTextToLocalFile(jsonText, aippSaveSuggestedName, cb);
+        aippSaveTransferId = "";
+        aippSaveChunks = [];
+        aippSaveExpectedChunks = 0;
+        return;
+
     case "select_file" then
 
-        [file, path] = uigetfile("*.json", "Select JSON File");
+        [file, path] = uigetfile(["*.deck"; "*.json"]);
 
         if file == "" then
             return;
         end
 
-        fullpath = path + "\" + file;
+        
 
+        fullpath = path + "\" + file;
+        
+
+        if fileparts(fullpath, "extension") == ".deck" then
+            lines = deckToJSON(fullpath);
+        else
+            lines = mgetl(fullpath);
+        end
+        
         // Read file
-        lines = mgetl(fullpath);
+      
         jsonText = strcat(lines, ascii(10));
         jsonText = strsubst(jsonText, ascii(13), "");
 
@@ -292,12 +570,7 @@ function browserCallback(data, cb)
         response = struct();
         response.type = "json_ascii";
         response.data = asciiData;
-        
-
-        jsonOut = toJSON(response);
-        jsonOut = sendSafeJSON(jsonOut)
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "select_csv" then
 
         [file, path] = uigetfile("*.csv", "Select CSV File");
@@ -320,11 +593,7 @@ function browserCallback(data, cb)
         response = struct();
         response.type = "csv_ascii";
         response.data = asciiData;
-    
-        jsonOut = toJSON(response);
-        jsonOut = sendSafeJSON(jsonOut);
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "request_pyrolist" then
         pyrofile = fullfile(pwd(), "aipp_files", "pyrolist.json");
         response = struct();
@@ -335,10 +604,7 @@ function browserCallback(data, cb)
         else
             response.type = "pyrolist_error"; response.message = "Could not find " + pyrofile;
         end
-        jsonOut = toJSON(response);
-        jsonOut = sendSafeJSON(jsonOut)
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(response, cb);
     case "save_json_ascii" then
          try
             jsonText = asciimat(msg.data);
@@ -347,10 +613,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_error";
             r.message = "Unable to decode JSON ASCII payload from browser.";
-            jsonOut = toJSON(r);
-            jsonOut = sendSafeJSON(jsonOut)
-            set(browser, "data", jsonOut);
-            cb(jsonOut);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -367,10 +630,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_error";
             r.message = "uiputfile failed while selecting output path.";
-            jsonOut = toJSON(r);
-            jsonOut = sendSafeJSON(jsonOut)
-            set(browser, "data", jsonOut);
-            cb(jsonOut);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -378,10 +638,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_cancelled";
             r.message = "User cancelled save dialog.";
-            jsonOut = toJSON(r);
-            jsonOut = sendSafeJSON(jsonOut)
-            set(browser, "data", jsonOut);
-            cb(jsonOut);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -403,10 +660,7 @@ function browserCallback(data, cb)
             r = struct();
             r.type = "save_json_error";
             r.message = "Failed to write selected JSON output file.";
-            jsonOut = toJSON(r);
-            jsonOut = sendSafeJSON(jsonOut)
-            set(browser, "data", jsonOut);
-            cb(jsonOut);
+    aippSendToBrowser(r, cb);
             return;
         end
     
@@ -417,10 +671,7 @@ function browserCallback(data, cb)
         r = struct();
         r.type = "save_json_success";
         r.path = strsubst(outPath, "\", "/");
-        jsonOut = toJSON(r);
-        jsonOut = sendSafeJSON(jsonOut)
-        set(browser, "data", jsonOut);
-        cb(jsonOut);
+    aippSendToBrowser(r, cb);
 
     else
         disp("Unknown type");
@@ -429,7 +680,6 @@ function browserCallback(data, cb)
     end
 
 endfunction
-
 
 ```
  
@@ -2351,326 +2601,90 @@ This script that creates this markdown document is automatically going to paste 
 If the dependency map does not make sense relative to the code snapshot provided throughout this document please warn the user and ask for an update.
 Current dependency map
 ```json
-
 {
   "system": "AIPP_JSON_Viewer",
-  "version": "1.0",
+  "version": "1.0-transport-cleanup",
+  "patch": "transport_module_rename_version_config_optional_diagnostics_dependency_map_update",
   "entry_points": {
     "scilab": "json_viewer.sce",
     "html": "browser_files/index.html",
     "bundle": "browser_files/dist/bundle.html"
   },
-
   "global_rules": {
     "execution_order_required": true,
     "module_system": "global_scope_ordered_load",
     "source_of_truth": "browser_json_state",
-    "communication": "json_ascii_via_callback"
+    "communication": "version_configured_save_transport"
   },
-
-  "layers": {
-    "state": [
-      "01_comm_state_schema_model.js"
-    ],
-    "model": [
-      "02_tree_code_graph_model.js"
-    ],
-    "editors": [
-      "03_popup_smart_editors.js",
-      "04_orifice_wall_cd_editors.js",
-      "06_pyro_master_editor.js"
-    ],
-    "visualization": [
-      "05_scilab_graph_engine.js",
-      "10_flow_chart_chamber_cards.js",
-      "11_flow_chart_overlay_sync.js"
-    ],
-    "topology": [
-      "07_startup_topology_dependency_base.js",
-      "08_clean_topology_graph_overrides.js",
-      "09_topology_removal_workflow.js"
-    ],
-    "data_views": [
-      "13_raw_json_viewer_phase1_v1.js",
-      "14_raw_json_viewer_phase2_v1.js",
-      "15_raw_json_and_tree_realign_v1.js",
-      "16_raw_json_vscode_editor_v2.js",
-      "17_table_viewer_tab_v1.js"
-    ],
-    "control": [
-      "18_toolbar_cleanup_move_add_v1.js"
-    ],
-    "io": [
-      "12_save_json_local.js"
-    ],
-    "transport": [
-      "19_scilab_2025_quote_transport_v1.js"
-    ]
-  },
-
-  "modules": [
-    {
-      "name": "01_comm_state_schema_model.js",
-      "role": "state_root",
-      "depends_on": [],
-      "provides": [
-        "json_schema",
-        "validation_rules",
-        "global_state_object"
-      ],
-      "used_by": "ALL"
+  "transport": {
+    "receive_compat_module": "19_transport_receive_compat_v1.js",
+    "save_transport_module": "20_save_json_transport_v1.js",
+    "optional_diagnostics_module": "browser_files/js_optional/21_save_transport_diagnostics_dev_v1.js",
+    "config_message": "transport_config",
+    "scilab_2025_1_0_default": {
+      "save_transport": "chunked",
+      "save_chunk_size": 1200,
+      "save_chunk_delay_ms": 5
     },
-
-    {
-      "name": "02_tree_code_graph_model.js",
-      "role": "data_model",
-      "depends_on": [
-        "01_comm_state_schema_model.js"
-      ],
-      "provides": [
-        "tree_model",
-        "graph_model"
-      ],
-      "used_by": [
-        "editors",
-        "visualization",
-        "data_views"
-      ]
-    },
-
-    {
-      "name": "03_popup_smart_editors.js",
-      "role": "generic_editor_framework",
-      "depends_on": [
-        "01_comm_state_schema_model.js",
-        "02_tree_code_graph_model.js"
-      ],
-      "provides": [
-        "popup_edit_logic",
-        "context_aware_editing"
-      ]
-    },
-
-    {
-      "name": "04_orifice_wall_cd_editors.js",
-      "role": "domain_specific_editors",
-      "depends_on": [
-        "03_popup_smart_editors.js"
-      ],
-      "provides": [
-        "orifice_editor",
-        "wall_editor",
-        "Cd_editor"
-      ]
-    },
-
-    {
-      "name": "05_scilab_graph_engine.js",
-      "role": "graph_renderer",
-      "depends_on": [
-        "02_tree_code_graph_model.js",
-        "vendor/cytoscape.min.js"
-      ],
-      "provides": [
-        "topology_graph_rendering"
-      ]
-    },
-
-    {
-      "name": "06_pyro_master_editor.js",
-      "role": "pyro_editor",
-      "depends_on": [
-        "01_comm_state_schema_model.js",
-        "02_tree_code_graph_model.js"
-      ],
-      "external_messages": [
-        "request_pyrolist",
-        "pyrolist_ascii"
-      ],
-      "provides": [
-        "pyro_editing_ui"
-      ]
-    },
-
-    {
-      "name": "07_startup_topology_dependency_base.js",
-      "role": "initialization",
-      "depends_on": [
-        "01_comm_state_schema_model.js",
-        "02_tree_code_graph_model.js",
-        "03_popup_smart_editors.js",
-        "04_orifice_wall_cd_editors.js",
-        "05_scilab_graph_engine.js",
-        "06_pyro_master_editor.js"
-      ],
-      "provides": [
-        "initial_topology_build"
-      ]
-    },
-
-    {
-      "name": "08_clean_topology_graph_overrides.js",
-      "role": "graph_cleanup",
-      "depends_on": [
-        "07_startup_topology_dependency_base.js"
-      ],
-      "provides": [
-        "topology_normalization"
-      ]
-    },
-
-    {
-      "name": "09_topology_removal_workflow.js",
-      "role": "deletion_logic",
-      "depends_on": [
-        "02_tree_code_graph_model.js",
-        "08_clean_topology_graph_overrides.js"
-      ],
-      "provides": [
-        "safe_removal_workflows"
-      ]
-    },
-
-    {
-      "name": "10_flow_chart_chamber_cards.js",
-      "role": "ui_visual_cards",
-      "depends_on": [
-        "02_tree_code_graph_model.js",
-        "05_scilab_graph_engine.js"
-      ],
-      "provides": [
-        "chamber_visual_cards"
-      ]
-    },
-
-    {
-      "name": "11_flow_chart_overlay_sync.js",
-      "role": "ui_sync",
-      "depends_on": [
-        "05_scilab_graph_engine.js",
-        "10_flow_chart_chamber_cards.js"
-      ],
-      "provides": [
-        "overlay_sync_logic"
-      ]
-    },
-
-    {
-      "name": "12_save_json_local.js",
-      "role": "io_save",
-      "depends_on": [
-        "01_comm_state_schema_model.js"
-      ],
-      "external_messages": [
-        "save_json_ascii",
-        "save_json_success",
-        "save_json_error"
-      ]
-    },
-
-    {
-      "name": "13_raw_json_viewer_phase1_v1.js",
-      "role": "raw_view_base",
-      "depends_on": [
-        "01_comm_state_schema_model.js"
-      ]
-    },
-
-    {
-      "name": "14_raw_json_viewer_phase2_v1.js",
-      "role": "raw_view_enhanced",
-      "depends_on": [
-        "13_raw_json_viewer_phase1_v1.js"
-      ]
-    },
-
-    {
-      "name": "15_raw_json_and_tree_realign_v1.js",
-      "role": "sync_engine",
-      "depends_on": [
-        "02_tree_code_graph_model.js",
-        "14_raw_json_viewer_phase2_v1.js"
-      ],
-      "provides": [
-        "tree_json_sync"
-      ]
-    },
-
-    {
-      "name": "16_raw_json_vscode_editor_v2.js",
-      "role": "advanced_editor",
-      "depends_on": [
-        "15_raw_json_and_tree_realign_v1.js"
-      ]
-    },
-
-    {
-      "name": "17_table_viewer_tab_v1.js",
-      "role": "table_view",
-      "depends_on": [
-        "01_comm_state_schema_model.js"
-      ]
-    },
-
-    {
-      "name": "18_toolbar_cleanup_move_add_v1.js",
-      "role": "ui_controller",
-      "depends_on": [
-        "ALL_UI_AND_MODEL_MODULES"
-      ],
-      "provides": [
-        "toolbar_actions",
-        "global_ui_controls"
-      ]
-    },
-
-    {
-      "name": "19_scilab_2025_quote_transport_v1.js",
-      "role": "transport_layer",
-      "depends_on": [
-        "communication_contract"
-      ],
-      "provides": [
-        "safe_json_transport",
-        "quote_handling_fixes"
-      ]
+    "newer_scilab_default": {
+      "save_transport": "direct_ascii",
+      "save_chunk_size": 1200,
+      "save_chunk_delay_ms": 5
     }
-  ],
-
-  "scilab_integration": {
-    "callback": "browserCallback",
-    "message_protocol": {
-      "required_field": "type",
-      "format": "JSON_only",
-      "encoding": "ASCII_array"
-    },
-    "message_types": {
-      "browser_to_scilab": [
+  },
+  "message_types": {
+    "browser_to_scilab": {
+      "old_json_string_path": [
         "select_file",
         "select_csv",
-        "request_pyrolist",
-        "save_json_ascii"
+        "request_pyrolist"
       ],
-      "scilab_to_browser": [
+      "ascii_array_path": [
+        "save_json_ascii",
+        "debug_payload",
+        "save_json_begin",
+        "save_json_chunk",
+        "save_json_end"
+      ]
+    },
+    "scilab_to_browser": {
+      "old_send_helper": [
+        "transport_config",
         "json_ascii",
         "csv_ascii",
         "pyrolist_ascii",
+        "pyrolist_error",
         "save_json_success",
         "save_json_error"
+      ],
+      "ascii_send_helper": [
+        "save_json_cancelled"
       ]
     }
   },
-
-  "data_flow": {
-    "source_of_truth": "browser_json_state",
-    "pipelines": [
-      "JSON → tree_model",
-      "JSON → graph_model",
-      "JSON → editors",
-      "JSON ↔ raw_editor",
-      "JSON → table_view"
-    ]
-  }
+  "modules": [
+    "01_comm_state_schema_model.js",
+    "02_tree_code_graph_model.js",
+    "03_popup_smart_editors.js",
+    "04_orifice_wall_cd_editors.js",
+    "05_scilab_graph_engine.js",
+    "06_pyro_master_editor.js",
+    "07_startup_topology_dependency_base.js",
+    "08_clean_topology_graph_overrides.js",
+    "09_topology_removal_workflow.js",
+    "10_flow_chart_chamber_cards.js",
+    "11_flow_chart_overlay_sync.js",
+    "12_save_json_local.js",
+    "13_raw_json_viewer_phase1_v1.js",
+    "14_raw_json_viewer_phase2_v1.js",
+    "15_raw_json_and_tree_realign_v1.js",
+    "16_raw_json_vscode_editor_v2.js",
+    "17_table_viewer_tab_v1.js",
+    "18_toolbar_cleanup_move_add_v1.js",
+    "19_transport_receive_compat_v1.js",
+    "20_save_json_transport_v1.js",
+    "cytoscape.min.js"
+  ]
 }
 JSON Message Contract
 This section will detail message passing requirements and assumptions between Scilab and the browser
@@ -2700,7 +2714,7 @@ The full HTML is recreated so it can be read into a single string and passed fro
 ```
 ##### 02_toolbar.html
 ```html
-<div id="toolbar"><button class="btn" onclick="selectFile()">Open JSON File</button><button class="btn secondary" onclick="expandAll()">Expand All</button><button class="btn secondary" onclick="collapseAll()">Collapse All</button><span class="toolbarDivider"></span><button class="btn secondary" onclick="openTopologyAddMenu(event)">Add ▼</button><div id="topologyAddMenu" class="topologyMenu" style="display:none"><button onclick="openAddEntityDialog('chamber')">Add Chamber</button><button onclick="openAddEntityDialog('orifice')">Add Orifice</button><button onclick="openAddEntityDialog('wall')">Add Wall</button></div><div class="spacer"></div><div class="field"><span>Search:</span><input id="searchBox" placeholder="key / value..." oninput="renderTree()"></div></div>
+<div id="toolbar"><button class="btn" onclick="selectFile()">Open Input Deck</button><button class="btn secondary" onclick="expandAll()">Expand All</button><button class="btn secondary" onclick="collapseAll()">Collapse All</button><span class="toolbarDivider"></span><button class="btn secondary" onclick="openTopologyAddMenu(event)">Add ▼</button><div id="topologyAddMenu" class="topologyMenu" style="display:none"><button onclick="openAddEntityDialog('chamber')">Add Chamber</button><button onclick="openAddEntityDialog('orifice')">Add Orifice</button><button onclick="openAddEntityDialog('wall')">Add Wall</button></div><div class="spacer"></div><div class="field"><span>Search:</span><input id="searchBox" placeholder="key / value..." oninput="renderTree()"></div></div>
 ```
 ##### 03_main_layout.html
 ```html
@@ -2719,7 +2733,20 @@ Please not that because of how Scilab recreates the full HTML the order of the J
 ##### 01_comm_state_schema_model.js
 ```java
 
-function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
+function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}
+
+function toScilabAsciiMsg(o) {
+  if (!window.toScilab) return;
+
+  var json = JSON.stringify(o);
+  var out = [];
+  for (var i = 0; i < json.length; i++) {
+    out.push(json.charCodeAt(i));
+  }
+
+  window.toScilab(out);
+}
+function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
 let fullJson=null,currentTab="tree",treeOpenAll=false,simNodes=[],simEdges=[],popupNode=null,popupPath=null,popupWorkingCopy=null,popupOriginalCopy=null,popupDrag={active:false,dx:0,dy:0},pendingCdCsvImport=null,pendingRemovalPlan=null,lastRemovalSnapshot=null,applyEventRemapsOnRemoval=true,masterPyroList={},masterPyroNames=[],pyroListLoadState='not requested',activePyroCombo=null;
 const STANDARD_SPECIES=["Ar","CO","CO2","H2","H2O","He","N2","N2O","O2"],CHAMBER_INIT_TYPES=["mPT","PVT","mVT","nVT","rho_mVT"],CHAMBER_INIT_FIELDS={mPT:["mass","pressure","temperature"],PVT:["pressure","volume","temperature"],mVT:["mass","volume","temperature"],nVT:["moles","volume","temperature"],rho_mVT:["density","volume","temperature"]},CHAMBER_INIT_DEFAULTS={mass:"0.0 g",pressure:"0.101325 MPa",temperature:"300.0 K",volume:"1.0 L",density:"0.0 kg/m^3",moles:"0.0 mol"},AIPP_CD_TEMPLATES={constant:{basis:"constant",Cd_value:0.7},time:{basis:"time",time_units:"ms",time_array:[0,0.01],Cd_array:[0.75,0.5],continuity:"interpolate"},pressure:{basis:"pressure",pressure_units:"MPa",pressure_array:[25,50],Cd_array:[0.75,0.5],continuity:"discrete"}};
 const AIPP_WALL_CONNECTION_TYPES=["CONSTANT_TEMPERATURE","CONSTANT_HEAT","WALL","CONSTANT_COEFFICIENT","VARIABLE_COEFFICIENT"],AIPP_WALL_CONNECTION_SCHEMAS={CONSTANT_TEMPERATURE:{defaults:{type:"CONSTANT_TEMPERATURE",temperature:"294.15 K"},fields:[["temperature","text"]]},CONSTANT_HEAT:{defaults:{type:"CONSTANT_HEAT",heat:"0.0 W"},fields:[["heat","text"]]},WALL:{defaults:{type:"WALL",wall_index:1},fields:[["wall_index","wall_index"]]},CONSTANT_COEFFICIENT:{defaults:{type:"CONSTANT_COEFFICIENT",chamber_index:1,heat_transfer_coefficient:"1.0E+2 W/(m^2 K)"},fields:[["chamber_index","chamber_index"],["heat_transfer_coefficient","text"]]},VARIABLE_COEFFICIENT:{defaults:{type:"VARIABLE_COEFFICIENT",chamber_index:1,scale_factor:1},fields:[["chamber_index","chamber_index"],["scale_factor","number"]]}};
@@ -2733,7 +2760,6 @@ function refreshAllViews(){renderTree();updateCodeTextFromModel();buildGraph(ful
 ##### 03_popup_smart_editors.js
 ```java
 function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();document.getElementById("popup").style.display="block";}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
-
 ```
 ##### 04_orifice_wall_cd_editors.js
 ```java
@@ -2758,7 +2784,6 @@ function getAssemblyCounts(){let a=getAssemblyInfo(fullJson).assembly||{};return
 ```java
 function requestCdCsvImport(path,mode){pendingCdCsvImport={path:path.slice(),mode:mode||'time'};selectCsvFile();}function parseCdCsvText(csvText){const clean=String(csvText||'').split(String.fromCharCode(13)).join('');const lines=clean.split(String.fromCharCode(10)).map(x=>x.trim()).filter(Boolean),rows=[];let xHeader=null,yHeader=null;for(const line of lines){const parts=line.split(/[,;	 ]+/).map(x=>x.trim()).filter(Boolean);if(parts.length<2)continue;const x=Number(parts[0]),cd=Number(parts[1]);if(Number.isFinite(x)&&Number.isFinite(cd)){rows.push([x,cd]);}else if(rows.length===0&&xHeader===null){xHeader=parts[0];yHeader=parts[1];}}return{rows,xHeader,yHeader};}function applyCdCsvText(csvText){if(!pendingCdCsvImport){setStatus('No pending Cd CSV import target.',false);return;}const target=getPopupObjectAtPath(pendingCdCsvImport.path),parsed=parseCdCsvText(csvText),rows=parsed.rows;if(!target||typeof target!=='object'){setStatus('Cd CSV target no longer exists.',false);return;}if(!rows.length){setStatus('CSV import found no numeric x,Cd rows.',false);return;}const mode=pendingCdCsvImport.mode==='pressure'?'pressure':'time';const xKey=mode==='pressure'?'pressure_array':'time_array';const unitKey=mode==='pressure'?'pressure_units':'time_units';const expected=String(target[unitKey]||'').trim();const found=String(parsed.xHeader||'').trim();if(!found){let msg='CSV import requires first-row x-units in column 1 matching selected '+unitKey+' '+expected+'. Import cancelled.';setStatus(msg,false);if(window.alert)window.alert(msg);return;}if(expected&&found.toLowerCase()!==expected.toLowerCase()){let msg='CSV x-units header '+found+' does not match selected '+unitKey+' '+expected+'. Import cancelled.';setStatus(msg,false);if(window.alert)window.alert(msg);return;}target[xKey]=rows.map(r=>r[0]);target.Cd_array=rows.map(r=>r[1]);pendingCdCsvImport=null;renderInspector();setStatus('Imported '+rows.length+' Cd rows from CSV.',true);}function fromScilab(msg){try{let o=typeof msg==='string'?JSON.parse(msg):msg;if(o.type==='json_ascii'){fullJson=JSON.parse(asciiToString(o.data));refreshAllViews();setStatus('JSON loaded successfully.',true);}else if(o.type==='csv_ascii'){applyCdCsvText(asciiToString(o.data));}else if(o.type==='pyrolist_ascii'){loadPyroListFromText(asciiToString(o.data));}else if(o.type==='pyrolist_error'){pyroListLoadState='error: '+(o.message||'unable to load pyrolist');setStatus('Pyro list load error: '+(o.message||'unable to load pyrolist'),false);if(popupNode&&popupNode.type==='chamber')renderInspector();}else setStatus('Unknown message type: '+o.type,false);}catch(e){setStatus('Failed to parse message: '+e.message,false);}}
 let cyPrototype=null,cytoscapeLoadStarted=false,cytoscapeLoadFailed=false,cyOverlayRaf=null;function ensureCyContainer(){return document.getElementById('cyGraph');}function ensureCyOverlayLayer(){let l=document.getElementById('cyChamberOverlayLayer');if(!l){l=document.createElement('div');l.id='cyChamberOverlayLayer';ensureCyContainer().appendChild(l);}return l;}function loadCytoscapeLocalThen(cb){if(window.cytoscape){cb(true);return;}if(cytoscapeLoadFailed){cb(false);return;}if(cytoscapeLoadStarted){setTimeout(()=>loadCytoscapeLocalThen(cb),50);return;}cytoscapeLoadStarted=true;let s=document.createElement('script');s.src='../vendor/cytoscape.min.js';s.onload=()=>cb(!!window.cytoscape);s.onerror=()=>{cytoscapeLoadFailed=true;cb(false);};document.head.appendChild(s);}function renderCytoscapePrototype(){let el=ensureCyContainer();if(!el)return;loadCytoscapeLocalThen(ok=>{if(!ok){el.innerHTML='<div class="cyMissing"><b>Cytoscape is required for graph rendering.</b><br/>Place reviewed local vendor file at <code>browser_files/vendor/cytoscape.min.js</code>.<br/><br/>Loaded entities: '+simNodes.length+'</div>';return;}el.innerHTML='';el.appendChild(ensureCyOverlayLayer());if(fullJson)buildGraph(fullJson);let model=buildCytoscapeElements(computeAippCytoscapeLayoutPositions());cyPrototype=cytoscape({container:el,elements:model.elements,style:cytoscapePrototypeStyle(),layout:{name:'preset',fit:false,padding:90},userZoomingEnabled:false,userPanningEnabled:true,boxSelectionEnabled:false,autounselectify:true,minZoom:.1,maxZoom:4,pixelRatio:1});cyPrototype.on('dbltap','node',e=>{let n=simNodes.find(x=>x.id===e.target.id());if(n)openPopup(n);});installSmoothCytoscapeWheelZoom(cyPrototype);buildCytoscapeChamberOverlays();cyPrototype.ready(()=>{applyAippCytoscapeLayout(false);setInitialCytoscapeViewport();});});}function installSmoothCytoscapeWheelZoom(cy){let c=cy.container();if(!c)return;if(c.__aippWheelZoomHandler)c.removeEventListener('wheel',c.__aippWheelZoomHandler,true);let h=e=>{if(e.target&&e.target.closest&&e.target.closest('.pyroComboPanel,#popupBody,textarea,select,input'))return;e.preventDefault();e.stopPropagation();let r=c.getBoundingClientRect(),pt={x:e.clientX-r.left,y:e.clientY-r.top},z0=cy.zoom(),p0=cy.pan(),z1=Math.max(cy.minZoom(),Math.min(cy.maxZoom(),z0*Math.exp(-e.deltaY*.0018))),m={x:(pt.x-p0.x)/z0,y:(pt.y-p0.y)/z0};cy.viewport({zoom:z1,pan:{x:pt.x-m.x*z1,y:pt.y-m.y*z1}});scheduleCytoscapeOverlayUpdate();};c.__aippWheelZoomHandler=h;c.addEventListener('wheel',h,{passive:false,capture:true});}function computeAippCytoscapeLayoutPositions(){let pos={};simNodes.filter(n=>n.type==='chamber').forEach((n,i)=>pos[n.id]={x:190+i*390,y:340});simNodes.filter(n=>n.type==='orifice').forEach((n,i)=>{let o=n.data||{},a=pos['c'+parseInt(o.from)]||{x:190,y:340},b=pos['c'+parseInt(o.to)]||{x:580,y:340};pos[n.id]={x:(a.x+b.x)/2,y:155-i*20};});simNodes.filter(n=>n.type==='wall').forEach((n,i)=>{let w=n.data||{},ci=w.left_connection?.chamber_index||w.right_connection?.chamber_index||1,a=pos['c'+ci]||{x:190,y:340};pos[n.id]={x:a.x+(i%3-1)*105,y:a.y+190};});return pos;}function buildCytoscapeElements(pos){let elements=[];for(const n of simNodes){let p=pos[n.id]||{x:0,y:0};elements.push({group:'nodes',data:{id:n.id,label:n.type==='chamber'?'':n.label,type:n.type},position:p});}simEdges.forEach((e,i)=>elements.push({group:'edges',data:{id:'e'+i,source:e.a,target:e.b,type:e.type||'flow',role:e.role||'',oneWay:e.oneWay?'true':'false',orificeIndex:e.orificeIndex||''}}));return{elements};}function applyAippCytoscapeLayout(anim){if(!cyPrototype)return;let p=computeAippCytoscapeLayoutPositions();cyPrototype.batch(()=>cyPrototype.nodes().forEach(n=>{if(p[n.id()])anim?n.animate({position:p[n.id()]},{duration:250}):n.position(p[n.id()]);}));setTimeout(scheduleCytoscapeOverlayUpdate,anim?270:0);}function setInitialCytoscapeViewport(){if(!cyPrototype)return;cyPrototype.fit(cyPrototype.elements(),90);scheduleCytoscapeOverlayUpdate();}function fitCytoscapePrototype(){if(cyPrototype){cyPrototype.fit(cyPrototype.elements(),90);scheduleCytoscapeOverlayUpdate();}}function cytoscapePrototypeStyle(){return[{selector:'node',style:{'label':'data(label)','text-valign':'center','text-halign':'center','font-size':15,'font-weight':800,'color':'#005495','background-color':'#ededed','border-color':'#005495','border-width':2.5,'width':120,'height':56,'shape':'round-rectangle'}},{selector:'node[type="chamber"]',style:{'background-color':'#fff','border-color':'#005495','border-width':3,'width':260,'height':118,'label':''}},{selector:'node[type="orifice"]',style:{'background-color':'#009fe3','border-color':'#005495','width':184,'height':76}},{selector:'node[type="wall"]',style:{'shape':'diamond','background-color':'#eaf4ff','border-color':'#005495','width':128,'height':128}},{selector:'edge',style:{'width':3,'line-color':'#6b7280','target-arrow-color':'#6b7280','source-arrow-color':'#6b7280','target-arrow-shape':'none','source-arrow-shape':'none','curve-style':'bezier'}},{selector:'edge[type="flow"][oneWay="false"]',style:{'source-arrow-shape':'triangle','target-arrow-shape':'triangle'}},{selector:'edge[type="flow"][oneWay="true"][role="from"]',style:{'source-arrow-shape':'none','target-arrow-shape':'none'}},{selector:'edge[type="flow"][oneWay="true"][role="to"]',style:{'source-arrow-shape':'none','target-arrow-shape':'triangle'}},{selector:'edge[type="wall"]',style:{'line-style':'dashed','source-arrow-shape':'none','target-arrow-shape':'none'}}];}function buildCytoscapeChamberOverlays(){let layer=ensureCyOverlayLayer();layer.innerHTML='';if(!cyPrototype)return;cyPrototype.nodes('[type="chamber"]').forEach(node=>{let n=simNodes.find(x=>x.id===node.id());if(!n)return;let card=document.createElement('div');card.className='cyChamberCardOverlay';card.id='cyOverlay_'+node.id();card.innerHTML='<div class="cyChamberTitle">'+escapeHtml(n.label)+'</div><div class="cyChamberVolume">Volume: '+escapeHtml(truncText(getChamberVolumeText(n.data||{}),32))+'</div>';layer.appendChild(card);});}function scheduleCytoscapeOverlayUpdate(){if(cyOverlayRaf)cancelAnimationFrame(cyOverlayRaf);cyOverlayRaf=requestAnimationFrame(updateCytoscapeOverlayPositions);}function updateCytoscapeOverlayPositions(){cyOverlayRaf=null;if(!cyPrototype)return;cyPrototype.nodes('[type="chamber"]').forEach(node=>{let card=document.getElementById('cyOverlay_'+node.id());if(!card)return;let rp=node.renderedPosition(),bb=node.renderedBoundingBox({includeLabels:false}),w=Math.max(90,bb.w+2),h=Math.max(54,bb.h+2);card.style.width=w+'px';card.style.minHeight=h+'px';card.style.left=rp.x-w/2+'px';card.style.top=rp.y-h/2+'px';});}
-
 ```
 ##### 06_pyro_master_editor.js
 ```java
@@ -3258,12 +3283,16 @@ function applyRemovalFromPreview(){
         // workflow and may surprise the user. The save operation writes the current in-memory model.
       }
       var jsonText = (typeof stringifyAippJsonPretty === 'function') ? stringifyAippJsonPretty(fullJson) : JSON.stringify(fullJson, null, 2);
-      var msg = {
-        type: 'save_json_ascii',
-        data: stringToAsciiArray(jsonText),
-        suggested_name: 'aipp_input_updated.json'
-      };
-      toScilabMsg(msg);
+      if(typeof aippSendSaveJsonRequest === 'function'){
+        aippSendSaveJsonRequest(jsonText, 'aipp_input_updated.json');
+      }else{
+        var msg = {
+          type: 'save_json_ascii',
+          data: stringToAsciiArray(jsonText),
+          suggested_name: 'aipp_input_updated.json'
+        };
+        toScilabAsciiMsg(msg);
+      }
       setStatus('Save requested. Choose output file in Scilab dialog.', true);
     }catch(e){
       setStatus('Save request failed: '+e.message, false);
@@ -4760,81 +4789,543 @@ function applyRemovalFromPreview(){
   [0,50,200,700,1500].forEach(function(ms){ setTimeout(applyCleanup, ms); });
 })();
 ```
-##### 19_scilab_2025_quote_transport_v1.js
+##### 19_transport_receive_compat_v1.js
 ```java
-/* 19_scilab_2025_quote_transport_v1.js
-   Scilab 2025.1.0 browser transport compatibility shim.
-   Load after all application modules.
-
-   Why:
-   - Scilab 2026.1.0 can pass raw JSON strings from Scilab to JCEF/browser reliably.
-   - Scilab 2025.1.0 can corrupt/lose JSON double quotes in the string transport.
-
-   Supported inbound Scilab -> browser payload formats:
-   1) Raw JSON text:                    {"type":"json_ascii",...}
-   2) Quote-token text:                 AIPP_QUOTE:{<-quote->type<-quote->:...}
-   3) Bare historical quote-token text: {<-quote->type<-quote->:...}
-   4) ASCII frame text:                 AIPP_ASCII:123,34,116,...
+/* 19_transport_receive_compat_v1.js
+   Browser receive compatibility and transport config handler.
 */
 (function(){
-  if(window.__aippScilab2025QuoteTransportV1Applied) return;
-  window.__aippScilab2025QuoteTransportV1Applied = true;
+  if(window.__aippTransportReceiveCompatV1Applied) return;
+  window.__aippTransportReceiveCompatV1Applied = true;
 
-  var QUOTE_TOKEN = '<-quote->';
-  var QUOTE_PREFIX = 'AIPP_QUOTE:';
-  var ASCII_PREFIX = 'AIPP_ASCII:';
-
-  function decodeAsciiFrame(s){
-    var body = String(s || '').slice(ASCII_PREFIX.length).trim();
-    if(!body) return '';
-    var codes = body.split(',').map(function(x){ return Number(String(x).trim()); }).filter(Number.isFinite);
+  function aippAsciiArrayToString(a){
+    if(!Array.isArray(a)) return '';
     var out = '';
-    // Avoid apply() argument limits on very large JSON files.
-    for(var i=0;i<codes.length;i+=8192){
-      out += String.fromCharCode.apply(null, codes.slice(i, i+8192));
-    }
+    for(var i=0;i<a.length;i++) out += String.fromCharCode(Number(a[i]));
     return out;
   }
 
-  function decodeScilabTransportPayload(payload){
-    if(payload == null) return '';
-    if(Array.isArray(payload)){
-      var arr = payload.map(Number).filter(Number.isFinite);
-      var txt = '';
-      for(var i=0;i<arr.length;i+=8192){
-        txt += String.fromCharCode.apply(null, arr.slice(i, i+8192));
-      }
-      return txt;
+  function aippApplyTransportConfig(o){
+    window.aippTransportConfig = window.aippTransportConfig || {};
+    window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
+
+    window.aippTransportConfig.scilab_version = o.scilab_version || 'unknown';
+    window.aippTransportConfig.raw = o;
+
+    if(o.save_transport){
+      window.aippSaveTransportConfig.mode = o.save_transport;
+    }
+    if(o.save_chunk_size){
+      window.aippSaveTransportConfig.chunk_size = Number(o.save_chunk_size) || 1200;
+    }
+    if(o.save_chunk_delay_ms != null){
+      window.aippSaveTransportConfig.chunk_delay_ms = Number(o.save_chunk_delay_ms);
     }
 
-    var s = String(payload);
-    if(s.indexOf(ASCII_PREFIX) === 0){
-      return decodeAsciiFrame(s);
+    console.log('[AIPP TRANSPORT] Applied transport config:', window.aippSaveTransportConfig);
+    if(typeof setStatus === 'function'){
+      setStatus('Transport configured: save=' + (window.aippSaveTransportConfig.mode || 'default'), true);
     }
-    if(s.indexOf(QUOTE_PREFIX) === 0){
-      s = s.slice(QUOTE_PREFIX.length);
-    }
-    if(s.indexOf(QUOTE_TOKEN) >= 0){
-      s = s.split(QUOTE_TOKEN).join('"');
-    }
-    return s;
   }
 
-  var originalFromScilab = window.fromScilab;
+  function aippDecodeScilabTransportPayload(payload){
+    if(Array.isArray(payload)) return JSON.parse(aippAsciiArrayToString(payload));
+    if(payload && typeof payload === 'object' && typeof payload.length === 'number' && !payload.type){
+      try{
+        var arr = Array.prototype.slice.call(payload).map(Number);
+        if(arr.length && arr.every(Number.isFinite)) return JSON.parse(aippAsciiArrayToString(arr));
+      }catch(e){}
+    }
+    if(payload && typeof payload === 'object') return payload;
+    if(typeof payload === 'string'){
+      var txt = payload;
+      if(txt.indexOf('<-quote->') >= 0){
+        txt = txt.replaceAll('<-quote->', '"');
+        window.AIPP_SCILAB_QUOTE_TOKEN_MODE = true;
+      }
+      if(txt.indexOf('AIPP_ASCII:') === 0){
+        var body = txt.substring('AIPP_ASCII:'.length);
+        var nums = body.split(',').map(function(x){ return Number(x); }).filter(Number.isFinite);
+        txt = aippAsciiArrayToString(nums);
+      }
+      return JSON.parse(txt);
+    }
+    throw new Error('Unsupported Scilab transport payload type: ' + typeof payload);
+  }
+
+  function aippDispatchDecodedScilabMessage(o, originalPayload){
+    if(o && o.type === 'transport_config'){
+      aippApplyTransportConfig(o);
+      return;
+    }
+    if(o && o.type === 'save_json_success'){
+      if(typeof setStatus === 'function') setStatus('Saved JSON: ' + (o.path || o.file || 'selected file'), true);
+      return;
+    }
+    if(o && o.type === 'save_json_error'){
+      var msg = o.message || 'unknown error';
+      if(typeof setStatus === 'function') setStatus('Save JSON failed: ' + msg, false);
+      if(window.alert) window.alert('Save JSON failed: ' + msg);
+      return;
+    }
+    if(o && o.type === 'save_json_cancelled'){
+      if(typeof setStatus === 'function') setStatus('Save JSON cancelled.', true);
+      return;
+    }
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function'){
+      return window.__aippOriginalFromScilabBeforeTransportCompat(originalPayload);
+    }
+    if(o && o.type === 'json_ascii'){
+      var jsonText = (typeof asciiToString === 'function') ? asciiToString(o.data) : aippAsciiArrayToString(o.data || []);
+      fullJson = JSON.parse(jsonText);
+      if(typeof refreshAllViews === 'function') refreshAllViews();
+      if(typeof setStatus === 'function') setStatus('JSON loaded.', true);
+      return;
+    }
+    if(o && o.type === 'csv_ascii'){
+      if(typeof handleCsvAsciiMessage === 'function') return handleCsvAsciiMessage(o);
+      console.warn('[AIPP RX] csv_ascii received but no handler was found.', o);
+      return;
+    }
+    if(o && o.type === 'pyrolist_ascii'){
+      var pyroText = (typeof asciiToString === 'function') ? asciiToString(o.data) : aippAsciiArrayToString(o.data || []);
+      if(typeof loadPyroListFromText === 'function') loadPyroListFromText(pyroText);
+      else console.warn('[AIPP RX] pyrolist_ascii received but loadPyroListFromText was not found.');
+      return;
+    }
+    if(o && o.type === 'pyrolist_error'){
+      if(typeof setStatus === 'function') setStatus(o.message || 'Pyrolist load error.', false);
+      return;
+    }
+    console.warn('[AIPP RX] Unhandled decoded Scilab message:', o);
+  }
+
+  if(!window.__aippOriginalFromScilabBeforeTransportCompat && typeof window.fromScilab === 'function'){
+    window.__aippOriginalFromScilabBeforeTransportCompat = window.fromScilab;
+  }
+  window.aippDecodeScilabTransportPayload = aippDecodeScilabTransportPayload;
+  window.aippApplyTransportConfig = aippApplyTransportConfig;
+
   window.fromScilab = function(payload){
-    var decoded = decodeScilabTransportPayload(payload);
-    if(typeof originalFromScilab === 'function'){
-      return originalFromScilab(decoded);
+    var decoded;
+    try{ decoded = aippDecodeScilabTransportPayload(payload); }
+    catch(e){
+      console.error('[AIPP RX] Failed to decode Scilab payload:', e, payload);
+      if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return window.__aippOriginalFromScilabBeforeTransportCompat(payload);
+      return;
     }
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return aippDispatchDecodedScilabMessage(decoded, JSON.stringify(decoded));
+    return aippDispatchDecodedScilabMessage(decoded, payload);
+  };
+})();
+```
+##### 20_save_json_transport_v1.js
+```java
+/* 20_save_json_transport_v1.js
+   Modular Save JSON transport.
+
+   Config is supplied by Scilab via transport_config on browser load:
+   - Scilab 2025.1.0 => chunked, chunk_size 1200
+   - newer Scilab => direct_ascii
+
+   Safe fallback before config arrives is chunked.
+*/
+(function(){
+  if(window.__aippSaveJsonTransportV1Applied) return;
+  window.__aippSaveJsonTransportV1Applied = true;
+
+  window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
+  if(!window.aippSaveTransportConfig.mode) window.aippSaveTransportConfig.mode = 'chunked';
+  if(!window.aippSaveTransportConfig.chunk_size) window.aippSaveTransportConfig.chunk_size = 1200;
+  if(window.aippSaveTransportConfig.chunk_delay_ms == null) window.aippSaveTransportConfig.chunk_delay_ms = 5;
+
+  function stringToAsciiArrayForSaveTransport(s){
+    s = String(s == null ? '' : s);
+    var out = [];
+    for(var i=0; i<s.length; i++) out.push(s.charCodeAt(i));
+    return out;
+  }
+
+  function aippSendDirectSaveJson(jsonText, suggestedName){
+    var msg = {
+      type: 'save_json_ascii',
+      data: stringToAsciiArrayForSaveTransport(jsonText),
+      suggested_name: suggestedName || 'aipp_input_updated.json'
+    };
+    toScilabAsciiMsg(msg);
+  }
+
+  function aippSendChunkedSaveJson(jsonText, suggestedName){
+    var chunkSize = Number(window.aippSaveTransportConfig.chunk_size) || 1200;
+    var delayMs = Number(window.aippSaveTransportConfig.chunk_delay_ms);
+    if(!Number.isFinite(delayMs) || delayMs < 0) delayMs = 5;
+
+    jsonText = String(jsonText == null ? '' : jsonText);
+    suggestedName = suggestedName || 'aipp_input_updated.json';
+
+    var transferId = 'save_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+    var totalChunks = Math.max(1, Math.ceil(jsonText.length / chunkSize));
+
+    toScilabAsciiMsg({
+      type: 'save_json_begin',
+      transfer_id: transferId,
+      total_chars: jsonText.length,
+      total_chunks: totalChunks,
+      suggested_name: suggestedName,
+      chunk_size: chunkSize
+    });
+
+    var chunkIndex = 1;
+    function sendNextChunk(){
+      if(chunkIndex > totalChunks){
+        toScilabAsciiMsg({type: 'save_json_end', transfer_id: transferId});
+        if(typeof setStatus === 'function') setStatus('Chunked save transfer complete. Choose output file in Scilab dialog.', true);
+        return;
+      }
+      var start = (chunkIndex - 1) * chunkSize;
+      var chunkText = jsonText.slice(start, start + chunkSize);
+      toScilabAsciiMsg({
+        type: 'save_json_chunk',
+        transfer_id: transferId,
+        chunk_index: chunkIndex,
+        total_chunks: totalChunks,
+        data: stringToAsciiArrayForSaveTransport(chunkText)
+      });
+      chunkIndex++;
+      setTimeout(sendNextChunk, delayMs);
+    }
+    setTimeout(sendNextChunk, delayMs);
+  }
+
+  window.aippSendSaveJsonRequest = function(jsonText, suggestedName){
+    var mode = (window.aippSaveTransportConfig && window.aippSaveTransportConfig.mode) || 'chunked';
+    if(mode === 'direct_ascii') return aippSendDirectSaveJson(jsonText, suggestedName);
+    return aippSendChunkedSaveJson(jsonText, suggestedName);
+  };
+})();
+```
+##### 21_graph_layout_breadthfirst_tuned_v2.js
+```java
+/* 21_graph_layout_breadthfirst_tuned_v2.js
+   Optional Cytoscape breadthfirst layout with production defaults selected from JCEF tuning.
+
+   Joseph-selected defaults:
+     bfDirection = 'leftward'
+     bfAvoidOverlap = true
+     bfDirected = false
+     bfCircle = false
+     bfGrid = true
+     bfSpacingFactor = 0.9
+     bfMaximal = true
+     bfFit = true
+     bfPadding = 1000
+     bfAnimate = true
+     bfAnimationDuration = 600
+     bfNodeDimensionsIncludeLabels = false
+     includeWallsInAutoLayout = true
+
+   Default mode remains the existing manual/preset layout.
+*/
+(function(){
+  if(window.__aippGraphLayoutBreadthfirstTunedV2Applied) return;
+  window.__aippGraphLayoutBreadthfirstTunedV2Applied = true;
+
+  window.aippGraphLayoutConfig = window.aippGraphLayoutConfig || {};
+  var cfg = window.aippGraphLayoutConfig;
+
+  if(!cfg.mode) cfg.mode = 'preset_manual';
+  if(!cfg.autoLayout) cfg.autoLayout = 'breadthfirst';
+
+  // Tuned breadthfirst layout defaults.
+  // Valid direction values in current bundled Cytoscape: downward, leftward, upward, rightward.
+  if(cfg.bfDirection == null) cfg.bfDirection = 'leftward';
+  if(cfg.bfAvoidOverlap == null) cfg.bfAvoidOverlap = true;
+  if(cfg.bfDirected == null) cfg.bfDirected = false;
+  if(cfg.bfCircle == null) cfg.bfCircle = false;
+  if(cfg.bfGrid == null) cfg.bfGrid = true;
+  if(cfg.bfSpacingFactor == null) cfg.bfSpacingFactor = 0.9;
+  if(cfg.bfMaximal == null) cfg.bfMaximal = true;
+  if(cfg.bfAnimate == null) cfg.bfAnimate = true;
+  if(cfg.bfAnimationDuration == null) cfg.bfAnimationDuration = 600;
+  if(cfg.bfFit == null) cfg.bfFit = true;
+  if(cfg.bfPadding == null) cfg.bfPadding = 1000;
+  if(cfg.bfNodeDimensionsIncludeLabels == null) cfg.bfNodeDimensionsIncludeLabels = false;
+
+  // AIPP-specific post processing.
+  if(cfg.tankRight == null) cfg.tankRight = true;
+  if(cfg.includeWallsInAutoLayout == null) cfg.includeWallsInAutoLayout = true;
+  if(cfg.wallYOffset == null) cfg.wallYOffset = 230;
+  if(cfg.wallXSpread == null) cfg.wallXSpread = 115;
+  if(cfg.tankRightMargin == null) cfg.tankRightMargin = 260;
+
+  var originalApplyAippCytoscapeLayout = (typeof applyAippCytoscapeLayout === 'function') ? applyAippCytoscapeLayout : null;
+
+  function getCy(){
     try{
-      var msg = JSON.parse(decoded);
-      console.log('AIPP decoded Scilab message', msg);
+      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
+    }catch(e){}
+    if(window.cyPrototype) return window.cyPrototype;
+    return null;
+  }
+
+  function getAippTankNodeId(){
+    try{
+      var info = (typeof getAssemblyInfo === 'function') ? getAssemblyInfo(fullJson) : {assembly:null};
+      var assembly = info && info.assembly;
+      var tankId = null;
+
+      if(assembly && assembly.tank_id != null) tankId = assembly.tank_id;
+      else if(fullJson && fullJson.tank_id != null) tankId = fullJson.tank_id;
+      else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.tank_id != null) tankId = fullJson.aipp_calculation.tank_id;
+      else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.assembly && fullJson.aipp_calculation.assembly.tank_id != null) tankId = fullJson.aipp_calculation.assembly.tank_id;
+
+      var n = parseInt(tankId, 10);
+      if(Number.isFinite(n) && n > 0) return 'c' + n;
     }catch(e){
-      console.error('AIPP failed to decode Scilab message', e, decoded);
+      console.warn('[AIPP GRAPH] Unable to determine tank_id:', e);
     }
+    return null;
+  }
+
+  function getBreadthfirstRootsSelector(cy){
+    var rootCfg = window.aippGraphLayoutConfig.bfRoots;
+    if(rootCfg != null && rootCfg !== '') return rootCfg;
+
+    var tankNodeId = getAippTankNodeId();
+    if(tankNodeId && cy && cy.getElementById(tankNodeId).length) return '#' + tankNodeId;
+    return undefined;
+  }
+
+  function overlaySync(delay){
+    delay = delay || 0;
+    setTimeout(function(){
+      if(typeof scheduleCytoscapeOverlayUpdate === 'function') scheduleCytoscapeOverlayUpdate();
+      else if(typeof updateCytoscapeOverlayPositions === 'function') updateCytoscapeOverlayPositions();
+    }, delay);
+  }
+
+  function forceTankRight(cy, tankNodeId){
+    if(!cy || !tankNodeId) return;
+    var tank = cy.getElementById(tankNodeId);
+    if(!tank || tank.empty || tank.empty()) return;
+
+    var maxX = -Infinity;
+    cy.nodes().forEach(function(n){
+      var x = n.position('x');
+      if(Number.isFinite(x) && x > maxX) maxX = x;
+    });
+    if(!Number.isFinite(maxX)) return;
+
+    var margin = Number(window.aippGraphLayoutConfig.tankRightMargin) || 260;
+    if(tank.position('x') < maxX - 1){
+      tank.position({x: maxX + margin, y: tank.position('y')});
+    }
+  }
+
+  function connectedChamberIdForWallNode(wallNode){
+    try{
+      var id = wallNode.id();
+      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){ return n.id === id; }) : null;
+      var w = sim && sim.data ? sim.data : {};
+      var ci = null;
+      if(w.left_connection && w.left_connection.chamber_index != null) ci = w.left_connection.chamber_index;
+      else if(w.right_connection && w.right_connection.chamber_index != null) ci = w.right_connection.chamber_index;
+      ci = parseInt(ci, 10);
+      if(Number.isFinite(ci) && ci > 0) return 'c' + ci;
+    }catch(e){}
+    return null;
+  }
+
+  function repositionWallsBelowChambers(cy){
+    if(!cy || window.aippGraphLayoutConfig.includeWallsInAutoLayout) return;
+    var walls = cy.nodes('[type = "wall"]');
+    if(!walls || walls.length === 0) return;
+
+    walls.forEach(function(wall, i){
+      var chamberId = connectedChamberIdForWallNode(wall);
+      var anchor = chamberId ? cy.getElementById(chamberId) : null;
+      if(!anchor || anchor.empty || anchor.empty()) return;
+      var p = anchor.position();
+      var spread = Number(window.aippGraphLayoutConfig.wallXSpread) || 115;
+      var yoff = Number(window.aippGraphLayoutConfig.wallYOffset) || 230;
+      wall.position({
+        x: p.x + ((i % 3) - 1) * spread,
+        y: p.y + yoff + Math.floor(i / 3) * 55
+      });
+    });
+  }
+
+  function runBreadthfirstAutoLayout(anim){
+    var cy = getCy();
+    if(!cy){
+      if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+      return;
+    }
+
+    var cfg = window.aippGraphLayoutConfig || {};
+    var tankNodeId = getAippTankNodeId();
+    var roots = getBreadthfirstRootsSelector(cy);
+    var shouldAnimate = (cfg.bfAnimate !== false) && !!anim;
+
+    var layoutOptions = {
+      name: 'breadthfirst',
+      roots: roots,
+      avoidOverlap: cfg.bfAvoidOverlap !== false,
+      directed: !!cfg.bfDirected,
+      circle: !!cfg.bfCircle,
+      grid: !!cfg.bfGrid,
+      spacingFactor: Number(cfg.bfSpacingFactor) || 0.9,
+      maximal: !!cfg.bfMaximal,
+      fit: cfg.bfFit !== false,
+      padding: Number(cfg.bfPadding) || 1000,
+      animate: shouldAnimate,
+      animationDuration: shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) : 0,
+      nodeDimensionsIncludeLabels: !!cfg.bfNodeDimensionsIncludeLabels,
+      direction: cfg.bfDirection || 'leftward',
+      stop: function(){
+        try{
+          if(cfg.tankRight !== false) forceTankRight(cy, tankNodeId);
+          repositionWallsBelowChambers(cy);
+          if(cfg.bfFit !== false) cy.fit(cy.elements(), Number(cfg.bfPadding) || 1000);
+        }catch(e){
+          console.warn('[AIPP GRAPH] breadthfirst post-layout adjustment failed:', e);
+        }
+        overlaySync(0);
+      }
+    };
+
+    try{
+      var eles = cy.elements();
+      if(cfg.includeWallsInAutoLayout === false){
+        eles = cy.nodes().not('[type = "wall"]').union(cy.edges('[type = "flow"]'));
+      }
+      var layout = eles.layout(layoutOptions);
+      layout.run();
+      overlaySync(shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) + 40 : 90);
+    }catch(e){
+      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to preset layout:', e);
+      if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim);
+    }
+  }
+
+  window.setAippGraphLayoutMode = function(mode){
+    window.aippGraphLayoutConfig.mode = mode || 'preset_manual';
+    if(typeof setStatus === 'function') setStatus('Graph layout mode: ' + window.aippGraphLayoutConfig.mode, true);
   };
 
-  window.decodeScilabTransportPayload = decodeScilabTransportPayload;
+  window.applyAippBreadthfirstLayout = function(anim){
+    window.aippGraphLayoutConfig.mode = 'breadthfirst_auto';
+    runBreadthfirstAutoLayout(anim !== false);
+  };
+
+  window.applyAippPresetManualLayout = function(anim){
+    window.aippGraphLayoutConfig.mode = 'preset_manual';
+    if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim !== false);
+  };
+
+  window.getAippBreadthfirstLayoutOptions = function(){
+    var cfg = window.aippGraphLayoutConfig || {};
+    return {
+      bfRoots: cfg.bfRoots,
+      bfAvoidOverlap: cfg.bfAvoidOverlap,
+      bfDirected: cfg.bfDirected,
+      bfCircle: cfg.bfCircle,
+      bfGrid: cfg.bfGrid,
+      bfSpacingFactor: cfg.bfSpacingFactor,
+      bfMaximal: cfg.bfMaximal,
+      bfDirection: cfg.bfDirection,
+      bfFit: cfg.bfFit,
+      bfPadding: cfg.bfPadding,
+      bfAnimate: cfg.bfAnimate,
+      bfAnimationDuration: cfg.bfAnimationDuration,
+      bfNodeDimensionsIncludeLabels: cfg.bfNodeDimensionsIncludeLabels,
+      includeWallsInAutoLayout: cfg.includeWallsInAutoLayout,
+      tankRight: cfg.tankRight,
+      tankRightMargin: cfg.tankRightMargin,
+      wallYOffset: cfg.wallYOffset,
+      wallXSpread: cfg.wallXSpread
+    };
+  };
+
+  applyAippCytoscapeLayout = function(anim){
+    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'breadthfirst_auto'){
+      return runBreadthfirstAutoLayout(anim);
+    }
+    if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+  };
+
+  function installLayoutButtons(){
+    var tools = document.querySelector('#vizHeader .vizHeaderTools') || document.getElementById('vizHeader');
+    if(!tools || document.getElementById('graphLayoutModeBtn')) return;
+
+    var btn = document.createElement('button');
+    btn.id = 'graphLayoutModeBtn';
+    btn.className = 'smallBtn secondary';
+    btn.textContent = 'Breadthfirst Layout';
+    btn.title = 'Toggle tuned Cytoscape breadthfirst layout anchored by tank_id.';
+    btn.onclick = function(){
+      var current = window.aippGraphLayoutConfig.mode;
+      if(current === 'breadthfirst_auto'){
+        window.applyAippPresetManualLayout(true);
+        btn.textContent = 'Breadthfirst Layout';
+      }else{
+        window.applyAippBreadthfirstLayout(true);
+        btn.textContent = 'Manual Layout';
+      }
+    };
+    tools.appendChild(btn);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLayoutButtons);
+  else installLayoutButtons();
+  setTimeout(installLayoutButtons, 0);
+})();
+```
+##### 22_save_transport_diagnostics_dev_v1.js
+```java
+/* 21_save_transport_diagnostics_dev_v1.js
+   Optional development-only diagnostics.
+
+   To enable: copy this file into browser_files/js/ and rebuild the bundle.
+*/
+(function(){
+  if(window.__aippSaveTransportDiagnosticsDevV1Applied) return;
+  window.__aippSaveTransportDiagnosticsDevV1Applied = true;
+
+  function makePayload(n, value){
+    n = Math.max(0, Number(n) || 0);
+    value = Number(value);
+    if(!Number.isFinite(value)) value = 65;
+    var data = [];
+    for(var i = 0; i < n; i++) data.push(value);
+    return data;
+  }
+
+  window.aippTestToScilabAsciiPayloadSize = function(n){
+    var data = makePayload(n, 65);
+    var msg = { type: 'debug_payload', requested_size: Number(n) || 0, data: data };
+    console.log('[AIPP DIAG] Sending debug_payload with data length:', data.length);
+    if(typeof toScilabAsciiMsg !== 'function'){
+      console.error('[AIPP DIAG] toScilabAsciiMsg is not available.');
+      return;
+    }
+    toScilabAsciiMsg(msg);
+    if(typeof setStatus === 'function') setStatus('Sent debug payload size '+data.length+' to Scilab.', true);
+  };
+
+  window.aippRunPayloadSizeSweep = function(sizes, delayMs){
+    sizes = Array.isArray(sizes) ? sizes : [100, 250, 500, 1000, 1200, 1500, 1700];
+    delayMs = Number(delayMs);
+    if(!Number.isFinite(delayMs) || delayMs < 0) delayMs = 750;
+    var i = 0;
+    function next(){
+      if(i >= sizes.length){ console.log('[AIPP DIAG] Payload size sweep complete.'); return; }
+      var n = sizes[i++];
+      window.aippTestToScilabAsciiPayloadSize(n);
+      setTimeout(next, delayMs);
+    }
+    next();
+  };
 })();
 ```
 #### styles
@@ -4895,13 +5386,26 @@ var Xr=function(e){if(!(this instanceof Xr))return new Xr(e);this.id="Thenable/1
 </head>
 <body>
 <div id="header"><div id="brandLeft"><img id="logo" src="../Autoliv.png" alt="Autoliv"><div id="title">Inflator Model Viewer</div></div><div id="tagline">More Lives Saved – More Life Lived</div></div>
-<div id="toolbar"><button class="btn" onclick="selectFile()">Open JSON File</button><button class="btn secondary" onclick="expandAll()">Expand All</button><button class="btn secondary" onclick="collapseAll()">Collapse All</button><span class="toolbarDivider"></span><button class="btn secondary" onclick="openTopologyAddMenu(event)">Add ▼</button><div id="topologyAddMenu" class="topologyMenu" style="display:none"><button onclick="openAddEntityDialog('chamber')">Add Chamber</button><button onclick="openAddEntityDialog('orifice')">Add Orifice</button><button onclick="openAddEntityDialog('wall')">Add Wall</button></div><div class="spacer"></div><div class="field"><span>Search:</span><input id="searchBox" placeholder="key / value..." oninput="renderTree()"></div></div>
+<div id="toolbar"><button class="btn" onclick="selectFile()">Open Input Deck</button><button class="btn secondary" onclick="expandAll()">Expand All</button><button class="btn secondary" onclick="collapseAll()">Collapse All</button><span class="toolbarDivider"></span><button class="btn secondary" onclick="openTopologyAddMenu(event)">Add ▼</button><div id="topologyAddMenu" class="topologyMenu" style="display:none"><button onclick="openAddEntityDialog('chamber')">Add Chamber</button><button onclick="openAddEntityDialog('orifice')">Add Orifice</button><button onclick="openAddEntityDialog('wall')">Add Wall</button></div><div class="spacer"></div><div class="field"><span>Search:</span><input id="searchBox" placeholder="key / value..." oninput="renderTree()"></div></div>
 <div id="main"><div id="left"><div id="tabs"><div class="tab active" id="tabTree" onclick="setTab('tree')">Tree</div><div class="tab" id="tabCode" onclick="setTab('code')">Code</div></div><div id="treePane"></div><div id="codePane" style="display:none"><div id="codeToolbar"><button class="smallBtn" onclick="applyCodeEdits()">Apply JSON</button><button class="smallBtn secondary" onclick="resetCodeEditor()">Reset</button><span id="codeError" class="bad"></span></div><textarea id="codeEditor" spellcheck="false"></textarea></div></div><div id="right"><div id="vizHeader"><div class="h">Assembly Flow</div><div class="vizHeaderTools"><span class="hint">Graph: double-click any node to inspect & edit</span><button class="smallBtn secondary" onclick="applyAippCytoscapeLayout(true)">Auto Layout</button><button class="smallBtn secondary" onclick="fitCytoscapePrototype()">Fit</button></div></div><div id="vizWrap"><div id="cyGraph"><div id="cyChamberOverlayLayer"></div></div></div></div></div>
 <div id="status"><div id="statusLeft" class="muted">Ready.</div><div id="statusRight" class="ok">OK</div></div>
 <div id="popup"><div id="popupHeader"><div id="popupTitle">Inspector</div><button class="xbtn" onclick="closePopup()">X</button></div><div id="popupBody"></div><div id="popupFooter"><span id="popupInfo" class="muted">Edits update the in-memory model.</span><div style="display:flex;gap:8px"><button class="smallBtn secondary dangerText" onclick="openRemovePreview()">Remove...</button><button class="smallBtn secondary" onclick="scanOpenPopupDependencies()">Scan Dependencies</button><button class="smallBtn secondary" onclick="revertPopup()">Revert</button><button class="smallBtn" onclick="applyPopup()">Apply</button></div></div></div><div id="topologyModal" class="topologyModal" style="display:none"><div class="topologyModalCard"><div class="topologyModalHeader"><span id="topologyModalTitle">Topology</span><button class="xbtn" onclick="closeTopologyModal()">X</button></div><div id="topologyModalBody" class="topologyModalBody"></div><div class="topologyModalFooter"><span id="topologyModalStatus" class="bad"></span><button class="smallBtn secondary" onclick="closeTopologyModal()">Cancel</button><button id="topologyCreateBtn" class="smallBtn">Create</button></div></div></div><div id="dependencyModal" class="topologyModal" style="display:none"><div class="topologyModalCard dependencyModalCard"><div class="topologyModalHeader"><span id="dependencyModalTitle">Dependency Scan</span><button class="xbtn" onclick="closeDependencyModal()">X</button></div><div id="dependencyModalBody" class="topologyModalBody"></div><div class="topologyModalFooter"><span class="muted">Read-only scan. No changes made.</span><button class="smallBtn" onclick="closeDependencyModal()">Close</button></div></div></div><div id="removeModal" class="topologyModal" style="display:none"><div class="topologyModalCard dependencyModalCard"><div class="topologyModalHeader"><span id="removeModalTitle">Remove Preview</span><button class="xbtn" onclick="closeRemoveModal()">X</button></div><div id="removeModalBody" class="topologyModalBody"></div><div class="topologyModalFooter"><span id="removeModalStatus" class="muted">Scanner-driven removal preview.</span><button class="smallBtn secondary" onclick="closeRemoveModal()">Cancel</button><button id="applyRemoveBtn" class="smallBtn dangerBtn" onclick="applyRemovalFromPreview()" disabled>Apply Removal</button></div></div></div>
 <script>
 
-function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
+function toScilabMsg(o){if(window.toScilab)window.toScilab(JSON.stringify(o));}
+
+function toScilabAsciiMsg(o) {
+  if (!window.toScilab) return;
+
+  var json = JSON.stringify(o);
+  var out = [];
+  for (var i = 0; i < json.length; i++) {
+    out.push(json.charCodeAt(i));
+  }
+
+  window.toScilab(out);
+}
+function selectFile(){toScilabMsg({type:"select_file"});}function selectCsvFile(){toScilabMsg({type:"select_csv"});}function asciiToString(a){return(a||[]).map(c=>String.fromCharCode(c)).join('');}
 let fullJson=null,currentTab="tree",treeOpenAll=false,simNodes=[],simEdges=[],popupNode=null,popupPath=null,popupWorkingCopy=null,popupOriginalCopy=null,popupDrag={active:false,dx:0,dy:0},pendingCdCsvImport=null,pendingRemovalPlan=null,lastRemovalSnapshot=null,applyEventRemapsOnRemoval=true,masterPyroList={},masterPyroNames=[],pyroListLoadState='not requested',activePyroCombo=null;
 const STANDARD_SPECIES=["Ar","CO","CO2","H2","H2O","He","N2","N2O","O2"],CHAMBER_INIT_TYPES=["mPT","PVT","mVT","nVT","rho_mVT"],CHAMBER_INIT_FIELDS={mPT:["mass","pressure","temperature"],PVT:["pressure","volume","temperature"],mVT:["mass","volume","temperature"],nVT:["moles","volume","temperature"],rho_mVT:["density","volume","temperature"]},CHAMBER_INIT_DEFAULTS={mass:"0.0 g",pressure:"0.101325 MPa",temperature:"300.0 K",volume:"1.0 L",density:"0.0 kg/m^3",moles:"0.0 mol"},AIPP_CD_TEMPLATES={constant:{basis:"constant",Cd_value:0.7},time:{basis:"time",time_units:"ms",time_array:[0,0.01],Cd_array:[0.75,0.5],continuity:"interpolate"},pressure:{basis:"pressure",pressure_units:"MPa",pressure_array:[25,50],Cd_array:[0.75,0.5],continuity:"discrete"}};
 const AIPP_WALL_CONNECTION_TYPES=["CONSTANT_TEMPERATURE","CONSTANT_HEAT","WALL","CONSTANT_COEFFICIENT","VARIABLE_COEFFICIENT"],AIPP_WALL_CONNECTION_SCHEMAS={CONSTANT_TEMPERATURE:{defaults:{type:"CONSTANT_TEMPERATURE",temperature:"294.15 K"},fields:[["temperature","text"]]},CONSTANT_HEAT:{defaults:{type:"CONSTANT_HEAT",heat:"0.0 W"},fields:[["heat","text"]]},WALL:{defaults:{type:"WALL",wall_index:1},fields:[["wall_index","wall_index"]]},CONSTANT_COEFFICIENT:{defaults:{type:"CONSTANT_COEFFICIENT",chamber_index:1,heat_transfer_coefficient:"1.0E+2 W/(m^2 K)"},fields:[["chamber_index","chamber_index"],["heat_transfer_coefficient","text"]]},VARIABLE_COEFFICIENT:{defaults:{type:"VARIABLE_COEFFICIENT",chamber_index:1,scale_factor:1},fields:[["chamber_index","chamber_index"],["scale_factor","number"]]}};
@@ -4909,7 +5413,6 @@ const AIPP_PYRO_SHAPES={sphere:{defaults:{geometry:'sphere',radius:'0.3 mm'},fie
 function deepCopy(x){return JSON.parse(JSON.stringify(x));}function escapeHtml(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}function parseLoose(s){let t=String(s).trim();if(t==="null")return null;if(t==="true")return true;if(t==="false")return false;if(/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t))return Number(t);return t;}function truncText(s,n){s=String(s??"");return s.length>n?s.slice(0,n-1)+"…":s;}function setStatus(m,ok){let l=document.getElementById("statusLeft"),r=document.getElementById("statusRight");if(!l||!r)return;l.textContent=m;r.textContent=ok?"OK":"ERROR";r.className=ok?"ok":"bad";}function getAssemblyInfo(j){if(j&&j.aipp_calculation&&j.aipp_calculation.assembly)return{assembly:j.aipp_calculation.assembly,basePath:["aipp_calculation","assembly"]};if(j&&j.assembly)return{assembly:j.assembly,basePath:["assembly"]};return{assembly:null,basePath:[]};}function ensureAssembly(){if(!fullJson)fullJson={aipp_calculation:{assembly:{chambers:[],orifices:[],walls:[]}}};let info=getAssemblyInfo(fullJson);if(!info.assembly){fullJson.assembly={chambers:[],orifices:[],walls:[]};info=getAssemblyInfo(fullJson);}let a=info.assembly;if(!Array.isArray(a.chambers))a.chambers=[];if(!Array.isArray(a.orifices))a.orifices=[];if(!Array.isArray(a.walls))a.walls=[];return info;}function getJsonAtPath(p){let r=fullJson;for(const k of p){if(r==null)return;r=r[k];}return r;}function setJsonAtPath(p,v){if(p.length===0)fullJson=v;else{let r=fullJson;for(let i=0;i<p.length-1;i++)r=r[p[i]];r[p[p.length-1]]=v;}refreshAllViews();}function setJsonAtPathNoRefresh(p,v){if(p.length===0){fullJson=v;return;}let r=fullJson;for(let i=0;i<p.length-1;i++){if(r==null)return;r=r[p[i]];}if(r!=null)r[p[p.length-1]]=v;}function setAtPath(p,v){let r=popupWorkingCopy;if(p.length===0){popupWorkingCopy=v;return;}for(let i=0;i<p.length-1;i++)r=r[p[i]];r[p[p.length-1]]=v;}function getPopupObjectAtPath(p){let r=popupWorkingCopy;for(const k of p){if(r==null)return null;r=r[k];}return r;}function makeDischargeCoefficientTemplate(b){return deepCopy(AIPP_CD_TEMPLATES[b]||AIPP_CD_TEMPLATES.constant);}function getEventSuggestions(){const out=['SimStart'],a=getAssemblyInfo(fullJson).assembly;if(!a)return out;if(Array.isArray(a.orifices))for(let i=0;i<a.orifices.length;i++)out.push('O'+(i+1)+'_opened','O'+(i+1)+'_closed');if(Array.isArray(a.chambers))for(let c=0;c<a.chambers.length;c++){const ps=a.chambers[c].pyro||a.chambers[c].pyros;if(Array.isArray(ps))for(let p=0;p<ps.length;p++)out.push('C'+(c+1)+'P'+(p+1)+'_ignited','C'+(c+1)+'P'+(p+1)+'_extinguished');}return Array.from(new Set(out));}
 function refreshAllViews(){renderTree();updateCodeTextFromModel();buildGraph(fullJson);syncOpenPopupFromModel();renderCytoscapePrototype();}function setTab(t){currentTab=t;document.getElementById("tabTree").classList.toggle("active",t==="tree");document.getElementById("tabCode").classList.toggle("active",t==="code");document.getElementById("treePane").style.display=t==="tree"?"block":"none";document.getElementById("codePane").style.display=t==="code"?"flex":"none";if(t==="code")updateCodeTextFromModel();}function expandAll(){treeOpenAll=true;renderTree();}function collapseAll(){treeOpenAll=false;renderTree();}function matchSearch(t){let q=(document.getElementById("searchBox")?.value||"").toLowerCase().trim();return !q||String(t).toLowerCase().includes(q);}function renderTree(){let p=document.getElementById("treePane");if(!p)return;if(!fullJson){p.innerHTML='<div class="node t">Load a JSON file to view contents.</div>';return;}p.innerHTML=renderNode(fullJson,[],"root")||'<div class="node t">No matches.</div>';}function renderNode(v,path,k){if(v===null||typeof v!=="object"){if(!matchSearch(k)&&!matchSearch(v))return"";return`<div class="node"><span class="k">${escapeHtml(k)}</span>: <span>${escapeHtml(v)}</span></div>`;}let arr=Array.isArray(v),ks=arr?v.map((_,i)=>i):Object.keys(v),ch="";for(const kk of ks)ch+=renderNode(v[kk],path.concat([kk]),String(kk));if(!ch&&!matchSearch(k))return"";return`<details class="node" ${treeOpenAll?'open':''}><summary><span class="k">${escapeHtml(k)}</span> <span class="pill">${arr?'array['+v.length+']':'object{'+ks.length+'}'}</span></summary><div style="margin-left:14px">${ch}</div></details>`;}function stringifyAippJsonPretty(obj){let s=JSON.stringify(obj,null,2);s=s.replace(/("coefficient"\s*:\s*)(-?\d+)(\s*[,}])/g,function(m,p1,n,p3){return p1+n+'.0'+p3;});return s;}function updateCodeTextFromModel(){let e=document.getElementById("codeEditor"),er=document.getElementById("codeError");if(e)e.value=fullJson?stringifyAippJsonPretty(fullJson):"";if(er)er.textContent="";}function applyCodeEdits(){try{fullJson=JSON.parse(document.getElementById("codeEditor").value);refreshAllViews();setStatus("JSON updated from code editor.",true);}catch(e){setStatus("Invalid JSON: "+e.message,false);}}function resetCodeEditor(){updateCodeTextFromModel();}function attachCodeEditorHandlers(){let e=document.getElementById("codeEditor");if(e)e.addEventListener("input",()=>{let er=document.getElementById("codeError");if(er)er.textContent="Unapplied changes";});}function buildGraph(j){simNodes=[];simEdges=[];let info=getAssemblyInfo(j),a=info.assembly,bp=info.basePath;if(!a||!Array.isArray(a.chambers)){setStatus("No assembly/chambers found for visualization.",false);return;}for(let i=0;i<a.chambers.length;i++)simNodes.push({id:"c"+(i+1),type:"chamber",label:"Chamber "+(i+1),path:bp.concat(["chambers",i]),data:a.chambers[i]});if(Array.isArray(a.orifices))for(let i=0;i<a.orifices.length;i++){let o=a.orifices[i],f=parseInt(o.from),t=parseInt(o.to),oid="o"+(i+1),oneWay=!!o.one_way;simNodes.push({id:oid,type:"orifice",label:"Orf "+(i+1),path:bp.concat(["orifices",i]),data:o});if(f)simEdges.push({a:"c"+f,b:oid,type:"flow",role:"from",oneWay:oneWay,orificeIndex:i+1});if(t)simEdges.push({a:oid,b:"c"+t,type:"flow",role:"to",oneWay:oneWay,orificeIndex:i+1});}if(Array.isArray(a.walls))for(let i=0;i<a.walls.length;i++){let w=a.walls[i],id="w"+(i+1);simNodes.push({id,type:"wall",label:"Wall "+(i+1),path:bp.concat(["walls",i]),data:w});if(w.left_connection&&w.left_connection.chamber_index)simEdges.push({a:"c"+w.left_connection.chamber_index,b:id,type:"wall"});if(w.right_connection&&w.right_connection.chamber_index)simEdges.push({a:id,b:"c"+w.right_connection.chamber_index,type:"wall"});}setStatus(`Loaded ${simNodes.length} nodes, ${simEdges.length} links.`,true);} function getChamberVolumeText(ch){return ch.volume||ch.free_volume||ch.initial_volume||"not set";}
 function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();document.getElementById("popup").style.display="block";}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
-
 function parseIntegerArrayText(t){try{let a=JSON.parse(t);if(Array.isArray(a))return a.map(x=>parseInt(x)).filter(Number.isFinite);}catch(e){}return String(t??'').split(/[\s,;]+/).map(x=>parseInt(x)).filter(Number.isFinite);}
 function parseNumberArrayTextLocal(t){try{let a=JSON.parse(t);if(Array.isArray(a))return a.map(Number).filter(Number.isFinite);}catch(e){}return String(t??'').split(/[\s,;]+/).map(Number).filter(Number.isFinite);}
 function splitQuantity(s,units,defaultUnit){let txt=String(s??'').trim(),parts=txt.split(/\s+/),num=Number(parts[0]),unit=parts[1]||defaultUnit;if(!Number.isFinite(num))num=0;if(!units.includes(unit))unit=defaultUnit;return{num,unit};}
@@ -4928,7 +5431,6 @@ function buildOpensAt(title,val,path){let g=document.createElement('div'),h=docu
 function getAssemblyCounts(){let a=getAssemblyInfo(fullJson).assembly||{};return{chambers:Array.isArray(a.chambers)?a.chambers.length:0,walls:Array.isArray(a.walls)?a.walls.length:0};}function buildIndexSelect(kind,val,cb){let c=getAssemblyCounts(),n=kind==='chamber'?c.chambers:c.walls,opts=[];for(let i=1;i<=Math.max(n,Number(val)||1,1);i++)opts.push(String(i));return sel(opts,String(val||1),v=>cb(Number(v)));}function buildWallConnectionEditor(label,wall,key){if(!wall[key]||typeof wall[key]!=='object'||Array.isArray(wall[key]))wall[key]=deepCopy(AIPP_WALL_CONNECTION_SCHEMAS.CONSTANT_TEMPERATURE.defaults);let conn=wall[key],type=AIPP_WALL_CONNECTION_TYPES.includes(conn.type)?conn.type:'CONSTANT_TEMPERATURE',g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup wallConnectionGroup';h.className='insGroupHeader';h.innerHTML='<span>'+escapeHtml(label)+'</span><span class="smartGroupBadge">wall boundary condition</span>';b.className='insGroupBody';g.append(h,b);b.appendChild(smartRow('type',sel(AIPP_WALL_CONNECTION_TYPES,type,v=>{wall[key]=deepCopy(AIPP_WALL_CONNECTION_SCHEMAS[v].defaults);renderInspector();})));conn=wall[key];(AIPP_WALL_CONNECTION_SCHEMAS[conn.type]||AIPP_WALL_CONNECTION_SCHEMAS.CONSTANT_TEMPERATURE).fields.forEach(f=>{let k=f[0],typ=f[1];let control=typ==='chamber_index'?buildIndexSelect('chamber',conn[k],v=>conn[k]=v):typ==='wall_index'?buildIndexSelect('wall',conn[k],v=>conn[k]=v):typ==='number'?inpText(conn[k]??0,v=>conn[k]=Number(v)):inpText(conn[k]??'',v=>conn[k]=v);b.appendChild(smartRow(k,control));});return g;}function buildWallEditor(wall,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup wallSmartGroup';h.className='insGroupHeader';h.innerHTML='<span>Wall smart editor</span><span class="smartGroupBadge">restored wall editor</span>';b.className='insGroupBody';g.append(h,b);['label','temperature','area','thickness','material'].forEach(k=>b.appendChild(smartRow(k,inpText(wall[k]??'',v=>{if(v==='')delete wall[k];else wall[k]=v;}))));b.appendChild(buildWallConnectionEditor('Left Connection',wall,'left_connection'));b.appendChild(buildWallConnectionEditor('Right Connection',wall,'right_connection'));let handled=['label','temperature','area','thickness','material','left_connection','right_connection'];let extra=Object.keys(wall).filter(k=>!handled.includes(k));if(extra.length){let ex=document.createElement('div'),eh=document.createElement('div'),eb=document.createElement('div');ex.className='insGroup';eh.className='insGroupHeader';eh.innerHTML='<span>additional wall keys</span><span class="smartGroupBadge">preserved JSON fields</span>';eb.className='insGroupBody';ex.append(eh,eb);extra.forEach(k=>eb.appendChild(buildAny(k,wall[k],path.concat([k]))));b.appendChild(ex);}return g;}
 function requestCdCsvImport(path,mode){pendingCdCsvImport={path:path.slice(),mode:mode||'time'};selectCsvFile();}function parseCdCsvText(csvText){const clean=String(csvText||'').split(String.fromCharCode(13)).join('');const lines=clean.split(String.fromCharCode(10)).map(x=>x.trim()).filter(Boolean),rows=[];let xHeader=null,yHeader=null;for(const line of lines){const parts=line.split(/[,;	 ]+/).map(x=>x.trim()).filter(Boolean);if(parts.length<2)continue;const x=Number(parts[0]),cd=Number(parts[1]);if(Number.isFinite(x)&&Number.isFinite(cd)){rows.push([x,cd]);}else if(rows.length===0&&xHeader===null){xHeader=parts[0];yHeader=parts[1];}}return{rows,xHeader,yHeader};}function applyCdCsvText(csvText){if(!pendingCdCsvImport){setStatus('No pending Cd CSV import target.',false);return;}const target=getPopupObjectAtPath(pendingCdCsvImport.path),parsed=parseCdCsvText(csvText),rows=parsed.rows;if(!target||typeof target!=='object'){setStatus('Cd CSV target no longer exists.',false);return;}if(!rows.length){setStatus('CSV import found no numeric x,Cd rows.',false);return;}const mode=pendingCdCsvImport.mode==='pressure'?'pressure':'time';const xKey=mode==='pressure'?'pressure_array':'time_array';const unitKey=mode==='pressure'?'pressure_units':'time_units';const expected=String(target[unitKey]||'').trim();const found=String(parsed.xHeader||'').trim();if(!found){let msg='CSV import requires first-row x-units in column 1 matching selected '+unitKey+' '+expected+'. Import cancelled.';setStatus(msg,false);if(window.alert)window.alert(msg);return;}if(expected&&found.toLowerCase()!==expected.toLowerCase()){let msg='CSV x-units header '+found+' does not match selected '+unitKey+' '+expected+'. Import cancelled.';setStatus(msg,false);if(window.alert)window.alert(msg);return;}target[xKey]=rows.map(r=>r[0]);target.Cd_array=rows.map(r=>r[1]);pendingCdCsvImport=null;renderInspector();setStatus('Imported '+rows.length+' Cd rows from CSV.',true);}function fromScilab(msg){try{let o=typeof msg==='string'?JSON.parse(msg):msg;if(o.type==='json_ascii'){fullJson=JSON.parse(asciiToString(o.data));refreshAllViews();setStatus('JSON loaded successfully.',true);}else if(o.type==='csv_ascii'){applyCdCsvText(asciiToString(o.data));}else if(o.type==='pyrolist_ascii'){loadPyroListFromText(asciiToString(o.data));}else if(o.type==='pyrolist_error'){pyroListLoadState='error: '+(o.message||'unable to load pyrolist');setStatus('Pyro list load error: '+(o.message||'unable to load pyrolist'),false);if(popupNode&&popupNode.type==='chamber')renderInspector();}else setStatus('Unknown message type: '+o.type,false);}catch(e){setStatus('Failed to parse message: '+e.message,false);}}
 let cyPrototype=null,cytoscapeLoadStarted=false,cytoscapeLoadFailed=false,cyOverlayRaf=null;function ensureCyContainer(){return document.getElementById('cyGraph');}function ensureCyOverlayLayer(){let l=document.getElementById('cyChamberOverlayLayer');if(!l){l=document.createElement('div');l.id='cyChamberOverlayLayer';ensureCyContainer().appendChild(l);}return l;}function loadCytoscapeLocalThen(cb){if(window.cytoscape){cb(true);return;}if(cytoscapeLoadFailed){cb(false);return;}if(cytoscapeLoadStarted){setTimeout(()=>loadCytoscapeLocalThen(cb),50);return;}cytoscapeLoadStarted=true;let s=document.createElement('script');s.src='../vendor/cytoscape.min.js';s.onload=()=>cb(!!window.cytoscape);s.onerror=()=>{cytoscapeLoadFailed=true;cb(false);};document.head.appendChild(s);}function renderCytoscapePrototype(){let el=ensureCyContainer();if(!el)return;loadCytoscapeLocalThen(ok=>{if(!ok){el.innerHTML='<div class="cyMissing"><b>Cytoscape is required for graph rendering.</b><br/>Place reviewed local vendor file at <code>browser_files/vendor/cytoscape.min.js</code>.<br/><br/>Loaded entities: '+simNodes.length+'</div>';return;}el.innerHTML='';el.appendChild(ensureCyOverlayLayer());if(fullJson)buildGraph(fullJson);let model=buildCytoscapeElements(computeAippCytoscapeLayoutPositions());cyPrototype=cytoscape({container:el,elements:model.elements,style:cytoscapePrototypeStyle(),layout:{name:'preset',fit:false,padding:90},userZoomingEnabled:false,userPanningEnabled:true,boxSelectionEnabled:false,autounselectify:true,minZoom:.1,maxZoom:4,pixelRatio:1});cyPrototype.on('dbltap','node',e=>{let n=simNodes.find(x=>x.id===e.target.id());if(n)openPopup(n);});installSmoothCytoscapeWheelZoom(cyPrototype);buildCytoscapeChamberOverlays();cyPrototype.ready(()=>{applyAippCytoscapeLayout(false);setInitialCytoscapeViewport();});});}function installSmoothCytoscapeWheelZoom(cy){let c=cy.container();if(!c)return;if(c.__aippWheelZoomHandler)c.removeEventListener('wheel',c.__aippWheelZoomHandler,true);let h=e=>{if(e.target&&e.target.closest&&e.target.closest('.pyroComboPanel,#popupBody,textarea,select,input'))return;e.preventDefault();e.stopPropagation();let r=c.getBoundingClientRect(),pt={x:e.clientX-r.left,y:e.clientY-r.top},z0=cy.zoom(),p0=cy.pan(),z1=Math.max(cy.minZoom(),Math.min(cy.maxZoom(),z0*Math.exp(-e.deltaY*.0018))),m={x:(pt.x-p0.x)/z0,y:(pt.y-p0.y)/z0};cy.viewport({zoom:z1,pan:{x:pt.x-m.x*z1,y:pt.y-m.y*z1}});scheduleCytoscapeOverlayUpdate();};c.__aippWheelZoomHandler=h;c.addEventListener('wheel',h,{passive:false,capture:true});}function computeAippCytoscapeLayoutPositions(){let pos={};simNodes.filter(n=>n.type==='chamber').forEach((n,i)=>pos[n.id]={x:190+i*390,y:340});simNodes.filter(n=>n.type==='orifice').forEach((n,i)=>{let o=n.data||{},a=pos['c'+parseInt(o.from)]||{x:190,y:340},b=pos['c'+parseInt(o.to)]||{x:580,y:340};pos[n.id]={x:(a.x+b.x)/2,y:155-i*20};});simNodes.filter(n=>n.type==='wall').forEach((n,i)=>{let w=n.data||{},ci=w.left_connection?.chamber_index||w.right_connection?.chamber_index||1,a=pos['c'+ci]||{x:190,y:340};pos[n.id]={x:a.x+(i%3-1)*105,y:a.y+190};});return pos;}function buildCytoscapeElements(pos){let elements=[];for(const n of simNodes){let p=pos[n.id]||{x:0,y:0};elements.push({group:'nodes',data:{id:n.id,label:n.type==='chamber'?'':n.label,type:n.type},position:p});}simEdges.forEach((e,i)=>elements.push({group:'edges',data:{id:'e'+i,source:e.a,target:e.b,type:e.type||'flow',role:e.role||'',oneWay:e.oneWay?'true':'false',orificeIndex:e.orificeIndex||''}}));return{elements};}function applyAippCytoscapeLayout(anim){if(!cyPrototype)return;let p=computeAippCytoscapeLayoutPositions();cyPrototype.batch(()=>cyPrototype.nodes().forEach(n=>{if(p[n.id()])anim?n.animate({position:p[n.id()]},{duration:250}):n.position(p[n.id()]);}));setTimeout(scheduleCytoscapeOverlayUpdate,anim?270:0);}function setInitialCytoscapeViewport(){if(!cyPrototype)return;cyPrototype.fit(cyPrototype.elements(),90);scheduleCytoscapeOverlayUpdate();}function fitCytoscapePrototype(){if(cyPrototype){cyPrototype.fit(cyPrototype.elements(),90);scheduleCytoscapeOverlayUpdate();}}function cytoscapePrototypeStyle(){return[{selector:'node',style:{'label':'data(label)','text-valign':'center','text-halign':'center','font-size':15,'font-weight':800,'color':'#005495','background-color':'#ededed','border-color':'#005495','border-width':2.5,'width':120,'height':56,'shape':'round-rectangle'}},{selector:'node[type="chamber"]',style:{'background-color':'#fff','border-color':'#005495','border-width':3,'width':260,'height':118,'label':''}},{selector:'node[type="orifice"]',style:{'background-color':'#009fe3','border-color':'#005495','width':184,'height':76}},{selector:'node[type="wall"]',style:{'shape':'diamond','background-color':'#eaf4ff','border-color':'#005495','width':128,'height':128}},{selector:'edge',style:{'width':3,'line-color':'#6b7280','target-arrow-color':'#6b7280','source-arrow-color':'#6b7280','target-arrow-shape':'none','source-arrow-shape':'none','curve-style':'bezier'}},{selector:'edge[type="flow"][oneWay="false"]',style:{'source-arrow-shape':'triangle','target-arrow-shape':'triangle'}},{selector:'edge[type="flow"][oneWay="true"][role="from"]',style:{'source-arrow-shape':'none','target-arrow-shape':'none'}},{selector:'edge[type="flow"][oneWay="true"][role="to"]',style:{'source-arrow-shape':'none','target-arrow-shape':'triangle'}},{selector:'edge[type="wall"]',style:{'line-style':'dashed','source-arrow-shape':'none','target-arrow-shape':'none'}}];}function buildCytoscapeChamberOverlays(){let layer=ensureCyOverlayLayer();layer.innerHTML='';if(!cyPrototype)return;cyPrototype.nodes('[type="chamber"]').forEach(node=>{let n=simNodes.find(x=>x.id===node.id());if(!n)return;let card=document.createElement('div');card.className='cyChamberCardOverlay';card.id='cyOverlay_'+node.id();card.innerHTML='<div class="cyChamberTitle">'+escapeHtml(n.label)+'</div><div class="cyChamberVolume">Volume: '+escapeHtml(truncText(getChamberVolumeText(n.data||{}),32))+'</div>';layer.appendChild(card);});}function scheduleCytoscapeOverlayUpdate(){if(cyOverlayRaf)cancelAnimationFrame(cyOverlayRaf);cyOverlayRaf=requestAnimationFrame(updateCytoscapeOverlayPositions);}function updateCytoscapeOverlayPositions(){cyOverlayRaf=null;if(!cyPrototype)return;cyPrototype.nodes('[type="chamber"]').forEach(node=>{let card=document.getElementById('cyOverlay_'+node.id());if(!card)return;let rp=node.renderedPosition(),bb=node.renderedBoundingBox({includeLabels:false}),w=Math.max(90,bb.w+2),h=Math.max(54,bb.h+2);card.style.width=w+'px';card.style.minHeight=h+'px';card.style.left=rp.x-w/2+'px';card.style.top=rp.y-h/2+'px';});}
-
 function requestPyroList(){pyroListLoadState='requested';try{toScilabMsg({type:'request_pyrolist',path:'aipp_files/pyrolist.json'});}catch(e){pyroListLoadState='request failed: '+e.message;}}function loadPyroListFromText(txt){masterPyroList=JSON.parse(txt);masterPyroNames=Object.keys(masterPyroList).sort();pyroListLoadState='loaded '+masterPyroNames.length+' formulations';setStatus('Loaded pyro master list: '+masterPyroNames.length+' formulations.',true);if(popupNode&&popupNode.type==='chamber')renderInspector();}function ensureChamberPyroArray(ch){let key=Array.isArray(ch.pyros)?'pyros':'pyro';if(!Array.isArray(ch[key]))ch[key]=[];return{key,arr:ch[key]};}function makePyroTemplate(formulation){return{formulation:formulation||masterPyroNames[0]||'generic_pyro',mass:'0.0 g',piles:1,ignition_time:{triggering_event:'SimStart',time_delay:'0.0 s'},shape:deepCopy(AIPP_PYRO_SHAPES.sphere.defaults)}}function closeActivePyroCombo(except){if(activePyroCombo&&activePyroCombo!==except)activePyroCombo.close();activePyroCombo=except||null;}document.addEventListener('mousedown',e=>{if(activePyroCombo&&activePyroCombo.root&&!activePyroCombo.root.contains(e.target))closeActivePyroCombo(null);},true);function pyroSelect(current,onChange){const root=document.createElement('div'),input=document.createElement('input'),button=document.createElement('button'),panel=document.createElement('div'),list=document.createElement('div'),footer=document.createElement('div');root.className='pyroCombo';input.className='smartInput pyroComboInput';input.value=current||'';button.className='smartMiniBtn pyroComboButton';button.type='button';button.textContent='▾';panel.className='pyroComboPanel';panel.style.display='none';list.className='pyroComboList';footer.className='pyroComboStatus';panel.append(list,footer);root.append(input,button,panel);let filtered=[];function filt(all){let q=all?'':input.value.trim().toLowerCase();if(!q)return masterPyroNames.slice();return masterPyroNames.filter(n=>n.toLowerCase().includes(q));}function render(all){filtered=filt(all);list.innerHTML='';filtered.forEach(n=>{let it=document.createElement('div');it.className='pyroComboItem';it.textContent=n;it.onmousedown=e=>{e.preventDefault();choose(n);};list.appendChild(it);});footer.textContent=filtered.length+' matches';}function open(all){if(!masterPyroNames.length){footer.textContent='No master pyro list loaded';return;}closeActivePyroCombo(api);render(all);panel.style.display='block';activePyroCombo=api;}function close(){panel.style.display='none';if(activePyroCombo===api)activePyroCombo=null;}function choose(n){input.value=n;close();if(onChange)onChange(n);}input.onfocus=()=>open(false);input.oninput=()=>open(false);input.onchange=()=>{let v=input.value.trim();if(onChange)onChange(v);if(v&&masterPyroNames.length&&!masterPyroNames.includes(v))setStatus('Pyro formulation not found in master list: '+v,false);};button.onmousedown=e=>{e.preventDefault();input.focus();panel.style.display==='none'?open(true):close();};const api={root,open,close,get value(){return input.value},set value(v){input.value=v||''}};Object.defineProperty(root,'value',{get(){return api.value},set(v){api.value=v;}});root.close=close;return root;}function pyroSummaryHtml(name){let p=masterPyroList[name];if(!p)return '<div class="pyroInspectCard">No master-list data found for '+escapeHtml(name||'(none)')+'</div>';const rows=[['Temperature',p.Temperature||p.temperature||''],['Density',p.Density||p.density||''],['Reference burn rate',p.reference_burn_rate||''],['Burn exponent',p.burn_rate_exponent??''],['Temperature sensitivity',p.burn_rate_temperature_sensitivity||p.temperature_sensitivity||''],['HEX',p.HEX||'']];return '<div class="pyroInspectCard"><div class="pyroInspectTitle">'+escapeHtml(name)+'</div><table class="pyroMiniTable"><tbody>'+rows.map(r=>'<tr><th>'+escapeHtml(r[0])+'</th><td>'+escapeHtml(r[1])+'</td></tr>').join('')+'</tbody></table></div>';}function parseNumberArrayText(t){try{let a=JSON.parse(t);if(Array.isArray(a))return a.map(Number).filter(Number.isFinite);}catch(e){}return String(t).split(/[\s,]+/).map(Number).filter(Number.isFinite);}function buildPyroTimingEditor(py){if(py.piles===undefined)py.piles=1;if(py.flame_spread_time===undefined)py.flame_spread_time='0.0 s';if(!py.ignition_time||typeof py.ignition_time!=='object'||Array.isArray(py.ignition_time))py.ignition_time={triggering_event:'SimStart',time_delay:'0.0 s'};if(!py.ignition_time.triggering_event)py.ignition_time.triggering_event='SimStart';if(!py.ignition_time.time_delay)py.ignition_time.time_delay='0.0 s';let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup pyroTimingGroup';h.className='insGroupHeader';h.innerHTML='<span>ignition / piles</span><span class="smartGroupBadge">pyro timing</span>';b.className='insGroupBody';g.append(h,b);b.appendChild(smartRow('piles',inpText(py.piles,v=>{let n=Number(v);py.piles=Number.isFinite(n)&&n>=1?Math.floor(n):1;})));b.appendChild(smartRow('flame_spread_time',inpText(py.flame_spread_time,v=>py.flame_spread_time=v)));b.appendChild(smartRow('triggering_event',eventSuggestionControl(py.ignition_time.triggering_event,v=>py.ignition_time.triggering_event=v)));b.appendChild(smartRow('time_delay',inpText(py.ignition_time.time_delay,v=>py.ignition_time.time_delay=v)));return g;}function buildPyroShapeEditor(py){if(!py.shape)py.shape=deepCopy(AIPP_PYRO_SHAPES.sphere.defaults);let geom=AIPP_PYRO_SHAPE_OPTIONS.includes(py.shape.geometry)?py.shape.geometry:'sphere';py.shape.geometry=geom;let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup pyroShapeGroup';h.className='insGroupHeader';h.innerHTML='<span>shape</span><span class="smartGroupBadge">AIPP shape editor</span>';b.className='insGroupBody';g.append(h,b);b.appendChild(smartRow('geometry',sel(AIPP_PYRO_SHAPE_OPTIONS,geom,v=>{py.shape=deepCopy(AIPP_PYRO_SHAPES[v].defaults);renderInspector();})));AIPP_PYRO_SHAPES[geom].fields.forEach(f=>b.appendChild(smartRow(f[0],inpText(Array.isArray(py.shape[f[0]])?JSON.stringify(py.shape[f[0]]):(py.shape[f[0]]??f[2]),v=>{py.shape[f[0]]=f[1]==='array'?parseNumberArrayText(v):(f[1]==='number'?Number(v):v);})))) ;return g;}function buildPyroQuantityEditor(py){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup pyroQuantityGroup';h.className='insGroupHeader';h.innerHTML='<span>quantity</span><span class="smartGroupBadge">mass or grain count</span>';b.className='insGroupBody';g.append(h,b);let mode=py.number!==undefined?'number':'mass';b.appendChild(smartRow('quantity_type',sel(['mass','number'],mode,v=>{if(v==='number'){delete py.mass;py.number=py.number??1}else{delete py.number;py.mass=py.mass??'0.0 g'}renderInspector();})));b.appendChild(smartRow(mode,inpText(py[mode]??(mode==='mass'?'0.0 g':1),v=>py[mode]=mode==='number'?Number(v):v)));return g;}const AIPP_BRM_FIELDS=[['reference_burn_rate','text','50.0 mm/s'],['burn_rate_exponent','number',0.5],['temperature_sensitivity','text','0.0 1/K'],['reference_burn_rate_scaling','number',1.0],['burn_rate_exponent_scaling','number',1.0],['temperature_sensitivity_scaling','number',1.0],['pressure_units','text','MPa'],['burn_rate_units','text','mm/s'],['pressure_array','array',[1,2]],['burn_rate_array','array',[50,60]]];function buildBurnRateModificationEditor(py){let details=document.createElement('details');details.className='insGroup pyroBurnRateGroup';details.open=!!py.burn_rate_modifications;let summary=document.createElement('summary');summary.className='insGroupHeader';summary.innerHTML='<span>burn_rate_modifications</span><span class="smartGroupBadge">optional checked fields</span>';let b=document.createElement('div');b.className='insGroupBody';details.append(summary,b);let note=document.createElement('div');note.className='pyroBurnRateStatus '+(py.burn_rate_modifications?'active':'inactive');note.textContent=py.burn_rate_modifications?'Burn-rate modifications are active. Checked fields will be written to JSON.':'No burn-rate modifications are active. Check a field to create the JSON object.';b.appendChild(note);function ensure(){if(!py.burn_rate_modifications||typeof py.burn_rate_modifications!=='object'||Array.isArray(py.burn_rate_modifications))py.burn_rate_modifications={};return py.burn_rate_modifications;}function cleanup(){if(py.burn_rate_modifications&&Object.keys(py.burn_rate_modifications).length===0)delete py.burn_rate_modifications;}function setField(k,typ,v){let brm=ensure();brm[k]=typ==='array'?parseNumberArrayText(v):(typ==='number'?Number(v):v);}AIPP_BRM_FIELDS.forEach(def=>{let k=def[0],typ=def[1],dflt=def[2],present=py.burn_rate_modifications&&Object.prototype.hasOwnProperty.call(py.burn_rate_modifications,k);let row=document.createElement('div');row.className='row brmRow';row.style.display='grid';row.style.gridTemplateColumns='260px minmax(0,1fr)';row.style.alignItems='center';row.style.gap='10px';row.style.margin='8px 0';let keyDiv=document.createElement('div');keyDiv.className='key';keyDiv.style.width='auto';keyDiv.style.overflowWrap='anywhere';keyDiv.style.lineHeight='1.2';let chk=document.createElement('input');chk.type='checkbox';chk.checked=!!present;chk.style.width='auto';chk.style.marginRight='6px';keyDiv.append(chk,document.createTextNode(k));let valDiv=document.createElement('div');valDiv.className='val';let input=inpText(present?(Array.isArray(py.burn_rate_modifications[k])?JSON.stringify(py.burn_rate_modifications[k]):py.burn_rate_modifications[k]):(Array.isArray(dflt)?JSON.stringify(dflt):dflt),v=>{if(chk.checked)setField(k,typ,v);});input.disabled=!chk.checked;if(!chk.checked)input.style.opacity='0.45';chk.onchange=()=>{input.disabled=!chk.checked;input.style.opacity=chk.checked?'1':'0.45';if(chk.checked)setField(k,typ,input.value);else{if(py.burn_rate_modifications)delete py.burn_rate_modifications[k];cleanup();}note.className='pyroBurnRateStatus '+(py.burn_rate_modifications?'active':'inactive');note.textContent=py.burn_rate_modifications?'Burn-rate modifications are active. Checked fields will be written to JSON.':'No burn-rate modifications are active. Check a field to create the JSON object.';};valDiv.appendChild(input);row.append(keyDiv,valDiv);b.appendChild(row);});let handled=AIPP_BRM_FIELDS.map(x=>x[0]);let extra=py.burn_rate_modifications?Object.keys(py.burn_rate_modifications).filter(k=>!handled.includes(k)):[];if(extra.length){let ex=document.createElement('div'),eh=document.createElement('div'),eb=document.createElement('div');ex.className='insGroup';eh.className='insGroupHeader';eh.innerHTML='<span>additional burn_rate_modifications keys</span><span class="smartGroupBadge">basic editable JSON fields</span>';eb.className='insGroupBody';ex.append(eh,eb);extra.forEach(k=>eb.appendChild(buildAny(k,py.burn_rate_modifications[k],['burn_rate_modifications',k])));b.appendChild(ex);}return details;}function buildAdditionalPyroKeysEditor(py,path){let handled=['formulation','mass','number','piles','flame_spread_time','ignition_time','shape','burn_rate_modifications'];let extra=Object.keys(py).filter(k=>!handled.includes(k));if(!extra.length){let empty=document.createElement('span');return empty;}let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup pyroAdditionalGroup';h.className='insGroupHeader';h.innerHTML='<span>additional pyro keys</span><span class="smartGroupBadge">basic editable JSON fields</span>';b.className='insGroupBody';g.append(h,b);extra.forEach(k=>b.appendChild(buildAny(k,py[k],path.concat([k]))));return g;}function buildChamberPyroManager(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup pyroManagerGroup';h.className='insGroupHeader';h.innerHTML='<span>pyrotechnics</span><span class="smartGroupBadge">searchable master pyro list</span>';b.className='insGroupBody';g.append(h,b);let state=document.createElement('div');state.className='repairNote';state.textContent='Pyro list: '+pyroListLoadState;b.appendChild(state);let keyArr=ensureChamberPyroArray(ch),key=keyArr.key,arr=keyArr.arr;arr.forEach((py,i)=>{let card=document.createElement('div');card.className='pyroEditCard';let title=document.createElement('div');title.className='pyroEditTitle';title.textContent='Pyro '+(i+1);card.appendChild(title);let row=document.createElement('div');row.className='pyroEditRow';let lab=document.createElement('div');lab.className='pyroEditLabel';lab.textContent='formulation';let ctl=pyroSelect(py.formulation||'',v=>{py.formulation=v;});let actions=document.createElement('div');actions.className='pyroEditActions';let inspect=document.createElement('button');inspect.className='smartMiniBtn';inspect.textContent='Inspect';let remove=document.createElement('button');remove.className='smartMiniBtn pyroRemoveBtn';remove.textContent='Remove';let panel=document.createElement('div');panel.className='pyroInspectPanel';inspect.onclick=()=>{panel.classList.toggle('open');panel.innerHTML=pyroSummaryHtml(py.formulation||ctl.value);};remove.onclick=()=>{arr.splice(i,1);if(!arr.length)delete ch[key];renderInspector();};actions.append(inspect,remove);row.append(lab,ctl,actions);card.append(row,panel,buildPyroQuantityEditor(py),buildPyroTimingEditor(py),buildPyroShapeEditor(py),buildBurnRateModificationEditor(py),buildAdditionalPyroKeysEditor(py,path.concat([key,i])));b.appendChild(card);});let addWrap=document.createElement('div');addWrap.className='pyroAddWrap';let addSel=pyroSelect(masterPyroNames[0]||'',()=>{}),addBtn=document.createElement('button');addBtn.className='smallBtn';addBtn.textContent='Add Pyro';addBtn.onclick=()=>{ensureChamberPyroArray(ch).arr.push(makePyroTemplate(addSel.value));renderInspector();};addWrap.append(addSel,addBtn);b.appendChild(addWrap);return g;}
 window.onload=function(){renderTree();updateCodeTextFromModel();attachCodeEditorHandlers();initPopupDrag();renderCytoscapePrototype();setStatus('Ready. Click Open JSON File.',true);if(window.toScilab)window.toScilab('loaded');setTimeout(function(){requestPyroList();},0);};
 
@@ -5407,12 +5909,16 @@ function applyRemovalFromPreview(){
         // workflow and may surprise the user. The save operation writes the current in-memory model.
       }
       var jsonText = (typeof stringifyAippJsonPretty === 'function') ? stringifyAippJsonPretty(fullJson) : JSON.stringify(fullJson, null, 2);
-      var msg = {
-        type: 'save_json_ascii',
-        data: stringToAsciiArray(jsonText),
-        suggested_name: 'aipp_input_updated.json'
-      };
-      toScilabMsg(msg);
+      if(typeof aippSendSaveJsonRequest === 'function'){
+        aippSendSaveJsonRequest(jsonText, 'aipp_input_updated.json');
+      }else{
+        var msg = {
+          type: 'save_json_ascii',
+          data: stringToAsciiArray(jsonText),
+          suggested_name: 'aipp_input_updated.json'
+        };
+        toScilabAsciiMsg(msg);
+      }
       setStatus('Save requested. Choose output file in Scilab dialog.', true);
     }catch(e){
       setStatus('Save request failed: '+e.message, false);
@@ -6890,79 +7396,532 @@ function applyRemovalFromPreview(){
   else applyCleanup();
   [0,50,200,700,1500].forEach(function(ms){ setTimeout(applyCleanup, ms); });
 })();
-/* 19_scilab_2025_quote_transport_v1.js
-   Scilab 2025.1.0 browser transport compatibility shim.
-   Load after all application modules.
-
-   Why:
-   - Scilab 2026.1.0 can pass raw JSON strings from Scilab to JCEF/browser reliably.
-   - Scilab 2025.1.0 can corrupt/lose JSON double quotes in the string transport.
-
-   Supported inbound Scilab -> browser payload formats:
-   1) Raw JSON text:                    {"type":"json_ascii",...}
-   2) Quote-token text:                 AIPP_QUOTE:{<-quote->type<-quote->:...}
-   3) Bare historical quote-token text: {<-quote->type<-quote->:...}
-   4) ASCII frame text:                 AIPP_ASCII:123,34,116,...
+/* 19_transport_receive_compat_v1.js
+   Browser receive compatibility and transport config handler.
 */
 (function(){
-  if(window.__aippScilab2025QuoteTransportV1Applied) return;
-  window.__aippScilab2025QuoteTransportV1Applied = true;
+  if(window.__aippTransportReceiveCompatV1Applied) return;
+  window.__aippTransportReceiveCompatV1Applied = true;
 
-  var QUOTE_TOKEN = '<-quote->';
-  var QUOTE_PREFIX = 'AIPP_QUOTE:';
-  var ASCII_PREFIX = 'AIPP_ASCII:';
-
-  function decodeAsciiFrame(s){
-    var body = String(s || '').slice(ASCII_PREFIX.length).trim();
-    if(!body) return '';
-    var codes = body.split(',').map(function(x){ return Number(String(x).trim()); }).filter(Number.isFinite);
+  function aippAsciiArrayToString(a){
+    if(!Array.isArray(a)) return '';
     var out = '';
-    // Avoid apply() argument limits on very large JSON files.
-    for(var i=0;i<codes.length;i+=8192){
-      out += String.fromCharCode.apply(null, codes.slice(i, i+8192));
-    }
+    for(var i=0;i<a.length;i++) out += String.fromCharCode(Number(a[i]));
     return out;
   }
 
-  function decodeScilabTransportPayload(payload){
-    if(payload == null) return '';
-    if(Array.isArray(payload)){
-      var arr = payload.map(Number).filter(Number.isFinite);
-      var txt = '';
-      for(var i=0;i<arr.length;i+=8192){
-        txt += String.fromCharCode.apply(null, arr.slice(i, i+8192));
-      }
-      return txt;
+  function aippApplyTransportConfig(o){
+    window.aippTransportConfig = window.aippTransportConfig || {};
+    window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
+
+    window.aippTransportConfig.scilab_version = o.scilab_version || 'unknown';
+    window.aippTransportConfig.raw = o;
+
+    if(o.save_transport){
+      window.aippSaveTransportConfig.mode = o.save_transport;
+    }
+    if(o.save_chunk_size){
+      window.aippSaveTransportConfig.chunk_size = Number(o.save_chunk_size) || 1200;
+    }
+    if(o.save_chunk_delay_ms != null){
+      window.aippSaveTransportConfig.chunk_delay_ms = Number(o.save_chunk_delay_ms);
     }
 
-    var s = String(payload);
-    if(s.indexOf(ASCII_PREFIX) === 0){
-      return decodeAsciiFrame(s);
+    console.log('[AIPP TRANSPORT] Applied transport config:', window.aippSaveTransportConfig);
+    if(typeof setStatus === 'function'){
+      setStatus('Transport configured: save=' + (window.aippSaveTransportConfig.mode || 'default'), true);
     }
-    if(s.indexOf(QUOTE_PREFIX) === 0){
-      s = s.slice(QUOTE_PREFIX.length);
-    }
-    if(s.indexOf(QUOTE_TOKEN) >= 0){
-      s = s.split(QUOTE_TOKEN).join('"');
-    }
-    return s;
   }
 
-  var originalFromScilab = window.fromScilab;
+  function aippDecodeScilabTransportPayload(payload){
+    if(Array.isArray(payload)) return JSON.parse(aippAsciiArrayToString(payload));
+    if(payload && typeof payload === 'object' && typeof payload.length === 'number' && !payload.type){
+      try{
+        var arr = Array.prototype.slice.call(payload).map(Number);
+        if(arr.length && arr.every(Number.isFinite)) return JSON.parse(aippAsciiArrayToString(arr));
+      }catch(e){}
+    }
+    if(payload && typeof payload === 'object') return payload;
+    if(typeof payload === 'string'){
+      var txt = payload;
+      if(txt.indexOf('<-quote->') >= 0){
+        txt = txt.replaceAll('<-quote->', '"');
+        window.AIPP_SCILAB_QUOTE_TOKEN_MODE = true;
+      }
+      if(txt.indexOf('AIPP_ASCII:') === 0){
+        var body = txt.substring('AIPP_ASCII:'.length);
+        var nums = body.split(',').map(function(x){ return Number(x); }).filter(Number.isFinite);
+        txt = aippAsciiArrayToString(nums);
+      }
+      return JSON.parse(txt);
+    }
+    throw new Error('Unsupported Scilab transport payload type: ' + typeof payload);
+  }
+
+  function aippDispatchDecodedScilabMessage(o, originalPayload){
+    if(o && o.type === 'transport_config'){
+      aippApplyTransportConfig(o);
+      return;
+    }
+    if(o && o.type === 'save_json_success'){
+      if(typeof setStatus === 'function') setStatus('Saved JSON: ' + (o.path || o.file || 'selected file'), true);
+      return;
+    }
+    if(o && o.type === 'save_json_error'){
+      var msg = o.message || 'unknown error';
+      if(typeof setStatus === 'function') setStatus('Save JSON failed: ' + msg, false);
+      if(window.alert) window.alert('Save JSON failed: ' + msg);
+      return;
+    }
+    if(o && o.type === 'save_json_cancelled'){
+      if(typeof setStatus === 'function') setStatus('Save JSON cancelled.', true);
+      return;
+    }
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function'){
+      return window.__aippOriginalFromScilabBeforeTransportCompat(originalPayload);
+    }
+    if(o && o.type === 'json_ascii'){
+      var jsonText = (typeof asciiToString === 'function') ? asciiToString(o.data) : aippAsciiArrayToString(o.data || []);
+      fullJson = JSON.parse(jsonText);
+      if(typeof refreshAllViews === 'function') refreshAllViews();
+      if(typeof setStatus === 'function') setStatus('JSON loaded.', true);
+      return;
+    }
+    if(o && o.type === 'csv_ascii'){
+      if(typeof handleCsvAsciiMessage === 'function') return handleCsvAsciiMessage(o);
+      console.warn('[AIPP RX] csv_ascii received but no handler was found.', o);
+      return;
+    }
+    if(o && o.type === 'pyrolist_ascii'){
+      var pyroText = (typeof asciiToString === 'function') ? asciiToString(o.data) : aippAsciiArrayToString(o.data || []);
+      if(typeof loadPyroListFromText === 'function') loadPyroListFromText(pyroText);
+      else console.warn('[AIPP RX] pyrolist_ascii received but loadPyroListFromText was not found.');
+      return;
+    }
+    if(o && o.type === 'pyrolist_error'){
+      if(typeof setStatus === 'function') setStatus(o.message || 'Pyrolist load error.', false);
+      return;
+    }
+    console.warn('[AIPP RX] Unhandled decoded Scilab message:', o);
+  }
+
+  if(!window.__aippOriginalFromScilabBeforeTransportCompat && typeof window.fromScilab === 'function'){
+    window.__aippOriginalFromScilabBeforeTransportCompat = window.fromScilab;
+  }
+  window.aippDecodeScilabTransportPayload = aippDecodeScilabTransportPayload;
+  window.aippApplyTransportConfig = aippApplyTransportConfig;
+
   window.fromScilab = function(payload){
-    var decoded = decodeScilabTransportPayload(payload);
-    if(typeof originalFromScilab === 'function'){
-      return originalFromScilab(decoded);
+    var decoded;
+    try{ decoded = aippDecodeScilabTransportPayload(payload); }
+    catch(e){
+      console.error('[AIPP RX] Failed to decode Scilab payload:', e, payload);
+      if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return window.__aippOriginalFromScilabBeforeTransportCompat(payload);
+      return;
     }
+    if(typeof window.__aippOriginalFromScilabBeforeTransportCompat === 'function') return aippDispatchDecodedScilabMessage(decoded, JSON.stringify(decoded));
+    return aippDispatchDecodedScilabMessage(decoded, payload);
+  };
+})();
+/* 20_save_json_transport_v1.js
+   Modular Save JSON transport.
+
+   Config is supplied by Scilab via transport_config on browser load:
+   - Scilab 2025.1.0 => chunked, chunk_size 1200
+   - newer Scilab => direct_ascii
+
+   Safe fallback before config arrives is chunked.
+*/
+(function(){
+  if(window.__aippSaveJsonTransportV1Applied) return;
+  window.__aippSaveJsonTransportV1Applied = true;
+
+  window.aippSaveTransportConfig = window.aippSaveTransportConfig || {};
+  if(!window.aippSaveTransportConfig.mode) window.aippSaveTransportConfig.mode = 'chunked';
+  if(!window.aippSaveTransportConfig.chunk_size) window.aippSaveTransportConfig.chunk_size = 1200;
+  if(window.aippSaveTransportConfig.chunk_delay_ms == null) window.aippSaveTransportConfig.chunk_delay_ms = 5;
+
+  function stringToAsciiArrayForSaveTransport(s){
+    s = String(s == null ? '' : s);
+    var out = [];
+    for(var i=0; i<s.length; i++) out.push(s.charCodeAt(i));
+    return out;
+  }
+
+  function aippSendDirectSaveJson(jsonText, suggestedName){
+    var msg = {
+      type: 'save_json_ascii',
+      data: stringToAsciiArrayForSaveTransport(jsonText),
+      suggested_name: suggestedName || 'aipp_input_updated.json'
+    };
+    toScilabAsciiMsg(msg);
+  }
+
+  function aippSendChunkedSaveJson(jsonText, suggestedName){
+    var chunkSize = Number(window.aippSaveTransportConfig.chunk_size) || 1200;
+    var delayMs = Number(window.aippSaveTransportConfig.chunk_delay_ms);
+    if(!Number.isFinite(delayMs) || delayMs < 0) delayMs = 5;
+
+    jsonText = String(jsonText == null ? '' : jsonText);
+    suggestedName = suggestedName || 'aipp_input_updated.json';
+
+    var transferId = 'save_' + Date.now() + '_' + Math.floor(Math.random() * 1000000);
+    var totalChunks = Math.max(1, Math.ceil(jsonText.length / chunkSize));
+
+    toScilabAsciiMsg({
+      type: 'save_json_begin',
+      transfer_id: transferId,
+      total_chars: jsonText.length,
+      total_chunks: totalChunks,
+      suggested_name: suggestedName,
+      chunk_size: chunkSize
+    });
+
+    var chunkIndex = 1;
+    function sendNextChunk(){
+      if(chunkIndex > totalChunks){
+        toScilabAsciiMsg({type: 'save_json_end', transfer_id: transferId});
+        if(typeof setStatus === 'function') setStatus('Chunked save transfer complete. Choose output file in Scilab dialog.', true);
+        return;
+      }
+      var start = (chunkIndex - 1) * chunkSize;
+      var chunkText = jsonText.slice(start, start + chunkSize);
+      toScilabAsciiMsg({
+        type: 'save_json_chunk',
+        transfer_id: transferId,
+        chunk_index: chunkIndex,
+        total_chunks: totalChunks,
+        data: stringToAsciiArrayForSaveTransport(chunkText)
+      });
+      chunkIndex++;
+      setTimeout(sendNextChunk, delayMs);
+    }
+    setTimeout(sendNextChunk, delayMs);
+  }
+
+  window.aippSendSaveJsonRequest = function(jsonText, suggestedName){
+    var mode = (window.aippSaveTransportConfig && window.aippSaveTransportConfig.mode) || 'chunked';
+    if(mode === 'direct_ascii') return aippSendDirectSaveJson(jsonText, suggestedName);
+    return aippSendChunkedSaveJson(jsonText, suggestedName);
+  };
+})();
+/* 21_graph_layout_breadthfirst_tuned_v2.js
+   Optional Cytoscape breadthfirst layout with production defaults selected from JCEF tuning.
+
+   Joseph-selected defaults:
+     bfDirection = 'leftward'
+     bfAvoidOverlap = true
+     bfDirected = false
+     bfCircle = false
+     bfGrid = true
+     bfSpacingFactor = 0.9
+     bfMaximal = true
+     bfFit = true
+     bfPadding = 1000
+     bfAnimate = true
+     bfAnimationDuration = 600
+     bfNodeDimensionsIncludeLabels = false
+     includeWallsInAutoLayout = true
+
+   Default mode remains the existing manual/preset layout.
+*/
+(function(){
+  if(window.__aippGraphLayoutBreadthfirstTunedV2Applied) return;
+  window.__aippGraphLayoutBreadthfirstTunedV2Applied = true;
+
+  window.aippGraphLayoutConfig = window.aippGraphLayoutConfig || {};
+  var cfg = window.aippGraphLayoutConfig;
+
+  if(!cfg.mode) cfg.mode = 'preset_manual';
+  if(!cfg.autoLayout) cfg.autoLayout = 'breadthfirst';
+
+  // Tuned breadthfirst layout defaults.
+  // Valid direction values in current bundled Cytoscape: downward, leftward, upward, rightward.
+  if(cfg.bfDirection == null) cfg.bfDirection = 'leftward';
+  if(cfg.bfAvoidOverlap == null) cfg.bfAvoidOverlap = true;
+  if(cfg.bfDirected == null) cfg.bfDirected = false;
+  if(cfg.bfCircle == null) cfg.bfCircle = false;
+  if(cfg.bfGrid == null) cfg.bfGrid = true;
+  if(cfg.bfSpacingFactor == null) cfg.bfSpacingFactor = 0.9;
+  if(cfg.bfMaximal == null) cfg.bfMaximal = true;
+  if(cfg.bfAnimate == null) cfg.bfAnimate = true;
+  if(cfg.bfAnimationDuration == null) cfg.bfAnimationDuration = 600;
+  if(cfg.bfFit == null) cfg.bfFit = true;
+  if(cfg.bfPadding == null) cfg.bfPadding = 1000;
+  if(cfg.bfNodeDimensionsIncludeLabels == null) cfg.bfNodeDimensionsIncludeLabels = false;
+
+  // AIPP-specific post processing.
+  if(cfg.tankRight == null) cfg.tankRight = true;
+  if(cfg.includeWallsInAutoLayout == null) cfg.includeWallsInAutoLayout = true;
+  if(cfg.wallYOffset == null) cfg.wallYOffset = 230;
+  if(cfg.wallXSpread == null) cfg.wallXSpread = 115;
+  if(cfg.tankRightMargin == null) cfg.tankRightMargin = 260;
+
+  var originalApplyAippCytoscapeLayout = (typeof applyAippCytoscapeLayout === 'function') ? applyAippCytoscapeLayout : null;
+
+  function getCy(){
     try{
-      var msg = JSON.parse(decoded);
-      console.log('AIPP decoded Scilab message', msg);
+      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
+    }catch(e){}
+    if(window.cyPrototype) return window.cyPrototype;
+    return null;
+  }
+
+  function getAippTankNodeId(){
+    try{
+      var info = (typeof getAssemblyInfo === 'function') ? getAssemblyInfo(fullJson) : {assembly:null};
+      var assembly = info && info.assembly;
+      var tankId = null;
+
+      if(assembly && assembly.tank_id != null) tankId = assembly.tank_id;
+      else if(fullJson && fullJson.tank_id != null) tankId = fullJson.tank_id;
+      else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.tank_id != null) tankId = fullJson.aipp_calculation.tank_id;
+      else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.assembly && fullJson.aipp_calculation.assembly.tank_id != null) tankId = fullJson.aipp_calculation.assembly.tank_id;
+
+      var n = parseInt(tankId, 10);
+      if(Number.isFinite(n) && n > 0) return 'c' + n;
     }catch(e){
-      console.error('AIPP failed to decode Scilab message', e, decoded);
+      console.warn('[AIPP GRAPH] Unable to determine tank_id:', e);
     }
+    return null;
+  }
+
+  function getBreadthfirstRootsSelector(cy){
+    var rootCfg = window.aippGraphLayoutConfig.bfRoots;
+    if(rootCfg != null && rootCfg !== '') return rootCfg;
+
+    var tankNodeId = getAippTankNodeId();
+    if(tankNodeId && cy && cy.getElementById(tankNodeId).length) return '#' + tankNodeId;
+    return undefined;
+  }
+
+  function overlaySync(delay){
+    delay = delay || 0;
+    setTimeout(function(){
+      if(typeof scheduleCytoscapeOverlayUpdate === 'function') scheduleCytoscapeOverlayUpdate();
+      else if(typeof updateCytoscapeOverlayPositions === 'function') updateCytoscapeOverlayPositions();
+    }, delay);
+  }
+
+  function forceTankRight(cy, tankNodeId){
+    if(!cy || !tankNodeId) return;
+    var tank = cy.getElementById(tankNodeId);
+    if(!tank || tank.empty || tank.empty()) return;
+
+    var maxX = -Infinity;
+    cy.nodes().forEach(function(n){
+      var x = n.position('x');
+      if(Number.isFinite(x) && x > maxX) maxX = x;
+    });
+    if(!Number.isFinite(maxX)) return;
+
+    var margin = Number(window.aippGraphLayoutConfig.tankRightMargin) || 260;
+    if(tank.position('x') < maxX - 1){
+      tank.position({x: maxX + margin, y: tank.position('y')});
+    }
+  }
+
+  function connectedChamberIdForWallNode(wallNode){
+    try{
+      var id = wallNode.id();
+      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){ return n.id === id; }) : null;
+      var w = sim && sim.data ? sim.data : {};
+      var ci = null;
+      if(w.left_connection && w.left_connection.chamber_index != null) ci = w.left_connection.chamber_index;
+      else if(w.right_connection && w.right_connection.chamber_index != null) ci = w.right_connection.chamber_index;
+      ci = parseInt(ci, 10);
+      if(Number.isFinite(ci) && ci > 0) return 'c' + ci;
+    }catch(e){}
+    return null;
+  }
+
+  function repositionWallsBelowChambers(cy){
+    if(!cy || window.aippGraphLayoutConfig.includeWallsInAutoLayout) return;
+    var walls = cy.nodes('[type = "wall"]');
+    if(!walls || walls.length === 0) return;
+
+    walls.forEach(function(wall, i){
+      var chamberId = connectedChamberIdForWallNode(wall);
+      var anchor = chamberId ? cy.getElementById(chamberId) : null;
+      if(!anchor || anchor.empty || anchor.empty()) return;
+      var p = anchor.position();
+      var spread = Number(window.aippGraphLayoutConfig.wallXSpread) || 115;
+      var yoff = Number(window.aippGraphLayoutConfig.wallYOffset) || 230;
+      wall.position({
+        x: p.x + ((i % 3) - 1) * spread,
+        y: p.y + yoff + Math.floor(i / 3) * 55
+      });
+    });
+  }
+
+  function runBreadthfirstAutoLayout(anim){
+    var cy = getCy();
+    if(!cy){
+      if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+      return;
+    }
+
+    var cfg = window.aippGraphLayoutConfig || {};
+    var tankNodeId = getAippTankNodeId();
+    var roots = getBreadthfirstRootsSelector(cy);
+    var shouldAnimate = (cfg.bfAnimate !== false) && !!anim;
+
+    var layoutOptions = {
+      name: 'breadthfirst',
+      roots: roots,
+      avoidOverlap: cfg.bfAvoidOverlap !== false,
+      directed: !!cfg.bfDirected,
+      circle: !!cfg.bfCircle,
+      grid: !!cfg.bfGrid,
+      spacingFactor: Number(cfg.bfSpacingFactor) || 0.9,
+      maximal: !!cfg.bfMaximal,
+      fit: cfg.bfFit !== false,
+      padding: Number(cfg.bfPadding) || 1000,
+      animate: shouldAnimate,
+      animationDuration: shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) : 0,
+      nodeDimensionsIncludeLabels: !!cfg.bfNodeDimensionsIncludeLabels,
+      direction: cfg.bfDirection || 'leftward',
+      stop: function(){
+        try{
+          if(cfg.tankRight !== false) forceTankRight(cy, tankNodeId);
+          repositionWallsBelowChambers(cy);
+          if(cfg.bfFit !== false) cy.fit(cy.elements(), Number(cfg.bfPadding) || 1000);
+        }catch(e){
+          console.warn('[AIPP GRAPH] breadthfirst post-layout adjustment failed:', e);
+        }
+        overlaySync(0);
+      }
+    };
+
+    try{
+      var eles = cy.elements();
+      if(cfg.includeWallsInAutoLayout === false){
+        eles = cy.nodes().not('[type = "wall"]').union(cy.edges('[type = "flow"]'));
+      }
+      var layout = eles.layout(layoutOptions);
+      layout.run();
+      overlaySync(shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) + 40 : 90);
+    }catch(e){
+      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to preset layout:', e);
+      if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim);
+    }
+  }
+
+  window.setAippGraphLayoutMode = function(mode){
+    window.aippGraphLayoutConfig.mode = mode || 'preset_manual';
+    if(typeof setStatus === 'function') setStatus('Graph layout mode: ' + window.aippGraphLayoutConfig.mode, true);
   };
 
-  window.decodeScilabTransportPayload = decodeScilabTransportPayload;
+  window.applyAippBreadthfirstLayout = function(anim){
+    window.aippGraphLayoutConfig.mode = 'breadthfirst_auto';
+    runBreadthfirstAutoLayout(anim !== false);
+  };
+
+  window.applyAippPresetManualLayout = function(anim){
+    window.aippGraphLayoutConfig.mode = 'preset_manual';
+    if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim !== false);
+  };
+
+  window.getAippBreadthfirstLayoutOptions = function(){
+    var cfg = window.aippGraphLayoutConfig || {};
+    return {
+      bfRoots: cfg.bfRoots,
+      bfAvoidOverlap: cfg.bfAvoidOverlap,
+      bfDirected: cfg.bfDirected,
+      bfCircle: cfg.bfCircle,
+      bfGrid: cfg.bfGrid,
+      bfSpacingFactor: cfg.bfSpacingFactor,
+      bfMaximal: cfg.bfMaximal,
+      bfDirection: cfg.bfDirection,
+      bfFit: cfg.bfFit,
+      bfPadding: cfg.bfPadding,
+      bfAnimate: cfg.bfAnimate,
+      bfAnimationDuration: cfg.bfAnimationDuration,
+      bfNodeDimensionsIncludeLabels: cfg.bfNodeDimensionsIncludeLabels,
+      includeWallsInAutoLayout: cfg.includeWallsInAutoLayout,
+      tankRight: cfg.tankRight,
+      tankRightMargin: cfg.tankRightMargin,
+      wallYOffset: cfg.wallYOffset,
+      wallXSpread: cfg.wallXSpread
+    };
+  };
+
+  applyAippCytoscapeLayout = function(anim){
+    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'breadthfirst_auto'){
+      return runBreadthfirstAutoLayout(anim);
+    }
+    if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+  };
+
+  function installLayoutButtons(){
+    var tools = document.querySelector('#vizHeader .vizHeaderTools') || document.getElementById('vizHeader');
+    if(!tools || document.getElementById('graphLayoutModeBtn')) return;
+
+    var btn = document.createElement('button');
+    btn.id = 'graphLayoutModeBtn';
+    btn.className = 'smallBtn secondary';
+    btn.textContent = 'Breadthfirst Layout';
+    btn.title = 'Toggle tuned Cytoscape breadthfirst layout anchored by tank_id.';
+    btn.onclick = function(){
+      var current = window.aippGraphLayoutConfig.mode;
+      if(current === 'breadthfirst_auto'){
+        window.applyAippPresetManualLayout(true);
+        btn.textContent = 'Breadthfirst Layout';
+      }else{
+        window.applyAippBreadthfirstLayout(true);
+        btn.textContent = 'Manual Layout';
+      }
+    };
+    tools.appendChild(btn);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLayoutButtons);
+  else installLayoutButtons();
+  setTimeout(installLayoutButtons, 0);
+})();
+/* 21_save_transport_diagnostics_dev_v1.js
+   Optional development-only diagnostics.
+
+   To enable: copy this file into browser_files/js/ and rebuild the bundle.
+*/
+(function(){
+  if(window.__aippSaveTransportDiagnosticsDevV1Applied) return;
+  window.__aippSaveTransportDiagnosticsDevV1Applied = true;
+
+  function makePayload(n, value){
+    n = Math.max(0, Number(n) || 0);
+    value = Number(value);
+    if(!Number.isFinite(value)) value = 65;
+    var data = [];
+    for(var i = 0; i < n; i++) data.push(value);
+    return data;
+  }
+
+  window.aippTestToScilabAsciiPayloadSize = function(n){
+    var data = makePayload(n, 65);
+    var msg = { type: 'debug_payload', requested_size: Number(n) || 0, data: data };
+    console.log('[AIPP DIAG] Sending debug_payload with data length:', data.length);
+    if(typeof toScilabAsciiMsg !== 'function'){
+      console.error('[AIPP DIAG] toScilabAsciiMsg is not available.');
+      return;
+    }
+    toScilabAsciiMsg(msg);
+    if(typeof setStatus === 'function') setStatus('Sent debug payload size '+data.length+' to Scilab.', true);
+  };
+
+  window.aippRunPayloadSizeSweep = function(sizes, delayMs){
+    sizes = Array.isArray(sizes) ? sizes : [100, 250, 500, 1000, 1200, 1500, 1700];
+    delayMs = Number(delayMs);
+    if(!Number.isFinite(delayMs) || delayMs < 0) delayMs = 750;
+    var i = 0;
+    function next(){
+      if(i >= sizes.length){ console.log('[AIPP DIAG] Payload size sweep complete.'); return; }
+      var n = sizes[i++];
+      window.aippTestToScilabAsciiPayloadSize(n);
+      setTimeout(next, delayMs);
+    }
+    next();
+  };
 })();
 </script>
 </body>
@@ -7046,16 +8005,16 @@ function doubled_ints = ConvertIntsToDoublesJSON(json_txt, vars)
     for i=1:1:max(size(vars))
         regex.pre = '/\b'
         regex.post = '\b/'
-        rows = grep(json_txt, regex.pre + vars(i) + regex.post, 'r')
+        rows = grep(json_txt, regex.pre + """"  + vars(i) + """" + regex.post, 'r')
         if rows ~= []
             for j=1:1:max(size(rows))
+                // disp(json_txt(rows(j)))
                 colsindex = strindex(json_txt(rows(j)),":")
                 temp = strsplit(json_txt(rows(j)),":")(2)
                 numsindex = strindex(temp,"/[0-9]/",'r')
                 numsindex = numsindex+colsindex
                 start = min(numsindex)
                 stop = max(numsindex)
-
                 intval = part(json_txt(rows(j)),start:stop)
                 if strindex(intval,"^") ~=0
                     intval = strsplit(intval," ")(1)
@@ -7087,22 +8046,504 @@ function doubled_ints = ConvertIntsToDoublesJSON(json_txt, vars)
     doubled_ints = json_txt
 endfunction
 ```
+#### deckToJson.sci
+```scilab
+function [ac]=GetTimes(text)   
+    ac.time_specs.output_time_step=nab(text,'output_dt',1,'s')
+    ac.time_specs.end_time=nab(text,'t1_end',1,'s')
+    ac.time_specs.simulation_time_step=nab(text,'dt1',1,'s')
+    ac("time_specs")("run_simulation") = %t
+    ac("time_specs")("RKF_config_file") = "auxiliary_files/RKF_config.json"
+endfunction
+
+function out = AddDefaultReactions(struc)
+    out = struc
+    out("reaction_specs")("reactions_list") = ["H2_combustion", ...
+                                               "CO_combustion"]
+    out("reaction_specs")("reactions_method")("choice") = "mass_action"
+    out("reaction_specs")("reactions_method")("options") = [...
+                                                "constant", ...
+                                                "mass_action", ...
+                                                "mass_action_arrhenius"]
+    out("reaction_specs")("onoff_switch") = %f
+    out("reaction_specs")("enforce_LDB") = %f
+    out("reaction_specs")("speed_scaling") = 5e-07
+    out("reaction_specs")("reactions_file") = "auxiliary_files/basic_reactions.json"
+
+endfunction
+
+function [ac]=GetChamberDetails(ac, text, ncham)
+    specnames=['h2o','co2','n2','o2','h2','co','he','ar','n2o']
+    propername=["H2O","CO2",'N2','O2','H2','CO','He','Ar','N2O']
+    [junk,nspecies]=size(specnames)
+    // start assembly.chambers
+    ac.assembly.tank_id = ncham
+    for i=1:ncham
+        ac("assembly")("chambers")(i)("label") = nab(text, 'chamber_name', i, '')
+        ac("assembly")("chambers")(i)("init_type") = "mVT"
+        if(i<ncham)
+            ac.assembly.chambers(i).volume=nab(text,'gas_volume',i,'mm^3')
+        else
+            ac.assembly.chambers(i).volume=nab(text,'gas_volume',i,'L')
+        end
+        ac.assembly.chambers(i).temperature=nab(text,'conditioning_temperature',1,'K') // it's always the first token for all chambers
+        ac.assembly.chambers(i).mass=nab(text,'gas_mass',i,'g')
+        for j=1:nspecies
+            strin=specnames(j)+"%"
+            maybe_value=nab(text,strin,i,"")
+            if(strtod(maybe_value) > 0) then
+                strtoex='ac.assembly.chambers('+string(i)+').mol_fractions.'+propername(j)+'='+maybe_value
+                execstr(strtoex)
+            end
+        end
+        ac.assembly.walls(ncham).temperature='294.15 K' // override the conditioning temp for the tank wall
+        ac.assembly.chambers(ncham).temperature='294.15 K'
+    end
+    
+endfunction
+
+function [ac]=GetOrificeDetails(ac, text, ncham)
+    orificecount=0;
+    for i=1: ncham
+        norificegroups=strtod(nab(text,'num_orifice_sizes',i,""))
+        
+        //        disp('chamber and group number',[i,norificegroups])
+        for j=1:norificegroups
+            orificecount=orificecount+1 ; // increment which orifice to write to JSON
+            row = grep(text, "num_orifice" + string(j))
+            specs = text(row)
+            //This function is used to fix parsing issues from 
+            //input deck lines with empty tabs rather than "0"
+            //using only tabs breaks the assumptions made by the
+            //tokens tool
+            function out = FixEmptyTabs(inp_string)
+
+                //Take care of special case for i = 1
+                snippet(1) =  part(specs, 1)
+
+                if snippet(1) == "	" then
+                    new(1) = "0	"
+                else
+                    new(1) = snippet(1)
+                end
+
+                for i =2:1:length(specs)
+                    snippet(i) =  part(specs, i)
+                    if snippet(i) == "	" & snippet(i-1) ~= "	"
+                        new(i) = snippet(i)
+                    elseif snippet(i) == "	" & snippet(i-1) == "	"
+                        new(i) = "0	"
+                    else
+                        new(i) = snippet(i)
+                    end
+                end
+                out = strcat([new'])
+            endfunction
+            norifices=strtod(nab(FixEmptyTabs(specs),strcat(["num_orifice",string(j)]),i,'mm'));
+            ord=strtod(nab(text,strcat(["diameter",string(j)]),i,'mm'));
+//            disp('ord is ', ord)
+            if(isnan(ord)) then
+//                disp('in the breakloop')
+                break
+            end
+
+            deq=sqrt(norifices)*ord
+            ac.assembly.orifices(1,orificecount).diameter=strcat([string(ord),' mm']) ; // equivalent diameter assuming 1 orifice for the group
+            ac.assembly.orifices(1,orificecount).num_orif = norifices
+            ac.assembly.orifices(1,orificecount).open=%f
+            ac.assembly.orifices(1,orificecount).one_way=%f
+            Cd=strtod(nab(text,strcat(["cd_value",string(j)]),i,''));
+            ac.assembly.orifices(1,orificecount).discharge_coefficient.basis = "constant";
+            ac.assembly.orifices(1,orificecount).discharge_coefficient.Cd_value = double(Cd);
+            ac.assembly.orifices(1,orificecount).from=i
+            ac.assembly.orifices(1,orificecount).to=strtod(nab(text,strcat(["chamber_connection"]),i,''));
+            ac.assembly.orifices(1,orificecount).viscous_flow_factor=strtod(nab(text,"visc_flow",1,''));
+
+            ocodestr='orifice_type_code'+string(j)
+            ocode=strtod(nab(text,ocodestr,i,'thistringdoesnotmatter'))
+            select ocode
+            case 2 then
+                ac.assembly.orifices(1,orificecount).opens_at=nab(text,strcat(["burst_pressure",string(j)]),i,'MPa')
+            case 4 then
+                ac.assembly.orifices(1,orificecount).opens_at.triggering_event = "SimStart"
+                ac.assembly.orifices(1,orificecount).opens_at.time_delay=nab(text,strcat(["burst_time",string(j)]),i,'s')
+            end
+        end
+    end
+    // things that can be done outside of the loop through chambers
+    //The JSON file from archaeologic reads in the chambers as a list object. Manually
+    //creating the structure above creates a [nx1] structure object. This section 
+    //forces the creation of a list to match the archaeologic syntax 
+    for i=1:1:ncham
+        if i==1
+            str = "list(ac.assembly.chambers(1)" 
+        else
+            str = strcat([str,",","ac.assembly.chambers(",string(i),")"])
+            //       disp(str)
+        end
+    end
+    execstr(strcat(["ac.assembly.chambers = ",str,")"]))
+    for i=1:1:orificecount
+        if i==1
+            str = "list(ac.assembly.orifices(1)" 
+        else
+            str = strcat([str,",","ac.assembly.orifices(",string(i),")"])
+            //       disp(str)
+        end
+    end
+    execstr(strcat(["ac.assembly.orifices = ",str,")"]))
+endfunction
+
+function [ac]=GetFilterDetails(ac, text, ncham)  
+    //  from AIPP:  REAL(DP) :: rhosteel = 7833.d0, cpsteel=510.d0, ksteel=45.0d0
+    default_density_string="7833.0 kg/m^3"
+    default_specific_heat_string="510.0 J/(kg K)"
+
+    for i=1:ncham-1 // no filters in tank
+        FilterCode=nab(text,'heat_loss_method',1,'') // 1st string
+        FC=stripblanks(FilterCode)
+        ac.assembly.chambers(i).filter.density=default_density_string
+        ac.assembly.chambers(i).filter.specific_heat=default_specific_heat_string
+        ac.assembly.chambers(i).filter.mass=nab(text,'filter_weight',i,'g')
+        if(FC =='percentage') then
+            ac.assembly.chambers(i).filter.method='PERCENTAGE'
+            ac.assembly.chambers(i).filter.coefficient=strtod(nab(text,'pack_heatloss_percent_removed',i,''))/100.
+        else
+            ac.assembly.chambers(i).filter.method='KNTU' // will become KNTU once Archaeologic fixes it.
+            ac.assembly.chambers(i).filter.coefficient=strtod(nab(text,'kntu_value',1,''))
+        end
+        orifice_count = 0
+        filter_orifices = []
+        //create holder for orifice information created previously
+        orifices = ac.assembly.orifices
+        for j = 1:1:size(orifices)
+            if orifices(j).from == i
+                filter_orifices = cat(2, filter_orifices, j)
+            end
+        end
+        orifice_string = strcat([string(filter_orifices)], ",")
+        // ac.assembly.chambers(i).filter.orifices= "[" + orifice_string + "]"
+        ac.assembly.chambers(i).filter.orifices= list();
+        ac.assembly.chambers(i).filter.orifices(1) = filter_orifices;
+    end
+endfunction
+
+function [ac]=GetPyroDetails(ac, text, ncham)
+    for i=1:ncham
+        temp=nab(text,'pyro_file',i,'')
+//        disp('temp is ',temp)
+        name=(strsplit(temp,'.'))(1) // omit the .pyro file extension
+        //Update pyro file to latest formulation date
+        name = part(name, 1:$-8) +  "20250528"
+        pyromass=GetNumFromDeck(text,'generant_weight',i);
+//        disp('first pyromass is ',pyromass)
+
+        if pyromass ~= 0 then
+            ac.assembly.chambers(i).pyro = list()
+            ac.assembly.chambers(i).pyro(1).formulation=strsubst(name,"-","_")
+            // get the actual number of the density 
+            rho=GetNumFromDeck(text,'generant_density',i)
+            ac.assembly.chambers(i).pyro(1).density=nab(text,'generant_density',i,'g/cm^3')
+            ac.assembly.chambers(i).pyro(1).amount=msprintf("%.6f",pyromass)+' g'  
+            ac.assembly.chambers(i).pyro(1).piles=1
+            ac.assembly.chambers(i).pyro(1).flame_spread_time=nab(text,'flame_spread_time',i,'s')  
+            ac.assembly.chambers(i).pyro(1).ignition_time.triggering_event = "SimStart"      
+            ac.assembly.chambers(i).pyro(1).ignition_time.time_delay=nab(text,'ignition_delay',i,'s')      
+            ac.assembly.chambers(i).pyro(1).reference_burn_rate=nab(text,'ref_burn_rate',i,'mm/s')
+            ac.assembly.chambers(i).pyro(1).burn_rate_exponent=strtod(nab(text,'burn_rate_pressure_exp_n',i,''))
+            ac.assembly.chambers(i).pyro(1).burn_rate_temperature_sensitivity=nab(text,'burn_rate_temp_sensitivity_sigma_p',i,'1/K')                
+            ac.assembly.chambers(i).pyro(1).amount=nab(text,'generant_weight',i,'g')        
+            // now a somewehat complex process is involved to identify the proper tags for the different shapes, so this will  be a 'case' statement
+            shape_code=strtod(nab(text,'gen_shape_code',i,""))
+//            disp('shape_code',shape_code)
+            select shape_code
+            case(1) then // tablet (don't need to worry about the number of tablets, aipp will calc that)
+                ac.assembly.chambers(i).pyro(1).shape.geometry="tablet"
+                ac.assembly.chambers(i).pyro(1).shape.total_height=nab(text,'starID_waferID_triBL_surfAREA',i,'mm') 
+                ac.assembly.chambers(i).pyro(1).shape.diameter=nab(text,'tabOD_waferOD_starMD_triRAD',i,'mm')         
+                ac.assembly.chambers(i).pyro(1).shape.dome_height=nab(text,'tabTHICK_triTHICK_waferTHICK_starOD',i,'mm') 
+                ac.assembly.chambers(i).pyro(1).amount=msprintf("%.6f",pyromass)+' g'  
+                
+            case(2) then //sphere (don't need to worry about the number of spheres, aipp will calc that)
+                ac.assembly.chambers(i).pyro(1).shape.geometry="sphere"           
+                temp=nab(text,'sphereOD_starNFIN',i,''); // just get the value
+                temp=strcat([string(strtod(temp)/2), " mm"]) // convert diameter to radius
+                ac.assembly.chambers(i).pyro(1).shape.radius=temp;
+                ac.assembly.chambers(i).pyro(1).amount=msprintf("%.6f",pyromass)+' g'  
+            
+            case(3) then  // wafer
+                // now calculate the nearest integer value of wafers
+                id=GetNumFromDeck(text,'tabTHICK_triTHICK_waferTHICK_starOD',i)
+                od=GetNumFromDeck(text,'tabOD_waferOD_starMD_triRAD',i)
+                h=GetNumFromDeck(text,'starID_waferID_triBL_surfAREA',i)
+                vol=pi*(od^2-id^2)*h/4;
+                n=round(1000*(pyromass/(vol*rho))) // 1000 is units correction
+//                disp('n_wafers was found to be ',n)    
+                
+                
+                nwafers=1000*pyromass/(vol*rho) // scaled
+//                disp('nwafers as real is ',nwafers)
+                nwafersi=round(nwafers)
+//                disp('rounded, it is  ',nwafersi)
+                
+                disp(' current density is in gm/cm^3              ',rho)
+                perfect_density=rho*nwafersi/nwafers
+                disp(' for perfect Wafer density, alter it to ',perfect_density)   
+                
+                ac.assembly.chambers(i).pyro(1).shape.geometry="wafer"       
+                ac.assembly.chambers(i).pyro(1).shape.outer_radius=strcat([string(od/2),' mm'])
+                ac.assembly.chambers(i).pyro(1).shape.inner_radius=strcat([string(id/2),' mm'])        
+                ac.assembly.chambers(i).pyro(1).shape.height=nab(text,'starID_waferID_triBL_surfAREA',i,'mm')     
+                ac.assembly.chambers(i).pyro(1).amount=n;
+                ac.assembly.chambers(i).pyro(1).density=(msprintf("%.6f",perfect_density)+' g/cm^3')
+
+            case(7) then // grain               
+                id=GetNumFromDeck(text,'tabOD_waferOD_starMD_triRAD',i)     
+                od=GetNumFromDeck(text,'sphereOD_starNFIN',i)     
+                fd=GetNumFromDeck(text,'starID_waferID_triBL_surfAREA',i)     
+                finthick=GetNumFromDeck(text,'tabDOME_waferNBREAK_starFINTHICK',i)
+                height=10.0  // just a place holder since the current deck files don't contain this information
+                nfins=GetNumFromDeck(text,'tabTHICK_triTHICK_waferTHICK_starOD',i)
+    
+                theta=pi/nfins
+                A1=.5*theta*((od/2)^2-(id/2)^2)
+                
+    //            beta=asin((finthick/2)/(fd/2))
+                yc=sqrt((od/2)^2 - (finthick/2)^2)
+                A2=(fd/2-yc)*finthick/2
+                gamma=asin((finthick/2)/(od/2))
+                A3=(1/4)*(od/2)^2*(2*gamma-sin(2*gamma))
+                area=2*nfins*(A1+A2-A3)/100.  // convert to sq cm.
+                vol=pyromass/rho;
+                height=10*vol/area; // compute a new length leaving density/mass alone
+               //vol=area*height/10. // convert to cu cm
+               // disp('the grain end area is, in sq. cm. ' ,area)
+               // disp('the grain vol is, in cc''s ',vol)
+               disp('the grain lengtch was computed as ',height*1000)
+                
+    /*            ngrains=pyromass/(vol*rho) // scaled
+                mprintf('ngrains as real is %.6f \n',ngrains)
+                ngrainsi=round(ngrains)
+                mprintf('rounded, it is     %.0f \n',ngrainsi)  */
+                ngrainsi=1 ; // force to 1 grain temporarily
+             //   mprintf(' the current density is %.6f \n',rho)
+             //   perfect_density=rho*ngrainsi/ngrains
+             //   mprintf(' for perfect Grain density, it was altered to %.6f \n', perfect_density)
+                
+                
+    
+                ac.assembly.chambers(i).pyro(1).shape.geometry="grain"
+                ac.assembly.chambers(i).pyro(1).shape.inner_diameter=nab(text,'tabOD_waferOD_starMD_triRAD',i,'mm')     
+                ac.assembly.chambers(i).pyro(1).shape.outer_diameter=nab(text,'sphereOD_starNFIN',i,'mm')     
+                ac.assembly.chambers(i).pyro(1).shape.fin_diameter=nab(text,'starID_waferID_triBL_surfAREA',i,'mm')     
+                ac.assembly.chambers(i).pyro(1).shape.fin_thickness=nab(text,'tabDOME_waferNBREAK_starFINTHICK',i,'mm')        
+                ac.assembly.chambers(i).pyro(1).shape.cylinder_height="10 mm" // just a placeholder since the deck files don't havethis information
+                
+                lenstr=msprintf('%.5f mm',height)
+                ac.assembly.chambers(i).pyro(1).shape.cylinder_height=lenstr;
+                ac.assembly.chambers(i).pyro(1).shape.num_fins=strtod(nab(text,'tabTHICK_triTHICK_waferTHICK_starOD',i,''))
+                ac.assembly.chambers(i).pyro(1).amount=ngrainsi;
+         //     ac.assembly.chambers(i).pyro(1).density=(msprintf("%.6f",perfect_density)+' g/cm^3')
+            end
+        end
+    end
+    //If there is no pyro in a chamber the structure defaults to pyro = []
+    //This loop removes and empty pyro children for each chamber so no 
+    //erroneous output is written to the JSON file
+    for i = 1:1:max(size(ac.assembly.chambers))
+        try
+            if ac.assembly.chambers(i).pyro(1) == []
+               ac.assembly.chambers(i).pyro(1)=null()  
+            end
+            
+            if ac.assembly.chambers(i).filter == []
+               ac.assembly.chambers(i).filter = null()
+            end
+            
+        catch
+            mprintf('No pyros in chamber %i\n', i )
+        end
+    end
+endfunction
+
+function [ac]=GetHeatTransferDetails(ac, text, ncham)  
+    //  from AIPP:  REAL(DP) :: rhosteel = 7833.d0, cpsteel=510.d0, ksteel=45.0d0
+    default_density_string="7833.0 kg/m^3"
+    default_conductivity_string="45.0 W/(m K)"
+    default_specific_heat_string="510.0 J/(kg K)"
+    default_heat_transfer_coefficient = "10 W/(m^2 K)"
+
+    for i=1:ncham
+        ac.assembly.walls(i).area=ComputeAreaFromVolume(ac.assembly.chambers(i).volume)
+        ac.assembly.walls(i).thickness=nab(text,'wall_thickness_mass', i, 'mm')
+        ac.assembly.walls(i).density=default_density_string
+        ac.assembly.walls(i).thermal_conductivity=default_conductivity_string
+        ac.assembly.walls(i).specific_heat=default_specific_heat_string
+        ac.assembly.walls(i).temperature=nab(text,'conditioning_temperature',1,'K')
+        ac.assembly.walls(i).right_connection.type='CONSTANT_HEAT'
+        ac.assembly.walls(i).right_connection.heat='0 W'
+        
+        heat_loss = nab(text, 'wall_heatloss_factor', i, '')
+        
+        first = part(heat_loss,1)
+
+        if first =="-"
+            heat_loss_type = "CONSTANT_COEFFICIENT"
+            heat_loss_child_key = "heat_transfer_coefficient"
+            heat_loss_string = heat_loss + " W/(m^2 K)"
+        else
+            heat_loss_type = "VARIABLE_COEFFICIENT"
+            heat_loss_child_key = "scale_factor"
+            heat_loss_string = strtod(heat_loss)
+        end
+        ac.assembly.walls(i).left_connection.type=heat_loss_type
+        ac.assembly.walls(i).left_connection.chamber_index=i//string(i)
+        ac.assembly.walls(i).left_connection(heat_loss_child_key) = heat_loss_string
+        
+        ac.assembly.walls(ncham).temperature='294.15 K' // override the conditioning temp for the tank wall
+        
+        if i ==1 
+            str = "ac.assembly.walls = list(ac.assembly.walls(1)"
+        else
+            str = str + "ac.assembly.walls(" + string(i)...
+        + ")"
+        end
+    
+        if i ~= ncham
+             str = str + "," 
+        else
+            str = str + ")"
+        end
+    end
+    
+    execstr(str)
+        
+endfunction
+
+// function to obtain token (x,y) from text, where text=mgetl(fn))
+function [str]=nabstr(text,row,tokennumber,unit_to_apply_in_deck)
+    // function that identifies values in the aipp.inp files and then
+    // creates the proper translated entries for the JSON files
+    str=tokens(text(row))(tokennumber) +' ' +unit_to_apply_in_deck
+endfunction
+
+// function to obtain token (x,y) from text, where text=mgetl(fn) and format it as a real)
+function [str]=nabstrf(text,row,tokennumber,unit_to_apply_in_deck)
+    // function that identifies values in the aipp.inp files and then
+    // creates the proper translated entries for the JSON files
+    value=strtod(tokens(text(row))(tokennumber));
+    str=msprintf('%f',value)+' '+unit_to_apply_in_deck
+endfunction
+
+
+function [val]=nabval(text,row,tokennumber)
+    // function that identifies values in the aipp.inp files and then
+    // creates the proper translated entries for the JSON files
+    val=strtod(tokens(text(row))(tokennumber))
+endfunction
+
+function [str]=nabrow(text,row)
+    // function that identifies values in the aipp.inp files and then
+    // creates the proper translated entries for the JSON files
+    str=text(row)
+endfunction
+
+function [str]=nab(text,fieldname,tokennumber,unit)
+    // function that identifies values in the DECK files and then
+    // creates the proper translated entries for the JSON files
+    [nrows,junk]=size(text)
+    for i=1:nrows
+        fields(i)=(tokens(text(i))($))
+    end
+    therow=find(fields==fieldname)
+    str=tokens(text(therow))(tokennumber) +' ' +unit 
+endfunction
+
+// script to plunge into any file to pull a subset of the data based on fieldnames
+// and return a structure containing the fields
+function [res]=GetNumFromDeck(fn, FieldString, TokenNumber)
+    //a=mgetl(fn);
+    a=fn;
+    [x,y]=grep(a,FieldString)
+    RowTokens=(a(x))
+    res=strtod(tokens(RowTokens)(TokenNumber))
+endfunction
+
+function [area]=ComputeAreaFromVolume(vol)
+    volume=strtod(tokens(vol)(1));
+    unit=tokens(vol)(2)
+    select unit
+    case("mm^3") then
+        volume=volume/1e9
+    case("cm^3") then
+        volume=volume/1e6
+    case("L") then 
+        volume=volume/1e3
+    end
+    // below, artificially scaling by 2.5 like AIPP-2.3.5 does
+    // area=(2.5*(4.0*%pi)*((3.0*volume)/(4.0*%pi))^(2.0/3.0))
+    area=((4.0*%pi)*((3.0*volume)/(4.0*%pi))^(2.0/3.0))
+    area=string(area*1e4)+' cm^2'
+endfunction
+
+function out = getAuxiliaryDefaults()
+    out("species_library") = "auxiliary_files/species_library.json";
+    out("pyro_formulations") = "auxiliary_files/pyrolist.json";
+    out("materials") = "auxiliary_files/material_list.json"
+endfunction
+
+function out = getHeaderDefaults(fname)
+    out("request_number") =  " - ";
+    out("title") =  "Converted from " + fname + ".deck";
+    out("system") =  " - ";
+    out("part_number") =  " - ";
+    out("description") =  "JSON file converted from AIPP 2.3.5 input deck. Please check inputs";
+endfunction
+
+function JSON = deckToJSON(deckFileName)
+    AIPP235Doc.long = deckFileName;
+    AIPP235Doc.short = fileparts(AIPP235Doc.long, "fname");
+
+    // now read in the deck file you want to convert
+    text=mgetl(AIPP235Doc.long);
+
+    // gather some preliminary information
+    ncham=strtod(tokens(text(5))(1))
+
+    ac=GetTimes(text)
+
+    ac = AddDefaultReactions(ac)
+
+    ac=GetChamberDetails(ac, text, ncham)
+
+    ac=GetOrificeDetails(ac,text,ncham)
+
+    ac=GetFilterDetails(ac, text, ncham)
+
+    ac=GetPyroDetails(ac,text,ncham)
+
+    ac=GetHeatTransferDetails(ac, text, ncham)  
+
+    res.aipp_calculation=ac;
+
+    organized.aipp_calculation.header = getHeaderDefaults(AIPP235Doc.short);
+    organized.aipp_calculation.auxiliary_files = getAuxiliaryDefaults();
+    organized.aipp_calculation.time_specs = res.aipp_calculation.time_specs;
+    organized.aipp_calculation.reaction_specs = res.aipp_calculation.reaction_specs;
+    organized.aipp_calculation.assembly = res.aipp_calculation.assembly;
+
+    JSON = toJSON(organized, 3);
+    JSON = FixJSON(JSON);
+ 
+endfunction
+```
 #### FixJSON.sci
 ```scilab
 function FixedJSON = FixJSON(InputJSON)
     
     for i =1:1:max(size(InputJSON))
         FixedJSON(i) = strsubst(InputJSON(i),"\/","/")
-    end    
-    
-    orifice_locs = grep(FixedJSON, "orifices")
-    
-    for i = 1:1:max(size(orifice_locs)) - 1
-        value = strsplit(FixedJSON(orifice_locs(i)),":")($)
-        cleaned = stripblanks(value)
-        cleaned = part(cleaned, 2:length(cleaned) - 1)
-        FixedJSON(orifice_locs(i)) = strsubst(FixedJSON(orifice_locs(i)), value, cleaned)
-    end
+    end        
 
     // add items in the JSON file that require a double instead of an int to the doubleVars 
     // array. This will likely need to be expanded as the JSON file
@@ -7139,7 +8580,8 @@ function out = receiveSafeJSON(inp)
     if getversion() == "scilab-2025.1.0" then
         out = strsubst(inp, "<-quote->", """");
     else
-        out = inp;
+//        out = inp;
+        out = strsubst(inp, "<-quote->", """");
     end
 endfunction
 ```
