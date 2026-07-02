@@ -1,11 +1,13 @@
 function doubled_ints = ConvertIntsToDoublesJSON(json_txt, vars)
     for i=1:1:max(size(vars))
-        regex.pre = '/\b'
-        regex.post = '\b/'
-        rows = grep(json_txt, regex.pre + """"  + vars(i) + """" + regex.post, 'r')
+//        disp("working on: " + vars(i))
+        rows = grep(json_txt, """"  + vars(i) + """")
+//        disp(json_txt)
+//        disp(size(json_txt))
+
         if rows ~= []
             for j=1:1:max(size(rows))
-                // disp(json_txt(rows(j)))
+//                mprintf("found %s in row %i\n%s\n", vars(i), rows(j), json_txt(rows(j)))
                 colsindex = strindex(json_txt(rows(j)),":")
                 temp = strsplit(json_txt(rows(j)),":")(2)
                 numsindex = strindex(temp,"/[0-9]/",'r')

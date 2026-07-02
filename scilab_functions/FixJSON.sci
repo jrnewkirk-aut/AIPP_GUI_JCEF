@@ -26,7 +26,7 @@ function FixedJSON = FixJSON(InputJSON)
                     "amount", ...
                     "viscous_flow_factor", ...
                     "coefficient"]
-
+   csvWrite(FixedJSON, "debug.json")
    FixedJSON = ConvertIntsToDoublesJSON(FixedJSON, doubleVars)
     
 endfunction

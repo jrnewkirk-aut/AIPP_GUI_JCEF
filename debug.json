@@ -1,0 +1,262 @@
+{
+   "aipp_calculation": {
+      "header": {
+         "request_number": " - ",
+         "title": "Converted from Hot.deck",
+         "system": " - ",
+         "part_number": " - ",
+         "description": "JSON file converted from AIPP 2.3.5 input deck. Please check inputs"
+      },
+      "auxiliary_files": {
+         "species_library": "auxiliary_files/species_library.json",
+         "pyro_formulations": "auxiliary_files/pyrolist.json",
+         "materials": "auxiliary_files/material_list.json"
+      },
+      "time_specs": {
+         "output_time_step": "0.0001 s",
+         "end_time": "0.125 s",
+         "simulation_time_step": "2e-06 s",
+         "run_simulation": true,
+         "RKF_config_file": "auxiliary_files/RKF_config.json"
+      },
+      "reaction_specs": {
+         "reactions_list": [
+            "H2_combustion",
+            "CO_combustion"
+         ],
+         "reactions_method": {
+            "choice": "mass_action",
+            "options": [
+               "constant",
+               "mass_action",
+               "mass_action_arrhenius"
+            ]
+         },
+         "onoff_switch": false,
+         "enforce_LDB": false,
+         "speed_scaling": 5e-7,
+         "reactions_file": "auxiliary_files/basic_reactions.json"
+      },
+      "assembly": {
+         "tank_id": 4,
+         "chambers": [
+            {
+               "label": "Cylinder ",
+               "init_type": "mVT",
+               "volume": "158429.5000000 mm^3",
+               "temperature": "358.15 K",
+               "mass": "30.2000000 g",
+               "mol_fractions": {
+                  "He": 0.8,
+                  "Ar": 0.2
+               },
+               "filter": {
+                  "density": "7833.0 kg/m^3",
+                  "specific_heat": "510.0 J/(kg K)",
+                  "mass": "0.01 g",
+                  "method": "KNTU",
+                  "coefficient": 0,
+                  "orifices": [
+                     1
+                  ]
+               }
+            },
+            {
+               "label": "1 ",
+               "init_type": "mVT",
+               "volume": "158429.5000000 mm^3",
+               "temperature": "358.15 K",
+               "mass": "30.2000000 g",
+               "mol_fractions": {
+                  "He": 0.8,
+                  "Ar": 0.2
+               },
+               "filter": {
+                  "density": "7833.0 kg/m^3",
+                  "specific_heat": "510.0 J/(kg K)",
+                  "mass": "0.01 g",
+                  "method": "KNTU",
+                  "coefficient": 0,
+                  "orifices": [
+                     2
+                  ]
+               }
+            },
+            {
+               "label": "Cylinder ",
+               "init_type": "mVT",
+               "volume": "22164.7070000 mm^3",
+               "temperature": "358.15 K",
+               "mass": "0.0199475 g",
+               "mol_fractions": {
+                  "N2": 0.78,
+                  "O2": 0.21,
+                  "Ar": 0.01
+               },
+               "filter": {
+                  "density": "7833.0 kg/m^3",
+                  "specific_heat": "510.0 J/(kg K)",
+                  "mass": "18 g",
+                  "method": "KNTU",
+                  "coefficient": 0,
+                  "orifices": [
+                     3
+                  ]
+               },
+               "pyro": [
+                  {
+                     "formulation": "PIP1226H_20250528",
+                     "density": "2.910 g/cm^3",
+                     "amount": "0.160000 g",
+                     "piles": 1,
+                     "flame_spread_time": "0.002 s",
+                     "ignition_time": {
+                        "triggering_event": "SimStart",
+                        "time_delay": "0.0005 s"
+                     },
+                     "reference_burn_rate": "100 mm/s",
+                     "burn_rate_exponent": 0,
+                     "burn_rate_temperature_sensitivity": "0.00000 1/K",
+                     "shape": {
+                        "geometry": "sphere",
+                        "radius": "0.3 mm"
+                     }
+                  }
+               ]
+            },
+            {
+               "label": "2 ",
+               "init_type": "mVT",
+               "volume": "28.3168000 L",
+               "temperature": "294.15 K",
+               "mass": "28.0009793 g",
+               "mol_fractions": {
+                  "N2": 0.91,
+                  "O2": 0.08,
+                  "Ar": 0.01
+               }
+            }
+         ],
+         "walls": [
+            {
+               "temperature": "358.15 K",
+               "area": "141.59291 cm^2",
+               "thickness": "1 mm",
+               "density": "7833.0 kg/m^3",
+               "thermal_conductivity": "45.0 W/(m K)",
+               "specific_heat": "510.0 J/(kg K)",
+               "right_connection": {
+                  "type": "CONSTANT_HEAT",
+                  "heat": "0 W"
+               },
+               "left_connection": {
+                  "type": "VARIABLE_COEFFICIENT",
+                  "chamber_index": 1,
+                  "scale_factor": 1
+               }
+            },
+            {
+               "temperature": "358.15 K",
+               "area": "141.59291 cm^2",
+               "thickness": "2 mm",
+               "density": "7833.0 kg/m^3",
+               "thermal_conductivity": "45.0 W/(m K)",
+               "specific_heat": "510.0 J/(kg K)",
+               "right_connection": {
+                  "type": "CONSTANT_HEAT",
+                  "heat": "0 W"
+               },
+               "left_connection": {
+                  "type": "VARIABLE_COEFFICIENT",
+                  "chamber_index": 2,
+                  "scale_factor": 1
+               }
+            },
+            {
+               "temperature": "358.15 K",
+               "area": "38.158573 cm^2",
+               "thickness": "2 mm",
+               "density": "7833.0 kg/m^3",
+               "thermal_conductivity": "45.0 W/(m K)",
+               "specific_heat": "510.0 J/(kg K)",
+               "right_connection": {
+                  "type": "CONSTANT_HEAT",
+                  "heat": "0 W"
+               },
+               "left_connection": {
+                  "type": "VARIABLE_COEFFICIENT",
+                  "chamber_index": 3,
+                  "scale_factor": 1
+               }
+            },
+            {
+               "temperature": "294.15 K",
+               "area": "4492.7637 cm^2",
+               "thickness": "8 mm",
+               "density": "7833.0 kg/m^3",
+               "thermal_conductivity": "45.0 W/(m K)",
+               "specific_heat": "510.0 J/(kg K)",
+               "right_connection": {
+                  "type": "CONSTANT_HEAT",
+                  "heat": "0 W"
+               },
+               "left_connection": {
+                  "type": "CONSTANT_COEFFICIENT",
+                  "chamber_index": 4,
+                  "heat_transfer_coefficient": "-135  W/(m^2 K)"
+               }
+            }
+         ],
+         "orifices": [
+            {
+               "diameter": "20 mm",
+               "num_orif": 1,
+               "open": false,
+               "one_way": false,
+               "discharge_coefficient": {
+                  "basis": "constant",
+                  "Cd_value": 1
+               },
+               "from": 1,
+               "to": 2,
+               "viscous_flow_factor": 0.4,
+               "opens_at": "15 MPa"
+            },
+            {
+               "diameter": "14.5 mm",
+               "num_orif": 1,
+               "open": false,
+               "one_way": false,
+               "discharge_coefficient": {
+                  "basis": "constant",
+                  "Cd_value": 1
+               },
+               "from": 2,
+               "to": 3,
+               "viscous_flow_factor": 0.4,
+               "opens_at": {
+                  "triggering_event": "SimStart",
+                  "time_delay": "0.00175 s"
+               }
+            },
+            {
+               "diameter": "5.5 mm",
+               "num_orif": 4,
+               "open": false,
+               "one_way": false,
+               "discharge_coefficient": {
+                  "basis": "constant",
+                  "Cd_value": 0.72
+               },
+               "from": 3,
+               "to": 4,
+               "viscous_flow_factor": 0.4,
+               "opens_at": {
+                  "triggering_event": "SimStart",
+                  "time_delay": "0.0001 s"
+               }
+            }
+         ]
+      }
+   }
+}

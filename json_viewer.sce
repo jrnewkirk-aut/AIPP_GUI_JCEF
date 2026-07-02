@@ -14,6 +14,18 @@ global currentJsonDir;
 currentJsonPath = "";
 currentJsonDir = pwd();
 
+global aippLastJsonDir;
+global aippLastDeckDir;
+global aippLastCsvDir;
+global aippLastSaveDir;
+global aippLastAnyDialogDir;
+aippLastJsonDir = "";
+aippLastDeckDir = "";
+aippLastCsvDir = "";
+aippLastSaveDir = "";
+aippLastAnyDialogDir = "";
+
+
 global aippSaveTransferId;
 global aippSaveChunks;
 global aippSaveExpectedChunks;
@@ -73,10 +85,7 @@ function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
     global currentJsonPath;
     global currentJsonDir;
 
-    startDir = currentJsonDir;
-    if startDir == "" then
-        startDir = pwd();
-    end
+    startDir = aippGetDialogStartDir("save");
 
     try
         [outName, outDir] = uiputfile(["*.json", "JSON files"], startDir, "Save updated AIPP JSON as");
@@ -117,6 +126,7 @@ function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
 
     currentJsonPath = outPath;
     currentJsonDir = p;
+    aippRememberDialogDir("save", outPath);
 
     r = struct();
     r.type = "save_json_success";
@@ -146,6 +156,109 @@ function aippSendTransportConfig(cb)
     end
 
     aippSendToBrowser(cfg, cb);
+endfunction
+
+
+// Session-level native dialog directory memory.
+// Remembers the last directory used for JSON/deck open, CSV import, save, and any dialog during this Scilab session.
+function ok = aippIsUsableDir(d)
+    ok = %f;
+    try
+        if typeof(d) == "string" & d <> "" then
+            ok = isdir(d);
+        end
+    catch
+        ok = %f;
+    end
+endfunction
+
+function setAllEmptyToLast(d)
+    if aippLastJsonDir == "" then
+        aippLastJsonDir = d;
+    end
+    if aippLastDeckDir == "" then
+        aippLastDeckDir = d;
+    end
+    if aippLastCsvDir == "" then
+        aippLastCsvDir = d;
+    end
+    if aippLastSaveDir == "" then
+        aippLastSaveDir = d;
+    end
+    if aippLastAnyDialogDir == "" then
+        aippLastAnyDialogDir = d;
+    end
+endfunction
+
+function d = aippFirstUsableDir(candidates)
+    d = pwd();
+    try
+        for ii = 1:size(candidates, "*")
+            c = candidates(ii);
+            if aippIsUsableDir(c) then
+                d = c;
+                return;
+            end
+        end
+    catch
+        d = pwd();
+    end
+endfunction
+
+function d = aippGetDialogStartDir(kind)
+    global currentJsonDir;
+    global aippLastJsonDir;
+    global aippLastDeckDir;
+    global aippLastCsvDir;
+    global aippLastSaveDir;
+    global aippLastAnyDialogDir;
+
+    select kind
+    case "json" then
+        d = aippFirstUsableDir([aippLastJsonDir, aippLastDeckDir, aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    case "deck" then
+        d = aippFirstUsableDir([aippLastDeckDir, aippLastJsonDir, aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    case "csv" then
+        d = aippFirstUsableDir([aippLastCsvDir, aippLastAnyDialogDir, currentJsonDir, aippLastJsonDir, pwd()]);
+    case "save" then
+        d = aippFirstUsableDir([aippLastSaveDir, currentJsonDir, aippLastJsonDir, aippLastAnyDialogDir, pwd()]);
+    else
+        d = aippFirstUsableDir([aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    end
+endfunction
+
+function aippRememberDialogDir(kind, selectedPath)
+    global aippLastJsonDir;
+    global aippLastDeckDir;
+    global aippLastCsvDir;
+    global aippLastSaveDir;
+    global aippLastAnyDialogDir;
+
+    try
+        p = "";
+        if aippIsUsableDir(selectedPath) then
+            p = selectedPath;
+        else
+            [p0, n0, e0] = fileparts(selectedPath);
+            p = p0;
+        end
+
+        if p <> "" & aippIsUsableDir(p) then
+            aippLastAnyDialogDir = p;
+            select kind
+            case "json" then
+                aippLastJsonDir = p;
+            case "deck" then
+                aippLastDeckDir = p;
+            case "csv" then
+                aippLastCsvDir = p;
+            case "save" then
+                aippLastSaveDir = p;
+            end
+        end
+    catch
+        // Directory memory should never break file workflows.
+    end
 endfunction
 
 function trackVersions()
@@ -324,7 +437,8 @@ function browserCallback(data, cb)
 
     case "select_file" then
 
-        [file, path] = uigetfile(["*.deck"; "*.json"]);
+        startDir = aippGetDialogStartDir("json");
+        [file, path] = uigetfile(["*.deck"; "*.json"], startDir);
 
         if file == "" then
             return;
@@ -336,8 +450,10 @@ function browserCallback(data, cb)
         
 
         if fileparts(fullpath, "extension") == ".deck" then
+            aippRememberDialogDir("deck", fullpath);
             lines = deckToJSON(fullpath);
         else
+            aippRememberDialogDir("json", fullpath);
             lines = mgetl(fullpath);
         end
         
@@ -361,13 +477,15 @@ function browserCallback(data, cb)
     aippSendToBrowser(response, cb);
     case "select_csv" then
 
-        [file, path] = uigetfile("*.csv", "Select CSV File");
+        startDir = aippGetDialogStartDir("csv");
+        [file, path] = uigetfile("*.csv", startDir, "Select CSV File");
     
         if file == "" then
             return;
         end
     
         csvpath = path + "\" + file;
+        aippRememberDialogDir("csv", csvpath);
     
         lines = mgetl(csvpath);
         csvText = strcat(lines, ascii(10));
@@ -405,9 +523,12 @@ function browserCallback(data, cb)
             return;
         end
     
-        startDir = currentJsonDir;
+        startDir = aippLastJsonDir;
         if startDir == "" then
-            startDir = pwd();
+            startDir = aippLastDeckDir;
+             if startDir == "" then
+                 startDir = pwd();
+             end            
         end
     
         // uiputfile starts in the directory passed as the directory argument.
@@ -468,4 +589,3 @@ function browserCallback(data, cb)
     end
 
 endfunction
-

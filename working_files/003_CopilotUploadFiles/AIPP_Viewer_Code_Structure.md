@@ -10,6 +10,7 @@ Folder PATH listing for volume Data
 Volume serial number is 7C78-A591
 D:.
 ¦   Copilot_Code_Summary.sce
+¦   debug.json
 ¦   inputs_ADP-6.json
 ¦   json_viewer.sce
 ¦   pressure_Cd_array.csv
@@ -55,7 +56,7 @@ D:.
 ¦   ¦       18_toolbar_cleanup_move_add_v1.js
 ¦   ¦       19_transport_receive_compat_v1.js
 ¦   ¦       20_save_json_transport_v1.js
-¦   ¦       21_graph_layout_breadthfirst_tuned_v2.js
+¦   ¦       21_graph_layout_breadthfirst_default_v3.js
 ¦   ¦       22_save_transport_diagnostics_dev_v1.js
 ¦   ¦       
 ¦   +---styles
@@ -82,9 +83,39 @@ D:.
 ¦       v111.html
 ¦       v112.html
 ¦       v113.html
+¦       v114.html
+¦       v115.html
+¦       v116.html
+¦       v117.html
+¦       v118.html
+¦       v119.html
 ¦       v12.html
+¦       v120.html
+¦       v121.html
+¦       v122.html
+¦       v123.html
+¦       v124.html
+¦       v125.html
+¦       v126.html
+¦       v127.html
+¦       v128.html
+¦       v129.html
 ¦       v13.html
+¦       v130.html
+¦       v131.html
+¦       v132.html
+¦       v133.html
+¦       v134.html
+¦       v135.html
+¦       v136.html
+¦       v137.html
+¦       v138.html
+¦       v139.html
 ¦       v14.html
+¦       v140.html
+¦       v141.html
+¦       v142.html
+¦       v143.html
 ¦       v15.html
 ¦       v16.html
 ¦       v17.html
@@ -226,6 +257,18 @@ global currentJsonDir;
 currentJsonPath = "";
 currentJsonDir = pwd();
 
+global aippLastJsonDir;
+global aippLastDeckDir;
+global aippLastCsvDir;
+global aippLastSaveDir;
+global aippLastAnyDialogDir;
+aippLastJsonDir = "";
+aippLastDeckDir = "";
+aippLastCsvDir = "";
+aippLastSaveDir = "";
+aippLastAnyDialogDir = "";
+
+
 global aippSaveTransferId;
 global aippSaveChunks;
 global aippSaveExpectedChunks;
@@ -285,10 +328,7 @@ function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
     global currentJsonPath;
     global currentJsonDir;
 
-    startDir = currentJsonDir;
-    if startDir == "" then
-        startDir = pwd();
-    end
+    startDir = aippGetDialogStartDir("save");
 
     try
         [outName, outDir] = uiputfile(["*.json", "JSON files"], startDir, "Save updated AIPP JSON as");
@@ -329,6 +369,7 @@ function aippSaveJsonTextToLocalFile(jsonText, suggestedName, cb)
 
     currentJsonPath = outPath;
     currentJsonDir = p;
+    aippRememberDialogDir("save", outPath);
 
     r = struct();
     r.type = "save_json_success";
@@ -358,6 +399,109 @@ function aippSendTransportConfig(cb)
     end
 
     aippSendToBrowser(cfg, cb);
+endfunction
+
+
+// Session-level native dialog directory memory.
+// Remembers the last directory used for JSON/deck open, CSV import, save, and any dialog during this Scilab session.
+function ok = aippIsUsableDir(d)
+    ok = %f;
+    try
+        if typeof(d) == "string" & d <> "" then
+            ok = isdir(d);
+        end
+    catch
+        ok = %f;
+    end
+endfunction
+
+function setAllEmptyToLast(d)
+    if aippLastJsonDir == "" then
+        aippLastJsonDir = d;
+    end
+    if aippLastDeckDir == "" then
+        aippLastDeckDir = d;
+    end
+    if aippLastCsvDir == "" then
+        aippLastCsvDir = d;
+    end
+    if aippLastSaveDir == "" then
+        aippLastSaveDir = d;
+    end
+    if aippLastAnyDialogDir == "" then
+        aippLastAnyDialogDir = d;
+    end
+endfunction
+
+function d = aippFirstUsableDir(candidates)
+    d = pwd();
+    try
+        for ii = 1:size(candidates, "*")
+            c = candidates(ii);
+            if aippIsUsableDir(c) then
+                d = c;
+                return;
+            end
+        end
+    catch
+        d = pwd();
+    end
+endfunction
+
+function d = aippGetDialogStartDir(kind)
+    global currentJsonDir;
+    global aippLastJsonDir;
+    global aippLastDeckDir;
+    global aippLastCsvDir;
+    global aippLastSaveDir;
+    global aippLastAnyDialogDir;
+
+    select kind
+    case "json" then
+        d = aippFirstUsableDir([aippLastJsonDir, aippLastDeckDir, aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    case "deck" then
+        d = aippFirstUsableDir([aippLastDeckDir, aippLastJsonDir, aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    case "csv" then
+        d = aippFirstUsableDir([aippLastCsvDir, aippLastAnyDialogDir, currentJsonDir, aippLastJsonDir, pwd()]);
+    case "save" then
+        d = aippFirstUsableDir([aippLastSaveDir, currentJsonDir, aippLastJsonDir, aippLastAnyDialogDir, pwd()]);
+    else
+        d = aippFirstUsableDir([aippLastAnyDialogDir, currentJsonDir, pwd()]);
+    end
+endfunction
+
+function aippRememberDialogDir(kind, selectedPath)
+    global aippLastJsonDir;
+    global aippLastDeckDir;
+    global aippLastCsvDir;
+    global aippLastSaveDir;
+    global aippLastAnyDialogDir;
+
+    try
+        p = "";
+        if aippIsUsableDir(selectedPath) then
+            p = selectedPath;
+        else
+            [p0, n0, e0] = fileparts(selectedPath);
+            p = p0;
+        end
+
+        if p <> "" & aippIsUsableDir(p) then
+            aippLastAnyDialogDir = p;
+            select kind
+            case "json" then
+                aippLastJsonDir = p;
+            case "deck" then
+                aippLastDeckDir = p;
+            case "csv" then
+                aippLastCsvDir = p;
+            case "save" then
+                aippLastSaveDir = p;
+            end
+        end
+    catch
+        // Directory memory should never break file workflows.
+    end
 endfunction
 
 function trackVersions()
@@ -536,7 +680,8 @@ function browserCallback(data, cb)
 
     case "select_file" then
 
-        [file, path] = uigetfile(["*.deck"; "*.json"]);
+        startDir = aippGetDialogStartDir("json");
+        [file, path] = uigetfile(["*.deck"; "*.json"], startDir);
 
         if file == "" then
             return;
@@ -548,8 +693,10 @@ function browserCallback(data, cb)
         
 
         if fileparts(fullpath, "extension") == ".deck" then
+            aippRememberDialogDir("deck", fullpath);
             lines = deckToJSON(fullpath);
         else
+            aippRememberDialogDir("json", fullpath);
             lines = mgetl(fullpath);
         end
         
@@ -573,13 +720,15 @@ function browserCallback(data, cb)
     aippSendToBrowser(response, cb);
     case "select_csv" then
 
-        [file, path] = uigetfile("*.csv", "Select CSV File");
+        startDir = aippGetDialogStartDir("csv");
+        [file, path] = uigetfile("*.csv", startDir, "Select CSV File");
     
         if file == "" then
             return;
         end
     
         csvpath = path + "\" + file;
+        aippRememberDialogDir("csv", csvpath);
     
         lines = mgetl(csvpath);
         csvText = strcat(lines, ascii(10));
@@ -617,9 +766,12 @@ function browserCallback(data, cb)
             return;
         end
     
-        startDir = currentJsonDir;
+        startDir = aippLastJsonDir;
         if startDir == "" then
-            startDir = pwd();
+            startDir = aippLastDeckDir;
+             if startDir == "" then
+                 startDir = pwd();
+             end            
         end
     
         // uiputfile starts in the directory passed as the directory argument.
@@ -680,7 +832,6 @@ function browserCallback(data, cb)
     end
 
 endfunction
-
 ```
  
 ### aipp_files
@@ -2603,8 +2754,8 @@ Current dependency map
 ```json
 {
   "system": "AIPP_JSON_Viewer",
-  "version": "1.0-transport-cleanup",
-  "patch": "transport_module_rename_version_config_optional_diagnostics_dependency_map_update",
+  "version": "1.0-breadthfirst-default-no-manual-ui",
+  "patch": "remove_manual_flow_chart_layout_option_set_breadthfirst_default",
   "entry_points": {
     "scilab": "json_viewer.sce",
     "html": "browser_files/index.html",
@@ -2613,54 +2764,33 @@ Current dependency map
   "global_rules": {
     "execution_order_required": true,
     "module_system": "global_scope_ordered_load",
-    "source_of_truth": "browser_json_state",
-    "communication": "version_configured_save_transport"
+    "source_of_truth": "browser_json_state"
   },
-  "transport": {
-    "receive_compat_module": "19_transport_receive_compat_v1.js",
-    "save_transport_module": "20_save_json_transport_v1.js",
-    "optional_diagnostics_module": "browser_files/js_optional/21_save_transport_diagnostics_dev_v1.js",
-    "config_message": "transport_config",
-    "scilab_2025_1_0_default": {
-      "save_transport": "chunked",
-      "save_chunk_size": 1200,
-      "save_chunk_delay_ms": 5
+  "graph_layout": {
+    "default_mode": "breadthfirst_auto",
+    "manual_ui_removed": true,
+    "new_module": "21_graph_layout_breadthfirst_default_v3.js",
+    "fallback": "original preset/manual layout is retained internally only if breadthfirst fails or if preset_manual is set in console for debug",
+    "user_selected_defaults": {
+      "bfDirection": "leftward",
+      "bfAvoidOverlap": true,
+      "bfDirected": false,
+      "bfCircle": false,
+      "bfGrid": true,
+      "bfSpacingFactor": 0.9,
+      "bfMaximal": true,
+      "bfFit": true,
+      "bfPadding": 1000,
+      "bfAnimate": true,
+      "bfAnimationDuration": 600,
+      "bfNodeDimensionsIncludeLabels": false,
+      "includeWallsInAutoLayout": true
     },
-    "newer_scilab_default": {
-      "save_transport": "direct_ascii",
-      "save_chunk_size": 1200,
-      "save_chunk_delay_ms": 5
-    }
+    "console_tuning": "Use getAippBreadthfirstLayoutOptions() and window.aippGraphLayoutConfig.* followed by applyAippCytoscapeLayout(true)."
   },
-  "message_types": {
-    "browser_to_scilab": {
-      "old_json_string_path": [
-        "select_file",
-        "select_csv",
-        "request_pyrolist"
-      ],
-      "ascii_array_path": [
-        "save_json_ascii",
-        "debug_payload",
-        "save_json_begin",
-        "save_json_chunk",
-        "save_json_end"
-      ]
-    },
-    "scilab_to_browser": {
-      "old_send_helper": [
-        "transport_config",
-        "json_ascii",
-        "csv_ascii",
-        "pyrolist_ascii",
-        "pyrolist_error",
-        "save_json_success",
-        "save_json_error"
-      ],
-      "ascii_send_helper": [
-        "save_json_cancelled"
-      ]
-    }
+  "popup_footer_visibility": {
+    "fix": "v2 block-layout viewport clamp included; popup opens as display:block and remains reachable on small screens.",
+    "apply_logic": "applyPopup unchanged."
   },
   "modules": [
     "01_comm_state_schema_model.js",
@@ -2683,7 +2813,7 @@ Current dependency map
     "18_toolbar_cleanup_move_add_v1.js",
     "19_transport_receive_compat_v1.js",
     "20_save_json_transport_v1.js",
-    "cytoscape.min.js"
+    "21_graph_layout_breadthfirst_default_v3.js"
   ]
 }
 JSON Message Contract
@@ -2759,7 +2889,7 @@ function refreshAllViews(){renderTree();updateCodeTextFromModel();buildGraph(ful
 ```
 ##### 03_popup_smart_editors.js
 ```java
-function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();document.getElementById("popup").style.display="block";}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
+function aippClampPopupToViewport(){let p=document.getElementById("popup");if(!p)return;let margin=20;let vw=window.innerWidth||1024,vh=window.innerHeight||768;let maxH=Math.max(260,Math.min(680,vh-2*margin));p.style.height=maxH+"px";let r=p.getBoundingClientRect();if(r.bottom>vh-margin)p.style.top=Math.max(margin,vh-margin-r.height)+"px";if(r.top<margin)p.style.top=margin+"px";r=p.getBoundingClientRect();if(r.right>vw-margin)p.style.left=Math.max(margin,vw-margin-r.width)+"px";if(r.left<margin)p.style.left=margin+"px";}function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();let __aippPopupEl=document.getElementById("popup");__aippPopupEl.style.display="block";setTimeout(aippClampPopupToViewport,0);}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}if(!window.__aippPopupViewportClampInstalled){window.__aippPopupViewportClampInstalled=true;window.addEventListener("resize",function(){let p=document.getElementById("popup");if(p&&p.style.display!=="none")aippClampPopupToViewport();});}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
 ```
 ##### 04_orifice_wall_cd_editors.js
 ```java
@@ -5004,40 +5134,27 @@ function applyRemovalFromPreview(){
   };
 })();
 ```
-##### 21_graph_layout_breadthfirst_tuned_v2.js
+##### 21_graph_layout_breadthfirst_default_v3.js
 ```java
-/* 21_graph_layout_breadthfirst_tuned_v2.js
-   Optional Cytoscape breadthfirst layout with production defaults selected from JCEF tuning.
+/* 21_graph_layout_breadthfirst_default_v3.js
+   Default Cytoscape breadthfirst flow-chart layout.
 
-   Joseph-selected defaults:
-     bfDirection = 'leftward'
-     bfAvoidOverlap = true
-     bfDirected = false
-     bfCircle = false
-     bfGrid = true
-     bfSpacingFactor = 0.9
-     bfMaximal = true
-     bfFit = true
-     bfPadding = 1000
-     bfAnimate = true
-     bfAnimationDuration = 600
-     bfNodeDimensionsIncludeLabels = false
-     includeWallsInAutoLayout = true
-
-   Default mode remains the existing manual/preset layout.
+   This module removes the user-facing manual/preset layout toggle. The app now defaults to
+   breadthfirst_auto with Joseph-selected tuned settings. The original preset/manual layout is
+   retained only as an internal fallback if Cytoscape breadthfirst fails.
 */
 (function(){
-  if(window.__aippGraphLayoutBreadthfirstTunedV2Applied) return;
-  window.__aippGraphLayoutBreadthfirstTunedV2Applied = true;
+  if(window.__aippGraphLayoutBreadthfirstDefaultV3Applied) return;
+  window.__aippGraphLayoutBreadthfirstDefaultV3Applied = true;
 
   window.aippGraphLayoutConfig = window.aippGraphLayoutConfig || {};
   var cfg = window.aippGraphLayoutConfig;
 
-  if(!cfg.mode) cfg.mode = 'preset_manual';
-  if(!cfg.autoLayout) cfg.autoLayout = 'breadthfirst';
+  // New default: use the tuned Cytoscape breadthfirst layout.
+  cfg.mode = 'breadthfirst_auto';
+  cfg.autoLayout = 'breadthfirst';
 
-  // Tuned breadthfirst layout defaults.
-  // Valid direction values in current bundled Cytoscape: downward, leftward, upward, rightward.
+  // Tuned breadthfirst layout defaults selected in JCEF testing.
   if(cfg.bfDirection == null) cfg.bfDirection = 'leftward';
   if(cfg.bfAvoidOverlap == null) cfg.bfAvoidOverlap = true;
   if(cfg.bfDirected == null) cfg.bfDirected = false;
@@ -5051,7 +5168,7 @@ function applyRemovalFromPreview(){
   if(cfg.bfPadding == null) cfg.bfPadding = 1000;
   if(cfg.bfNodeDimensionsIncludeLabels == null) cfg.bfNodeDimensionsIncludeLabels = false;
 
-  // AIPP-specific post processing.
+  // AIPP-specific behavior.
   if(cfg.tankRight == null) cfg.tankRight = true;
   if(cfg.includeWallsInAutoLayout == null) cfg.includeWallsInAutoLayout = true;
   if(cfg.wallYOffset == null) cfg.wallYOffset = 230;
@@ -5061,9 +5178,7 @@ function applyRemovalFromPreview(){
   var originalApplyAippCytoscapeLayout = (typeof applyAippCytoscapeLayout === 'function') ? applyAippCytoscapeLayout : null;
 
   function getCy(){
-    try{
-      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
-    }catch(e){}
+    try{ if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype; }catch(e){}
     if(window.cyPrototype) return window.cyPrototype;
     return null;
   }
@@ -5071,14 +5186,12 @@ function applyRemovalFromPreview(){
   function getAippTankNodeId(){
     try{
       var info = (typeof getAssemblyInfo === 'function') ? getAssemblyInfo(fullJson) : {assembly:null};
-      var assembly = info && info.assembly;
+      var a = info && info.assembly;
       var tankId = null;
-
-      if(assembly && assembly.tank_id != null) tankId = assembly.tank_id;
+      if(a && a.tank_id != null) tankId = a.tank_id;
       else if(fullJson && fullJson.tank_id != null) tankId = fullJson.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.tank_id != null) tankId = fullJson.aipp_calculation.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.assembly && fullJson.aipp_calculation.assembly.tank_id != null) tankId = fullJson.aipp_calculation.assembly.tank_id;
-
       var n = parseInt(tankId, 10);
       if(Number.isFinite(n) && n > 0) return 'c' + n;
     }catch(e){
@@ -5090,7 +5203,6 @@ function applyRemovalFromPreview(){
   function getBreadthfirstRootsSelector(cy){
     var rootCfg = window.aippGraphLayoutConfig.bfRoots;
     if(rootCfg != null && rootCfg !== '') return rootCfg;
-
     var tankNodeId = getAippTankNodeId();
     if(tankNodeId && cy && cy.getElementById(tankNodeId).length) return '#' + tankNodeId;
     return undefined;
@@ -5108,24 +5220,22 @@ function applyRemovalFromPreview(){
     if(!cy || !tankNodeId) return;
     var tank = cy.getElementById(tankNodeId);
     if(!tank || tank.empty || tank.empty()) return;
-
     var maxX = -Infinity;
     cy.nodes().forEach(function(n){
       var x = n.position('x');
       if(Number.isFinite(x) && x > maxX) maxX = x;
     });
     if(!Number.isFinite(maxX)) return;
-
     var margin = Number(window.aippGraphLayoutConfig.tankRightMargin) || 260;
     if(tank.position('x') < maxX - 1){
-      tank.position({x: maxX + margin, y: tank.position('y')});
+      tank.position({x:maxX + margin, y:tank.position('y')});
     }
   }
 
   function connectedChamberIdForWallNode(wallNode){
     try{
       var id = wallNode.id();
-      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){ return n.id === id; }) : null;
+      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){return n.id === id;}) : null;
       var w = sim && sim.data ? sim.data : {};
       var ci = null;
       if(w.left_connection && w.left_connection.chamber_index != null) ci = w.left_connection.chamber_index;
@@ -5140,7 +5250,6 @@ function applyRemovalFromPreview(){
     if(!cy || window.aippGraphLayoutConfig.includeWallsInAutoLayout) return;
     var walls = cy.nodes('[type = "wall"]');
     if(!walls || walls.length === 0) return;
-
     walls.forEach(function(wall, i){
       var chamberId = connectedChamberIdForWallNode(wall);
       var anchor = chamberId ? cy.getElementById(chamberId) : null;
@@ -5148,10 +5257,7 @@ function applyRemovalFromPreview(){
       var p = anchor.position();
       var spread = Number(window.aippGraphLayoutConfig.wallXSpread) || 115;
       var yoff = Number(window.aippGraphLayoutConfig.wallYOffset) || 230;
-      wall.position({
-        x: p.x + ((i % 3) - 1) * spread,
-        y: p.y + yoff + Math.floor(i / 3) * 55
-      });
+      wall.position({x:p.x + ((i % 3) - 1) * spread, y:p.y + yoff + Math.floor(i / 3) * 55});
     });
   }
 
@@ -5203,13 +5309,15 @@ function applyRemovalFromPreview(){
       layout.run();
       overlaySync(shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) + 40 : 90);
     }catch(e){
-      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to preset layout:', e);
+      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to original preset/manual layout:', e);
       if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim);
     }
   }
 
+  // Public helpers retained for console tuning and rerunning layout.
   window.setAippGraphLayoutMode = function(mode){
-    window.aippGraphLayoutConfig.mode = mode || 'preset_manual';
+    // Manual mode is no longer exposed in the UI, but this remains for debug/fallback.
+    window.aippGraphLayoutConfig.mode = mode || 'breadthfirst_auto';
     if(typeof setStatus === 'function') setStatus('Graph layout mode: ' + window.aippGraphLayoutConfig.mode, true);
   };
 
@@ -5218,67 +5326,38 @@ function applyRemovalFromPreview(){
     runBreadthfirstAutoLayout(anim !== false);
   };
 
-  window.applyAippPresetManualLayout = function(anim){
-    window.aippGraphLayoutConfig.mode = 'preset_manual';
-    if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim !== false);
-  };
-
   window.getAippBreadthfirstLayoutOptions = function(){
-    var cfg = window.aippGraphLayoutConfig || {};
+    var c = window.aippGraphLayoutConfig || {};
     return {
-      bfRoots: cfg.bfRoots,
-      bfAvoidOverlap: cfg.bfAvoidOverlap,
-      bfDirected: cfg.bfDirected,
-      bfCircle: cfg.bfCircle,
-      bfGrid: cfg.bfGrid,
-      bfSpacingFactor: cfg.bfSpacingFactor,
-      bfMaximal: cfg.bfMaximal,
-      bfDirection: cfg.bfDirection,
-      bfFit: cfg.bfFit,
-      bfPadding: cfg.bfPadding,
-      bfAnimate: cfg.bfAnimate,
-      bfAnimationDuration: cfg.bfAnimationDuration,
-      bfNodeDimensionsIncludeLabels: cfg.bfNodeDimensionsIncludeLabels,
-      includeWallsInAutoLayout: cfg.includeWallsInAutoLayout,
-      tankRight: cfg.tankRight,
-      tankRightMargin: cfg.tankRightMargin,
-      wallYOffset: cfg.wallYOffset,
-      wallXSpread: cfg.wallXSpread
+      bfRoots:c.bfRoots,
+      bfAvoidOverlap:c.bfAvoidOverlap,
+      bfDirected:c.bfDirected,
+      bfCircle:c.bfCircle,
+      bfGrid:c.bfGrid,
+      bfSpacingFactor:c.bfSpacingFactor,
+      bfMaximal:c.bfMaximal,
+      bfDirection:c.bfDirection,
+      bfFit:c.bfFit,
+      bfPadding:c.bfPadding,
+      bfAnimate:c.bfAnimate,
+      bfAnimationDuration:c.bfAnimationDuration,
+      bfNodeDimensionsIncludeLabels:c.bfNodeDimensionsIncludeLabels,
+      includeWallsInAutoLayout:c.includeWallsInAutoLayout,
+      tankRight:c.tankRight,
+      tankRightMargin:c.tankRightMargin,
+      wallYOffset:c.wallYOffset,
+      wallXSpread:c.wallXSpread
     };
   };
 
+  // Override existing Auto Layout handler. It now always uses tuned breadthfirst unless debug mode is manually set otherwise.
   applyAippCytoscapeLayout = function(anim){
-    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'breadthfirst_auto'){
-      return runBreadthfirstAutoLayout(anim);
+    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'preset_manual'){
+      // Debug-only fallback path. No UI button exposes this mode.
+      if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
     }
-    if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+    return runBreadthfirstAutoLayout(anim);
   };
-
-  function installLayoutButtons(){
-    var tools = document.querySelector('#vizHeader .vizHeaderTools') || document.getElementById('vizHeader');
-    if(!tools || document.getElementById('graphLayoutModeBtn')) return;
-
-    var btn = document.createElement('button');
-    btn.id = 'graphLayoutModeBtn';
-    btn.className = 'smallBtn secondary';
-    btn.textContent = 'Breadthfirst Layout';
-    btn.title = 'Toggle tuned Cytoscape breadthfirst layout anchored by tank_id.';
-    btn.onclick = function(){
-      var current = window.aippGraphLayoutConfig.mode;
-      if(current === 'breadthfirst_auto'){
-        window.applyAippPresetManualLayout(true);
-        btn.textContent = 'Breadthfirst Layout';
-      }else{
-        window.applyAippBreadthfirstLayout(true);
-        btn.textContent = 'Manual Layout';
-      }
-    };
-    tools.appendChild(btn);
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLayoutButtons);
-  else installLayoutButtons();
-  setTimeout(installLayoutButtons, 0);
 })();
 ```
 ##### 22_save_transport_diagnostics_dev_v1.js
@@ -5412,7 +5491,7 @@ const AIPP_WALL_CONNECTION_TYPES=["CONSTANT_TEMPERATURE","CONSTANT_HEAT","WALL",
 const AIPP_PYRO_SHAPES={sphere:{defaults:{geometry:'sphere',radius:'0.3 mm'},fields:[['radius','text','0.3 mm']]},tablet:{defaults:{geometry:'tablet',total_height:'1.9 mm',diameter:'3.9 mm',dome_height:'0.076 mm'},fields:[['total_height','text','1.9 mm'],['diameter','text','3.9 mm'],['dome_height','text','0.076 mm']]},grain:{defaults:{geometry:'grain',inner_diameter:'7.0 mm',outer_diameter:'13.0 mm',fin_diameter:'10.0 mm',num_fins:8,fin_thickness:'3.0 mm',cylinder_height:'4.0 mm'},fields:[['inner_diameter','text','7.0 mm'],['outer_diameter','text','13.0 mm'],['fin_diameter','text','10.0 mm'],['num_fins','number',8],['fin_thickness','text','3.0 mm'],['cylinder_height','text','4.0 mm']]},wafer:{defaults:{geometry:'wafer',inner_radius:'4.0 mm',outer_radius:'6.0 mm',height:'2.0 mm'},fields:[['inner_radius','text','4.0 mm'],['outer_radius','text','6.0 mm'],['height','text','2.0 mm']]},tabular:{defaults:{geometry:'tabular',burn_distance_units:'mm',surface_area_units:'m^2',burn_distance_array:[0,3],surface_area_array:[0.000003,0]},fields:[['burn_distance_units','text','mm'],['surface_area_units','text','m^2'],['burn_distance_array','array',[0,3]],['surface_area_array','array',[0.000003,0]]]}};const AIPP_PYRO_SHAPE_OPTIONS=Object.keys(AIPP_PYRO_SHAPES);
 function deepCopy(x){return JSON.parse(JSON.stringify(x));}function escapeHtml(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}function parseLoose(s){let t=String(s).trim();if(t==="null")return null;if(t==="true")return true;if(t==="false")return false;if(/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t))return Number(t);return t;}function truncText(s,n){s=String(s??"");return s.length>n?s.slice(0,n-1)+"…":s;}function setStatus(m,ok){let l=document.getElementById("statusLeft"),r=document.getElementById("statusRight");if(!l||!r)return;l.textContent=m;r.textContent=ok?"OK":"ERROR";r.className=ok?"ok":"bad";}function getAssemblyInfo(j){if(j&&j.aipp_calculation&&j.aipp_calculation.assembly)return{assembly:j.aipp_calculation.assembly,basePath:["aipp_calculation","assembly"]};if(j&&j.assembly)return{assembly:j.assembly,basePath:["assembly"]};return{assembly:null,basePath:[]};}function ensureAssembly(){if(!fullJson)fullJson={aipp_calculation:{assembly:{chambers:[],orifices:[],walls:[]}}};let info=getAssemblyInfo(fullJson);if(!info.assembly){fullJson.assembly={chambers:[],orifices:[],walls:[]};info=getAssemblyInfo(fullJson);}let a=info.assembly;if(!Array.isArray(a.chambers))a.chambers=[];if(!Array.isArray(a.orifices))a.orifices=[];if(!Array.isArray(a.walls))a.walls=[];return info;}function getJsonAtPath(p){let r=fullJson;for(const k of p){if(r==null)return;r=r[k];}return r;}function setJsonAtPath(p,v){if(p.length===0)fullJson=v;else{let r=fullJson;for(let i=0;i<p.length-1;i++)r=r[p[i]];r[p[p.length-1]]=v;}refreshAllViews();}function setJsonAtPathNoRefresh(p,v){if(p.length===0){fullJson=v;return;}let r=fullJson;for(let i=0;i<p.length-1;i++){if(r==null)return;r=r[p[i]];}if(r!=null)r[p[p.length-1]]=v;}function setAtPath(p,v){let r=popupWorkingCopy;if(p.length===0){popupWorkingCopy=v;return;}for(let i=0;i<p.length-1;i++)r=r[p[i]];r[p[p.length-1]]=v;}function getPopupObjectAtPath(p){let r=popupWorkingCopy;for(const k of p){if(r==null)return null;r=r[k];}return r;}function makeDischargeCoefficientTemplate(b){return deepCopy(AIPP_CD_TEMPLATES[b]||AIPP_CD_TEMPLATES.constant);}function getEventSuggestions(){const out=['SimStart'],a=getAssemblyInfo(fullJson).assembly;if(!a)return out;if(Array.isArray(a.orifices))for(let i=0;i<a.orifices.length;i++)out.push('O'+(i+1)+'_opened','O'+(i+1)+'_closed');if(Array.isArray(a.chambers))for(let c=0;c<a.chambers.length;c++){const ps=a.chambers[c].pyro||a.chambers[c].pyros;if(Array.isArray(ps))for(let p=0;p<ps.length;p++)out.push('C'+(c+1)+'P'+(p+1)+'_ignited','C'+(c+1)+'P'+(p+1)+'_extinguished');}return Array.from(new Set(out));}
 function refreshAllViews(){renderTree();updateCodeTextFromModel();buildGraph(fullJson);syncOpenPopupFromModel();renderCytoscapePrototype();}function setTab(t){currentTab=t;document.getElementById("tabTree").classList.toggle("active",t==="tree");document.getElementById("tabCode").classList.toggle("active",t==="code");document.getElementById("treePane").style.display=t==="tree"?"block":"none";document.getElementById("codePane").style.display=t==="code"?"flex":"none";if(t==="code")updateCodeTextFromModel();}function expandAll(){treeOpenAll=true;renderTree();}function collapseAll(){treeOpenAll=false;renderTree();}function matchSearch(t){let q=(document.getElementById("searchBox")?.value||"").toLowerCase().trim();return !q||String(t).toLowerCase().includes(q);}function renderTree(){let p=document.getElementById("treePane");if(!p)return;if(!fullJson){p.innerHTML='<div class="node t">Load a JSON file to view contents.</div>';return;}p.innerHTML=renderNode(fullJson,[],"root")||'<div class="node t">No matches.</div>';}function renderNode(v,path,k){if(v===null||typeof v!=="object"){if(!matchSearch(k)&&!matchSearch(v))return"";return`<div class="node"><span class="k">${escapeHtml(k)}</span>: <span>${escapeHtml(v)}</span></div>`;}let arr=Array.isArray(v),ks=arr?v.map((_,i)=>i):Object.keys(v),ch="";for(const kk of ks)ch+=renderNode(v[kk],path.concat([kk]),String(kk));if(!ch&&!matchSearch(k))return"";return`<details class="node" ${treeOpenAll?'open':''}><summary><span class="k">${escapeHtml(k)}</span> <span class="pill">${arr?'array['+v.length+']':'object{'+ks.length+'}'}</span></summary><div style="margin-left:14px">${ch}</div></details>`;}function stringifyAippJsonPretty(obj){let s=JSON.stringify(obj,null,2);s=s.replace(/("coefficient"\s*:\s*)(-?\d+)(\s*[,}])/g,function(m,p1,n,p3){return p1+n+'.0'+p3;});return s;}function updateCodeTextFromModel(){let e=document.getElementById("codeEditor"),er=document.getElementById("codeError");if(e)e.value=fullJson?stringifyAippJsonPretty(fullJson):"";if(er)er.textContent="";}function applyCodeEdits(){try{fullJson=JSON.parse(document.getElementById("codeEditor").value);refreshAllViews();setStatus("JSON updated from code editor.",true);}catch(e){setStatus("Invalid JSON: "+e.message,false);}}function resetCodeEditor(){updateCodeTextFromModel();}function attachCodeEditorHandlers(){let e=document.getElementById("codeEditor");if(e)e.addEventListener("input",()=>{let er=document.getElementById("codeError");if(er)er.textContent="Unapplied changes";});}function buildGraph(j){simNodes=[];simEdges=[];let info=getAssemblyInfo(j),a=info.assembly,bp=info.basePath;if(!a||!Array.isArray(a.chambers)){setStatus("No assembly/chambers found for visualization.",false);return;}for(let i=0;i<a.chambers.length;i++)simNodes.push({id:"c"+(i+1),type:"chamber",label:"Chamber "+(i+1),path:bp.concat(["chambers",i]),data:a.chambers[i]});if(Array.isArray(a.orifices))for(let i=0;i<a.orifices.length;i++){let o=a.orifices[i],f=parseInt(o.from),t=parseInt(o.to),oid="o"+(i+1),oneWay=!!o.one_way;simNodes.push({id:oid,type:"orifice",label:"Orf "+(i+1),path:bp.concat(["orifices",i]),data:o});if(f)simEdges.push({a:"c"+f,b:oid,type:"flow",role:"from",oneWay:oneWay,orificeIndex:i+1});if(t)simEdges.push({a:oid,b:"c"+t,type:"flow",role:"to",oneWay:oneWay,orificeIndex:i+1});}if(Array.isArray(a.walls))for(let i=0;i<a.walls.length;i++){let w=a.walls[i],id="w"+(i+1);simNodes.push({id,type:"wall",label:"Wall "+(i+1),path:bp.concat(["walls",i]),data:w});if(w.left_connection&&w.left_connection.chamber_index)simEdges.push({a:"c"+w.left_connection.chamber_index,b:id,type:"wall"});if(w.right_connection&&w.right_connection.chamber_index)simEdges.push({a:id,b:"c"+w.right_connection.chamber_index,type:"wall"});}setStatus(`Loaded ${simNodes.length} nodes, ${simEdges.length} links.`,true);} function getChamberVolumeText(ch){return ch.volume||ch.free_volume||ch.initial_volume||"not set";}
-function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();document.getElementById("popup").style.display="block";}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
+function aippClampPopupToViewport(){let p=document.getElementById("popup");if(!p)return;let margin=20;let vw=window.innerWidth||1024,vh=window.innerHeight||768;let maxH=Math.max(260,Math.min(680,vh-2*margin));p.style.height=maxH+"px";let r=p.getBoundingClientRect();if(r.bottom>vh-margin)p.style.top=Math.max(margin,vh-margin-r.height)+"px";if(r.top<margin)p.style.top=margin+"px";r=p.getBoundingClientRect();if(r.right>vw-margin)p.style.left=Math.max(margin,vw-margin-r.width)+"px";if(r.left<margin)p.style.left=margin+"px";}function openPopup(n){popupNode=n;popupPath=n.path;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);document.getElementById("popupTitle").textContent=`${n.label} (${n.type})`;renderInspector();let __aippPopupEl=document.getElementById("popup");__aippPopupEl.style.display="block";setTimeout(aippClampPopupToViewport,0);}function closePopup(){document.getElementById("popup").style.display="none";popupNode=null;popupPath=null;}function revertPopup(){popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}function applyPopup(){cleanMolFractionsDeep(popupWorkingCopy);setJsonAtPath(popupPath,deepCopy(popupWorkingCopy));setStatus("JSON updated from popup editor.",true);}function syncOpenPopupFromModel(){if(!popupPath)return;let p=document.getElementById("popup");if(!p||p.style.display==="none")return;popupOriginalCopy=deepCopy(getJsonAtPath(popupPath));popupWorkingCopy=deepCopy(popupOriginalCopy);renderInspector();}if(!window.__aippPopupViewportClampInstalled){window.__aippPopupViewportClampInstalled=true;window.addEventListener("resize",function(){let p=document.getElementById("popup");if(p&&p.style.display!=="none")aippClampPopupToViewport();});}function initPopupDrag(){let p=document.getElementById("popup"),h=document.getElementById("popupHeader");if(!p||!h||h.dataset.dragReady)return;h.dataset.dragReady="1";h.addEventListener("mousedown",e=>{if(e.target.classList&&e.target.classList.contains("xbtn"))return;let r=p.getBoundingClientRect();popupDrag={active:true,dx:e.clientX-r.left,dy:e.clientY-r.top};p.style.position="fixed";p.style.left=r.left+"px";p.style.top=r.top+"px";});document.addEventListener("mousemove",e=>{if(!popupDrag.active)return;p.style.left=e.clientX-popupDrag.dx+"px";p.style.top=e.clientY-popupDrag.dy+"px";});document.addEventListener("mouseup",()=>popupDrag.active=false);}function renderInspector(){let b=document.getElementById("popupBody");if(!b)return;b.innerHTML="";b.appendChild(buildGroup("Object",popupWorkingCopy,[]));}function typeLabel(x){return x===null?"null":Array.isArray(x)?"array":typeof x;}function smartRow(label,control){let r=document.createElement("div"),k=document.createElement("div"),v=document.createElement("div");r.className="row";k.className="key";k.textContent=label;v.className="val";v.appendChild(control);r.append(k,v);return r;}function sel(opts,val,cb){let s=document.createElement("select");s.className="smartSelect";s.innerHTML=opts.map(o=>`<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join("");s.value=val;s.onchange=()=>cb(s.value);return s;}function inpText(v,cb){let i=document.createElement("input");i.className="smartInput";i.value=v??"";i.oninput=()=>cb(i.value);return i;}function buildGroup(title,obj,path){if(popupNode&&popupNode.type==="orifice"&&title==="Object")return buildOrificeEditor(obj,path);if(popupNode&&popupNode.type==="wall"&&title==="Object")return buildWallEditor(obj,path);if(title==="discharge_coefficient"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildCdEditor(title,obj,path);if(title==="mol_fractions"&&obj&&typeof obj==="object"&&!Array.isArray(obj))return buildMolEditor(title,obj,path);let g=document.createElement("div"),h=document.createElement("div"),b=document.createElement("div");g.className="insGroup";h.className="insGroupHeader";h.innerHTML=`<span>${escapeHtml(title)}</span><span class="pill">${typeLabel(obj)}</span>`;b.className="insGroupBody";g.append(h,b);if(obj===null||typeof obj!=="object"){b.appendChild(buildPrim("(value)",obj,path));return g;}if(Array.isArray(obj)){obj.forEach((v,i)=>b.appendChild(buildAny("["+i+"]",v,path.concat([i]))));return g;}let keys=Object.keys(obj).sort();if(popupNode&&popupNode.type==="chamber"&&title==="Object"){b.appendChild(smartRow("label",inpText(obj.label??"",v=>{if(v==="")delete obj.label;else obj.label=v;})));b.appendChild(buildChamberInitEditor(obj,path));b.appendChild(buildChamberPyroManager(obj,path));b.appendChild(buildChamberFilterManager(obj,path));keys=keys.filter(k=>!["label","init_type","mass","pressure","volume","density","moles","temperature","pyro","pyros","mol_fractions","filter","filters"].includes(k));}keys.forEach(k=>b.appendChild(buildAny(k,obj[k],path.concat([k]))));return g;}function buildAny(k,v,path){if(k==="opens_at")return buildOpensAt(k,v,path);if(k==="mol_fractions"&&v&&typeof v==="object"&&!Array.isArray(v))return buildMolEditor(k,v,path);if(v!==null&&typeof v==="object")return buildGroup(k,v,path);return buildPrim(k,v,path);}function buildPrim(k,v,path){let i=document.createElement(typeof v==="boolean"?"select":"input");if(typeof v==="boolean"){i.innerHTML='<option value="true">true</option><option value="false">false</option>';i.value=v?"true":"false";i.onchange=()=>setAtPath(path,i.value==="true");}else{i.type=typeof v==="number"?"number":"text";i.step="any";i.value=v===null?"null":String(v);i.oninput=()=>setAtPath(path,typeof v==="number"?Number(i.value):parseLoose(i.value));}return smartRow(k,i);}function cleanMolFractionsDeep(o){if(!o||typeof o!=="object")return;if(o.mol_fractions)for(const k of Object.keys(o.mol_fractions))if(!Number(o.mol_fractions[k]))delete o.mol_fractions[k];for(const k of Object.keys(o))cleanMolFractionsDeep(o[k]);}function buildMolEditor(title,obj,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML=`<span>${title}</span><span class="smartGroupBadge">smart mole fraction editor</span>`;b.className='insGroupBody';g.append(h,b);function numericKeys(){return Object.keys(obj).filter(k=>Number.isFinite(Number(obj[k])));}function sum(){return numericKeys().reduce((a,k)=>a+Number(obj[k]),0);}let status=document.createElement('div');status.className='repairNote';function updateStatus(){status.textContent='Current sum = '+sum().toPrecision(8);}updateStatus();b.appendChild(status);STANDARD_SPECIES.concat(Object.keys(obj).filter(k=>!STANDARD_SPECIES.includes(k))).forEach(sp=>{let row=document.createElement('div');row.className='row';let k=document.createElement('div');k.className='key';k.textContent=sp;let v=document.createElement('div');v.className='val';let input=inpText(obj[sp]??0,val=>{let n=Number(val);if(Number.isFinite(n))obj[sp]=n;updateStatus();});v.appendChild(input);if(!STANDARD_SPECIES.includes(sp)){let rm=document.createElement('button');rm.className='smartMiniBtn';rm.textContent='Remove';rm.onclick=()=>{delete obj[sp];renderInspector();};v.appendChild(rm);}row.append(k,v);b.appendChild(row);});let actions=document.createElement('div');actions.className='smartTableActions';let norm=document.createElement('button');norm.className='smartMiniBtn';norm.textContent='Normalize to 1';norm.onclick=()=>{let s=sum();if(s>0){numericKeys().forEach(k=>obj[k]=Number(obj[k])/s);renderInspector();}else setStatus('Cannot normalize mole fractions because sum is zero.',false);};let addName=document.createElement('input');addName.className='smartInput';addName.placeholder='custom species name';addName.style.maxWidth='220px';let addVal=document.createElement('input');addVal.className='smartInput';addVal.placeholder='value';addVal.value='0';addVal.style.maxWidth='120px';let add=document.createElement('button');add.className='smartMiniBtn';add.textContent='Add custom species';add.onclick=()=>{let name=addName.value.trim();if(!name){setStatus('Custom species name is blank.',false);return;}obj[name]=Number(addVal.value);if(!Number.isFinite(obj[name]))obj[name]=0;renderInspector();};actions.append(norm,addName,addVal,add);b.appendChild(actions);return g;}function buildChamberInitEditor(ch,path){let g=document.createElement('div'),h=document.createElement('div'),b=document.createElement('div');g.className='insGroup';h.className='insGroupHeader';h.innerHTML='<span>chamber_initialization</span><span class="smartGroupBadge">smart init_type editor</span>';b.className='insGroupBody';g.append(h,b);let init=CHAMBER_INIT_TYPES.includes(ch.init_type)?ch.init_type:'mPT';ch.init_type=init;if(!ch.mol_fractions)ch.mol_fractions={};b.appendChild(smartRow('init_type',sel(CHAMBER_INIT_TYPES,init,v=>{ch.init_type=v;renderInspector();})));let active=CHAMBER_INIT_FIELDS[init]||[];active.forEach(f=>{if(ch[f]===undefined)ch[f]=CHAMBER_INIT_DEFAULTS[f];b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v)));});let inactive=Object.keys(CHAMBER_INIT_DEFAULTS).filter(k=>!active.includes(k)&&ch[k]!==undefined);if(inactive.length){let note=document.createElement('div');note.className='repairNote';note.textContent='Additional initialization keys already present in this chamber are shown below and preserved.';b.appendChild(note);inactive.forEach(f=>b.appendChild(smartRow(f,inpText(ch[f],v=>ch[f]=v))));}b.appendChild(buildMolEditor('mol_fractions',ch.mol_fractions,path.concat(['mol_fractions'])));return g;}
 function parseIntegerArrayText(t){try{let a=JSON.parse(t);if(Array.isArray(a))return a.map(x=>parseInt(x)).filter(Number.isFinite);}catch(e){}return String(t??'').split(/[\s,;]+/).map(x=>parseInt(x)).filter(Number.isFinite);}
 function parseNumberArrayTextLocal(t){try{let a=JSON.parse(t);if(Array.isArray(a))return a.map(Number).filter(Number.isFinite);}catch(e){}return String(t??'').split(/[\s,;]+/).map(Number).filter(Number.isFinite);}
 function splitQuantity(s,units,defaultUnit){let txt=String(s??'').trim(),parts=txt.split(/\s+/),num=Number(parts[0]),unit=parts[1]||defaultUnit;if(!Number.isFinite(num))num=0;if(!units.includes(unit))unit=defaultUnit;return{num,unit};}
@@ -7605,38 +7684,25 @@ function applyRemovalFromPreview(){
     return aippSendChunkedSaveJson(jsonText, suggestedName);
   };
 })();
-/* 21_graph_layout_breadthfirst_tuned_v2.js
-   Optional Cytoscape breadthfirst layout with production defaults selected from JCEF tuning.
+/* 21_graph_layout_breadthfirst_default_v3.js
+   Default Cytoscape breadthfirst flow-chart layout.
 
-   Joseph-selected defaults:
-     bfDirection = 'leftward'
-     bfAvoidOverlap = true
-     bfDirected = false
-     bfCircle = false
-     bfGrid = true
-     bfSpacingFactor = 0.9
-     bfMaximal = true
-     bfFit = true
-     bfPadding = 1000
-     bfAnimate = true
-     bfAnimationDuration = 600
-     bfNodeDimensionsIncludeLabels = false
-     includeWallsInAutoLayout = true
-
-   Default mode remains the existing manual/preset layout.
+   This module removes the user-facing manual/preset layout toggle. The app now defaults to
+   breadthfirst_auto with Joseph-selected tuned settings. The original preset/manual layout is
+   retained only as an internal fallback if Cytoscape breadthfirst fails.
 */
 (function(){
-  if(window.__aippGraphLayoutBreadthfirstTunedV2Applied) return;
-  window.__aippGraphLayoutBreadthfirstTunedV2Applied = true;
+  if(window.__aippGraphLayoutBreadthfirstDefaultV3Applied) return;
+  window.__aippGraphLayoutBreadthfirstDefaultV3Applied = true;
 
   window.aippGraphLayoutConfig = window.aippGraphLayoutConfig || {};
   var cfg = window.aippGraphLayoutConfig;
 
-  if(!cfg.mode) cfg.mode = 'preset_manual';
-  if(!cfg.autoLayout) cfg.autoLayout = 'breadthfirst';
+  // New default: use the tuned Cytoscape breadthfirst layout.
+  cfg.mode = 'breadthfirst_auto';
+  cfg.autoLayout = 'breadthfirst';
 
-  // Tuned breadthfirst layout defaults.
-  // Valid direction values in current bundled Cytoscape: downward, leftward, upward, rightward.
+  // Tuned breadthfirst layout defaults selected in JCEF testing.
   if(cfg.bfDirection == null) cfg.bfDirection = 'leftward';
   if(cfg.bfAvoidOverlap == null) cfg.bfAvoidOverlap = true;
   if(cfg.bfDirected == null) cfg.bfDirected = false;
@@ -7650,7 +7716,7 @@ function applyRemovalFromPreview(){
   if(cfg.bfPadding == null) cfg.bfPadding = 1000;
   if(cfg.bfNodeDimensionsIncludeLabels == null) cfg.bfNodeDimensionsIncludeLabels = false;
 
-  // AIPP-specific post processing.
+  // AIPP-specific behavior.
   if(cfg.tankRight == null) cfg.tankRight = true;
   if(cfg.includeWallsInAutoLayout == null) cfg.includeWallsInAutoLayout = true;
   if(cfg.wallYOffset == null) cfg.wallYOffset = 230;
@@ -7660,9 +7726,7 @@ function applyRemovalFromPreview(){
   var originalApplyAippCytoscapeLayout = (typeof applyAippCytoscapeLayout === 'function') ? applyAippCytoscapeLayout : null;
 
   function getCy(){
-    try{
-      if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype;
-    }catch(e){}
+    try{ if(typeof cyPrototype !== 'undefined' && cyPrototype) return cyPrototype; }catch(e){}
     if(window.cyPrototype) return window.cyPrototype;
     return null;
   }
@@ -7670,14 +7734,12 @@ function applyRemovalFromPreview(){
   function getAippTankNodeId(){
     try{
       var info = (typeof getAssemblyInfo === 'function') ? getAssemblyInfo(fullJson) : {assembly:null};
-      var assembly = info && info.assembly;
+      var a = info && info.assembly;
       var tankId = null;
-
-      if(assembly && assembly.tank_id != null) tankId = assembly.tank_id;
+      if(a && a.tank_id != null) tankId = a.tank_id;
       else if(fullJson && fullJson.tank_id != null) tankId = fullJson.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.tank_id != null) tankId = fullJson.aipp_calculation.tank_id;
       else if(fullJson && fullJson.aipp_calculation && fullJson.aipp_calculation.assembly && fullJson.aipp_calculation.assembly.tank_id != null) tankId = fullJson.aipp_calculation.assembly.tank_id;
-
       var n = parseInt(tankId, 10);
       if(Number.isFinite(n) && n > 0) return 'c' + n;
     }catch(e){
@@ -7689,7 +7751,6 @@ function applyRemovalFromPreview(){
   function getBreadthfirstRootsSelector(cy){
     var rootCfg = window.aippGraphLayoutConfig.bfRoots;
     if(rootCfg != null && rootCfg !== '') return rootCfg;
-
     var tankNodeId = getAippTankNodeId();
     if(tankNodeId && cy && cy.getElementById(tankNodeId).length) return '#' + tankNodeId;
     return undefined;
@@ -7707,24 +7768,22 @@ function applyRemovalFromPreview(){
     if(!cy || !tankNodeId) return;
     var tank = cy.getElementById(tankNodeId);
     if(!tank || tank.empty || tank.empty()) return;
-
     var maxX = -Infinity;
     cy.nodes().forEach(function(n){
       var x = n.position('x');
       if(Number.isFinite(x) && x > maxX) maxX = x;
     });
     if(!Number.isFinite(maxX)) return;
-
     var margin = Number(window.aippGraphLayoutConfig.tankRightMargin) || 260;
     if(tank.position('x') < maxX - 1){
-      tank.position({x: maxX + margin, y: tank.position('y')});
+      tank.position({x:maxX + margin, y:tank.position('y')});
     }
   }
 
   function connectedChamberIdForWallNode(wallNode){
     try{
       var id = wallNode.id();
-      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){ return n.id === id; }) : null;
+      var sim = (typeof simNodes !== 'undefined') ? simNodes.find(function(n){return n.id === id;}) : null;
       var w = sim && sim.data ? sim.data : {};
       var ci = null;
       if(w.left_connection && w.left_connection.chamber_index != null) ci = w.left_connection.chamber_index;
@@ -7739,7 +7798,6 @@ function applyRemovalFromPreview(){
     if(!cy || window.aippGraphLayoutConfig.includeWallsInAutoLayout) return;
     var walls = cy.nodes('[type = "wall"]');
     if(!walls || walls.length === 0) return;
-
     walls.forEach(function(wall, i){
       var chamberId = connectedChamberIdForWallNode(wall);
       var anchor = chamberId ? cy.getElementById(chamberId) : null;
@@ -7747,10 +7805,7 @@ function applyRemovalFromPreview(){
       var p = anchor.position();
       var spread = Number(window.aippGraphLayoutConfig.wallXSpread) || 115;
       var yoff = Number(window.aippGraphLayoutConfig.wallYOffset) || 230;
-      wall.position({
-        x: p.x + ((i % 3) - 1) * spread,
-        y: p.y + yoff + Math.floor(i / 3) * 55
-      });
+      wall.position({x:p.x + ((i % 3) - 1) * spread, y:p.y + yoff + Math.floor(i / 3) * 55});
     });
   }
 
@@ -7802,13 +7857,15 @@ function applyRemovalFromPreview(){
       layout.run();
       overlaySync(shouldAnimate ? (Number(cfg.bfAnimationDuration) || 600) + 40 : 90);
     }catch(e){
-      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to preset layout:', e);
+      console.warn('[AIPP GRAPH] breadthfirst layout failed; falling back to original preset/manual layout:', e);
       if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim);
     }
   }
 
+  // Public helpers retained for console tuning and rerunning layout.
   window.setAippGraphLayoutMode = function(mode){
-    window.aippGraphLayoutConfig.mode = mode || 'preset_manual';
+    // Manual mode is no longer exposed in the UI, but this remains for debug/fallback.
+    window.aippGraphLayoutConfig.mode = mode || 'breadthfirst_auto';
     if(typeof setStatus === 'function') setStatus('Graph layout mode: ' + window.aippGraphLayoutConfig.mode, true);
   };
 
@@ -7817,67 +7874,38 @@ function applyRemovalFromPreview(){
     runBreadthfirstAutoLayout(anim !== false);
   };
 
-  window.applyAippPresetManualLayout = function(anim){
-    window.aippGraphLayoutConfig.mode = 'preset_manual';
-    if(originalApplyAippCytoscapeLayout) originalApplyAippCytoscapeLayout(anim !== false);
-  };
-
   window.getAippBreadthfirstLayoutOptions = function(){
-    var cfg = window.aippGraphLayoutConfig || {};
+    var c = window.aippGraphLayoutConfig || {};
     return {
-      bfRoots: cfg.bfRoots,
-      bfAvoidOverlap: cfg.bfAvoidOverlap,
-      bfDirected: cfg.bfDirected,
-      bfCircle: cfg.bfCircle,
-      bfGrid: cfg.bfGrid,
-      bfSpacingFactor: cfg.bfSpacingFactor,
-      bfMaximal: cfg.bfMaximal,
-      bfDirection: cfg.bfDirection,
-      bfFit: cfg.bfFit,
-      bfPadding: cfg.bfPadding,
-      bfAnimate: cfg.bfAnimate,
-      bfAnimationDuration: cfg.bfAnimationDuration,
-      bfNodeDimensionsIncludeLabels: cfg.bfNodeDimensionsIncludeLabels,
-      includeWallsInAutoLayout: cfg.includeWallsInAutoLayout,
-      tankRight: cfg.tankRight,
-      tankRightMargin: cfg.tankRightMargin,
-      wallYOffset: cfg.wallYOffset,
-      wallXSpread: cfg.wallXSpread
+      bfRoots:c.bfRoots,
+      bfAvoidOverlap:c.bfAvoidOverlap,
+      bfDirected:c.bfDirected,
+      bfCircle:c.bfCircle,
+      bfGrid:c.bfGrid,
+      bfSpacingFactor:c.bfSpacingFactor,
+      bfMaximal:c.bfMaximal,
+      bfDirection:c.bfDirection,
+      bfFit:c.bfFit,
+      bfPadding:c.bfPadding,
+      bfAnimate:c.bfAnimate,
+      bfAnimationDuration:c.bfAnimationDuration,
+      bfNodeDimensionsIncludeLabels:c.bfNodeDimensionsIncludeLabels,
+      includeWallsInAutoLayout:c.includeWallsInAutoLayout,
+      tankRight:c.tankRight,
+      tankRightMargin:c.tankRightMargin,
+      wallYOffset:c.wallYOffset,
+      wallXSpread:c.wallXSpread
     };
   };
 
+  // Override existing Auto Layout handler. It now always uses tuned breadthfirst unless debug mode is manually set otherwise.
   applyAippCytoscapeLayout = function(anim){
-    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'breadthfirst_auto'){
-      return runBreadthfirstAutoLayout(anim);
+    if(window.aippGraphLayoutConfig && window.aippGraphLayoutConfig.mode === 'preset_manual'){
+      // Debug-only fallback path. No UI button exposes this mode.
+      if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
     }
-    if(originalApplyAippCytoscapeLayout) return originalApplyAippCytoscapeLayout(anim);
+    return runBreadthfirstAutoLayout(anim);
   };
-
-  function installLayoutButtons(){
-    var tools = document.querySelector('#vizHeader .vizHeaderTools') || document.getElementById('vizHeader');
-    if(!tools || document.getElementById('graphLayoutModeBtn')) return;
-
-    var btn = document.createElement('button');
-    btn.id = 'graphLayoutModeBtn';
-    btn.className = 'smallBtn secondary';
-    btn.textContent = 'Breadthfirst Layout';
-    btn.title = 'Toggle tuned Cytoscape breadthfirst layout anchored by tank_id.';
-    btn.onclick = function(){
-      var current = window.aippGraphLayoutConfig.mode;
-      if(current === 'breadthfirst_auto'){
-        window.applyAippPresetManualLayout(true);
-        btn.textContent = 'Breadthfirst Layout';
-      }else{
-        window.applyAippBreadthfirstLayout(true);
-        btn.textContent = 'Manual Layout';
-      }
-    };
-    tools.appendChild(btn);
-  }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installLayoutButtons);
-  else installLayoutButtons();
-  setTimeout(installLayoutButtons, 0);
 })();
 /* 21_save_transport_diagnostics_dev_v1.js
    Optional development-only diagnostics.
@@ -8003,12 +8031,14 @@ endfunction
 ```scilab
 function doubled_ints = ConvertIntsToDoublesJSON(json_txt, vars)
     for i=1:1:max(size(vars))
-        regex.pre = '/\b'
-        regex.post = '\b/'
-        rows = grep(json_txt, regex.pre + """"  + vars(i) + """" + regex.post, 'r')
+//        disp("working on: " + vars(i))
+        rows = grep(json_txt, """"  + vars(i) + """")
+//        disp(json_txt)
+//        disp(size(json_txt))
+
         if rows ~= []
             for j=1:1:max(size(rows))
-                // disp(json_txt(rows(j)))
+//                mprintf("found %s in row %i\n%s\n", vars(i), rows(j), json_txt(rows(j)))
                 colsindex = strindex(json_txt(rows(j)),":")
                 temp = strsplit(json_txt(rows(j)),":")(2)
                 numsindex = strindex(temp,"/[0-9]/",'r')
@@ -8531,9 +8561,19 @@ function JSON = deckToJSON(deckFileName)
     organized.aipp_calculation.time_specs = res.aipp_calculation.time_specs;
     organized.aipp_calculation.reaction_specs = res.aipp_calculation.reaction_specs;
     organized.aipp_calculation.assembly = res.aipp_calculation.assembly;
+    
+    //Going directly to a string seems to create an issue where it is only
+    //considered a 1x1 string. To work around this, lets write to a temp
+    //directory and reread
+    
+    //Set up temp directory filename
+    write_targ = fullfile(TMPDIR, "temp_json.json")
 
-    JSON = toJSON(organized, 3);
-    JSON = FixJSON(JSON);
+    toJSON(organized, write_targ, 3);
+    JSON = FixJSON(mgetl(write_targ));
+    
+    //Delete the temporary file
+    mdelete(write_targ);
  
 endfunction
 ```
@@ -8567,7 +8607,7 @@ function FixedJSON = FixJSON(InputJSON)
                     "amount", ...
                     "viscous_flow_factor", ...
                     "coefficient"]
-
+   csvWrite(FixedJSON, "debug.json")
    FixedJSON = ConvertIntsToDoublesJSON(FixedJSON, doubleVars)
     
 endfunction

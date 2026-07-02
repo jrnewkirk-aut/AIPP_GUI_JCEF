@@ -481,8 +481,18 @@ function JSON = deckToJSON(deckFileName)
     organized.aipp_calculation.time_specs = res.aipp_calculation.time_specs;
     organized.aipp_calculation.reaction_specs = res.aipp_calculation.reaction_specs;
     organized.aipp_calculation.assembly = res.aipp_calculation.assembly;
+    
+    //Going directly to a string seems to create an issue where it is only
+    //considered a 1x1 string. To work around this, lets write to a temp
+    //directory and reread
+    
+    //Set up temp directory filename
+    write_targ = fullfile(TMPDIR, "temp_json.json")
 
-    JSON = toJSON(organized, 3);
-    JSON = FixJSON(JSON);
+    toJSON(organized, write_targ, 3);
+    JSON = FixJSON(mgetl(write_targ));
+    
+    //Delete the temporary file
+    mdelete(write_targ);
  
 endfunction

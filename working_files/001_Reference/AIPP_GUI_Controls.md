@@ -12,7 +12,7 @@ The basis of the GUI interface is the JSON input file. If the input JSON has a k
 
 HTML needs to  be developed with modules according to the instructions in `HTML_Handling.md`. To be clear; every time the Scilab script runs it builds all of the modular HTML, CSS and Java files into one file that can be opened as a JCEF browser in Scilab. This file is retained in `/browser_files/dist/bundle.html`.
 
-**## JSON Message Contract
+## JSON Message Contract
 
 This section will detail message passing requirements and assumptions between Scilab and the browser"
 
@@ -162,8 +162,11 @@ A comprehensive markdown document already exists with a user guide for AIPP. Thi
 ## File Open and Save Interfaces
 In the grey bar directly below the blue title bar there must be buttons to direct actions to open or save files.
 
-1. Open JSON File
-   - 
+1. Open Input Deck
+   1. This can open either a JSON input deck setup for AIPP 3 or a #.deck input file for an earlier AIPP version
+      1. The selection of both types should be allowed in the Scilab pop up
+      2. Scilab will convert *.deck files to JSON files automatically and then pass the JSON using the same protocol that was developed to open an already prepared JSON
+         1. The Scilab function `deckToJSON` was developed to complete the conversion from *.deck to JSON
 
 ## Pop Up Interfaces
 
@@ -1803,3 +1806,68 @@ Derived views:
 Synchronization:
 - All edits must update master JSON
 - Views re-render from master 
+
+#### Cytoscape breadthfirst layout controls
+
+The Assembly Flow chart uses Cytoscape for graph rendering and should use the tuned Cytoscape `breadthfirst` layout as the default flow chart layout.
+
+The original manual/preset layout should no longer be exposed as a user-facing flow chart layout option. It may remain internally as a debug or emergency fallback, but normal users should see and use the tuned Cytoscape breadthfirst layout by default.
+
+Default layout mode:
+
+```javascript
+window.aippGraphLayoutConfig.mode = 'breadthfirst_auto';
+window.aippGraphLayoutConfig.autoLayout = 'breadthfirst';
+```
+
+Default breadthfirst layout settings:
+
+```javascript
+window.aippGraphLayoutConfig.bfDirection = 'leftward';
+window.aippGraphLayoutConfig.bfAvoidOverlap = true;
+window.aippGraphLayoutConfig.bfDirected = false;
+window.aippGraphLayoutConfig.bfCircle = false;
+window.aippGraphLayoutConfig.bfGrid = true;
+window.aippGraphLayoutConfig.bfSpacingFactor = 0.9;
+window.aippGraphLayoutConfig.bfMaximal = true;
+window.aippGraphLayoutConfig.bfFit = true;
+window.aippGraphLayoutConfig.bfPadding = 1000;
+window.aippGraphLayoutConfig.bfAnimate = true;
+window.aippGraphLayoutConfig.bfAnimationDuration = 600;
+window.aippGraphLayoutConfig.bfNodeDimensionsIncludeLabels = false;
+window.aippGraphLayoutConfig.includeWallsInAutoLayout = true;
+```
+
+Behavior requirements:
+- The flow chart should automatically use the tuned breadthfirst configuration when graph layout is applied.
+- The tank chamber identified by `assembly.tank_id` should be used as the default layout root when possible.
+- The valid direction values for the bundled Cytoscape breadthfirst layout are `downward`, `leftward`, `upward`, and `rightward`; use `leftward` by default so the tank side of the model is visually placed to the right.
+- Chambers, orifices, and walls should all participate in the default breadthfirst layout using `includeWallsInAutoLayout = true` unless a future regression requires changing this behavior.
+- Chamber HTML overlay cards must remain synchronized to the Cytoscape chamber node positions after layout, pan, zoom, fit, and graph refresh operations.
+- The existing Auto Layout command should run the tuned breadthfirst layout. A separate Manual Layout toggle button should not be shown in the normal UI.
+
+Console tuning requirements:
+- Developers may tune the layout from the JCEF console by modifying `window.aippGraphLayoutConfig` and rerunning layout.
+- A helper such as `getAippBreadthfirstLayoutOptions()` should be available to inspect the current active layout settings.
+- After changing layout settings from the console, developers should rerun:
+
+```javascript
+applyAippCytoscapeLayout(true);
+```
+
+Example developer tuning command:
+
+```javascript
+console.log(getAippBreadthfirstLayoutOptions());
+window.aippGraphLayoutConfig.bfSpacingFactor = 1.1;
+applyAippCytoscapeLayout(true);
+```
+
+Regression checklist:
+- Open a JSON or converted `.deck` model and confirm the Assembly Flow chart uses the tuned breadthfirst layout by default.
+- Confirm the original Manual Layout toggle button is not shown.
+- Confirm the existing Auto Layout button applies the tuned breadthfirst configuration.
+- Confirm chamber overlay cards remain aligned after layout.
+- Confirm orifice and wall nodes are not placed far outside the visible graph area.
+- Confirm the tank chamber remains visually on the right side when `assembly.tank_id` is available.
+- Confirm graph refresh after popup Apply, add, remove, JSON Apply, and file open keeps the breadthfirst layout behavior.
