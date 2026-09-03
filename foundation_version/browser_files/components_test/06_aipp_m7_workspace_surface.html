@@ -1,0 +1,41 @@
+<div id="aippWorkspace" class="aipp-workspace aipp-test-workspace-surface">
+ <button id="aippTabEditor" aria-label="Input deck editor" data-aipp-tab="editor" aria-selected="true"></button>
+ <button id="aippTabRuntime" aria-label="Run time" data-aipp-tab="runtime" aria-selected="false"></button>
+ <button id="aippTabOutputs" aria-label="Outputs" data-aipp-tab="outputs" aria-selected="false"></button>
+ <section id="aippPanelEditor" class="aipp-main-panel is-active" data-aipp-panel="editor">
+  <div class="aipp-work-toolbar"><button id="aippDeckNew" type="button">New</button><button id="aippDeckOpen" type="button">Open JSON</button><button id="aippDeckSave" type="button">Save JSON</button><button id="aippDeckSaveAs" type="button">Save As</button></div>
+  <div id="aippEditorFrame" class="aipp-editor-frame aipp-context-layout">
+   <main class="aipp-editor-stage"></main>
+   <aside id="aippContextEditor" class="aipp-context-editor" aria-hidden="false">
+    <nav class="aipp-context-tabs">
+     <button data-context-tab="properties">Properties</button>
+     <button data-context-tab="opening">Opening</button>
+     <button data-context-tab="discharge">Discharge coefficient</button>
+     <button data-context-tab="raw">Raw</button>
+    </nav>
+    <div class="aipp-context-body">
+     <section id="aippInspectorBody" data-context-pane="properties"></section>
+     <section id="aippOrificeOpeningPane" data-context-pane="opening"></section>
+     <section id="aippOrificeDischargePane" data-context-pane="discharge"></section>
+     <section data-context-pane="raw"><pre id="aippInspectorJson"></pre></section>
+    </div>
+    <div id="aippChamberActionsBar" class="aipp-context-actions"></div>
+   </aside>
+  </div>
+ </section>
+ <section id="aippPanelRuntime" class="aipp-main-panel" data-aipp-panel="runtime"></section>
+ <section id="aippPanelOutputs" class="aipp-main-panel" data-aipp-panel="outputs">
+  <div class="aipp-outputs-surface">
+   <p id="aippOutputsStatus">Save the input deck to inspect reports.</p>
+   <button id="aippOutputsRefresh" type="button">Refresh</button>
+   <button id="aippOutputsFull" type="button">Generate full report</button>
+   <button id="aippOutputsCustomer" type="button">Generate customer report</button>
+   <button id="aippOutputsMatch" type="button" disabled>Generate match report</button>
+   <button id="aippOutputsCsv" type="button" disabled>Generate CSV report</button>
+   <ul id="aippOutputsList"></ul>
+   <div id="aippOutputsViewerEmpty">Select a report to view it here.</div>
+   <iframe id="aippOutputsFrame" title="AIPP report viewer" hidden></iframe>
+   <a id="aippOutputsDownload" hidden download>Download report</a>
+  </div>
+ </section>
+</div>

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 06 badge refinement",
+  "application_version": "0.8.10-phase0.5b-candidate.6",
+  "foundation_version": "P6.4.0-0.1",
+  "changes": {
+    "badge_words_removed": true,
+    "pyro_badge_omitted_when_zero": true,
+    "filter_badge_omitted_when_absent": true,
+    "lone_filter_reflowed": true,
+    "option_b_preserved": true,
+    "default_wheel_zoom_preserved": true,
+    "production_debug_enabled": true
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production scan",
+      "status": "PASS",
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Unique test inventory",
+      "status": "PASS",
+      "declared_tests": 463
+    }
+  ],
+  "new_tests": [
+    "AIPP-M810-009",
+    "AIPP-M810-010"
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 463,
+    "result_not_simulated": true
+  }
+}

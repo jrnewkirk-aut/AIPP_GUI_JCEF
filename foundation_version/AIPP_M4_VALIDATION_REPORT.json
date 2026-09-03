@@ -1,0 +1,27 @@
+{
+  "milestone": "AIPP Foundation Integration M4",
+  "application_version": "0.4.0-m4",
+  "source_candidate": "AIPP_Foundation_M3_2_Candidate.zip",
+  "regression_floor": 196,
+  "declared_tests": 208,
+  "m4_tests": 12,
+  "static_result": "PASS",
+  "foundation_build_validation": "PASS",
+  "js_syntax_validation": "PASS",
+  "generated_bundles_edited_directly": false,
+  "protected_foundation_runtime_modified": false,
+  "required_live_acceptance": {
+    "declared": 208,
+    "executed": 208,
+    "passed": 208,
+    "failed": 0,
+    "skipped": 0,
+    "missingTestIds": 0,
+    "unexpectedTestIds": 0,
+    "duplicateResultIds": 0,
+    "active_requests": 0,
+    "active_transfers": 0,
+    "runtime_errors": 0
+  },
+  "live_scilab_jcef_status": "PENDING_RERUN"
+}

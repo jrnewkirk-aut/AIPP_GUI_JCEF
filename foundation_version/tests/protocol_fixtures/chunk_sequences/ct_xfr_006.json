@@ -1,0 +1,16 @@
+{
+  "id": "CT-XFR-006",
+  "category": "chunk_sequence",
+  "name": "Cancellation settles cleanly",
+  "chunk_count": 3,
+  "sequence": [
+    0
+  ],
+  "action": "cancel",
+  "checksum_valid": true,
+  "expected": {
+    "accepted": false,
+    "error_code": "TRANSFER_CANCELLED",
+    "received_count": 1
+  }
+}

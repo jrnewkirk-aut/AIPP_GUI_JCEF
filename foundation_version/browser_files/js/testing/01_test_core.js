@@ -1,0 +1,5 @@
+"use strict";
+window.P4={version:"P4.5.1-0.1",foundationVersion:"P6.4.0-0.1",regressionBaseline:"P4.5.1-0.1",protocolVersion:1,results:[],tests:[],cancelled:false,startedAt:null,manifestHash:"PENDING"};
+P4.assert={true(v,m="Expected true"){if(v!==true)throw new Error(m);},equal(a,b,m="Values differ"){if(a!==b)throw new Error(`${m}: ${a} !== ${b}`);},deep(a,b,m="Objects differ"){if(JSON.stringify(a)!==JSON.stringify(b))throw new Error(m);},throws(fn,code){let e=null;try{fn();}catch(x){e=x;}if(!e)throw new Error("Expected exception");if(code&&e.code!==code)throw new Error(`Expected ${code}, got ${e.code}`);return e;}};
+P4.register=t=>{if(P4.tests.some(x=>x.id===t.id))throw new Error(`Duplicate test ID ${t.id}`);P4.tests.push(t);};
+P4.csv=()=>[["test_id","layer","requirements","result","classification","duration_ms","name","details"],...P4.results.map(r=>[r.testId,r.layer,r.requirements.join("|"),r.result,r.classification,r.durationMs,r.name,JSON.stringify(r.details)])].map(row=>row.map(v=>{const s=String(v??"");return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;}).join(",")).join("\r\n");

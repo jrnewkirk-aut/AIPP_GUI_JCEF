@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "application.aipp.pyrolist.request",
+  "title": "AIPP pyrolist request payload",
+  "type": "object",
+  "properties": {"include_formulations": {"type": "boolean", "default": true}},
+  "additionalProperties": false
+}

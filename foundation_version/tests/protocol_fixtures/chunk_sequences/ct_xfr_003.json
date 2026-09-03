@@ -1,0 +1,18 @@
+{
+  "id": "CT-XFR-003",
+  "category": "chunk_sequence",
+  "name": "Duplicate chunk rejected",
+  "chunk_count": 3,
+  "sequence": [
+    0,
+    1,
+    1
+  ],
+  "action": "complete",
+  "checksum_valid": true,
+  "expected": {
+    "accepted": false,
+    "error_code": "DUPLICATE_CHUNK",
+    "received_count": 2
+  }
+}

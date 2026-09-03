@@ -1,0 +1,21 @@
+{
+  "version": "P6.4.0-0.1",
+  "preserve_roots": [
+    "application/",
+    "browser_files/js/application/"
+  ],
+  "replace_roots": [
+    "scilab/",
+    "browser_files/js/protocol/",
+    "browser_files/js/app/"
+  ],
+  "generated_roots": [
+    "browser_files/dist/"
+  ],
+  "rollback_package": "scilab_jcef_foundation_p5.5.0_v0.2.zip",
+  "rules": {
+    "application_identity_preserved": true,
+    "protected_foundation_edits_forbidden": true,
+    "generated_is_primary_source": false
+  }
+}

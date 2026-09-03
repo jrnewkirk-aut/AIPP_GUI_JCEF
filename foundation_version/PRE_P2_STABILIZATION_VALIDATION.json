@@ -1,0 +1,26 @@
+{
+  "candidate": "pre-P2-stabilization-1",
+  "status": "PASS_STATIC",
+  "source_candidate": "P1",
+  "checks": {
+    "modular_source": true,
+    "dependency_manifest_hashes": true,
+    "bundles_rebuilt": true,
+    "breadthfirst_tank_root_preserved": true,
+    "leftward_direction_preserved": true,
+    "spacing_factor": 1.15,
+    "node_dimensions_include_labels": true,
+    "fit_padding": 100,
+    "tank_right_margin": 260,
+    "wall_y_offset": 230,
+    "wall_x_spread": 115,
+    "multi_row_wall_placement": true,
+    "rendered_bbox_collision_pass": true,
+    "native_deck_geometry_serialization": false
+  },
+  "live_acceptance_required": [
+    "BPS visual review",
+    "large-deck visual review",
+    "full Scilab/JCEF acceptance suite with zero failed and zero skipped"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "application.aipp.runtime.bridge.response",
+  "type": "object",
+  "required": ["protocol", "protocol_version", "type", "request_id", "status", "payload"],
+  "properties": {
+    "protocol": {"type": "string"},
+    "protocol_version": {"type": "integer"},
+    "type": {"const": "application.aipp.runtime.bridge.response"},
+    "request_id": {"type": "string"},
+    "status": {"enum": ["success", "error"]},
+    "payload": {"type": "object"}
+  },
+  "additionalProperties": true
+}

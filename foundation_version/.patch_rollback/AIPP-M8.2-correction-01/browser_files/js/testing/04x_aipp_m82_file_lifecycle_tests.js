@@ -1,0 +1,9 @@
+"use strict";
+(function(){const L=()=>P2.application.aippDeckLifecycle,D=()=>P2.application.aippDeckDocument;
+P4.register({id:"AIPP-M82-001",name:"New deck resets to clean untitled document",layer:"browser",requirements:["TST-001"],tier:"standard",run(){D().mutate("test",d=>d.chambers.push({name:"x"}));L().newDeck();const s=D().snapshot();P4.assert.equal(s.document.name,"untitled.json");P4.assert.equal(s.chambers.length,0);P4.assert.equal(s.meta.dirty,false);return{name:s.document.name};}});
+P4.register({id:"AIPP-M82-002",name:"Candidate validation rejects wrong schema atomically",layer:"browser",requirements:["TST-003"],tier:"standard",run(){const before=D().serialize();let code="";try{L().validateCandidate({schema:"wrong",schemaVersion:1});}catch(e){code=e.code;}P4.assert.equal(code,"AIPP_INVALID_DECK_SCHEMA");P4.assert.equal(D().serialize(),before);return{code};}});
+P4.register({id:"AIPP-M82-003",name:"Open service route is registered",layer:"browser",requirements:["PRO-009"],tier:"standard",run(){P4.assert.true(!!P2.application.aippDeckFiles);P4.assert.true(typeof P2.application.aippDeckFiles.open==="function");return{registered:true};}});
+P4.register({id:"AIPP-M82-004",name:"Save service route is registered",layer:"browser",requirements:["PRO-009"],tier:"standard",run(){P4.assert.true(typeof P2.application.aippDeckFiles.save==="function");return{registered:true};}});
+P4.register({id:"AIPP-M82-005",name:"Deck serialization excludes runtime meta",layer:"browser",requirements:["BLD-012"],tier:"standard",run(){const obj=JSON.parse(D().serialize());P4.assert.true(!Object.prototype.hasOwnProperty.call(obj,"meta"));return{metaExcluded:true};}});
+P4.register({id:"AIPP-M82-006",name:"M8.2 leaves protocol state clean",layer:"integration",requirements:["PRO-009","TST-008"],tier:"standard",run(){P4.assert.equal(P2.requests.size,0);P4.assert.equal(P2.diagnostics.snapshot().activeTransfers,0);return{activeRequests:0,activeTransfers:0};}});
+})();

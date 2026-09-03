@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "manifests": {
+    "dev": "browser_files/dist/build_manifest.dev.json",
+    "test": "browser_files/dist/build_manifest.test.json",
+    "prod": "browser_files/dist/build_manifest.prod.json"
+  },
+  "dependency_manifest": "browser_files/build/dependency_manifest.json"
+}

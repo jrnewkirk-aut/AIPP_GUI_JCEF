@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "release_id": "P8.5.0-0.1",
+  "release_state": "accepted",
+  "identity": {
+    "foundation_version": "P6.4.0-0.1",
+    "application_version": "0.1.0",
+    "protocol_version": 1,
+    "pillar7_implementation_version": "P7.5.0-0.1",
+    "pillar8_implementation_version": "P8.5.0-0.1"
+  },
+  "accepted_source": {
+    "package": "Scilab_JCEF_Foundation_P8.4.0_Change_Governance_Feature_Parity.zip",
+    "sha256": "12352876b510457b9dccb443d08360d4426e3902e64de84f9d906cdfc0426483",
+    "state": "accepted"
+  },
+  "compatibility": {
+    "matrix": "compatibility/compatibility_matrix.json",
+    "matrix_sha256": "e08c321c7ea3ae6b03df08cac9cd5b5a3a9c21279043694b08d6513507e1a6a8",
+    "scilab_api_registry": "compatibility/scilab_api_registry.json",
+    "workaround_registry": "compatibility/workaround_registry.json"
+  },
+  "artifacts": {
+    "production_bundle": "browser_files/dist/bundle.prod.html",
+    "production_bundle_sha256": "3d6721258018d71999da791d0b14f8f1ea0f1093cd61d4a2e1a421e7ec384aff",
+    "test_bundle": "browser_files/dist/bundle.test.html",
+    "test_bundle_sha256": "deb45383e48312ef489bdbbeeba91e7351a9a3e5cb6072f7a4ded66c6b03d29b"
+  },
+  "manifests": {
+    "dependency": "browser_files/build/dependency_manifest.json",
+    "dependency_sha256": "7b8a8e042c804f4d59952738af6a6bd93a6dc9e8ef75e3945a70cddf9f67e287",
+    "feature": "tests/manifests/feature_manifest.json",
+    "feature_sha256": "860dd8788e95c7417a08e67ad7ee6368062da052440fe3cc79b0d54839c2902e",
+    "package_inventory": "package_inventory.json",
+    "protocol_contract": "release/protocol_contract_snapshot.json"
+  },
+  "qualification": {
+    "status": "passed",
+    "build_only_sufficient": false,
+    "required_regression": {
+      "declared": 177,
+      "executed": 177,
+      "passed": 177,
+      "failed": 0,
+      "skipped": 0
+    },
+    "target_scilab": "2026.1.0",
+    "required_clean_final_state": {
+      "active_requests": 0,
+      "active_transfers": 0
+    }
+  },
+  "known_limitations": [
+    "Qualified Windows version and CPU architecture were not captured in accepted test evidence.",
+    "Embedded JCEF component version is not independently exposed by the current runtime evidence.",
+    "Non-Windows platforms are not qualified.",
+    "Representative payloads are verified, but the maximum reliable transport ceiling is not asserted by this matrix."
+  ],
+  "workarounds": [
+    "WRK-001",
+    "WRK-002",
+    "WRK-003",
+    "WRK-004",
+    "WRK-005"
+  ],
+  "upgrade": {
+    "allowed_source_states": [
+      "accepted"
+    ],
+    "source_package": "Scilab_JCEF_Foundation_P8.1.0_Compatibility_Workarounds.zip",
+    "preserve_roots": [
+      "application/",
+      "browser_files/js/application/"
+    ],
+    "generated_roots": [
+      "browser_files/dist/"
+    ]
+  },
+  "rollback": {
+    "package": "Scilab_JCEF_Foundation_P8.4.0_Change_Governance_Feature_Parity.zip",
+    "sha256": "12352876b510457b9dccb443d08360d4426e3902e64de84f9d906cdfc0426483",
+    "required_state": "accepted"
+  },
+  "evidence": [
+    "Pillar08_Compatibility_Release_Governance/evidence/protocol_results_8.1.0.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/P8.1_VALIDATION_RESULTS.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/P8.1_OFFLINE_DEPENDENCY_SCAN.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/protocol_results_8.2.0.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/protocol_results_8.3.0.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/protocol_results_8.4.0.json",
+    "Pillar08_Compatibility_Release_Governance/evidence/P8_EVIDENCE_INDEX.json"
+  ]
+}

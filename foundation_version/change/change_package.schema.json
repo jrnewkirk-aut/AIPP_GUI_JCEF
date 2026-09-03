@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change_package.schema.json",
+  "title": "AI-Assisted Change Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "change_id",
+    "accepted_source",
+    "intent",
+    "changed_files",
+    "impact",
+    "manifest_updates",
+    "feature_parity",
+    "validation",
+    "known_limitations",
+    "rollback"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "change_id": {
+      "type": "string"
+    },
+    "accepted_source": {
+      "type": "object",
+      "required": [
+        "package",
+        "sha256",
+        "state"
+      ]
+    },
+    "intent": {
+      "type": "array",
+      "minItems": 1
+    },
+    "changed_files": {
+      "type": "array",
+      "minItems": 1
+    },
+    "impact": {
+      "type": "object",
+      "required": [
+        "runtime",
+        "protocol",
+        "application",
+        "foundation"
+      ]
+    },
+    "manifest_updates": {
+      "type": "array"
+    },
+    "feature_parity": {
+      "type": "object",
+      "required": [
+        "baseline",
+        "candidate",
+        "result",
+        "required"
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "build_only_sufficient",
+        "checks",
+        "result"
+      ]
+    },
+    "known_limitations": {
+      "type": "array"
+    },
+    "rollback": {
+      "type": "array",
+      "minItems": 1
+    }
+  }
+}

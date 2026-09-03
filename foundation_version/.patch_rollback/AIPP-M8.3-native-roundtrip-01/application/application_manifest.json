@@ -1,0 +1,62 @@
+{
+  "application_id": "application.aipp",
+  "application_name": "AIPP Inflator Model Viewer",
+  "application_version": "0.8.2-m8.2",
+  "foundation_version": "P6.4.0-0.1",
+  "protocol_version": 1,
+  "minimum_scilab_version": "2026.1.0",
+  "host_modules": [
+    "application/scilab/application_registry.sci",
+    "application/scilab/application_state.sci",
+    "application/scilab/application_handlers.sci"
+  ],
+  "browser_modules": [
+    "browser_files/js/application/01_application_registry.js",
+    "browser_files/js/application/02_reference_ping_service.js",
+    "browser_files/js/application/03_reference_sum_service.js",
+    "browser_files/js/application/02_aipp_status_service.js",
+    "browser_files/js/application/03_aipp_shell_controller.js",
+    "browser_files/js/application/04_aipp_pyrolist_service.js",
+    "browser_files/js/application/05_aipp_host_adapter.js",
+    "browser_files/js/application/06_aipp_pyro_editor_model.js",
+    "browser_files/js/application/07_aipp_pyro_editor_view.js",
+    "browser_files/js/application/08_aipp_chamber_pyro_model.js",
+    "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+    "browser_files/js/application/09a_aipp_material_library.js",
+    "browser_files/js/application/10_aipp_chamber_filter_model.js",
+    "browser_files/js/application/11_aipp_chamber_filter_view.js",
+    "browser_files/js/application/12_aipp_topology_model.js",
+    "browser_files/js/application/13_aipp_topology_view.js",
+    "browser_files/js/application/14_aipp_workspace_shell.js",
+    "browser_files/js/application/15_aipp_deck_document.js",
+    "browser_files/js/application/16_aipp_deck_bindings.js",
+    "browser_files/js/application/17_aipp_deck_file_service.js",
+    "browser_files/js/application/18_aipp_deck_lifecycle.js"
+  ],
+  "operations": [
+    "application.example.ping.request",
+    "application.example.sum.request",
+    "application.aipp.status.request",
+    "application.aipp.pyrolist.request",
+    "application.aipp.materials.request",
+    "application.aipp.deck.open.request",
+    "application.aipp.deck.save.request"
+  ],
+  "schemas": [
+    "application/schemas/application.aipp.status.request.schema.json",
+    "application/schemas/application.aipp.status.response.schema.json",
+    "application/schemas/application.aipp.pyrolist.request.schema.json",
+    "application/schemas/application.aipp.pyrolist.response.schema.json",
+    "application/schemas/application.aipp.materials.request.schema.json",
+    "application/schemas/application.aipp.materials.response.schema.json"
+  ],
+  "migration_baseline": {
+    "source_archive_sha256": "94c03f5cc6664710db303fad8613352782f7d9cd1fb190593531e573f041a29a",
+    "feature_parity_baseline": "AIPP_Phase1_Feature_Parity_Baseline.exact.json",
+    "milestone": "M1-foundation-shell"
+  },
+  "test_components": [
+    "browser_files/components_test/03_aipp_m1_test_surface.html"
+  ],
+  "milestone": "M8.2-json-file-lifecycle"
+}

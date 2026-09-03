@@ -1,0 +1,18 @@
+{
+  "id": "CT-XFR-002",
+  "category": "chunk_sequence",
+  "name": "Out-of-order chunk sequence",
+  "chunk_count": 3,
+  "sequence": [
+    2,
+    0,
+    1
+  ],
+  "action": "complete",
+  "checksum_valid": true,
+  "expected": {
+    "accepted": true,
+    "error_code": "",
+    "received_count": 3
+  }
+}

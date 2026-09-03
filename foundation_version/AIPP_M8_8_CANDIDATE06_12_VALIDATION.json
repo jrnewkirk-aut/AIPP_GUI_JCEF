@@ -1,0 +1,21 @@
+{
+  "candidate": "AIPP M8.8 Candidate 06.12",
+  "baseline": "Candidate 06.11",
+  "status": "PASS_STATIC_AND_BUILD",
+  "full_live_scilab_jcef_required": true,
+  "quaff_area_units": [
+    "mm^2",
+    "cm^2",
+    "m^2"
+  ],
+  "default_area_unit": "mm^2",
+  "csv_exact_match_before_normalization": true,
+  "preserve_authoritative_spelling": true,
+  "checks": {
+    "javascript_syntax": true,
+    "p63_build_reproducibility": true,
+    "build_validator": true,
+    "prod_bundle": true,
+    "test_bundle": true
+  }
+}

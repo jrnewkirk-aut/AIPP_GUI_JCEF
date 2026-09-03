@@ -1,0 +1,17 @@
+{
+  "application_version": "0.5.3.1-m5.3.1",
+  "source_live_summary": {
+    "total": 224,
+    "passed": 220,
+    "failed": 4,
+    "skipped": 0
+  },
+  "resolved_test_ids": [
+    "BR-APP-002",
+    "BR-EXT-003",
+    "AIPP-M5-003",
+    "AIPP-M5-009"
+  ],
+  "static_result": "PASS",
+  "live_status": "PENDING_RERUN"
+}

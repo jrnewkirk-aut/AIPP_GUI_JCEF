@@ -1,0 +1,27 @@
+{
+  "version": "P6.4.0-0.1",
+  "classifications": [
+    "foundation-owned",
+    "application-owned",
+    "generated",
+    "test-only",
+    "example-only",
+    "evidence"
+  ],
+  "protected_foundation_files": [
+    "scilab/protocol/protocol_codec.sci",
+    "scilab/protocol/protocol_validation.sci",
+    "scilab/protocol_callback.sci"
+  ],
+  "application_editable_roots": [
+    "application/",
+    "browser_files/js/application/"
+  ],
+  "generated_roots": [
+    "browser_files/dist/"
+  ],
+  "rules": {
+    "derivation_modifies_protected_files": false,
+    "generated_is_primary_source": false
+  }
+}

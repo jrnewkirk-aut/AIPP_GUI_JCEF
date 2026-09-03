@@ -1,0 +1,14 @@
+{
+  "candidate": "Pre-P2 Stabilization Candidate 05",
+  "status": "STATIC_BUILD_PASS_LIVE_REQUIRED",
+  "preserves_multiple_chamber_pyros": true,
+  "preserves_full_json_pyro_list": true,
+  "preserves_pyro_reorder": true,
+  "repairs_stale_pyro_identity": true,
+  "repairs_stale_filter_identity": true,
+  "deterministic_build": "PASS",
+  "build_validation": "PASS",
+  "node_syntax": "PASS",
+  "live_scilab_jcef_required": true,
+  "expected_test_inventory": 489
+}

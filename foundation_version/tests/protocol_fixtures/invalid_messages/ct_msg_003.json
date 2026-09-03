@@ -1,0 +1,16 @@
+{
+  "id": "CT-MSG-003",
+  "category": "message",
+  "name": "Missing request ID",
+  "message": {
+    "protocol": "scilab-jcef",
+    "protocol_version": 1,
+    "type": "diagnostic.echo.request",
+    "payload": {}
+  },
+  "expected": {
+    "accepted": false,
+    "error_code": "MISSING_REQUEST_ID",
+    "request_id_preserved": false
+  }
+}

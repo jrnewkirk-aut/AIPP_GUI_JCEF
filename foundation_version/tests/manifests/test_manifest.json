@@ -1,0 +1,5820 @@
+{
+  "version": "0.8.7-p2.2",
+  "tests": [
+    {
+      "id": "SC-PRO-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ]
+    },
+    {
+      "id": "SC-PRO-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-001",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-PRO-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-014",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "SC-XFR-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-PLOT-001",
+      "layer": "scilab",
+      "requirements": [
+        "PLT-006"
+      ]
+    },
+    {
+      "id": "SC-PLOT-002",
+      "layer": "scilab",
+      "requirements": [
+        "PLT-007"
+      ]
+    },
+    {
+      "id": "BR-PRO-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ]
+    },
+    {
+      "id": "BR-PRO-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-001",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-REQ-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "BR-REQ-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-REQ-003",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "BR-PLOT-001",
+      "layer": "browser",
+      "requirements": [
+        "PLT-002",
+        "PLT-010"
+      ]
+    },
+    {
+      "id": "BR-PLOT-002",
+      "layer": "browser",
+      "requirements": [
+        "PLT-002"
+      ]
+    },
+    {
+      "id": "BR-UI-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ]
+    },
+    {
+      "id": "MF-ID-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-FEAT-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-MOD-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-PROD-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004"
+      ]
+    },
+    {
+      "id": "MF-PROD-002",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004"
+      ]
+    },
+    {
+      "id": "CT-MSG-001",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-002",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-003",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-004",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-005",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-006",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-001",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-002",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-003",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-004",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-005",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-006",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "INT-START-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-START-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-003",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-003",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-006",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-LIFE-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-UI-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-HEALTH-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "VIS-BASE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-LAYOUT-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-LAYOUT-002",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-TABLE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-DETAIL-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-STATE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-STATUS-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-A11Y-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-RESP-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-SNAP-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "SC-CODEC-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-002",
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "SC-CODEC-002",
+      "layer": "scilab",
+      "requirements": [
+        "TRN-005"
+      ]
+    },
+    {
+      "id": "SC-CODEC-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-ROUTE-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-006",
+        "PRO-007"
+      ]
+    },
+    {
+      "id": "SC-ROUTE-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-009",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-004",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-005",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-006",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "SC-XFR-007",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-CODEC-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "P45-CODEC-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "P45-CODEC-003",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-CODEC-004",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-REQ-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "PRO-004",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-REQ-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-XFR-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009",
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-XFR-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-UI-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "P45-MAN-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "P45-INT-001",
+      "layer": "integration",
+      "requirements": [
+        "PRO-005",
+        "PRO-007",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-INT-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-INT-003",
+      "layer": "integration",
+      "requirements": [
+        "TRN-004",
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-INT-004",
+      "layer": "integration",
+      "requirements": [
+        "TRN-004",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-INT-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "MF-ARC-001",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "MF-ARC-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ARC-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-004"
+      ]
+    },
+    {
+      "id": "MF-ARC-004",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-007",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "BR-ARC-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-009"
+      ]
+    },
+    {
+      "id": "BR-ARC-002",
+      "layer": "browser",
+      "requirements": [
+        "ARC-009"
+      ]
+    },
+    {
+      "id": "SC-ARC-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "SC-ARC-002",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "INT-ARC-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-001",
+        "ARC-002"
+      ]
+    },
+    {
+      "id": "INT-ARC-002",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005"
+      ]
+    },
+    {
+      "id": "INT-ARC-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-006",
+        "ARC-007"
+      ]
+    },
+    {
+      "id": "INT-ARC-004",
+      "layer": "integration",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "MF-ST-001",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-001",
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-ST-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ST-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ST-004",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "ARC-007"
+      ]
+    },
+    {
+      "id": "BR-ST-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-ST-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-ST-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-ST-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-APP-001",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-004",
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-APP-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-APP-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-APP-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-APP-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-APP-006",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "AIG-002"
+      ]
+    },
+    {
+      "id": "BR-APP-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-APP-002",
+      "layer": "browser",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "SC-APP-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "SC-APP-002",
+      "layer": "scilab",
+      "requirements": [
+        "TST-003",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "INT-APP-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-APP-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-REL-001",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-001",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "MF-REL-002",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-REL-003",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-REL-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "AIG-005"
+      ]
+    },
+    {
+      "id": "MF-REL-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-002",
+        "BLD-008",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-REL-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-005",
+        "CMP-003"
+      ]
+    },
+    {
+      "id": "MF-REL-007",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-003",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-REL-008",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-EXT-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-EXT-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-012",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-EXT-003",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "SC-EXT-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "SC-EXT-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-EXT-003",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "INT-EXT-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-EXT-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "INT-EXT-003",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-REL-001",
+      "layer": "integration",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-REL-002",
+      "layer": "integration",
+      "requirements": [
+        "CMP-001",
+        "CMP-002"
+      ]
+    },
+    {
+      "id": "INT-REL-003",
+      "layer": "integration",
+      "requirements": [
+        "AIG-006",
+        "AIG-007"
+      ]
+    },
+    {
+      "id": "MF-BLD-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004"
+      ]
+    },
+    {
+      "id": "MF-BLD-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004",
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "MF-BLD-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-BLD-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007"
+      ]
+    },
+    {
+      "id": "MF-BLD-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-002"
+      ]
+    },
+    {
+      "id": "MF-BLD-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-BLD-007",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-005"
+      ]
+    },
+    {
+      "id": "MF-BLD-008",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009"
+      ]
+    },
+    {
+      "id": "MF-BLD-009",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-BLD-010",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P62-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-003",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P62-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010",
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "MF-P62-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004",
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "MF-P62-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P62-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "OBS-008"
+      ]
+    },
+    {
+      "id": "MF-P62-006",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "BLD-007"
+      ]
+    },
+    {
+      "id": "MF-P62-007",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "PLT-010"
+      ]
+    },
+    {
+      "id": "MF-P62-008",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P62-009",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "MF-P62-010",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "BR-P62-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P62-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-P63-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-P63-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P63-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-P63-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-008",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-P63-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-P63-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P63-007",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P63-008",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-003",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "BR-P63-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P63-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-P64-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-008",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-P64-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-012",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P64-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P64-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-P64-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "MF-P64-006",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-003",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P64-007",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-P64-008",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-004",
+        "BLD-009"
+      ]
+    },
+    {
+      "id": "BR-P64-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P64-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-APP-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-APP-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-APP-006",
+      "layer": "browser",
+      "requirements": [
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "AIPP-M2-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-M2-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M2-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M2-004",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M2-005",
+      "layer": "integration",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M2-006",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-M3-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-M3-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M3-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M3-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M3-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M3-009",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "AIPP-M3-010",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "name": "Chamber pyro manager model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-001"
+    },
+    {
+      "name": "Chamber pyro manager controls exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-002"
+    },
+    {
+      "name": "Default chamber pyro is deterministic",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-003"
+    },
+    {
+      "name": "Chamber pyro identifiers are unique and stable",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-004"
+    },
+    {
+      "name": "Formulation assignment creates isolated working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-005"
+    },
+    {
+      "name": "Duplicated pyros remain independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-006"
+    },
+    {
+      "name": "Remove selects a deterministic neighbor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-007"
+    },
+    {
+      "name": "Quantity and timing validation rejects invalid values",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-008"
+    },
+    {
+      "name": "Shape changes install shape-specific defaults",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-009"
+    },
+    {
+      "name": "Unknown chamber pyro is rejected cleanly",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-010"
+    },
+    {
+      "name": "Chamber pyro controls are visible and reachable",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-011"
+    },
+    {
+      "name": "Chamber pyro workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-012"
+    },
+    {
+      "name": "Chamber filter model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-001"
+    },
+    {
+      "name": "Chamber filter controls exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-002"
+    },
+    {
+      "name": "Default chamber filter is deterministic",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-003"
+    },
+    {
+      "name": "Filter duplication remains independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-004"
+    },
+    {
+      "name": "Only chamber from-side orifices may be assigned",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-005"
+    },
+    {
+      "name": "Filter validation rejects invalid coefficient and method",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-006"
+    },
+    {
+      "name": "Orifice dependency scan and delete remap are deterministic",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-007"
+    },
+    {
+      "name": "Unknown filter and method are rejected cleanly",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-008"
+    },
+    {
+      "name": "Chamber filter controls are visible, styled, and editable",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-009"
+    },
+    {
+      "name": "Chamber filter workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-010"
+    },
+    {
+      "name": "Runtime material service is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-001"
+    },
+    {
+      "name": "Material list loads through live bridge at runtime",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-002"
+    },
+    {
+      "name": "Runtime material records retain every supplied property",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-003"
+    },
+    {
+      "name": "Material property renderer has no fixed property whitelist",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-004"
+    },
+    {
+      "name": "Runtime material workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-005"
+    },
+    {
+      "name": "M5.3.1 application identity agrees across runtime boundaries",
+      "layer": "integration",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-006"
+    },
+    {
+      "id": "AIPP-M7-001",
+      "name": "Production workspace controller is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-002",
+      "name": "Three primary workspace tabs exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-003",
+      "name": "Three primary workspace panels exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-004",
+      "name": "Workspace defaults to input deck editor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-005",
+      "name": "Workspace switches to runtime",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-006",
+      "name": "Workspace switches to outputs",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-007",
+      "name": "Unknown workspace tab is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-RT6-OUTPUTS-001",
+      "name": "Outputs report controls are present",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-RT6-OUTPUTS-002",
+      "name": "Future report levels remain disabled",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-008",
+      "name": "Workspace switching leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-001",
+      "name": "Authoritative deck document service is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-002",
+      "name": "Deck document declares schema and version",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-003",
+      "name": "Deck document owns all editor sections",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-004",
+      "name": "Topology mutation synchronizes authoritative deck",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-005",
+      "name": "Meaningful mutation marks deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-006",
+      "name": "Mark saved clears dirty state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-007",
+      "name": "Deck snapshot is isolated from internal state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-008",
+      "name": "Invalid deck schema is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-009",
+      "name": "Deck serialization is deterministic",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-010",
+      "name": "Deck synchronization leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M82-001",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "New deck resets to clean untitled document",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M82-002",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Candidate validation rejects wrong schema atomically",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M82-003",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Open service route is registered",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "AIPP-M82-004",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Save service route is registered",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "AIPP-M82-005",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Deck serialization excludes runtime meta",
+      "requirements": [
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M82-006",
+      "layer": "integration",
+      "tier": "standard",
+      "name": "M8.2 leaves protocol state clean",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-M82-007",
+      "name": "Native AIPP deck is accepted and preserved",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-003",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012",
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-008",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-006",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-008",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-009",
+      "layer": "browser",
+      "requirements": [
+        "BLD-005",
+        "TST-006"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M84-010",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M85-006",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-003",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012",
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-007",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M86-008",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-005",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-006",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-009",
+      "layer": "browser",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M87-010",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-009",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-010",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-011",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-009",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-010",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-011",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-012",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-013",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-014",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-015",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-016",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-017",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-018",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-019",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-020",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-021",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C051-022",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-002",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-003",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-004",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-005",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-006",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-007",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-008",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-009",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-010",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-011",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-P2-012",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0611-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0613-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C0615-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-001",
+      "name": "Chamber label edits remain in working copy until Apply",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-002",
+      "name": "Chamber label Revert restores original text",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-003",
+      "name": "Typing in chamber label preserves the active input node",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-004",
+      "name": "Filter mass exposes Quaff-safe mass units",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-005",
+      "name": "Filter mass unit conversion preserves physical mass",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-006",
+      "name": "Filter assignment replaces stale orifice indices",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-007",
+      "name": "Filter checkbox synchronization updates chamber working copy exactly",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-008",
+      "name": "Complete Pyro and Filter manager contracts are mounted",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-009",
+      "name": "Chamber Pyros surface has no manual formulation-load control",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M88-C083-010",
+      "name": "Runtime material service is available to chamber filters",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-001",
+      "name": "Production orifice editor model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-002",
+      "name": "Orifice editor uses an isolated working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-003",
+      "name": "Revert restores the orifice",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-004",
+      "name": "Apply commits one authoritative revision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-005",
+      "name": "Unknown fields and precision survive Apply",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-006",
+      "name": "Self-connected endpoints are rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-007",
+      "name": "num_orif is one or more",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-008",
+      "name": "Cd range is zero through 1.5",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-009",
+      "name": "Viscous factor range is zero through 1.5",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-010",
+      "name": "Initially open retains opens_at",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-011",
+      "name": "Opening pressure is nonnegative",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-012",
+      "name": "Lookup arrays validate ordering",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-013",
+      "name": "Event inventory is model-derived",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-014",
+      "name": "Endpoint change resolves invalid filter assignment",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-015",
+      "name": "M8.9.1 leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-016",
+      "name": "Orifice selection exposes dedicated production tabs",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-017",
+      "name": "Mounted Properties pane uses separate diameter value and unit controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-018",
+      "name": "Mounted Opening pane contains opening mode and pressure controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-019",
+      "name": "Mounted Discharge pane contains basis control",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-020",
+      "name": "Endpoint selectors show chamber number and label",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-021",
+      "name": "Orifice editor mounts shared visual-parity classes",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-022",
+      "name": "Context routing identifies the Orifice editor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-023",
+      "name": "Time-dependent Cd renders a structured editable table",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-024",
+      "name": "Cd table rows can be added edited and removed",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-025",
+      "name": "Time Cd CSV import is atomic and unit matched",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-026",
+      "name": "Pressure Cd CSV import uses pressure units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-027",
+      "name": "Cd CSV mismatch and invalid rows preserve working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-028",
+      "name": "Cd CSV requires exactly two columns and two data rows",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-029",
+      "name": "Pyro and Cd tables expose the shared tabular CSS contract",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-030",
+      "name": "Cd table header and CSV help use the selected unit",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-031",
+      "name": "Workspace exposes viewport-filling flex layout contract",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-032",
+      "name": "Shared tabular controls retain accessible labels and buttons",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-033",
+      "name": "Dependent Cd basis initializes continuity and valid rows atomically",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-034",
+      "name": "Loaded dependent Cd data normalizes a missing continuity value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-035",
+      "name": "Visible continuity selection agrees with coordinator state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-036",
+      "name": "Pressure-dependent Cd Apply persists the complete native contract",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-037",
+      "name": "Time-dependent Cd CSV import survives Apply and reload",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-038",
+      "name": "Invalid dependent Cd rows disable the rendered Apply action",
+      "layer": "browser",
+      "requirements": [
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-039",
+      "name": "Constant Cd remains available after dependent-basis editing",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-040",
+      "name": "Dependent Cd remove row preserves matched-array lengths",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-041",
+      "name": "Orifice endpoint options retain one-based native values",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-042",
+      "name": "Orifice surfaces expose all accepted contextual panes",
+      "layer": "browser",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-043",
+      "name": "CSV errors are reported inline without changing editor state",
+      "layer": "browser",
+      "requirements": [
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-044",
+      "name": "Apply and Revert state follows dirty and validation state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-045",
+      "name": "Completed Orifice workflow leaves document and protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-046",
+      "name": "Qualification document remains vertically scrollable",
+      "layer": "browser",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-047",
+      "name": "Production workspace retains viewport containment without locking the document",
+      "layer": "browser",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-048",
+      "name": "Qualification workspace fixture mounts the complete Orifice pane contract",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M891-049",
+      "name": "Endpoint dependency cleanup uses a valid alternate chamber",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-001",
+      "name": "Wall editor coordinator and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-002",
+      "name": "Wall editor uses isolated working copies",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-003",
+      "name": "Wall Apply preserves unknown fields and precision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-004",
+      "name": "Wall Apply commits one revision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-005",
+      "name": "Wall Revert restores complete working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-006",
+      "name": "Five Wall boundary types are supported",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-007",
+      "name": "Wall quantities accept Quaff units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-008",
+      "name": "Wall geometry rejects nonpositive values",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-009",
+      "name": "Wall self reference is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-010",
+      "name": "Wall cycles are rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-011",
+      "name": "Wall view renders three simultaneous cards",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-012",
+      "name": "Wall view exposes both boundary controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-013",
+      "name": "Wall references are numbered",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-014",
+      "name": "Wall raw working copy is expandable",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-015",
+      "name": "Wall workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-016",
+      "name": "Wall mode hides redundant contextual chrome",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-017",
+      "name": "Wall editor omits duplicate thermal path strip",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-018",
+      "name": "Expandable Raw is the sole Wall raw surface",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-019",
+      "name": "Quaff power conversion supports Wall units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-020",
+      "name": "Quaff coefficient conversion supports imperial units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-021",
+      "name": "Left boundary heat unit change converts displayed value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-022",
+      "name": "Right boundary coefficient unit change converts displayed value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-023",
+      "name": "Complete Wall edits survive serialize and reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-024",
+      "name": "All boundary subtypes survive serialization",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-025",
+      "name": "Converted heat rate survives reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-026",
+      "name": "Converted coefficient survives reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-027",
+      "name": "Untouched quantity precision survives reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-028",
+      "name": "Unknown nested Wall extensions survive reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-029",
+      "name": "Multiple Walls remain independent after reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-030",
+      "name": "Composite Wall references survive reopen",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-031",
+      "name": "Reverted Wall edits are not serialized",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-032",
+      "name": "Discarded unapplied Wall edits are not serialized",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-033",
+      "name": "Cancelled save is atomic for Wall document state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M892-034",
+      "name": "Persistence workflow leaves request and transfer state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M810-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-002",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012",
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M810-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "AIPP-M810-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "AIPP-M810-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "AIPP-M810-009",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-010",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ]
+    },
+    {
+      "id": "AIPP-M810-011",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-012",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-013",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-014",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M810-CLOSE-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-PREP2-C03-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-PREP2-C03-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-PREP2-C03-003",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-PREP2-C03-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-PREP2-C03-005",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-PREP2-C03-006",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-001",
+      "name": "Piston collection model is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-002",
+      "name": "Piston identifiers are deterministic and stable",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-003",
+      "name": "Piston duplication remains independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-004",
+      "name": "Piston removal selects a deterministic neighbor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-005",
+      "name": "Piston reorder remaps modulator and event references",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-006",
+      "name": "Referenced piston deletion is blocked",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-007",
+      "name": "Piston mutations mark authoritative deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P1-008",
+      "name": "Piston workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-001",
+      "name": "Mounted selector exposes every protected formulation",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-002",
+      "name": "Actual row clicks switch three pyros without reducing protected inventory",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-003",
+      "name": "Typed case-insensitive partial search renders PNP results",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-004",
+      "name": "Clicking search result changes only selected pyro before Apply",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-005",
+      "name": "Apply and reopen persist ordered pyro array",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-006",
+      "name": "Clearing search preserves selection and one enhanced control",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-007",
+      "name": "Unmatched imported formulation coexists with protected inventory",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-C06-FORM-008",
+      "name": "Inventory refresh is selection-safe and preserves active edits",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P21-001",
+      "name": "P2.1 piston editor coordinator and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-002",
+      "name": "Piston graph projection creates inline node and directional links",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-003",
+      "name": "Piston graph node retains deterministic native path",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-004",
+      "name": "Piston editor loads isolated working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-005",
+      "name": "Piston Revert restores complete native working record",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-006",
+      "name": "Piston Apply commits one authoritative revision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-007",
+      "name": "Piston Apply preserves unknown fields and untouched precision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-008",
+      "name": "Mounted piston shell exposes three columns and raw working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-009",
+      "name": "Piston collection actions retain stable editor identities",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P21-010",
+      "name": "P2.1 leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js"
+    },
+    {
+      "id": "AIPP-P22-001",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-002",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-003",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-004",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-005",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-006",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-007",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-008",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-009",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-010",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-011",
+      "name": "P2.2 piston editor qualification",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22-012",
+      "name": "P2.2 piston editor qualification",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-P22C2-001",
+      "name": "Piston label defaults to empty string",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C2-002",
+      "name": "Piston editor omits assembly collection controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C2-003",
+      "name": "Piston editor has general left and right columns",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C2-004",
+      "name": "Mass basis change installs deterministic fields",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C2-005",
+      "name": "Scalar unit conversion preserves physical value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C2-006",
+      "name": "Lookup-unit conversion updates complete column",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-P22C3-001",
+      "name": "Piston editor resolves shared QuaFF unit service",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js"
+    },
+    {
+      "id": "AIPP-P22C3-002",
+      "name": "Dedicated piston renderer owns properties DOM",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js"
+    },
+    {
+      "id": "AIPP-P22C3-003",
+      "name": "Piston properties render label and side controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js"
+    },
+    {
+      "id": "AIPP-P22C3-004",
+      "name": "Piston editor does not expose chamber nested tabs",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js"
+    },
+    {
+      "id": "AIPP-P22C3-005",
+      "name": "Generic inspector refuses piston DOM ownership",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-001",
+      "name": "Piston columns are left general right",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-002",
+      "name": "CSV parser accepts header and numeric rows",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-003",
+      "name": "CSV parser rejects non-increasing independent values",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-004",
+      "name": "CSV preview stays CSV-backed until local edit",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-005",
+      "name": "Edit locally converts CSV preview to table arrays",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-006",
+      "name": "Travel targets use single-column editor controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-007",
+      "name": "Travel unit conversion converts every target",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-P22C4-008",
+      "name": "Travel row add and remove are deterministic",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-001",
+      "name": "Empty body-force collection renders empty state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-002",
+      "name": "Add installs deterministic constant force",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-003",
+      "name": "Multiple body forces remain independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-004",
+      "name": "Remove selects deterministic neighbor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-005",
+      "name": "Removing final force returns empty state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-006",
+      "name": "Force unit conversion preserves physical value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-007",
+      "name": "Ordinary magnitude edit preserves unknown fields",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-008",
+      "name": "Invalid force unit blocks Apply",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-009",
+      "name": "Revert restores body-force collection",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1-010",
+      "name": "Body-force controls render in piston properties",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-001",
+      "name": "Rendered Add body force click mutates working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-002",
+      "name": "Mass basis change displays source controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-003",
+      "name": "Area basis change displays lookup table",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-004",
+      "name": "Friction basis change displays source controls",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-005",
+      "name": "Table to CSV interaction rerenders Open CSV control",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1R-006",
+      "name": "Delegated interactions survive repeated rerenders",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js"
+    },
+    {
+      "id": "AIPP-BF1V-001",
+      "name": "Body-force selector precedes full-width detail",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztl_aipp_piston_bf1_visual_closeout_tests.js"
+    },
+    {
+      "id": "AIPP-BF1V-002",
+      "name": "Body-force selector cards wrap and retain selection",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztl_aipp_piston_bf1_visual_closeout_tests.js"
+    },
+    {
+      "id": "AIPP-BF1V-003",
+      "name": "Selector summary is rounded without changing native value",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztl_aipp_piston_bf1_visual_closeout_tests.js"
+    },
+    {
+      "id": "AIPP-BF1V-004",
+      "name": "Magnitude editor retains full native precision",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztl_aipp_piston_bf1_visual_closeout_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-001",
+      "name": "Body force type creates displacement default",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-002",
+      "name": "Time body force table converts units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-003",
+      "name": "Lookup rows remain paired",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-004",
+      "name": "Body force CSV parses unit header",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-005",
+      "name": "Invalid CSV dimensions rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-006",
+      "name": "Edit locally installs CSV arrays and units",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-007",
+      "name": "Lookup selector summary identifies table points",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2-008",
+      "name": "Type selector renders all supported types",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-001",
+      "name": "Body force CSV parses LF line endings",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-002",
+      "name": "Body force CSV parses CRLF line endings",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-003",
+      "name": "Body force CSV parses CR and UTF8 BOM",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-004",
+      "name": "Reported customer CSV imports successfully",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-005",
+      "name": "Mass lookup defaults to interpolate",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-006",
+      "name": "Mass editor omits continuity selector",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-BF2C2-007",
+      "name": "Invalid imported mass continuity blocks apply",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js"
+    },
+    {
+      "id": "AIPP-C1-001",
+      "name": "Chamber collection model is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-002",
+      "name": "Empty chamber collection normalizes to zero items",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-003",
+      "name": "Chamber unknown fields survive load and serialize",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-004",
+      "name": "Chamber create duplicate move and remove preserve stable editor identities",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-005",
+      "name": "Chamber reorder remaps tank, orifice, wall, and piston references",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-006",
+      "name": "Referenced chamber deletion is blocked",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-007",
+      "name": "Chamber mutations mark authoritative deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-008",
+      "name": "Chamber editor coordinator create duplicate move and remove wrap the collection model",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-009",
+      "name": "Chamber reorder remaps CxPy pyro ignition and extinguished event strings",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-C1-010",
+      "name": "Chamber workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-001",
+      "name": "Orifice collection model is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-002",
+      "name": "Empty orifice collection normalizes to zero items",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-003",
+      "name": "Orifice unknown fields survive load and serialize",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-004",
+      "name": "Orifice create duplicate move and remove preserve stable editor identities",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-005",
+      "name": "Orifice reorder remaps chamber filter and open/closed event references",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-006",
+      "name": "Referenced orifice deletion is blocked",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-007",
+      "name": "Orifice mutations mark authoritative deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-008",
+      "name": "Orifice editor coordinator create duplicate move and remove wrap the collection model",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-O1-009",
+      "name": "Orifice workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-001",
+      "name": "Wall collection model is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-002",
+      "name": "Empty wall collection normalizes to zero items",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-003",
+      "name": "Wall unknown fields survive load and serialize",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-004",
+      "name": "Wall create duplicate move and remove preserve stable editor identities",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-005",
+      "name": "Wall reorder remaps WALL-type wall_index references",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-006",
+      "name": "Referenced wall deletion is blocked",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-007",
+      "name": "Wall mutations mark authoritative deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-008",
+      "name": "Wall editor coordinator create duplicate move and remove wrap the collection model",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-W1-009",
+      "name": "Wall workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-001",
+      "name": "Topology actions service and toolbar controls are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010",
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-002",
+      "name": "Add chamber toolbar button creates a chamber",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-003",
+      "name": "Add orifice/wall/piston toolbar buttons create entities",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-004",
+      "name": "Canvas background context menu adds an entity",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-005",
+      "name": "Node context menu removes an unreferenced chamber",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-006",
+      "name": "Removing an in-use chamber is blocked and reported",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-007",
+      "name": "Delete key removes the selected unreferenced node",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-007"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-008",
+      "name": "Delete key is ignored while an editable control has focus",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    },
+    {
+      "id": "AIPP-TOPOACT-009",
+      "name": "Topology actions workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "module": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js"
+    }
+  ],
+  "regression_baseline": "P6.3.0-0.1"
+}

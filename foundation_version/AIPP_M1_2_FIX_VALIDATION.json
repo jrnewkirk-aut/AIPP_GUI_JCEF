@@ -1,0 +1,31 @@
+{
+  "fix_version": "0.1.2-m1.2",
+  "result": "PASS",
+  "static_build_validation": "PASS",
+  "resolved_test": "AIPP-APP-004",
+  "root_cause": "The production application shell was not a reliable qualification-harness DOM surface.",
+  "fix": "Added a test-only AIPP component in the application-owned root and made the AIPP test module depend on it.",
+  "bundle_id_occurrences": {
+    "dev": {
+      "aippStatusButton": 1,
+      "aippStatusResult": 1,
+      "aippFoundationBadge": 1,
+      "aippRuntimeState": 1
+    },
+    "test": {
+      "aippStatusButton": 1,
+      "aippStatusResult": 1,
+      "aippFoundationBadge": 1,
+      "aippRuntimeState": 1
+    },
+    "prod": {
+      "aippStatusButton": 1,
+      "aippStatusResult": 1,
+      "aippFoundationBadge": 1,
+      "aippRuntimeState": 1
+    }
+  },
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "promotion_gate": "Zero failed, zero skipped, clean final state."
+}

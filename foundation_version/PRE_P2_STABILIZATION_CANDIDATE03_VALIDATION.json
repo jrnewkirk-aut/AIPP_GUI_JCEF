@@ -1,0 +1,26 @@
+{
+  "candidate": "pre-P2-stabilization-3",
+  "status": "PASS_STATIC",
+  "canonical_source": "P2.application.aippDeckDocument.native",
+  "checks": {
+    "three_pyro_selection": true,
+    "native_formulation_visible": true,
+    "pyro_duplicate": true,
+    "filter_add_duplicate": true,
+    "selection_does_not_mutate_master": true,
+    "working_mutations_do_not_rehydrate": true,
+    "apply_is_atomic_commit_boundary": true,
+    "post_commit_rehydration": true,
+    "unknown_fields_preserved": true,
+    "bundles_rebuilt": true,
+    "runtime_manifest_synchronized": true
+  },
+  "live_acceptance_required": [
+    "Select each BPS pyro and verify details change",
+    "Verify each formulation field is populated",
+    "Add and duplicate pyros",
+    "Add and duplicate filters",
+    "Apply and verify hover/editor/master JSON agreement",
+    "Full Scilab/JCEF suite with zero failed and zero skipped"
+  ]
+}

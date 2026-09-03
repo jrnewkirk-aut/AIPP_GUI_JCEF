@@ -1,0 +1,1848 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "application_version": "0.8.2-m8.2",
+  "protocol_version": 1,
+  "ordering_policy": "category_then_case_insensitive_lexicographic",
+  "categories": [
+    "shell",
+    "style",
+    "component",
+    "observability",
+    "protocol",
+    "plotting",
+    "app",
+    "application",
+    "testing"
+  ],
+  "modules": [
+    {
+      "id": "shell.index",
+      "path": "browser_files/index.html",
+      "category": "shell",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [],
+      "public_symbols": [],
+      "reason": "HTML bundle template",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "c871f7b8ac71410aec833832e06330e98c8fd733c3948a74c60aa241c5a91e01"
+    },
+    {
+      "id": "style.foundation",
+      "path": "browser_files/styles/main.css",
+      "category": "style",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "shell.index"
+      ],
+      "public_symbols": [],
+      "reason": "Foundation styling",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "0528192772ae4bc492bb02c33f7fb1541e950d04082b66b920832e0a260f4b45"
+    },
+    {
+      "id": "component.prod",
+      "path": "browser_files/components_prod/01_prod.html",
+      "category": "component",
+      "required": true,
+      "modes": [
+        "dev",
+        "prod"
+      ],
+      "depends_on": [
+        "shell.index"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP production workspace surface",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b1cc4c7a502a45e9093da41b9ab6a0b42d3f3f1ace5981006165a5d566b79b83"
+    },
+    {
+      "id": "component.test.header",
+      "path": "browser_files/components_test/01_header.html",
+      "category": "component",
+      "required": true,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "shell.index"
+      ],
+      "public_symbols": [],
+      "reason": "Qualification header",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "e22c0169b44e908e7be2eb2ab9935c229261d128b14338349c0d016454a61348"
+    },
+    {
+      "id": "component.test.runner",
+      "path": "browser_files/components_test/02_runner.html",
+      "category": "component",
+      "required": true,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "component.test.header"
+      ],
+      "public_symbols": [],
+      "reason": "Qualification controls",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "550535453980094e281257eddd1a50a6379f4ccc0f4abaea62e7ca8bd0395542"
+    },
+    {
+      "id": "observability.startup.collector",
+      "path": "browser_files/js/observability/00_startup_error_collector.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [],
+      "public_symbols": [
+        "P7.startup"
+      ],
+      "reason": "Pillar 7 early startup console and rejection collector",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "eab5ee7f7533df9c4306ed41a68abb1f1c60eb99dd4d746ae778bf5b6bd80a42"
+    },
+    {
+      "id": "observability.constants",
+      "path": "browser_files/js/observability/01_observability_constants.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.startup.collector"
+      ],
+      "public_symbols": [
+        "P7"
+      ],
+      "reason": "Pillar 7 structured observability foundation",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "8cbc191c5a320bc4e3e494ee99689a3d6b4464fc5a35439da249929ec72b6177"
+    },
+    {
+      "id": "observability.payload.summary",
+      "path": "browser_files/js/observability/02_payload_summary.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.constants"
+      ],
+      "public_symbols": [
+        "P7"
+      ],
+      "reason": "Pillar 7 structured observability foundation",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "3ac0bc8940eb65a62880848a270d43caeecaaf86bb93abe409fdcce182a1d05f"
+    },
+    {
+      "id": "observability.record",
+      "path": "browser_files/js/observability/03_observability_record.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.payload.summary"
+      ],
+      "public_symbols": [
+        "P7"
+      ],
+      "reason": "Pillar 7 structured observability foundation",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "9ce9cecf7c24957e8dd406dbfe8ec88b1ce42a9228e1bfa8f7b1242355ca4eac"
+    },
+    {
+      "id": "observability.logger",
+      "path": "browser_files/js/observability/04_observability_logger.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.record"
+      ],
+      "public_symbols": [
+        "P7"
+      ],
+      "reason": "Pillar 7 structured observability foundation",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "045da3db249cef7b8e87afb1e2dcc36089c066b8551f9527456b86c608106913"
+    },
+    {
+      "id": "observability.performance",
+      "path": "browser_files/js/observability/05_performance_registry.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.logger"
+      ],
+      "public_symbols": [
+        "P7.performance"
+      ],
+      "reason": "Pillar 7 unified performance registry",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "9f487e04fde990b9681cfe9fe95c6f131460103b868133c17e124a842b6e00ba"
+    },
+    {
+      "id": "observability.diagnostic.export",
+      "path": "browser_files/js/observability/06_diagnostic_package_export.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.performance"
+      ],
+      "public_symbols": [
+        "P7.diagnosticExport"
+      ],
+      "reason": "Pillar 7 combined diagnostic package collector and host export client",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "73c540e18d53efc46185563967e590c90b763c5e64767f822040185bf2b8e381"
+    },
+    {
+      "id": "observability.file.operations",
+      "path": "browser_files/js/observability/05_file_operation_events.js",
+      "category": "observability",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.performance",
+        "observability.diagnostic.export"
+      ],
+      "public_symbols": [
+        "P7"
+      ],
+      "reason": "Pillar 7 structured observability foundation",
+      "version": "P7.5.0-0.1",
+      "content_sha256": "dfe7824f1eccf8347ada1d45c183f283c1b66efe0768007f6a9fab335a685e51"
+    },
+    {
+      "id": "protocol.protocol.constants",
+      "path": "browser_files/js/protocol/01_protocol_constants.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "observability.file.operations"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 01_protocol_constants.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "e7771fba1a372a39d7b0346d3bb7cc95a202ecd1506a67ef08241af97a4c652c"
+    },
+    {
+      "id": "protocol.protocol.errors",
+      "path": "browser_files/js/protocol/02_protocol_errors.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.constants"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 02_protocol_errors.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "eb2513c22f17ef3780bcf9ecadf0472e851b2cda57f9c8ca1c0e2f101e870c2d"
+    },
+    {
+      "id": "protocol.safe.codec",
+      "path": "browser_files/js/protocol/03_safe_codec.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.errors"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 03_safe_codec.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "fbbc34261393bcb3b847232f539c61ab8d7bff0e37cbb8bca40a6f8dde39f54d"
+    },
+    {
+      "id": "protocol.protocol.validation",
+      "path": "browser_files/js/protocol/04_protocol_validation.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.safe.codec"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 04_protocol_validation.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "d2c1ef6fece0db0e9abfa34f92c8c355cada5470cb05f2936ec4d6ae45ce6deb"
+    },
+    {
+      "id": "protocol.request.registry",
+      "path": "browser_files/js/protocol/05_request_registry.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.validation"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 05_request_registry.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "a5ff4908ee2b8d68e464472d97febe892c3772e8876d3f131fc75f903317af73"
+    },
+    {
+      "id": "protocol.protocol.transport",
+      "path": "browser_files/js/protocol/06_protocol_transport.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.request.registry"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 06_protocol_transport.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "1d7c264bbf00e0ab944a5e3456c43d85ce39927f2e50030598b6a184b4e8a21e"
+    },
+    {
+      "id": "protocol.protocol.client",
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.transport"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 07_protocol_client.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "dc9cf979eaf742af3f3e991f2328a56e082420aa04e8788cdb82abeb14958aab"
+    },
+    {
+      "id": "protocol.protocol.router",
+      "path": "browser_files/js/protocol/08_protocol_router.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.client"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 08_protocol_router.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "33b45a7321a0b011495c7fffc16d46dd4265dc7a6cb179f39283a095fe2815a0"
+    },
+    {
+      "id": "protocol.protocol.host",
+      "path": "browser_files/js/protocol/09_protocol_host.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.router"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 09_protocol_host.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "62d2339202e6187bb77cc766a8ad8ea202205cfe8665ce6469617204ce3b716b"
+    },
+    {
+      "id": "protocol.transfer.registry",
+      "path": "browser_files/js/protocol/10_transfer_registry.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.protocol.host"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 10_transfer_registry.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "aace8af3241f7316b3165465e7c7287901cf3f0ebc49a8e8dd3d35513559f11e"
+    },
+    {
+      "id": "protocol.numeric.transfer",
+      "path": "browser_files/js/protocol/11_numeric_transfer.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.transfer.registry"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 11_numeric_transfer.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "94a0c5dba7ac9003e6e5e0d9103390aa75dfce21bb73e040223463fd9315aa6d"
+    },
+    {
+      "id": "protocol.transfer.handle",
+      "path": "browser_files/js/protocol/12_transfer_handle.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.numeric.transfer"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 12_transfer_handle.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "0ca257075e26b6a1f44d42a16de6c451a962d89b6d9d9f21b61dc4c6990d5ddb"
+    },
+    {
+      "id": "protocol.runtime.config",
+      "path": "browser_files/js/protocol/13_runtime_config.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.transfer.handle"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 13_runtime_config.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "09ecee05a5f48421f56877ba39e2c354715f9d2bbb885792f27839e2f3c85934"
+    },
+    {
+      "id": "protocol.diagnostics",
+      "path": "browser_files/js/protocol/14_diagnostics.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.runtime.config"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 14_diagnostics.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "44b81caa309d6564f581b0d12dd420295976aa83229286f34f326c208d12c579"
+    },
+    {
+      "id": "protocol.viewport.service",
+      "path": "browser_files/js/protocol/15_viewport_service.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.diagnostics"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 15_viewport_service.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "a99747229380b8de37c7b00504b4f6ae7dc03738da1bfc5d88079d860beb745d"
+    },
+    {
+      "id": "protocol.logging",
+      "path": "browser_files/js/protocol/16_logging.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.viewport.service"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 16_logging.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "4b360bebc7a15695386b933f9764552e09999969c4437911ee5de85cb0f18c19"
+    },
+    {
+      "id": "protocol.schemas",
+      "path": "browser_files/js/protocol/17_schemas.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.logging"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 17_schemas.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b7e320f0f90c8ca09d077b427a9efebccc3753aabe1e9b6dadb68806095b0742"
+    },
+    {
+      "id": "protocol.capabilities",
+      "path": "browser_files/js/protocol/18_capabilities.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.schemas"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 18_capabilities.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "33cba2f2e01ec14755168018c384345294cd53904c02665ec9cda357ebf89c41"
+    },
+    {
+      "id": "protocol.data.adapter",
+      "path": "browser_files/js/protocol/19_data_adapter.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.capabilities"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 19_data_adapter.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "f8dc2ea738d2e1dabded704a1827664cb48cc64c3cd17bb5b5cc9d4c25ac2017"
+    },
+    {
+      "id": "protocol.library",
+      "path": "browser_files/js/protocol/20_library.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.data.adapter"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 20_library.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b105d00edc208bfe03409e72938297d2a0625dc93ac20eb4604a156a6e40179a"
+    },
+    {
+      "id": "protocol.generic.transfer",
+      "path": "browser_files/js/protocol/21_generic_transfer.js",
+      "category": "protocol",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.library"
+      ],
+      "public_symbols": [],
+      "reason": "Protocol module 21_generic_transfer.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "525efb932de7cc70e0e123fd44d2abdc7938054ba181b84cdbb1f50c0cb9befb"
+    },
+    {
+      "id": "plotting.plot.adapter",
+      "path": "browser_files/js/plotting/01_plot_adapter.js",
+      "category": "plotting",
+      "required": false,
+      "modes": [
+        "dev",
+        "test"
+      ],
+      "depends_on": [
+        "protocol.generic.transfer"
+      ],
+      "public_symbols": [],
+      "reason": "Optional plotting module 01_plot_adapter.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "faf4a8118a7c620239127930b3b09748073d507074250d2ed693b9b790d521db"
+    },
+    {
+      "id": "plotting.reference.canvas.adapter",
+      "path": "browser_files/js/plotting/02_reference_canvas_adapter.js",
+      "category": "plotting",
+      "required": false,
+      "modes": [
+        "dev",
+        "test"
+      ],
+      "depends_on": [
+        "protocol.generic.transfer",
+        "plotting.plot.adapter"
+      ],
+      "public_symbols": [],
+      "reason": "Optional plotting module 02_reference_canvas_adapter.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b3bc025d73056c2c3fbd3fd6487f3a7bff55aeebd7243a65464160b4ba5c16c4"
+    },
+    {
+      "id": "app.01_minimal_ui",
+      "path": "browser_files/js/app/01_minimal_ui.js",
+      "category": "app",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "protocol.generic.transfer"
+      ],
+      "public_symbols": [
+        "P2.ui"
+      ],
+      "reason": "Foundation browser application shell",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "1dcb7cd0d08ae56b06454c2e0a6a509cfd19136c294c5ae743f215fb0f474d95"
+    },
+    {
+      "id": "application.application.registry",
+      "path": "browser_files/js/application/01_application_registry.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "app.01_minimal_ui"
+      ],
+      "public_symbols": [],
+      "reason": "Application extension 01_application_registry.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "53c3033739436ccac67888d97514477d1e4f2f21c3baa8f4d7a9178ae91e8d37"
+    },
+    {
+      "id": "testing.01.test.core",
+      "path": "browser_files/js/testing/01_test_core.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "application.aipp.shell.controller"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 01_test_core.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "02cadf522228dbf0c3d45767757597f7e929f7bafcf42dd15d84dd28fc1f38e3"
+    },
+    {
+      "id": "testing.01a.runtime.capture",
+      "path": "browser_files/js/testing/01a_runtime_capture.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.01.test.core"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 01a_runtime_capture.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "4eb5eb03ed1dbbf50aebdfc08747cd5d6854b1ad6126d64179fba8706bfbd6e6"
+    },
+    {
+      "id": "testing.02.browser.tests",
+      "path": "browser_files/js/testing/02_browser_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.01a.runtime.capture"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 02_browser_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "96ccd0eedfbe44608890ac1beb7a8d553c8a68808e896a590806eb85dbe43ba3"
+    },
+    {
+      "id": "testing.02b.closure.browser.tests",
+      "path": "browser_files/js/testing/02b_closure_browser_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.02.browser.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 02b_closure_browser_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "e785293818393dcfe0c5b7f6e39ad8ec49e760d224da163f307d9b61e35adc59"
+    },
+    {
+      "id": "testing.02c.architecture.browser.tests",
+      "path": "browser_files/js/testing/02c_architecture_browser_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.02b.closure.browser.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 02c_architecture_browser_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "70cb41acfc2aa4b0ef592bcaea8ce30b7bee45297237d1a6299e3227fd111596"
+    },
+    {
+      "id": "testing.03.manifests",
+      "path": "browser_files/js/testing/03_manifests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.02c.architecture.browser.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03_manifests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "bbd3c31e86c5e731c7523b3ca82ca7a1404da6557da87f32ebe1e69d8bb2f6b5"
+    },
+    {
+      "id": "testing.03a.contract.fixtures",
+      "path": "browser_files/js/testing/03a_contract_fixtures.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03a_contract_fixtures.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "f4129d8fb1732adbd0bb076b9558530673bef65d33c0fde780c37c8a64b0dad1"
+    },
+    {
+      "id": "testing.03b.visual.baseline",
+      "path": "browser_files/js/testing/03b_visual_baseline.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03a.contract.fixtures"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03b_visual_baseline.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "a12dd25db27c6929b0d2deb57c61b3820b0b624958930fb3945d6b3fe551055f"
+    },
+    {
+      "id": "testing.03c.pillar4.compliance",
+      "path": "browser_files/js/testing/03c_pillar4_compliance.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03b.visual.baseline"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03c_pillar4_compliance.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "604dc917cfacd7fea1d141cb738d73f5bea0489e83c1a9a7aa1b55b594a396c8"
+    },
+    {
+      "id": "testing.03d.starter.manifests",
+      "path": "browser_files/js/testing/03d_starter_manifests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03c.pillar4.compliance"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03d_starter_manifests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "a91b093683f1712fcd4517d73bd97a71a36b1a52f89dd70a5c8d0d79b6d4f331"
+    },
+    {
+      "id": "testing.03e.application.manifests",
+      "path": "browser_files/js/testing/03e_application_manifests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03d.starter.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03e_application_manifests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "f052907038a09ee96e3d074f1127152a360304ac9e9373df7e0502c517c8bd58"
+    },
+    {
+      "id": "testing.03f.release.manifests",
+      "path": "browser_files/js/testing/03f_release_manifests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03e.application.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 03f_release_manifests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "e935578a22e09c8ae4454d0beeca853885e759006bab0c7fa06893a02049ca93"
+    },
+    {
+      "id": "testing.04.manifest.tests",
+      "path": "browser_files/js/testing/04_manifest_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03f.release.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04_manifest_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "bb82395ebf0d7763853212ca69d7d8d0d05f56fcb91db0eb6265cd57939b0a39"
+    },
+    {
+      "id": "testing.04a.contract.tests",
+      "path": "browser_files/js/testing/04a_contract_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04.manifest.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04a_contract_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "2bef8ad1f4403d55d5b2773debe5046d773acb1e241e69a8fa262d300310a315"
+    },
+    {
+      "id": "testing.04b.integration.tests",
+      "path": "browser_files/js/testing/04b_integration_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04a.contract.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04b_integration_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "21c2b71ff4e0a9131f5a8f83666d04824c098edf637d3b80400fc54da706d870"
+    },
+    {
+      "id": "testing.04c.visual.tests",
+      "path": "browser_files/js/testing/04c_visual_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04b.integration.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04c_visual_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "00d198b7a8fefc21f490dfd12e9b32651811237d9b6423ceeb96451a68e9b296"
+    },
+    {
+      "id": "testing.04d.closure.integration.tests",
+      "path": "browser_files/js/testing/04d_closure_integration_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04c.visual.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04d_closure_integration_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "3c623f8cea5990974db7cf10505c16ab92ff4ff8ec40c9514bffb5136febf038"
+    },
+    {
+      "id": "testing.04e.architecture.tests",
+      "path": "browser_files/js/testing/04e_architecture_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04d.closure.integration.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04e_architecture_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "f595a7ec0b281dd68d1897b846ed1b5936544e89ca57bccea1e041c429362a04"
+    },
+    {
+      "id": "testing.04f.architecture.integration.tests",
+      "path": "browser_files/js/testing/04f_architecture_integration_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04e.architecture.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04f_architecture_integration_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "071ec36cfba7c2f09af44640c3c5f36acc60e84d47bf57a7b474c61d4d950e06"
+    },
+    {
+      "id": "testing.04g.starter.tests",
+      "path": "browser_files/js/testing/04g_starter_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04f.architecture.integration.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04g_starter_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "7e9ac9daa27ca4ca2071777bd9414ca7a07b447a6cb3b8d71371da233a7f66cb"
+    },
+    {
+      "id": "testing.04h.application.tests",
+      "path": "browser_files/js/testing/04h_application_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04g.starter.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04h_application_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "c4b241de044c5c5342b835c0e77f2e92c0f4f0a9404c2b8974c987fd22167209"
+    },
+    {
+      "id": "testing.04i.release.tests",
+      "path": "browser_files/js/testing/04i_release_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04h.application.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04i_release_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b4ea3164bfa0bdc5d16c07bbdf78d45cf111eb786e4d05cae828056d31204777"
+    },
+    {
+      "id": "testing.04j.extension.browser.tests",
+      "path": "browser_files/js/testing/04j_extension_browser_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04i.release.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04j_extension_browser_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "722caaa482d2202feadb2df4ea9c467d85e32385e9645af376ad0925e955b84f"
+    },
+    {
+      "id": "testing.04k.extension.integration.tests",
+      "path": "browser_files/js/testing/04k_extension_integration_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04j.extension.browser.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 04k_extension_integration_tests.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "5c531eb25c4947e87f03dcb774f2df2a210bdd430b460aa8e7f2e537ecad37fe"
+    },
+    {
+      "id": "testing.05.runner.ui",
+      "path": "browser_files/js/testing/05_runner_ui.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.p64.tests"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 05_runner_ui.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b2bc66f23127c05889c42d0047f02a1c52201ae67cfdc61e23e7b2854c6722be"
+    },
+    {
+      "id": "testing.06.bootstrap",
+      "path": "browser_files/js/testing/06_bootstrap.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.05.runner.ui"
+      ],
+      "public_symbols": [],
+      "reason": "Test-only module 06_bootstrap.js",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "d6b725d1ddcb5f0d02ca70ff2b500cc558be4cca1d5d95c88a6f99e29c3bc0b4"
+    },
+    {
+      "id": "testing.03g.p61.build.manifest",
+      "path": "browser_files/js/testing/03g_p61_build_manifest.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "P6.1 test-only build qualification module",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "eeb1d27254c73bd6fee0bb22ce5756d1ea05c599af369dbcc361125917faaf28"
+    },
+    {
+      "id": "testing.04l.p61.build.tests",
+      "path": "browser_files/js/testing/04l_p61_build_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03.manifests"
+      ],
+      "public_symbols": [],
+      "reason": "P6.1 test-only build qualification module",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "a44c7092a51739ff389d4f6d9ff5a0fca8f8aadb6be051cda72e13fc7dd2baf3"
+    },
+    {
+      "id": "component.dev.diagnostics",
+      "path": "browser_files/components_dev/01_dev.html",
+      "category": "component",
+      "required": true,
+      "modes": [
+        "dev"
+      ],
+      "depends_on": [
+        "shell.index"
+      ],
+      "public_symbols": [],
+      "reason": "Dedicated P6.2 development diagnostics surface",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "b2992e82784417fda5298f19a01bccbb9f955dd06027d8477296f12393756ac0"
+    },
+    {
+      "id": "diagnostics.dev.panel",
+      "path": "browser_files/js/diagnostics/01_dev_panel.js",
+      "category": "diagnostics",
+      "required": false,
+      "modes": [
+        "dev"
+      ],
+      "depends_on": [
+        "app.01_minimal_ui"
+      ],
+      "public_symbols": [
+        "P2.devDiagnostics"
+      ],
+      "reason": "Development-only structured diagnostics panel",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "d5681bf5d7e94fc0010865b8c648a16e6e5469de39f63baeb647eb20b13f9e12"
+    },
+    {
+      "id": "testing.03h.p62.build.manifest",
+      "path": "browser_files/js/testing/03h_p62_build_manifest.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03.manifests"
+      ],
+      "public_symbols": [
+        "P4.p62BuildMetadata"
+      ],
+      "reason": "P6.2 build qualification metadata",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "3cb4459f72ce866b61b593c089d9d92d10a577231aa239212ab40b6f8e078d06"
+    },
+    {
+      "id": "testing.04m.p62.build.tests",
+      "path": "browser_files/js/testing/04m_p62_build_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.03h.p62.build.manifest"
+      ],
+      "public_symbols": [],
+      "reason": "P6.2 build qualification tests",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "538fa63b595f8b643587f43466501424900cdddb9b7b3c03678594140f17ac0f"
+    },
+    {
+      "id": "testing.p63.metadata",
+      "path": "browser_files/js/testing/03i_p63_build_manifest.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.01.test.core"
+      ],
+      "public_symbols": [
+        "P4.p63BuildMetadata"
+      ],
+      "reason": "P6.3 build qualification metadata",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "62bd11042065a08256be00a7ddc4da6a90579669a40254945c72d96ebce3c0f6"
+    },
+    {
+      "id": "testing.p63.tests",
+      "path": "browser_files/js/testing/04n_p63_build_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.p63.metadata"
+      ],
+      "public_symbols": [],
+      "reason": "P6.3 reproducibility and production-policy tests",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "81a48e2de680db7002fd882cadc6ffa2d2bebac6a3630661c4c00ca65520616d"
+    },
+    {
+      "id": "testing.p64.metadata",
+      "path": "browser_files/js/testing/03j_p64_package_manifest.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.p63.tests"
+      ],
+      "public_symbols": [
+        "P4.p64PackageMetadata"
+      ],
+      "reason": "P6.4 package integrity qualification metadata",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "79b7952419fe37870a85f3dc19f3e2c8772332d5cb1afad9e8f1712a8a333998"
+    },
+    {
+      "id": "testing.p64.tests",
+      "path": "browser_files/js/testing/04o_p64_package_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.p64.metadata"
+      ],
+      "public_symbols": [],
+      "reason": "P6.4 package integrity qualification tests",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "ca9c358b4e8f742b4f7ff2c8df4d7cc24ccdd277df911eaa45357490049e19bd"
+    },
+    {
+      "id": "application.aipp.style",
+      "path": "application/browser/styles/aipp_m1.css",
+      "category": "style",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [],
+      "public_symbols": [],
+      "reason": "AIPP M1 application-owned styles",
+      "version": "0.1.0-m1",
+      "content_sha256": "000e07ce98862ff87bc3f02eb420da34ca2fc7cb42ba6c37c4c61c45f323b660"
+    },
+    {
+      "id": "application.aipp.component",
+      "path": "application/browser/components/01_aipp_shell.html",
+      "category": "application_component",
+      "required": true,
+      "modes": [
+        "dev"
+      ],
+      "depends_on": [
+        "application.aipp.style"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M1 application shell",
+      "version": "0.1.0-m1",
+      "content_sha256": "b1cc4c7a502a45e9093da41b9ab6a0b42d3f3f1ace5981006165a5d566b79b83"
+    },
+    {
+      "id": "application.aipp.status.service",
+      "path": "browser_files/js/application/02_aipp_status_service.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.reference.sum.service"
+      ],
+      "public_symbols": [
+        "P2.application.aippStatus"
+      ],
+      "reason": "AIPP status protocol service",
+      "version": "0.1.0-m1",
+      "content_sha256": "0abc71e6031c5a481284a68d453d14b2c45bcb6a622cd8e5c7510e8927e5559b"
+    },
+    {
+      "id": "application.aipp.shell.controller",
+      "path": "browser_files/js/application/03_aipp_shell_controller.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.status.service"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M1 shell controller",
+      "version": "0.1.0-m1",
+      "content_sha256": "ac2bd591b63d81d0725dd549a34dd5107859ac86eb10c250045bed9a0599571e"
+    },
+    {
+      "id": "testing.04l.aipp.m1.tests",
+      "path": "browser_files/js/testing/04l_aipp_m1_tests.js",
+      "category": "testing",
+      "required": true,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04k.extension.integration.tests",
+        "application.aipp.shell.controller",
+        "component.test.aipp.m1.surface"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M1 additive browser tests",
+      "version": "0.1.0-m1",
+      "content_sha256": "1f64d324a097403563e88f2f80980d9e57875b3541b3877891bd6e566cc78715"
+    },
+    {
+      "id": "application.reference.ping.service",
+      "path": "browser_files/js/application/02_reference_ping_service.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.application.registry"
+      ],
+      "public_symbols": [
+        "P2.application.ping"
+      ],
+      "reason": "Inherited reference service retained for Foundation regression compatibility",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "9e29cb6801a3a420dfd47d692df120e9fd353e18fa24a4b7298f6ec284c27992"
+    },
+    {
+      "id": "application.reference.sum.service",
+      "path": "browser_files/js/application/03_reference_sum_service.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.reference.ping.service"
+      ],
+      "public_symbols": [
+        "P2.application.sum"
+      ],
+      "reason": "Inherited reference extension retained for Foundation regression compatibility",
+      "version": "P6.4.0-0.1",
+      "content_sha256": "97b34a323de7b88da6c1cb96d32076573898498d8cbd22820a245b610e0f9e9b"
+    },
+    {
+      "id": "component.test.aipp.m1.surface",
+      "path": "browser_files/components_test/03_aipp_m1_test_surface.html",
+      "category": "component",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "component.test.runner"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M1 qualification DOM surface in the canonical Scilab test-component directory.",
+      "version": "0.1.2-m1.2",
+      "content_sha256": "adcd28a4fd055d7796709d1cd3b6f2e8be2cc33c31f5c886803983ed260434b4"
+    },
+    {
+      "id": "application.aipp.pyrolist.service",
+      "path": "browser_files/js/application/04_aipp_pyrolist_service.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.status.service"
+      ],
+      "public_symbols": [
+        "P2.application.aippPyrolist"
+      ],
+      "reason": "Foundation-native AIPP pyrolist request service.",
+      "version": "0.2.0-m2",
+      "content_sha256": "0fb5192a636a18c988060b24df79047447f6e935141ce657d13ad25e3c9962e7"
+    },
+    {
+      "id": "application.aipp.host.adapter",
+      "path": "browser_files/js/application/05_aipp_host_adapter.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.pyrolist.service"
+      ],
+      "public_symbols": [
+        "P2.application.aippHostAdapter"
+      ],
+      "reason": "Adapter from Foundation response payload to preserved AIPP pyrolist contracts.",
+      "version": "0.2.0-m2",
+      "content_sha256": "36520a587212886c339ef470700700f857ff73965613aee987c21dd94af70486"
+    },
+    {
+      "id": "testing.04p.aipp.m2.tests",
+      "path": "browser_files/js/testing/04p_aipp_m2_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04l.aipp.m1.tests",
+        "application.aipp.host.adapter"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M2 browser and live integration acceptance tests.",
+      "version": "0.2.0-m2",
+      "content_sha256": "30ca19ce78dd3555bee19409fac29c26cde07907a2bd4d1d109a86730f1e3ef3"
+    },
+    {
+      "id": "application.aipp.pyro.editor.model",
+      "path": "browser_files/js/application/06_aipp_pyro_editor_model.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.host.adapter"
+      ],
+      "public_symbols": [
+        "P2.application.aippPyroEditor"
+      ],
+      "reason": "Working-copy formulation selection, editing, reset, and validation model.",
+      "version": "0.3.0-m3",
+      "content_sha256": "c4d52a959540c2ddcf4c811fa83a4d1b84dbef69e0649450242cda159180b8c6"
+    },
+    {
+      "id": "application.aipp.pyro.editor.view",
+      "path": "browser_files/js/application/07_aipp_pyro_editor_view.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.pyro.editor.model"
+      ],
+      "public_symbols": [
+        "P2.application.aippPyroEditorView"
+      ],
+      "reason": "Accessible AIPP pyro formulation editor view.",
+      "version": "0.3.0-m3",
+      "content_sha256": "c45d61ade8175d67910121075372d9241e4847d4403e4393f113aa53a96b6ae5"
+    },
+    {
+      "id": "testing.04q.aipp.m3.tests",
+      "path": "browser_files/js/testing/04q_aipp_m3_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04p.aipp.m2.tests",
+        "application.aipp.pyro.editor.view"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M3 qualification tests.",
+      "version": "0.3.0-m3",
+      "content_sha256": "b2df93f914965c135b8336f9526da6910e2c46fb871c312e8a18fdbd453df8eb"
+    },
+    {
+      "id": "application.aipp.chamber.pyro.model",
+      "path": "browser_files/js/application/08_aipp_chamber_pyro_model.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.pyro.editor.model"
+      ],
+      "public_symbols": [
+        "P2.application.aippChamberPyros"
+      ],
+      "reason": "Stable chamber pyro collection, formulation working copies, timing, quantity, shape, and validation.",
+      "version": "0.4.0-m4",
+      "content_sha256": "fb42a09711806b2ab91caaa48b320b31df2606f993cb66f081f1ce1135e731e3"
+    },
+    {
+      "id": "application.aipp.chamber.pyro.view",
+      "path": "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+      "category": "application",
+      "required": false,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.chamber.pyro.model"
+      ],
+      "public_symbols": [
+        "P2.application.aippChamberPyroView"
+      ],
+      "reason": "Accessible chamber pyro assignment and management view.",
+      "version": "0.4.0-m4",
+      "content_sha256": "4469624e8b790b8b364832a3bff77123618e603f0e5be0b8ae3dd75f81791b67"
+    },
+    {
+      "id": "testing.04r.aipp.m4.tests",
+      "path": "browser_files/js/testing/04r_aipp_m4_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04q.aipp.m3.tests",
+        "application.aipp.chamber.pyro.view"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M4 qualification tests.",
+      "version": "0.4.0-m4",
+      "content_sha256": "726b7ac4e6d25f25decf60696cc5e560598921279465df65dd7d6ef159904ae5"
+    },
+    {
+      "id": "application.aipp.chamber.filter.model",
+      "path": "browser_files/js/application/10_aipp_chamber_filter_model.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.application.registry"
+      ],
+      "public_symbols": [
+        "P2.application.aippChamberFilters"
+      ],
+      "reason": "M5 chamber filter model",
+      "version": "0.5.0-m5",
+      "content_sha256": "374086d17bd70073c4fa1c6487d5bf0f9ad851c6fcacb2c85f1a7f9fced80189"
+    },
+    {
+      "id": "application.aipp.chamber.filter.view",
+      "path": "browser_files/js/application/11_aipp_chamber_filter_view.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.chamber.filter.model"
+      ],
+      "public_symbols": [
+        "P2.application.aippChamberFilterView"
+      ],
+      "reason": "M5 chamber filter view",
+      "version": "0.5.0-m5",
+      "content_sha256": "cfe94e575cd488cc68636159a434cbbb6115f4ec90e8dc7037c425045378feda"
+    },
+    {
+      "id": "testing.04s.aipp.m5.tests",
+      "path": "browser_files/js/testing/04s_aipp_m5_tests.js",
+      "category": "testing",
+      "required": true,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "application.aipp.chamber.filter.view"
+      ],
+      "public_symbols": [],
+      "reason": "M5 qualification tests",
+      "version": "0.5.0-m5",
+      "content_sha256": "e96e8016f1ee47fe3e8bd0482a75ae084d9c3c87103da8ad633aa9e2ecbb0135"
+    },
+    {
+      "id": "component.test.aipp.m5.filter.surface",
+      "path": "browser_files/components_test/04_aipp_m5_filter_test_surface.html",
+      "category": "component",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "component.test.aipp.m1.surface"
+      ],
+      "public_symbols": [],
+      "reason": "M5 chamber-filter qualification DOM surface in the canonical Scilab test-component directory.",
+      "version": "0.5.1-m5.1",
+      "content_sha256": "d981158f0a8fbd966a9da8e0ead3650612a322d77367bd527a299ee1007faf3c"
+    },
+    {
+      "id": "application.aipp.workspace.shell",
+      "path": "browser_files/js/application/14_aipp_workspace_shell.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.chamber.filter.view"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M7 production workspace shell",
+      "version": "0.7.0-m7",
+      "content_sha256": "e83827f349ac88e71975178bfa7cf9fe4900b4daace88e74ea7361a3f4b38301"
+    },
+    {
+      "id": "component.test.aipp.m7.workspace",
+      "path": "browser_files/components_test/06_aipp_m7_workspace_surface.html",
+      "category": "test_component",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [],
+      "public_symbols": [],
+      "reason": "AIPP M7 production workspace shell",
+      "version": "0.7.0-m7",
+      "content_sha256": "897e37a311292d0c5012b7ddaf7d7be6cfd93f82c4eff1e38ff2af79bf92ab9b"
+    },
+    {
+      "id": "testing.04v.aipp.m7.workspace",
+      "path": "browser_files/js/testing/04v_aipp_m7_workspace_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "testing.04s.aipp.m5.tests",
+        "application.aipp.workspace.shell",
+        "component.test.aipp.m7.workspace"
+      ],
+      "public_symbols": [],
+      "reason": "AIPP M7 production workspace shell",
+      "version": "0.7.0-m7",
+      "content_sha256": "c7476f88f3fa700112f67c10b8e8120ae33e684a82f872387b3e19f0145bd7db"
+    },
+    {
+      "id": "application.aipp.deck.document",
+      "path": "browser_files/js/application/15_aipp_deck_document.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.workspace.shell"
+      ],
+      "public_symbols": [
+        "P2.application.aippDeckDocument"
+      ],
+      "reason": "M8.1 authoritative input-deck document",
+      "version": "0.8.1-m8",
+      "content_sha256": "64525396f130be743ad08f2551f09b9072403b699a39f842b1adfb75457b3657"
+    },
+    {
+      "id": "application.aipp.deck.bindings",
+      "path": "browser_files/js/application/16_aipp_deck_bindings.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.deck.document"
+      ],
+      "public_symbols": [
+        "P2.application.aippDeckBindings"
+      ],
+      "reason": "M8.1 editor synchronization bindings",
+      "version": "0.8.1-m8",
+      "content_sha256": "b9e3347fa0768bd069674571518b63ad8238d9d1a14a8825b667d69c013c313f"
+    },
+    {
+      "id": "testing.aipp.m81",
+      "path": "browser_files/js/testing/04w_aipp_m81_deck_document_tests.js",
+      "category": "testing",
+      "required": false,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "application.aipp.deck.bindings"
+      ],
+      "public_symbols": [],
+      "reason": "M8.1 authoritative deck qualification",
+      "version": "0.8.1-m8",
+      "content_sha256": "9470788d943899927875508ce9b9aae1fbd421384a596d9391f42cc4af30252e"
+    },
+    {
+      "id": "application.aipp.deck.file.service",
+      "path": "browser_files/js/application/17_aipp_deck_file_service.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.application.registry"
+      ],
+      "public_symbols": [
+        "P2.application.aippDeckFiles"
+      ],
+      "reason": "M8.2 host-owned JSON file operations",
+      "content_sha256": "d6e611e98f07ab05972f4809036f8746dd099bfcc131012dd470e50bcd58b9c6"
+    },
+    {
+      "id": "application.aipp.deck.lifecycle",
+      "path": "browser_files/js/application/18_aipp_deck_lifecycle.js",
+      "category": "application",
+      "required": true,
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ],
+      "depends_on": [
+        "application.aipp.deck.document",
+        "application.aipp.deck.file.service",
+        "application.aipp.workspace.shell"
+      ],
+      "public_symbols": [
+        "P2.application.aippDeckLifecycle"
+      ],
+      "reason": "M8.2 atomic New/Open/Save lifecycle",
+      "content_sha256": "d63d81a7b335ef16b912c1a5cfa9e0beda4c75d565216032aa868776ff9a3ee4"
+    },
+    {
+      "id": "testing.aipp.m82",
+      "path": "browser_files/js/testing/04x_aipp_m82_file_lifecycle_tests.js",
+      "category": "testing",
+      "required": true,
+      "modes": [
+        "test"
+      ],
+      "depends_on": [
+        "application.aipp.deck.lifecycle"
+      ],
+      "public_symbols": [],
+      "reason": "M8.2 regression coverage",
+      "content_sha256": "bc8bdc5c9c7e4d10fee022a59055e7a50402e728c122e9c5748fdb05091bb49b"
+    }
+  ],
+  "pillar7_implementation_version": "P7.5.0-0.1",
+  "pillar7_closure_status": "COMPLETE",
+  "pillar7_completion_date": "2026-08-07"
+}

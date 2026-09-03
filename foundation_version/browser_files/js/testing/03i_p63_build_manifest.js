@@ -1,0 +1,2 @@
+"use strict";
+P4.p63BuildMetadata={version:"P6.4.0-0.1",features:{reproducibilityEnforced:true,productionValidateOnly:true,acceptedArtifactContract:true,staleArtifactDetection:true},reproducibilityReport:"browser_files/dist/reproducibility_report.json",productionContract:"browser_files/dist/production_acceptance.json",productionLauncher:"app/starter_main.sce",qualificationLauncher:"app/main.sce",expectedInventory:167};

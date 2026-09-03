@@ -1,0 +1,19 @@
+{
+  "version": "P6.4.0-0.1",
+  "scilab": {
+    "minimum": "2026.1.0",
+    "qualified": "2026.1.0"
+  },
+  "operating_system": {
+    "qualified": "Windows",
+    "status": "live acceptance required"
+  },
+  "jcef": {
+    "source": "Scilab 2026.1.0 embedded browser"
+  },
+  "protocol": {
+    "version": 1,
+    "regression_baseline": "P4.5.1-0.1"
+  },
+  "offline_runtime": true
+}

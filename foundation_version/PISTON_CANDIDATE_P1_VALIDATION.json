@@ -1,0 +1,17 @@
+{
+  "candidate": "P1",
+  "status": "PASS",
+  "checks": [
+    "modular source",
+    "piston projection",
+    "missing collection normalization",
+    "stable GUI identity",
+    "unknown-field preservation",
+    "dependency scan",
+    "protected deletion",
+    "reorder remapping",
+    "dirty state",
+    "build validation",
+    "reproducibility build"
+  ]
+}

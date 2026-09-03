@@ -1,0 +1,35 @@
+{
+  "validation_date": "2026-08-11",
+  "milestone": "AIPP Foundation Integration M1",
+  "result": "PASS",
+  "checks": {
+    "json_files_parse": true,
+    "foundation_build_validation": "PASS",
+    "bundles": {
+      "dev": {
+        "size_bytes": 70341,
+        "sha256": "54e1c72855de95ec76f9857bf8f3b1db9432fed44544aaa64e8a571fd1c4a17b",
+        "aipp_shell_present": true,
+        "status_service_present": true
+      },
+      "test": {
+        "size_bytes": 182587,
+        "sha256": "e7572dbf7106b76149c0759a93d0db10470712e86d9936bd1d3e4b592285cd57",
+        "aipp_shell_present": true,
+        "status_service_present": true
+      },
+      "prod": {
+        "size_bytes": 62286,
+        "sha256": "2f3582a129c0c4e1a32b2027d5d34fcf810df324030d4e7f2d54abd554e3aa55",
+        "aipp_shell_present": true,
+        "status_service_present": true
+      }
+    },
+    "production_aipp_diagnostics_absent": true,
+    "staged_source_hash_spot_checks": 8,
+    "application_manifest_paths_exist": true
+  },
+  "errors": [],
+  "live_scilab_jcef_status": "NOT_RUN_IN_CONTAINER",
+  "live_acceptance_requirement": "Run app/main.sce and app/starter_main.sce with Scilab 2026.1.0 or newer."
+}

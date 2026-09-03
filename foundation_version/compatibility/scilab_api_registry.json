@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "registry_version": "P8.1.0-0.1",
+  "minimum_scilab_version": "2026.1.0",
+  "qualified_scilab_versions": [
+    "2026.1.0"
+  ],
+  "qualification_environment": "WIN-SCILAB-2026.1.0-JCEF",
+  "apis": [
+    {
+      "api": "getversion",
+      "capability": "Runtime version reporting",
+      "used_by": [
+        "app/main.sce",
+        "app/starter_main.sce",
+        "scilab/protocol/protocol_handlers.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "INT-START-001",
+        "INT-START-002",
+        "INT-REL-002"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "get_absolute_file_path",
+      "capability": "Launcher-relative root anchoring",
+      "used_by": [
+        "app/main.sce",
+        "app/starter_main.sce",
+        "scilab/bootstrap/path_resolver.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "SC-ARC-001",
+        "INT-ARC-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "fullfile / fullpath",
+      "capability": "Portable path construction and normalization",
+      "used_by": [
+        "app/*.sce",
+        "scilab/bootstrap/*.sci",
+        "scilab/buildHTML.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "SC-ARC-001",
+        "MF-ST-002"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "exec",
+      "capability": "Modular Scilab source loading",
+      "used_by": [
+        "app/main.sce",
+        "app/starter_main.sce"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "MF-ARC-002",
+        "INT-ARC-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "figure / uicontrol / createConstraints",
+      "capability": "Native window and JCEF layout host",
+      "used_by": [
+        "scilab/bootstrap/window_factory.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "INT-START-001",
+        "INT-UI-001",
+        "VIS-LAYOUT-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "jcreatebrowser",
+      "capability": "Embedded JCEF browser creation",
+      "used_by": [
+        "scilab/bootstrap/window_factory.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "INT-START-001",
+        "INT-START-002"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "toJSON / fromJSON",
+      "capability": "Host-side protocol encoding and decoding",
+      "used_by": [
+        "scilab/protocol/protocol_codec.sci",
+        "scilab/observability/*.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "SC-CODEC-001",
+        "CT-MSG-001",
+        "INT-MSG-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "mgetl / mputl",
+      "capability": "Text and evidence file reads/writes",
+      "used_by": [
+        "scilab/buildHTML.sci",
+        "scilab/protocol/protocol_handlers.sci",
+        "scilab/observability/diagnostic_package_export.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "MF-BLD-008",
+        "P7-EXP-001",
+        "P7-EXP-003"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "isdir / isfile / mkdir",
+      "capability": "Filesystem validation and output creation",
+      "used_by": [
+        "scilab/buildHTML.sci",
+        "scilab/testing/test_runner.sci",
+        "scilab/observability/diagnostic_package_export.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "MF-ST-002",
+        "MF-BLD-006",
+        "P7-EXP-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "movefile / rmdir",
+      "capability": "Atomic diagnostic export commit and cleanup",
+      "used_by": [
+        "scilab/observability/diagnostic_package_export.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P7-EXP-007",
+        "P7-EXP-008"
+      ],
+      "status": "qualified_with_workaround",
+      "fallback": "Committed-directory fallback; temporary directory is removed on failure."
+    },
+    {
+      "api": "getdate / etime / tic / toc",
+      "capability": "Wall-clock and monotonic duration capture",
+      "used_by": [
+        "scilab/testing/test_runner.sci",
+        "scilab/plotting/*.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P7-PERF-001",
+        "P7-PERF-004",
+        "SC-PLOT-001"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "timer / realtimeinit / realtime",
+      "capability": "Scheduled test and operation timing",
+      "used_by": [
+        "scilab/testing/test_runner.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "BR-REQ-003",
+        "INT-LIFE-001"
+      ],
+      "status": "qualified_with_workaround",
+      "fallback": "No runtime timer fallback; tests require Scilab 2026.1.0 timer behavior."
+    },
+    {
+      "api": "ascii",
+      "capability": "ASCII-safe bridge representation and checksums",
+      "used_by": [
+        "scilab/protocol/protocol_codec.sci",
+        "scilab/testing/test_runner.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "SC-CODEC-002",
+        "TRN-005"
+      ],
+      "status": "qualified_with_workaround",
+      "fallback": "Normalize emitted numeric bytes to a row vector before bridge transport."
+    },
+    {
+      "api": "uint32 / bitxor",
+      "capability": "FNV-1a diagnostic package integrity calculation",
+      "used_by": [
+        "scilab/observability/diagnostic_package_export.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P7-EXP-004"
+      ],
+      "status": "qualified",
+      "fallback": null
+    },
+    {
+      "api": "unix_g",
+      "capability": "Optional Windows process-memory sampling",
+      "used_by": [
+        "scilab/plotting/native_plot_adapter.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P3.4.2 memory evidence"
+      ],
+      "status": "optional",
+      "fallback": "Return supported=false and -1 values when PowerShell sampling is unavailable."
+    },
+    {
+      "api": "getpid",
+      "capability": "Optional process identity for memory sampling",
+      "used_by": [
+        "scilab/plotting/native_plot_adapter.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P3.4.2 memory evidence"
+      ],
+      "status": "optional",
+      "fallback": "Memory snapshot remains unavailable without failing plotting."
+    },
+    {
+      "api": "utsread",
+      "capability": "Optional AIFT dataset ingestion",
+      "used_by": [
+        "scilab/plotting/plot_aift_dataset.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P3.5.10.2 qualification"
+      ],
+      "status": "optional",
+      "fallback": "Reject the load with a structured dataset error; core protocol and reference application remain available."
+    },
+    {
+      "api": "isdef",
+      "capability": "Safe global observability initialization",
+      "used_by": [
+        "scilab/observability/observability_log.sci",
+        "scilab/observability/performance_registry.sci"
+      ],
+      "minimum_version": "2026.1.0",
+      "verification": [
+        "P7.1.1 startup hotfix",
+        "177/177 P7.5 regression"
+      ],
+      "status": "qualified_with_workaround",
+      "fallback": "Use the one-argument form after global declaration; do not use the unsupported second argument."
+    }
+  ]
+}

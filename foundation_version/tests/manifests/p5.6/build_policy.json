@@ -1,0 +1,24 @@
+{
+  "version": "P6.4.0-0.1",
+  "source_order": "lexicographic_case_insensitive",
+  "line_endings": "LF",
+  "offline_runtime": true,
+  "outputs": [
+    "browser_files/dist/bundle.test.html",
+    "browser_files/dist/bundle.prod.html"
+  ],
+  "forbidden_release_patterns": [
+    "C:\\\\Users\\\\",
+    "/home/",
+    "file://",
+    "http://",
+    "https://"
+  ],
+  "required_release_documents": [
+    "P5.6_README.md",
+    "docs/release/P5.6_release_notes.md",
+    "docs/release/P5.6_upgrade_guide.md",
+    "docs/release/P5.6_rollback_guide.md",
+    "docs/application/creating_an_application_operation.md"
+  ]
+}

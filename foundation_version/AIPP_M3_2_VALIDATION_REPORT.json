@@ -1,0 +1,36 @@
+{
+  "milestone": "AIPP Foundation Integration M3.2",
+  "application_version": "0.3.2-m3.2",
+  "source_candidate": "AIPP_Foundation_M3_1_Candidate.zip",
+  "source_live_results": "protocol_results_3_1.json",
+  "source_summary": {
+    "total": 196,
+    "passed": 195,
+    "failed": 1,
+    "skipped": 0
+  },
+  "source_failure": "VIS-BASE-001",
+  "correction": {
+    "token": "readyBadge",
+    "before_hex": "#dff6dd",
+    "before_rgb": "rgb(223, 246, 221)",
+    "approved_hex": "#dcf7e7",
+    "approved_rgb": "rgb(220, 247, 231)"
+  },
+  "static_result": "PASS",
+  "foundation_build_validation": "PASS",
+  "js_syntax_validation": "PASS",
+  "generated_bundles_edited_directly": false,
+  "required_live_acceptance": {
+    "passed": 196,
+    "failed": 0,
+    "skipped": 0,
+    "missingTestIds": 0,
+    "unexpectedTestIds": 0,
+    "duplicateResultIds": 0,
+    "active_requests": 0,
+    "active_transfers": 0,
+    "runtime_errors": 0
+  },
+  "live_scilab_jcef_status": "PENDING_RERUN"
+}

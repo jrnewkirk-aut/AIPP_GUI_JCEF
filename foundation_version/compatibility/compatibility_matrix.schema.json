@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "compatibility_matrix.schema.json",
+  "title": "Scilab-JCEF Compatibility Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "matrix_version",
+    "release_identity",
+    "tested_environments",
+    "runtime_dependencies",
+    "transport",
+    "build_profiles",
+    "evidence",
+    "limitations",
+    "workarounds"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "matrix_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_identity": {
+      "type": "object",
+      "required": [
+        "foundation_version",
+        "application_version",
+        "protocol_version",
+        "pillar8_implementation_version"
+      ],
+      "properties": {
+        "foundation_version": {
+          "type": "string"
+        },
+        "application_version": {
+          "type": "string"
+        },
+        "protocol_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pillar7_implementation_version": {
+          "type": "string"
+        },
+        "pillar8_implementation_version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tested_environments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "environment_id",
+          "operating_system",
+          "scilab_version",
+          "jcef_source",
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "environment_id": {
+            "type": "string"
+          },
+          "operating_system": {
+            "type": "object"
+          },
+          "scilab_version": {
+            "type": "string"
+          },
+          "architecture": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "jcef_source": {
+            "type": "string"
+          },
+          "jcef_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "qualified",
+              "partially_qualified",
+              "unsupported",
+              "not_tested"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "runtime_dependencies": {
+      "type": "object"
+    },
+    "transport": {
+      "type": "object"
+    },
+    "build_profiles": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "workarounds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

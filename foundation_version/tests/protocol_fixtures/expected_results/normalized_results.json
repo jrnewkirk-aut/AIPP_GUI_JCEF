@@ -1,0 +1,62 @@
+{
+  "CT-MSG-001": {
+    "accepted": true,
+    "error_code": "",
+    "request_id_preserved": true
+  },
+  "CT-MSG-002": {
+    "accepted": false,
+    "error_code": "MISSING_TYPE",
+    "request_id_preserved": true
+  },
+  "CT-MSG-003": {
+    "accepted": false,
+    "error_code": "MISSING_REQUEST_ID",
+    "request_id_preserved": false
+  },
+  "CT-MSG-004": {
+    "accepted": false,
+    "error_code": "INVALID_PROTOCOL",
+    "request_id_preserved": true
+  },
+  "CT-MSG-005": {
+    "accepted": false,
+    "error_code": "UNSUPPORTED_VERSION",
+    "request_id_preserved": true
+  },
+  "CT-MSG-006": {
+    "accepted": true,
+    "error_code": "",
+    "request_id_preserved": true
+  },
+  "CT-XFR-001": {
+    "accepted": true,
+    "error_code": "",
+    "received_count": 3
+  },
+  "CT-XFR-002": {
+    "accepted": true,
+    "error_code": "",
+    "received_count": 3
+  },
+  "CT-XFR-003": {
+    "accepted": false,
+    "error_code": "DUPLICATE_CHUNK",
+    "received_count": 2
+  },
+  "CT-XFR-004": {
+    "accepted": false,
+    "error_code": "INCOMPLETE_TRANSFER",
+    "received_count": 2
+  },
+  "CT-XFR-005": {
+    "accepted": false,
+    "error_code": "TRANSFER_CHECKSUM_MISMATCH",
+    "received_count": 3
+  },
+  "CT-XFR-006": {
+    "accepted": false,
+    "error_code": "TRANSFER_CANCELLED",
+    "received_count": 1
+  }
+}

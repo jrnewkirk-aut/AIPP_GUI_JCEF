@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "change_id": "P8.4.0-0.1",
+  "accepted_source": {
+    "package": "Scilab_JCEF_Foundation_P8.3.0_Upgrade_Preservation_Rollback.zip",
+    "sha256": "829a58cdf13f2208533add649ce9be39d59682dfef447d080e00126647b27cd3",
+    "state": "accepted"
+  },
+  "intent": [
+    "Enforce latest accepted source and modular-source authority.",
+    "Standardize changed-file, impact, parity, validation, limitation, and rollback declarations.",
+    "Provide executable feature-parity and change-package gates."
+  ],
+  "changed_files": [
+    {
+      "path": "change/change_package.schema.json",
+      "classification": "foundation-owned",
+      "action": "add",
+      "reason": "Canonical AI/change-package contract."
+    },
+    {
+      "path": "change/change_governance_policy.json",
+      "classification": "foundation-owned",
+      "action": "add",
+      "reason": "Machine-readable AIG governance policy."
+    },
+    {
+      "path": "change/feature_parity_baseline.json",
+      "classification": "evidence",
+      "action": "add",
+      "reason": "Accepted-source feature/module/operation baseline."
+    },
+    {
+      "path": "tools/change/compare_feature_parity.py",
+      "classification": "foundation-owned",
+      "action": "add",
+      "reason": "Feature parity comparator."
+    },
+    {
+      "path": "tools/change/validate_change_package.py",
+      "classification": "foundation-owned",
+      "action": "add",
+      "reason": "Change-package gate."
+    },
+    {
+      "path": "tools/change/scan_source_authority.py",
+      "classification": "foundation-owned",
+      "action": "add",
+      "reason": "Monolith/source-authority scanner."
+    }
+  ],
+  "impact": {
+    "runtime": "None",
+    "protocol": "None",
+    "application": "None",
+    "foundation": "Governance tooling and metadata only"
+  },
+  "manifest_updates": [
+    "package_manifest.json",
+    "app/app_manifest.json",
+    "release/release_manifest.json",
+    "package_inventory.json",
+    "SHA256SUMS.txt"
+  ],
+  "feature_parity": {
+    "baseline": "change/feature_parity_baseline.json",
+    "candidate": "change/feature_parity_baseline.json",
+    "result": "PASS",
+    "required": true
+  },
+  "validation": {
+    "build_only_sufficient": false,
+    "checks": [
+      "Change manifest structure",
+      "Accepted source identity",
+      "Feature parity positive and negative sensitivity",
+      "Modular source authority",
+      "Changed-file existence and classification"
+    ],
+    "result": "PASS"
+  },
+  "known_limitations": [
+    "P8.4 validates manifest-declared parity dimensions; semantic runtime parity still requires the inherited live regression."
+  ],
+  "rollback": [
+    "Restore the accepted P8.3 package as one complete set.",
+    "Do not retain P8.4 governance metadata without matching validators and evidence."
+  ]
+}

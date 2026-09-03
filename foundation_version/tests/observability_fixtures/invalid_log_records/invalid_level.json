@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "timestamp": "2026-08-07T00:00:00.000Z",
+  "runtime": "browser",
+  "level": "fatal",
+  "category": "protocol",
+  "event": "protocol.message_decode_failed",
+  "request_id": "req-1",
+  "transfer_id": null,
+  "details": {
+    "payload": {
+      "kind": "numeric_array",
+      "count": 100000,
+      "full_payload_logged": false
+    }
+  }
+}

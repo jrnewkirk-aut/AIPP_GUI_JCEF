@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "registry_version": "P8.1.0-0.1",
+  "workarounds": [
+    {
+      "id": "WRK-001",
+      "title": "Scilab isdef one-argument initialization",
+      "status": "active",
+      "affected_versions": {
+        "scilab": [
+          "2026.1.0"
+        ],
+        "foundation": [
+          "P6.4.0-0.1"
+        ],
+        "pillar7": [
+          "P7.1.1-0.1 and newer"
+        ]
+      },
+      "trigger": "Initializing global observability arrays during module load.",
+      "implementation": [
+        "scilab/observability/observability_log.sci",
+        "scilab/observability/performance_registry.sci"
+      ],
+      "verification": [
+        "P7.1.1 startup correction",
+        "protocol_results_7.5.json 177/177"
+      ],
+      "consequence": "Global variables are declared first and isdef is called with one argument.",
+      "removal_criteria": "Retire only after all supported Scilab versions are verified to accept a replacement form and startup regression passes."
+    },
+    {
+      "id": "WRK-002",
+      "title": "ASCII numeric payload row normalization",
+      "status": "active",
+      "affected_versions": {
+        "scilab": [
+          "2026.1.0"
+        ],
+        "transport": [
+          "Scilab-to-JCEF numeric byte vectors"
+        ]
+      },
+      "trigger": "Scilab emits or receives ASCII numeric vectors whose orientation may vary.",
+      "implementation": [
+        "scilab/protocol/protocol_codec.sci"
+      ],
+      "verification": [
+        "SC-CODEC-002",
+        "TRN-005"
+      ],
+      "consequence": "Numeric byte arrays are normalized to one row before bridge transport.",
+      "removal_criteria": "Retire only after bidirectional transport qualification proves orientation-independent behavior for every supported Scilab/JCEF pair."
+    },
+    {
+      "id": "WRK-003",
+      "title": "Committed diagnostic-directory fallback",
+      "status": "active",
+      "affected_versions": {
+        "foundation": [
+          "P6.4.0-0.1"
+        ],
+        "pillar7": [
+          "P7.4.0-0.1 and newer"
+        ],
+        "deployment": [
+          "environments without a validated ZIP helper"
+        ]
+      },
+      "trigger": "A safe, deployment-wide ZIP creation helper is not guaranteed.",
+      "implementation": [
+        "scilab/observability/diagnostic_package_export.sci"
+      ],
+      "verification": [
+        "P7-EXP-003",
+        "P7-EXP-004",
+        "P7-EXP-007",
+        "P7-EXP-008"
+      ],
+      "consequence": "Diagnostic export commits a self-describing directory with package_manifest.json and PACKAGE_COMPLETE instead of an archive.",
+      "removal_criteria": "Retire when a ZIP helper is packaged, offline, cross-platform, integrity-tested, and qualified on every supported environment."
+    },
+    {
+      "id": "WRK-004",
+      "title": "Optional Windows PowerShell process-memory sampling",
+      "status": "active",
+      "affected_versions": {
+        "operating_system": [
+          "Windows"
+        ],
+        "scilab": [
+          "2026.1.0"
+        ],
+        "plotting": [
+          "native adapter memory probe"
+        ]
+      },
+      "trigger": "Native process working-set/private-byte metrics are requested.",
+      "implementation": [
+        "scilab/plotting/native_plot_adapter.sci"
+      ],
+      "verification": [
+        "P3.4.2 memory qualification",
+        "plot.native.status response contract"
+      ],
+      "consequence": "PowerShell Get-Process is used when available; otherwise metrics report supported=false and the plot operation continues.",
+      "removal_criteria": "Retire when Scilab exposes a qualified cross-platform process-memory API or a packaged local helper replaces PowerShell."
+    },
+    {
+      "id": "WRK-005",
+      "title": "Numeric-keyed JCEF callback object summarization",
+      "status": "active",
+      "affected_versions": {
+        "jcef": [
+          "Scilab 2026.1.0 embedded browser"
+        ],
+        "pillar7": [
+          "P7.1.0-0.1 and newer"
+        ]
+      },
+      "trigger": "Bridge numeric collections arrive as objects with sequential numeric property names rather than JavaScript arrays.",
+      "implementation": [
+        "browser_files/js/observability/02_payload_summary.js"
+      ],
+      "verification": [
+        "P7-PAY-004",
+        "P7-PAY-002",
+        "P7-PAY-003"
+      ],
+      "consequence": "The payload summarizer recognizes sequential numeric keys and records count, estimated bytes, and a bounded sample without dumping all values.",
+      "removal_criteria": "Retire only after every supported JCEF bridge returns qualified native arrays or typed arrays for these callbacks."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "CT-XFR-005",
+  "category": "chunk_sequence",
+  "name": "Checksum failure rejected",
+  "chunk_count": 3,
+  "sequence": [
+    0,
+    1,
+    2
+  ],
+  "action": "complete",
+  "checksum_valid": false,
+  "expected": {
+    "accepted": false,
+    "error_code": "TRANSFER_CHECKSUM_MISMATCH",
+    "received_count": 3
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "version": "P6.4.0-0.1",
+  "profiles": {
+    "production": {
+      "testing": false,
+      "plotting": false,
+      "diagnostics": false,
+      "jcef_debug": false
+    },
+    "development": {
+      "testing": "optional",
+      "plotting": "optional",
+      "diagnostics": "optional",
+      "jcef_debug": true
+    },
+    "qualification": {
+      "testing": true,
+      "plotting": true,
+      "diagnostics": true,
+      "jcef_debug": true
+    }
+  }
+}

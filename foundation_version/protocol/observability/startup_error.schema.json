@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "title": "Startup error record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timestamp",
+    "runtime",
+    "level",
+    "category",
+    "event",
+    "details"
+  ],
+  "properties": {
+    "runtime": {
+      "const": "browser"
+    },
+    "level": {
+      "const": "error"
+    },
+    "category": {
+      "const": "startup"
+    },
+    "event": {
+      "enum": [
+        "startup.console_error",
+        "startup.unhandled_rejection"
+      ]
+    },
+    "details": {
+      "type": "object"
+    }
+  }
+}

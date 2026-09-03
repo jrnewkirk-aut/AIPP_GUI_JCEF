@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "application.aipp.status.response",
+  "title": "AIPP status response payload",
+  "type": "object",
+  "required": [
+    "application_id",
+    "application_name",
+    "application_version",
+    "ready",
+    "model_loaded",
+    "foundation_release",
+    "runtime_foundation",
+    "minimum_scilab_version"
+  ],
+  "properties": {
+    "application_id": {
+      "const": "application.aipp"
+    },
+    "application_name": {
+      "type": "string"
+    },
+    "application_version": {
+      "type": "string"
+    },
+    "ready": {
+      "type": "boolean"
+    },
+    "model_loaded": {
+      "type": "boolean"
+    },
+    "foundation_release": {
+      "type": "string"
+    },
+    "runtime_foundation": {
+      "type": "string"
+    },
+    "minimum_scilab_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

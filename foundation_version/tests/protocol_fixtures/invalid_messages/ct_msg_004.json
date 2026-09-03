@@ -1,0 +1,17 @@
+{
+  "id": "CT-MSG-004",
+  "category": "message",
+  "name": "Invalid protocol name",
+  "message": {
+    "protocol": "other-protocol",
+    "protocol_version": 1,
+    "type": "diagnostic.echo.request",
+    "request_id": "fixture-004",
+    "payload": {}
+  },
+  "expected": {
+    "accepted": false,
+    "error_code": "INVALID_PROTOCOL",
+    "request_id_preserved": true
+  }
+}

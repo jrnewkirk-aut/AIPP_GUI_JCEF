@@ -1,0 +1,290 @@
+{
+  "version": "P3.5.10.2-0.1",
+  "synthetic": true,
+  "features": [
+    {
+      "id": "PLT-DATA-001",
+      "requirement": "PLT-004",
+      "module": "scilab/plotting/plot_dataset.sci",
+      "tests": [
+        "Deterministic host dataset creation",
+        "Browser full-resolution copy prohibited"
+      ]
+    },
+    {
+      "id": "PLT-VIEW-001",
+      "requirement": "PLT-005",
+      "module": "scilab/plotting/plot_handlers.sci",
+      "tests": [
+        "Hidden curves excluded",
+        "Viewport output bounded by pixel width"
+      ]
+    },
+    {
+      "id": "PLT-REDUCE-001",
+      "requirement": "PLT-006",
+      "module": "scilab/plotting/plot_reduction.sci",
+      "tests": [
+        "Minmax extrema preservation",
+        "FLMM extrema preservation"
+      ]
+    },
+    {
+      "id": "PLT-PRECISE-001",
+      "requirement": "PLT-007",
+      "module": "scilab/plotting/plot_handlers.sci",
+      "tests": [
+        "Full-resolution point query"
+      ]
+    },
+    {
+      "id": "PLT-ADAPTER-001",
+      "requirement": "PLT-002,PLT-010",
+      "module": "browser_files/js/plotting/01_plot_adapter.js",
+      "tests": [
+        "Plot adapter lifecycle",
+        "Reference render metrics"
+      ]
+    },
+    {
+      "id": "PLT-REDUCE-002",
+      "requirement": "PLT-006",
+      "module": "scilab/plotting/plot_reduction_p32.sci",
+      "tests": [
+        "LTTB point bound",
+        "Pyramid level selection",
+        "LTTB fidelity metrics finite",
+        "Pyramid fidelity metrics finite"
+      ]
+    },
+    {
+      "id": "PLT-CACHE-001",
+      "requirement": "PLT-008",
+      "module": "scilab/plotting/plot_handlers.sci",
+      "tests": [
+        "Viewport cache miss then hit",
+        "Cached viewport response target"
+      ]
+    },
+    {
+      "id": "PLT-SCALE-001",
+      "requirement": "PLT-004,PLT-008",
+      "module": "scilab/plotting/plot_dataset.sci",
+      "tests": [
+        "Architecture-scale metadata without browser allocation",
+        "Architecture viewport remains bounded"
+      ]
+    },
+    {
+      "id": "PLT-BENCH-001",
+      "requirement": "PLT-001,PLT-002,PLT-003,PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/09_renderer_benchmark.js",
+      "tests": [
+        "Vendored renderer availability",
+        "uplot 10-curve lifecycle",
+        "echarts 50-curve benchmark",
+        "plotly 100-curve benchmark",
+        "Repeated update stability"
+      ]
+    },
+    {
+      "id": "PLT-NATIVE-001",
+      "requirement": "PLT-001,PLT-002,PLT-004,PLT-008,PLT-010",
+      "module": "scilab/plotting/native_plot_adapter.sci",
+      "tests": [
+        "Hybrid native axes available",
+        "Native reduced 100-curve render",
+        "Equivalent input 100 curves",
+        "Native repeated retained-update stability",
+        "Native destroy cleanup"
+      ]
+    },
+    {
+      "id": "PLT-MEASURE-001",
+      "requirement": "PLT-008,PLT-010",
+      "module": "scilab/plotting/native_plot_adapter.sci",
+      "tests": [
+        "Corrected native timings nonnegative",
+        "Prepared identical arrays 100 curves",
+        "Native process-memory delta labeled",
+        "Native five-cycle lifecycle memory",
+        "uPlot five-cycle lifecycle memory"
+      ]
+    },
+    {
+      "id": "PLT-MEASURE-FIX-001",
+      "requirement": "PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/13_measurement_tests.js",
+      "tests": [
+        "Native process-memory delta labeled",
+        "Memory sampling overhead separated",
+        "Native five-cycle lifecycle memory",
+        "Native destroy timing and memory"
+      ]
+    },
+    {
+      "id": "PLT-EXP-001",
+      "requirement": "PLT-001,PLT-004,PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/14_experience_lab.js",
+      "tests": [
+        "manual exclusive renderer sessions",
+        "P50/P90/P95 interaction traces",
+        "controlled memory checkpoints",
+        "human rating export",
+        "good-enough gates"
+      ]
+    },
+    {
+      "id": "PLT-ECHARTS-SURFACE-001",
+      "requirement": "PLT-004,PLT-008",
+      "module": "browser_files/js/plotting/07_echarts_adapter.js",
+      "tests": [
+        "P3.5.1 ECharts visible surface",
+        "nonzero ZRender dimensions",
+        "canvas mounted after renderer switch"
+      ]
+    },
+    {
+      "id": "PLT-ECHARTS-PROBE-001",
+      "requirement": "PLT-004,PLT-008",
+      "module": "browser_files/js/plotting/15_echarts_capability_probe.js",
+      "tests": [
+        "plain value axes",
+        "multiple lines",
+        "inside dataZoom",
+        "item tooltip",
+        "axis tooltip",
+        "line axisPointer",
+        "slider dataZoom",
+        "highest passing safe profile"
+      ]
+    },
+    {
+      "id": "PLT-ECHARTS-PERSIST-001",
+      "requirement": "PLT-004,PLT-008",
+      "module": "browser_files/js/plotting/07_echarts_adapter.js",
+      "tests": [
+        "deferred initial viewport",
+        "complete first Cartesian option",
+        "two-second persistent visible render",
+        "nonempty ZRender display list",
+        "canvas remains attached"
+      ]
+    },
+    {
+      "id": "PLT-WORKLOAD-INTEGRITY-001",
+      "requirement": "PLT-004,PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/14_experience_lab.js",
+      "tests": [
+        "selected versus active configuration",
+        "stale render blocked",
+        "10/50/100/250 exact curve counts",
+        "native requested versus applied bounds",
+        "native clipping enabled",
+        "dedicated ECharts probe surface"
+      ]
+    },
+    {
+      "id": "PLT-ECHARTS-INTERACTION-001",
+      "requirement": "PLT-004,PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/07_echarts_adapter.js",
+      "tests": [
+        "full interaction profile default",
+        "wheel zoom",
+        "drag pan",
+        "slider zoom",
+        "crosshair tooltip",
+        "reset zoom",
+        "dataZoom viewport synchronization",
+        "10-250 progressive curve sweep",
+        "long workload progress"
+      ]
+    },
+    {
+      "id": "PLT-PHASE1-MEASURE-001",
+      "requirement": "PLT-010",
+      "module": "browser_files/js/plotting/16_phase1_measurements.js",
+      "tests": [
+        "ECharts/native warmup and three repetitions",
+        "host stage timing",
+        "browser stage timing",
+        "ECharts stage timing",
+        "native drawnow timing",
+        "cache-controlled measurements"
+      ]
+    },
+    {
+      "id": "PLT-PRODUCTION-VIEWPORT-001",
+      "requirement": "PLT-005,PLT-006,PLT-008,PLT-010",
+      "module": "scilab/plotting/plot_handlers.sci",
+      "tests": [
+        "production skips fidelity",
+        "validation retains fidelity",
+        "mode-separated cache",
+        "tic/toc host timing",
+        "production versus validation benchmark",
+        "point and curve count equivalence"
+      ]
+    },
+    {
+      "id": "PLT-PYRAMID-CACHE-001",
+      "requirement": "PLT-005,PLT-006,PLT-008,PLT-010",
+      "module": "scilab/plotting/plot_pyramid_cache.sci",
+      "tests": [
+        "lazy curve build",
+        "warm reuse",
+        "dataset invalidation",
+        "retained byte accounting",
+        "full-range extrema equivalence",
+        "baseline cold warm benchmark",
+        "non-nested host total timing"
+      ]
+    },
+    {
+      "id": "PLT-PYRAMID-CLIENT-FIX-001",
+      "requirement": "PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/03_plot_service.js",
+      "tests": [
+        "pyramid status uses protocol client",
+        "pyramid clear uses protocol client",
+        "no nonexistent transport request call"
+      ]
+    },
+    {
+      "id": "PLT-PYRAMID-TIMER-FIX-001",
+      "requirement": "PLT-010",
+      "module": "scilab/plotting/plot_pyramid_cache.sci",
+      "tests": [
+        "tic has no assigned output",
+        "toc has no timer-handle input",
+        "nested wall timing uses getdate and etime"
+      ]
+    },
+    {
+      "id": "PLT-PYRAMID-TIMEOUT-FIX-001",
+      "requirement": "PLT-008,PLT-010",
+      "module": "browser_files/js/plotting/18_pyramid_optimization.js",
+      "tests": [
+        "architecture cold build timeout 600 seconds",
+        "baseline cold warm sequence preserved",
+        "timeout failure remains explicit"
+      ]
+    },
+    {
+      "id": "PLT-PYRAMID-INCREMENTAL-001",
+      "requirement": "PLT-005,PLT-006,PLT-008,PLT-010",
+      "module": "scilab/plotting/plot_pyramid_cache.sci",
+      "tests": [
+        "baseline first response unchanged",
+        "five-curve resumable steps",
+        "progress and ETA",
+        "cancellation",
+        "duplicate build prevention",
+        "mixed ready/unready viewport",
+        "dataset invalidation",
+        "fully warm extrema equivalence",
+        "retained byte accounting"
+      ]
+    }
+  ]
+}

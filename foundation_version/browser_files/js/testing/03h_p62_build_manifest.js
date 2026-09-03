@@ -1,0 +1,2 @@
+"use strict";
+P4.p62BuildMetadata={version:"P6.4.0-0.1",features:{structuredLauncherValidation:true,dependencyCycleDetection:true,mutationSensitivity:true,trueDevelopmentBundle:true},launcherChecks:{canonical:"app/main.sce",starter:"app/starter_main.sce",compatibility:"main.sce"},development:{component:"component.dev.diagnostics",diagnosticsModule:"diagnostics.dev.panel",includesPlotting:true,includesTesting:false},mutationCases:["duplicate_module_id","unknown_dependency","dependency_cycle","missing_placeholder","production_test_leak","launcher_order"]};

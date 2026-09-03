@@ -1,0 +1,20 @@
+{
+  "id": "CT-MSG-006",
+  "category": "message",
+  "name": "Unknown optional field tolerated",
+  "message": {
+    "protocol": "scilab-jcef",
+    "protocol_version": 1,
+    "type": "diagnostic.echo.request",
+    "request_id": "fixture-006",
+    "payload": {},
+    "future_optional": {
+      "enabled": true
+    }
+  },
+  "expected": {
+    "accepted": true,
+    "error_code": "",
+    "request_id_preserved": true
+  }
+}

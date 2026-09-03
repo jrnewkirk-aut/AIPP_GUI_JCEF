@@ -1,0 +1,16 @@
+{
+  "application_version": "0.5.3.1-m5.3.1",
+  "material_file": "application/data/material_list.json",
+  "material_names_shape": "1-by-N row vector",
+  "declared_tests": 224,
+  "static_result": "PASS_PENDING_LIVE_ACCEPTANCE",
+  "resolved_failures": [
+    "MF-APP-001",
+    "BR-APP-002",
+    "BR-EXT-003",
+    "AIPP-M5-003",
+    "AIPP-M5-009",
+    "AIPP-M531-002",
+    "AIPP-M531-004"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 03",
+  "application_version": "0.8.10-phase0.5b-candidate.3",
+  "foundation_version": "P6.4.0-0.1",
+  "review_configuration": {
+    "selector_dev": true,
+    "selector_test": true,
+    "selector_prod": true,
+    "default_dev": "phase05b",
+    "default_test": "phase05b",
+    "default_prod": "phase05b",
+    "jcef_debug_test": true,
+    "jcef_debug_prod": true,
+    "temporary": true
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B review-mode validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production scan",
+      "status": "PASS",
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Selector and proposed default in all bundles",
+      "status": "PASS"
+    },
+    {
+      "check": "Qualification and production debug enabled",
+      "status": "PASS"
+    },
+    {
+      "check": "Test manifest uniqueness",
+      "status": "PASS",
+      "declared_tests": 456
+    }
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 456,
+    "result_not_simulated": true
+  },
+  "release_note": "Before release promotion, disable production JCEF debugging and remove or explicitly approve prototype controls."
+}

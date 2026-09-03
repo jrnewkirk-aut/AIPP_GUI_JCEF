@@ -1,0 +1,43 @@
+{
+  "version": "P4.5.1-0.1",
+  "manual_validations": [
+    {
+      "id": "MAN-JCEF-RELOAD-001",
+      "requirement": "TST-001",
+      "reason": "No supported in-page reload primitive can preserve the active acceptance runner",
+      "steps": [
+        "Start test bundle",
+        "Run smoke tier",
+        "Reload browser control using JCEF developer tools",
+        "Verify host-ready returns",
+        "Run echo and final health"
+      ],
+      "evidence": "record pass/fail and console errors"
+    },
+    {
+      "id": "MAN-JCEF-SIZES-001",
+      "requirement": "TST-007",
+      "reason": "Host figure resizing during the same acceptance run can invalidate browser geometry measurements",
+      "sizes": [
+        "1728x887",
+        "1050x720",
+        "800x600"
+      ],
+      "evidence": "structured snapshot and critical-control reachability at each size"
+    },
+    {
+      "id": "MAN-VISUAL-CAPTURE-001",
+      "requirement": "TST-009",
+      "reason": "The Scilab browser control exposes no validated pixel-capture API",
+      "states": [
+        "startup",
+        "idle",
+        "running",
+        "results populated",
+        "long detail",
+        "error state"
+      ],
+      "evidence": "manual screenshots with dimensions and environment metadata"
+    }
+  ]
+}

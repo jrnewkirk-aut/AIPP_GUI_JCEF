@@ -1,0 +1,21 @@
+{
+  "fix_version": "0.1.3-m1.3",
+  "result": "PASS",
+  "static_build_validation": "PASS",
+  "live_build_path_simulation": "PASS",
+  "declared_operational_tests": 180,
+  "expected_total_results": 181,
+  "aipp_test_ids": [
+    "AIPP-APP-001",
+    "AIPP-APP-004",
+    "AIPP-APP-006"
+  ],
+  "required_dom_id_counts": {
+    "aippStatusButton": 1,
+    "aippStatusResult": 1,
+    "aippFoundationBadge": 1,
+    "aippRuntimeState": 1
+  },
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "generated_bundles_edited_directly": false
+}

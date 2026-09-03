@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B Close",
+  "candidate": "Candidate 01",
+  "application_version": "0.8.10-phase0.5b-close.candidate.1",
+  "foundation_version": "P6.4.0-0.1",
+  "baseline": "0.8.10-phase0.5b-candidate.7",
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B contract validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production dependency scan",
+      "status": "PASS",
+      "scanned_files": 74,
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Unique test inventory",
+      "status": "PASS",
+      "declared_tests": 475
+    }
+  ],
+  "closure_additions": {
+    "hover_lifecycle_tests": 8,
+    "single_card_diagnostics": true,
+    "presentation_switch_closes_card": true,
+    "document_replace_closes_card": true,
+    "long_label_many_pyro_fixture": true,
+    "orifice_constant_and_table_fixture": true,
+    "all_wall_boundary_fixture": true,
+    "serialization_revision_dirty_invariants": true
+  },
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 475,
+    "result_not_simulated": true
+  }
+}

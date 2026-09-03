@@ -1,0 +1,136 @@
+{
+  "version": "P6.4.0-0.1",
+  "regression_baseline": "P4.5.1-0.1",
+  "minimum_scilab_version": "2026.1.0",
+  "canonical_launcher": "app/main.sce",
+  "primary_browser_controls": 1,
+  "ownership": {
+    "native_paths": "scilab",
+    "filesystem": "scilab",
+    "dom": "browser",
+    "request_registry": "browser",
+    "host_lifecycle": "scilab"
+  },
+  "production_forbidden_tokens": [
+    "__JCEF_TEST_API__",
+    "test.handler.throw.request",
+    "runAcceptanceButton",
+    "components_test"
+  ],
+  "modules": [
+    {
+      "id": "bootstrap.config",
+      "path": "app/app_config.sci",
+      "interface": [
+        "p52AppConfig"
+      ],
+      "dependencies": [],
+      "requirements": [
+        "ARC-001",
+        "ARC-010"
+      ],
+      "classification": "foundation"
+    },
+    {
+      "id": "bootstrap.loader",
+      "path": "scilab/bootstrap/module_loader.sci",
+      "interface": [
+        "p521RuntimeModules",
+        "p521ModulePath"
+      ],
+      "dependencies": [
+        "bootstrap.config"
+      ],
+      "requirements": [
+        "ARC-001",
+        "ARC-010"
+      ],
+      "classification": "foundation"
+    },
+    {
+      "id": "bootstrap.state",
+      "path": "scilab/bootstrap/runtime_state.sci",
+      "interface": [
+        "p52InitializeFoundationState",
+        "p52InitializePlottingState"
+      ],
+      "dependencies": [],
+      "requirements": [
+        "ARC-001",
+        "ARC-010"
+      ],
+      "classification": "foundation"
+    },
+    {
+      "id": "bootstrap.window",
+      "path": "scilab/bootstrap/window_factory.sci",
+      "interface": [
+        "p52CreateMainWindow"
+      ],
+      "dependencies": [
+        "bootstrap.config"
+      ],
+      "requirements": [
+        "ARC-002",
+        "ARC-003",
+        "ARC-004",
+        "ARC-010"
+      ],
+      "classification": "foundation"
+    },
+    {
+      "id": "application.host",
+      "path": "scilab/handlers/application_handlers.sci",
+      "interface": [
+        "p52HandleExamplePing"
+      ],
+      "dependencies": [],
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ],
+      "classification": "application-example"
+    },
+    {
+      "id": "application.browser",
+      "path": "browser_files/js/application/01_example_service.js",
+      "interface": [
+        "P2.application.ping"
+      ],
+      "dependencies": [
+        "protocol.client"
+      ],
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ],
+      "classification": "application-example"
+    },
+    {
+      "id": "protocol.client",
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "interface": [
+        "P2.client"
+      ],
+      "dependencies": [],
+      "requirements": [
+        "ARC-009",
+        "ARC-010"
+      ],
+      "classification": "foundation"
+    },
+    {
+      "id": "testing.routes",
+      "path": "scilab/testing/extensions/test_routes.sci",
+      "interface": [
+        "p52RouteTestMessage"
+      ],
+      "dependencies": [],
+      "requirements": [
+        "TST-004",
+        "ARC-010"
+      ],
+      "classification": "test-only"
+    }
+  ]
+}

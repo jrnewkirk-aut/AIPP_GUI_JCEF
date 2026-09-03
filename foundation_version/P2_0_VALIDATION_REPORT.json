@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "package": "AIPP_Piston_P2_0_Architecture_Candidate01",
+  "status": "PASS",
+  "kind": "architecture-only",
+  "production_behavior_changed": false,
+  "source_parity": {
+    "compared_roots": [
+      "app",
+      "application",
+      "browser_files",
+      "scilab",
+      "tests",
+      "tools"
+    ],
+    "changed_files": [],
+    "pass": true
+  },
+  "accepted_live_baseline": {
+    "scilab_version": "scilab-2026.1.0",
+    "declared": 497,
+    "executed": 497,
+    "failed": 0,
+    "missing": [],
+    "unexpected": [],
+    "duplicates": []
+  },
+  "declared_test_count": 497,
+  "static_validation": {
+    "build": "PASS",
+    "m810_phase05b": "PASS"
+  },
+  "documents": [
+    "P2_0_PISTON_ARCHITECTURE_AND_SCHEMA_CONTRACT.md",
+    "docs/piston_p2/p2_0_contract.json",
+    "docs/piston_p2/AIPP3_UserGuide_rendered.html",
+    "docs/piston_p2/piston_user_guide_extract.txt"
+  ]
+}

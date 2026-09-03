@@ -1,0 +1,16 @@
+{
+  "candidate": "06.13",
+  "baseline": "06.12",
+  "status": "PASS_STATIC_AND_BUILD",
+  "checks": {
+    "model_selector": true,
+    "override_editor": true,
+    "table_editor": true,
+    "model_api": true,
+    "mode_api": true,
+    "prod_bundle": true,
+    "test_bundle": true,
+    "no_synthetic_mode": true
+  },
+  "full_live_scilab_jcef_required": true
+}

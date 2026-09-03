@@ -1,0 +1,18 @@
+AIPP M8.9.1 Orifice Complete - Correction 03
+
+Issue fixed
+- AIPP-M82-001 checked toolbar geometry while the shared workspace could still be on the hidden Outputs tab after earlier browser-layer tests.
+- The New Deck lifecycle behavior itself was correct.
+
+Correction
+- The test records the active workspace tab, selects the Editor tab before checking toolbar visibility, and restores the prior tab in a finally block.
+- No production source or application behavior was changed.
+
+Validation completed
+- JavaScript syntax check: PASS
+- P6.2 build: PASS
+- Build source hash validation: PASS
+- P6.3 isolated build and reproducibility: PASS
+- Production bundle SHA-256 unchanged from Correction 02: 379ffc1ccf736ea01db1013830123fd4a57da5d67e6b79146d9aa1adb07a882d
+
+Live Scilab/JCEF acceptance must be rerun to produce final protocol evidence.

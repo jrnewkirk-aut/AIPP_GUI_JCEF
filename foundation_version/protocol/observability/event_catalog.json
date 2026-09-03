@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "levels": [
+    "debug",
+    "info",
+    "warn",
+    "error"
+  ],
+  "categories": [
+    "startup",
+    "build",
+    "transport",
+    "protocol",
+    "file_io",
+    "state",
+    "render",
+    "plot",
+    "performance",
+    "test"
+  ],
+  "events": [
+    "startup.browser_bootstrap_started",
+    "startup.browser_loaded",
+    "startup.host_ready",
+    "build.manifest_loaded",
+    "transport.request_started",
+    "transport.request_completed",
+    "transport.request_timed_out",
+    "transport.transfer_started",
+    "transport.transfer_completed",
+    "transport.transfer_cancelled",
+    "protocol.message_decode_failed",
+    "protocol.unknown_message_type",
+    "file_io.operation_started",
+    "file_io.operation_completed",
+    "file_io.operation_failed",
+    "state.transition",
+    "render.started",
+    "render.completed",
+    "plot.reduction_started",
+    "plot.reduction_completed",
+    "performance.metric_recorded",
+    "test.run_started",
+    "test.case_completed",
+    "test.run_completed"
+  ]
+}

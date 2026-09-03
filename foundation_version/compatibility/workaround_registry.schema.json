@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workaround_registry.schema.json",
+  "title": "Scilab-JCEF Workaround Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_version",
+    "workarounds"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "registry_version": {
+      "type": "string"
+    },
+    "workarounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "affected_versions",
+          "trigger",
+          "implementation",
+          "verification",
+          "consequence",
+          "removal_criteria"
+        ],
+        "properties": {
+          "id": {
+            "pattern": "^WRK-[0-9]{3}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "monitor",
+              "retired"
+            ]
+          },
+          "affected_versions": {
+            "type": "object"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "implementation": {
+            "type": "array"
+          },
+          "verification": {
+            "type": "array"
+          },
+          "consequence": {
+            "type": "string"
+          },
+          "removal_criteria": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

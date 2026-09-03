@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "candidate": "AIPP M8.8 Candidate 05.2",
+  "baseline": "Candidate 05.1",
+  "status": "PASS_STATIC",
+  "application_version": "0.8.8-candidate.5.2",
+  "minimum_scilab_version": "2026.1.0",
+  "declared_executable_tests": 333,
+  "baseline_tests": 311,
+  "additive_tests": 22,
+  "synthetic_inventory_row_declared": false,
+  "checks": {
+    "baseline_zip_integrity": "PASS",
+    "prechange_build_reproducibility": "PASS",
+    "prechange_build_validation": "PASS",
+    "javascript_syntax_modified_modules": "PASS",
+    "documented_shape_selector": "PASS",
+    "unified_dimensional_geometry_renderer": "PASS",
+    "num_fins_integer_without_units": "PASS",
+    "embedded_test_manifest_count_333": "PASS",
+    "synthetic_inventory_semantics": "PASS",
+    "deterministic_build": "PASS",
+    "build_validation": "PASS",
+    "production_test_exclusion": "PASS"
+  },
+  "live_scilab_jcef": "REQUIRED_FOR_PROMOTION",
+  "expected_live_acceptance": {
+    "declaredExecutableTests": 333,
+    "executedExecutableTests": 333,
+    "passed": 333,
+    "failed": 0,
+    "skipped": 0,
+    "unexpectedIds": 0,
+    "missingIds": 0,
+    "duplicateIds": 0,
+    "syntheticInventoryResult": "PASS",
+    "possibleExportedResultRows": 334
+  }
+}

@@ -1,0 +1,2177 @@
+{
+  "version": "0.8.3-m8.3",
+  "tests": [
+    {
+      "id": "SC-PRO-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ]
+    },
+    {
+      "id": "SC-PRO-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-001",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-PRO-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-014",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "SC-XFR-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-PLOT-001",
+      "layer": "scilab",
+      "requirements": [
+        "PLT-006"
+      ]
+    },
+    {
+      "id": "SC-PLOT-002",
+      "layer": "scilab",
+      "requirements": [
+        "PLT-007"
+      ]
+    },
+    {
+      "id": "BR-PRO-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ]
+    },
+    {
+      "id": "BR-PRO-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-001",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-REQ-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "BR-REQ-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-REQ-003",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "BR-PLOT-001",
+      "layer": "browser",
+      "requirements": [
+        "PLT-002",
+        "PLT-010"
+      ]
+    },
+    {
+      "id": "BR-PLOT-002",
+      "layer": "browser",
+      "requirements": [
+        "PLT-002"
+      ]
+    },
+    {
+      "id": "BR-UI-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ]
+    },
+    {
+      "id": "MF-ID-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-FEAT-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-MOD-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-PROD-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004"
+      ]
+    },
+    {
+      "id": "MF-PROD-002",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004"
+      ]
+    },
+    {
+      "id": "CT-MSG-001",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-002",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-003",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-004",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-005",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-MSG-006",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-001",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-002",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-003",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-004",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-005",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "CT-XFR-006",
+      "layer": "contract",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "INT-START-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-START-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-003",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-MSG-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-002",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-003",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-XFR-006",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-LIFE-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-UI-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-HEALTH-001",
+      "layer": "integration",
+      "requirements": [
+        "TST-003",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "VIS-BASE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-LAYOUT-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-LAYOUT-002",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-TABLE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-DETAIL-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-STATE-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-STATUS-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-A11Y-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-RESP-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "VIS-SNAP-001",
+      "layer": "visual",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "SC-CODEC-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-002",
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "SC-CODEC-002",
+      "layer": "scilab",
+      "requirements": [
+        "TRN-005"
+      ]
+    },
+    {
+      "id": "SC-CODEC-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-ROUTE-001",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-006",
+        "PRO-007"
+      ]
+    },
+    {
+      "id": "SC-ROUTE-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-009",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-003",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-004",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-005",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-XFR-006",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "SC-XFR-007",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-010",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-CODEC-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "P45-CODEC-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005"
+      ]
+    },
+    {
+      "id": "P45-CODEC-003",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-CODEC-004",
+      "layer": "browser",
+      "requirements": [
+        "PRO-005",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-REQ-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-003",
+        "PRO-004",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-REQ-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-XFR-001",
+      "layer": "browser",
+      "requirements": [
+        "PRO-009",
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-XFR-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-UI-001",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "P45-MAN-001",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "P45-INT-001",
+      "layer": "integration",
+      "requirements": [
+        "PRO-005",
+        "PRO-007",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "P45-INT-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-INT-003",
+      "layer": "integration",
+      "requirements": [
+        "TRN-004",
+        "PRO-010"
+      ]
+    },
+    {
+      "id": "P45-INT-004",
+      "layer": "integration",
+      "requirements": [
+        "TRN-004",
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "P45-INT-005",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "MF-ARC-001",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "MF-ARC-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ARC-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-004"
+      ]
+    },
+    {
+      "id": "MF-ARC-004",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-007",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "BR-ARC-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-009"
+      ]
+    },
+    {
+      "id": "BR-ARC-002",
+      "layer": "browser",
+      "requirements": [
+        "ARC-009"
+      ]
+    },
+    {
+      "id": "SC-ARC-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "SC-ARC-002",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "INT-ARC-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-001",
+        "ARC-002"
+      ]
+    },
+    {
+      "id": "INT-ARC-002",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005"
+      ]
+    },
+    {
+      "id": "INT-ARC-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-006",
+        "ARC-007"
+      ]
+    },
+    {
+      "id": "INT-ARC-004",
+      "layer": "integration",
+      "requirements": [
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "MF-ST-001",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-001",
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-ST-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ST-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-ST-004",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "ARC-007"
+      ]
+    },
+    {
+      "id": "BR-ST-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-ST-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-ST-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-ST-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-APP-001",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-004",
+        "TST-001"
+      ]
+    },
+    {
+      "id": "MF-APP-002",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-APP-003",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-010",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-APP-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-APP-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "TST-006"
+      ]
+    },
+    {
+      "id": "MF-APP-006",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "AIG-002"
+      ]
+    },
+    {
+      "id": "BR-APP-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-APP-002",
+      "layer": "browser",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "SC-APP-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "SC-APP-002",
+      "layer": "scilab",
+      "requirements": [
+        "TST-003",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "INT-APP-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-APP-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-REL-001",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-001",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "MF-REL-002",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-REL-003",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-REL-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "AIG-005"
+      ]
+    },
+    {
+      "id": "MF-REL-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-002",
+        "BLD-008",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-REL-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-005",
+        "CMP-003"
+      ]
+    },
+    {
+      "id": "MF-REL-007",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-003",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-REL-008",
+      "layer": "manifest",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-EXT-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "BR-EXT-002",
+      "layer": "browser",
+      "requirements": [
+        "PRO-012",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "BR-EXT-003",
+      "layer": "browser",
+      "requirements": [
+        "ARC-005",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "SC-EXT-001",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "SC-EXT-002",
+      "layer": "scilab",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "SC-EXT-003",
+      "layer": "scilab",
+      "requirements": [
+        "ARC-005",
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "INT-EXT-001",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "INT-EXT-002",
+      "layer": "integration",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "INT-EXT-003",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-REL-001",
+      "layer": "integration",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "INT-REL-002",
+      "layer": "integration",
+      "requirements": [
+        "CMP-001",
+        "CMP-002"
+      ]
+    },
+    {
+      "id": "INT-REL-003",
+      "layer": "integration",
+      "requirements": [
+        "AIG-006",
+        "AIG-007"
+      ]
+    },
+    {
+      "id": "MF-BLD-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004"
+      ]
+    },
+    {
+      "id": "MF-BLD-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004",
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "MF-BLD-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-BLD-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007"
+      ]
+    },
+    {
+      "id": "MF-BLD-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-002"
+      ]
+    },
+    {
+      "id": "MF-BLD-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-BLD-007",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-005"
+      ]
+    },
+    {
+      "id": "MF-BLD-008",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009"
+      ]
+    },
+    {
+      "id": "MF-BLD-009",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-BLD-010",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P62-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-003",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P62-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010",
+        "ARC-001"
+      ]
+    },
+    {
+      "id": "MF-P62-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-004",
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "MF-P62-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P62-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "OBS-008"
+      ]
+    },
+    {
+      "id": "MF-P62-006",
+      "layer": "manifest",
+      "requirements": [
+        "TST-004",
+        "BLD-007"
+      ]
+    },
+    {
+      "id": "MF-P62-007",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "PLT-010"
+      ]
+    },
+    {
+      "id": "MF-P62-008",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P62-009",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "TST-004"
+      ]
+    },
+    {
+      "id": "MF-P62-010",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-004",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "BR-P62-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P62-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-P63-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-P63-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P63-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-P63-004",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-008",
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "MF-P63-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-010",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "MF-P63-006",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-007",
+        "BLD-010"
+      ]
+    },
+    {
+      "id": "MF-P63-007",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P63-008",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-003",
+        "BLD-011"
+      ]
+    },
+    {
+      "id": "BR-P63-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P63-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "MF-P64-001",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-008",
+        "AIG-003"
+      ]
+    },
+    {
+      "id": "MF-P64-002",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-012",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P64-003",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-001",
+        "BLD-008"
+      ]
+    },
+    {
+      "id": "MF-P64-004",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-P64-005",
+      "layer": "manifest",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "MF-P64-006",
+      "layer": "manifest",
+      "requirements": [
+        "AIG-003",
+        "AIG-006"
+      ]
+    },
+    {
+      "id": "MF-P64-007",
+      "layer": "manifest",
+      "requirements": [
+        "TST-001",
+        "AIG-004"
+      ]
+    },
+    {
+      "id": "MF-P64-008",
+      "layer": "manifest",
+      "requirements": [
+        "CMP-004",
+        "BLD-009"
+      ]
+    },
+    {
+      "id": "BR-P64-001",
+      "layer": "browser",
+      "requirements": [
+        "BLD-009",
+        "CMP-004"
+      ]
+    },
+    {
+      "id": "INT-P64-001",
+      "layer": "integration",
+      "requirements": [
+        "AIG-007",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-APP-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-APP-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-APP-006",
+      "layer": "browser",
+      "requirements": [
+        "BLD-006"
+      ]
+    },
+    {
+      "id": "AIPP-M2-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-M2-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M2-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M2-004",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M2-005",
+      "layer": "integration",
+      "requirements": [
+        "PRO-011",
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M2-006",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-M3-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ]
+    },
+    {
+      "id": "AIPP-M3-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-003",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M3-004",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ]
+    },
+    {
+      "id": "AIPP-M3-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M3-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M3-008",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M3-009",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ]
+    },
+    {
+      "id": "AIPP-M3-010",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "name": "Chamber pyro manager model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-001"
+    },
+    {
+      "name": "Chamber pyro manager controls exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-002"
+    },
+    {
+      "name": "Default chamber pyro is deterministic",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-003"
+    },
+    {
+      "name": "Chamber pyro identifiers are unique and stable",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-004"
+    },
+    {
+      "name": "Formulation assignment creates isolated working copy",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-005"
+    },
+    {
+      "name": "Duplicated pyros remain independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-006"
+    },
+    {
+      "name": "Remove selects a deterministic neighbor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-007"
+    },
+    {
+      "name": "Quantity and timing validation rejects invalid values",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-008"
+    },
+    {
+      "name": "Shape changes install shape-specific defaults",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-009"
+    },
+    {
+      "name": "Unknown chamber pyro is rejected cleanly",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-010"
+    },
+    {
+      "name": "Chamber pyro controls are visible and reachable",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-011"
+    },
+    {
+      "name": "Chamber pyro workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M4-012"
+    },
+    {
+      "name": "Chamber filter model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-001"
+    },
+    {
+      "name": "Chamber filter controls exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-002"
+    },
+    {
+      "name": "Default chamber filter is deterministic",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-003"
+    },
+    {
+      "name": "Filter duplication remains independent",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-004"
+    },
+    {
+      "name": "Only chamber from-side orifices may be assigned",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-005"
+    },
+    {
+      "name": "Filter validation rejects invalid coefficient and method",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-006"
+    },
+    {
+      "name": "Orifice dependency scan and delete remap are deterministic",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-007"
+    },
+    {
+      "name": "Unknown filter and method are rejected cleanly",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-008"
+    },
+    {
+      "name": "Chamber filter controls are visible, styled, and editable",
+      "layer": "integration",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-009"
+    },
+    {
+      "name": "Chamber filter workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M5-010"
+    },
+    {
+      "name": "Runtime material service is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-001"
+    },
+    {
+      "name": "Material list loads through live bridge at runtime",
+      "layer": "integration",
+      "requirements": [
+        "ARC-005",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-002"
+    },
+    {
+      "name": "Runtime material records retain every supplied property",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-005"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-003"
+    },
+    {
+      "name": "Material property renderer has no fixed property whitelist",
+      "layer": "integration",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-004"
+    },
+    {
+      "name": "Runtime material workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-005"
+    },
+    {
+      "name": "M5.3.1 application identity agrees across runtime boundaries",
+      "layer": "integration",
+      "requirements": [
+        "CMP-004",
+        "TST-008"
+      ],
+      "tier": "standard",
+      "id": "AIPP-M531-006"
+    },
+    {
+      "id": "AIPP-M6-001",
+      "name": "Topology model and view are registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-002",
+      "name": "Topology controls exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-003",
+      "name": "Chamber identifiers are deterministic",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-004",
+      "name": "Orifice endpoints use stable chamber IDs",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-005",
+      "name": "Connected chamber removal is blocked",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-006",
+      "name": "Removing connection permits chamber removal",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-007",
+      "name": "Self-connected orifice is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-008",
+      "name": "Topology UI renders entities",
+      "layer": "integration",
+      "requirements": [
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M6-009",
+      "name": "Topology workflow leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-001",
+      "name": "Production workspace controller is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-002",
+      "name": "Three primary workspace tabs exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-003",
+      "name": "Three primary workspace panels exist",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-004",
+      "name": "Workspace defaults to input deck editor",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-005",
+      "name": "Workspace switches to runtime",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-006",
+      "name": "Workspace switches to outputs",
+      "layer": "browser",
+      "requirements": [
+        "TST-007"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-007",
+      "name": "Unknown workspace tab is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M7-008",
+      "name": "Workspace switching leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-001",
+      "name": "Authoritative deck document service is registered",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-002",
+      "name": "Deck document declares schema and version",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-003",
+      "name": "Deck document owns all editor sections",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-004",
+      "name": "Topology mutation synchronizes authoritative deck",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-005",
+      "name": "Meaningful mutation marks deck dirty",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-006",
+      "name": "Mark saved clears dirty state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-007",
+      "name": "Deck snapshot is isolated from internal state",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-008",
+      "name": "Invalid deck schema is rejected",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-009",
+      "name": "Deck serialization is deterministic",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M81-010",
+      "name": "Deck synchronization leaves protocol state clean",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M82-001",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "New deck resets to clean untitled document",
+      "requirements": [
+        "TST-001"
+      ]
+    },
+    {
+      "id": "AIPP-M82-002",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Candidate validation rejects wrong schema atomically",
+      "requirements": [
+        "TST-003"
+      ]
+    },
+    {
+      "id": "AIPP-M82-003",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Open service route is registered",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "AIPP-M82-004",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Save service route is registered",
+      "requirements": [
+        "PRO-009"
+      ]
+    },
+    {
+      "id": "AIPP-M82-005",
+      "layer": "browser",
+      "tier": "standard",
+      "name": "Deck serialization excludes runtime meta",
+      "requirements": [
+        "BLD-012"
+      ]
+    },
+    {
+      "id": "AIPP-M82-006",
+      "layer": "integration",
+      "tier": "standard",
+      "name": "M8.2 leaves protocol state clean",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ]
+    },
+    {
+      "id": "AIPP-M82-007",
+      "name": "Native AIPP deck is accepted and preserved",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "TST-003",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-001",
+      "layer": "browser",
+      "requirements": [
+        "ARC-010"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-002",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-003",
+      "layer": "browser",
+      "requirements": [
+        "BLD-012",
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-004",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-005",
+      "layer": "browser",
+      "requirements": [
+        "TST-001",
+        "BLD-012"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-006",
+      "layer": "browser",
+      "requirements": [
+        "TST-003"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-007",
+      "layer": "browser",
+      "requirements": [
+        "TST-001"
+      ],
+      "tier": "standard"
+    },
+    {
+      "id": "AIPP-M83-008",
+      "layer": "integration",
+      "requirements": [
+        "PRO-009",
+        "TST-008"
+      ],
+      "tier": "standard"
+    }
+  ],
+  "regression_baseline": "P6.3.0-0.1"
+}

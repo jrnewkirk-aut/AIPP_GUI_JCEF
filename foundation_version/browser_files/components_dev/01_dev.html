@@ -1,0 +1,10 @@
+<header class="topbar"><div><div class="eyebrow">SCILAB–JCEF FOUNDATION</div><h1>Development Diagnostics</h1><p>Unified development-only view backed by the runtime observability registries.</p></div><span id="devConnectionBadge" class="badge waiting">Waiting for host</span></header>
+<main class="layout one dev-diagnostics">
+<section class="card"><div class="section-head"><div><h2>Diagnostic controls</h2><p>Controls affect the view or the shared logger; no duplicate state is maintained.</p></div><div class="actions compact"><label>Level <select id="diagnosticLogLevel"><option>debug</option><option selected>info</option><option>warn</option><option>error</option><option>silent</option></select></label><label>Category <select id="diagnosticCategory"><option value="all">all</option><option>startup</option><option>build</option><option>transport</option><option>protocol</option><option>file_io</option><option>state</option><option>render</option><option>plot</option><option>performance</option><option>test</option></select></label><button id="diagnosticRefresh" class="secondary">Refresh</button><button id="diagnosticClear" class="secondary">Clear view</button><button id="diagnosticExport" class="secondary">Export diagnostic package</button></div></div></section>
+<section class="card"><h2>Identity</h2><pre id="diagnosticIdentity">Initializing…</pre></section>
+<section class="card"><h2>Runtime state</h2><pre id="diagnosticRuntime">Initializing…</pre></section>
+<section class="card"><h2>Transfer and plotting state</h2><pre id="diagnosticTransfer">Initializing…</pre></section>
+<section class="card"><h2>Warnings and errors</h2><pre id="diagnosticErrors">Initializing…</pre></section>
+<section class="card"><h2>Performance</h2><pre id="diagnosticPerformance">Initializing…</pre></section>
+<section class="card"><h2>Unified snapshot</h2><pre id="diagnosticsPanel">Diagnostics initializing…</pre></section>
+</main>

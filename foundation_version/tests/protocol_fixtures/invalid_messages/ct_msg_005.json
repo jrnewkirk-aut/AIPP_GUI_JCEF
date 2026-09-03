@@ -1,0 +1,17 @@
+{
+  "id": "CT-MSG-005",
+  "category": "message",
+  "name": "Unsupported major protocol version",
+  "message": {
+    "protocol": "scilab-jcef",
+    "protocol_version": 99,
+    "type": "diagnostic.echo.request",
+    "request_id": "fixture-005",
+    "payload": {}
+  },
+  "expected": {
+    "accepted": false,
+    "error_code": "UNSUPPORTED_VERSION",
+    "request_id_preserved": true
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "candidate": "AIPP_M8_8_Direct_Integration_Candidate06_2",
+  "base": "AIPP_M8_8_Direct_Integration_Candidate06_1",
+  "created_utc": "2026-08-18T19:58:25.756109+00:00",
+  "changed_files": [
+    {
+      "path": "browser_files/js/application/28_aipp_chamber_editor_view.js",
+      "bytes": 6114,
+      "sha256": "1c5c377c4e1e60dadb06c7e93f180493a651198e3b71a51c82b6b879fa10b45e"
+    },
+    {
+      "path": "browser_files/js/testing/04zf_aipp_m88_phase2_chamber_editor_tests.js",
+      "bytes": 4418,
+      "sha256": "112790c22160997dbeff5849984f960faaf43d2c5a14e3f9efdbb3d4735b06ce"
+    },
+    {
+      "path": "browser_files/js/testing/04r_aipp_m4_tests.js",
+      "bytes": 7294,
+      "sha256": "85680c83930d3738037f91fbfd29e12c7f9ad3678d827fbc1271abb3ba949cde"
+    },
+    {
+      "path": "browser_files/js/testing/04s_aipp_m5_tests.js",
+      "bytes": 5069,
+      "sha256": "ca50fdb66b5519065b86b2b5e68f561d1075d8583cdb6ba43cdabd81cf24531f"
+    },
+    {
+      "path": "browser_files/build/dependency_manifest.json",
+      "bytes": 69736,
+      "sha256": "c8b1853912d3b47eed4864378f709e6dea0b99d4458f9ebc2d9ef36a2830fd1a"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.dev.json",
+      "bytes": 16727,
+      "sha256": "bde8e92f2aca2027d9cca8f8e8b5232f5ccbc4f15f598ae43a161d3a60bde76d"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.test.json",
+      "bytes": 28639,
+      "sha256": "8f03be5d3866b68e5e7e7f537d69c57ce4e20ac86f5e9b5f7465810ff799b152"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.prod.json",
+      "bytes": 15625,
+      "sha256": "6c63474434645c47203df6790456879b498a435d27f62987611dbb646d946a50"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.json",
+      "bytes": 487,
+      "sha256": "3e024431a8ffe04461f255ae0e6f2b3dcd2f6d9152f46da17e783b7917faa0f2"
+    },
+    {
+      "path": "browser_files/dist/bundle.dev.html",
+      "bytes": 704085,
+      "sha256": "7d7184c2831ee7359853cb960cd6e5958e88faf722ed665594e88513c68247a0"
+    },
+    {
+      "path": "browser_files/dist/bundle.test.html",
+      "bytes": 914010,
+      "sha256": "9cc7ad7d6ec1abb792dddc90f7460ca7030feb3d5aecb45aef28dfec90132751"
+    },
+    {
+      "path": "browser_files/dist/bundle.prod.html",
+      "bytes": 691162,
+      "sha256": "79aae28d6f3283ca64f0461427aeaba411a77e6021f6315f263a2956f80a62a5"
+    },
+    {
+      "path": "browser_files/dist/reproducibility_report.json",
+      "bytes": 11024,
+      "sha256": "ef89019968c7a9d762a29bf7261d19a9a1a603bd6d002f37153a885aa05e68db"
+    },
+    {
+      "path": "AIPP_M8_8_CANDIDATE06_2_TAB_INTERACTION_FIX_REPORT.md",
+      "bytes": 2154,
+      "sha256": "da9ba057b363fce73dd35cac0bbe7539e44b480ffdcaa7a94482c7c34c51cf5d"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 02",
+  "application_version": "0.8.10-phase0.5b-candidate.2",
+  "foundation_version": "P6.4.0-0.1",
+  "implementation": {
+    "qualification_selector_visible": true,
+    "qualification_default": "phase05b",
+    "development_selector_visible": true,
+    "production_selector_absent": true,
+    "production_default": "current",
+    "jcef_debug_qualification": true,
+    "jcef_debug_production": false,
+    "declared_tests": 456,
+    "new_test_ids": [
+      "AIPP-M810-001",
+      "AIPP-M810-002",
+      "AIPP-M810-003"
+    ]
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production dependency scan",
+      "status": "PASS",
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Selector present in development and test",
+      "status": "PASS"
+    },
+    {
+      "check": "Selector absent from production",
+      "status": "PASS"
+    },
+    {
+      "check": "Canonical test IDs unique",
+      "status": "PASS",
+      "declared_tests": 456
+    }
+  ],
+  "baseline_live_acceptance": {
+    "status": "previous accepted baseline only",
+    "declared_tests": 453,
+    "total_results": 454,
+    "passed": 454,
+    "failed": 0,
+    "skipped": 0,
+    "scilab_version": "2026.1.0"
+  },
+  "legacy_validator_findings": [
+    {
+      "validator": "scan_source_authority.py",
+      "exit_code": 1,
+      "output": "{\"suite\": \"P8.4 modular source authority scan\", \"authored_javascript_files\": 132, \"generated_bundles\": 3, \"authored_files_over_200kb\": [\"browser_files/js/vendor/00_cytoscape_3_33_4.min.js\"], \"generated_is_primary_source\": false, \"result\": \"FAIL\"}",
+      "disposition": "Pre-existing vendor-size policy mismatch; required local Cytoscape retained."
+    },
+    {
+      "validator": "validate_p64.py",
+      "exit_code": 1,
+      "output": "{\n  \"status\": \"FAIL\",\n  \"errors\": [\n    \"TEST_INVENTORY:\"\n  ],\n  \"test_count\": 177\n}",
+      "disposition": "Historical validator expects 177 foundation tests; current candidate declares 456 application tests."
+    },
+    {
+      "validator": "validate_release_identity.py",
+      "exit_code": 1,
+      "output": "{\"result\": \"FAIL\", \"errors\": [\"application identity mismatch\", \"hash mismatch browser_files/dist/bundle.prod.html\", \"hash mismatch browser_files/dist/bundle.test.html\", \"hash mismatch browser_files/build/dependency_manifest.json\", \"hash mismatch tests/manifests/feature_manifest.json\"], \"release_state\": \"accepted\"}",
+      "disposition": "Expected for an unaccepted candidate; accepted-release contract is not promoted before live qualification."
+    }
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 456,
+    "result_not_simulated": true
+  }
+}

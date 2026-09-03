@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "release_manifest.schema.json",
+  "title": "Scilab-JCEF Canonical Release Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "release_state",
+    "identity",
+    "accepted_source",
+    "compatibility",
+    "artifacts",
+    "manifests",
+    "qualification",
+    "known_limitations",
+    "workarounds",
+    "upgrade",
+    "rollback",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "release_state": {
+      "enum": [
+        "draft",
+        "candidate",
+        "qualified",
+        "accepted",
+        "superseded",
+        "withdrawn"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "foundation_version",
+        "application_version",
+        "protocol_version",
+        "pillar7_implementation_version",
+        "pillar8_implementation_version"
+      ]
+    },
+    "accepted_source": {
+      "type": "object",
+      "required": [
+        "package",
+        "sha256",
+        "state"
+      ]
+    },
+    "compatibility": {
+      "type": "object",
+      "required": [
+        "matrix",
+        "matrix_sha256"
+      ]
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "manifests": {
+      "type": "object"
+    },
+    "qualification": {
+      "type": "object",
+      "required": [
+        "status",
+        "build_only_sufficient",
+        "required_regression"
+      ]
+    },
+    "known_limitations": {
+      "type": "array"
+    },
+    "workarounds": {
+      "type": "array"
+    },
+    "upgrade": {
+      "type": "object"
+    },
+    "rollback": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "array"
+    }
+  }
+}

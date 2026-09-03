@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "upgrade_contract.schema.json",
+  "title": "Foundation Upgrade and Rollback Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_version",
+    "source_release",
+    "target_release",
+    "preserve_roots",
+    "replace_roots",
+    "generated_roots",
+    "conflict_policy",
+    "preflight",
+    "postflight",
+    "rollback"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "source_release": {
+      "type": "object"
+    },
+    "target_release": {
+      "type": "object"
+    },
+    "preserve_roots": {
+      "type": "array",
+      "minItems": 1
+    },
+    "replace_roots": {
+      "type": "array",
+      "minItems": 1
+    },
+    "generated_roots": {
+      "type": "array"
+    },
+    "conflict_policy": {
+      "type": "object"
+    },
+    "preflight": {
+      "type": "array"
+    },
+    "postflight": {
+      "type": "array"
+    },
+    "rollback": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+"use strict";
+(function(){
+ const C=()=>P2.application.aippTopologyCanvas;
+ P4.register({id:"AIPP-M810-001",name:"Phase 0.5B presentation toggle has been removed",layer:"browser",requirements:["TST-001","TST-007"],tier:"standard",run(){P2.application.aippPhase05bPresentationControl.mount();const s=document.getElementById("aippTopologyPresentation");P4.assert.true(!s);P4.assert.equal(P2.application.aippTopologyCanvas.presentation,"phase05b");return{mounted:false,presentation:"phase05b"};}});
+ P4.register({id:"AIPP-M810-002",name:"Presentation switching preserves native deck and topology selection",layer:"browser",requirements:["BLD-012","TST-001"],tier:"standard",run(){const before=P2.application.aippDeckDocument.serialize(),path=C().selectedPath;C().setPresentation("current");C().setPresentation("phase05b");P4.assert.equal(P2.application.aippDeckDocument.serialize(),before);P4.assert.equal(C().selectedPath,path);return{nativeUnchanged:true,selectionPreserved:true};}});
+ P4.register({id:"AIPP-M810-003",name:"Phase 0.5B graph excludes Chamber-owned Pyro and Filter nodes",layer:"browser",requirements:["TST-001","TST-004"],tier:"standard",run(){const n=P2.application.aippDeckDocument.blankNative(),a=n.aipp_calculation.assembly;a.chambers=[{label:"Combustion Chamber",pyro:[{formulation:"fixture"}],filter:{orifices:[]}}];const g=P2.application.aippTopologyGraphAdapter.build(n);P4.assert.equal(g.nodes.length,1);P4.assert.equal(g.nodes[0].data.kind,"chamber");return{nodeKinds:g.nodes.map(x=>x.data.kind)};}});
+})();

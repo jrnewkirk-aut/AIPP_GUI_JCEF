@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "package": "AIPP_Piston_P2_0_Architecture_Candidate01",
+  "kind": "architecture-and-schema-contract",
+  "accepted_baseline": "AIPP_Piston_Pre_P2_Stabilization_Candidate06_Correction01",
+  "live_baseline": {
+    "scilab_version": "scilab-2026.1.0",
+    "declared": 497,
+    "executed": 497,
+    "passed_results": 498,
+    "failed": 0,
+    "missing": 0,
+    "unexpected": 0,
+    "duplicates": 0
+  },
+  "canonical_source": "aippDeckDocument.native",
+  "piston_path": "aipp_calculation.assembly.pistons",
+  "top_level_fields": [
+    "mass",
+    "left_connection",
+    "right_connection",
+    "left_damping_force",
+    "right_damping_force",
+    "body_forces",
+    "travel_units",
+    "travel_targets"
+  ],
+  "lookup_contract": {
+    "bases": [
+      "constant",
+      "time",
+      "displacement"
+    ],
+    "representations": [
+      "inline_arrays",
+      "csv_file"
+    ],
+    "continuity": [
+      "discrete",
+      "interpolate"
+    ],
+    "outside_range": "nearest_endpoint"
+  },
+  "mass": {
+    "bases": [
+      "constant",
+      "time",
+      "displacement"
+    ],
+    "dependent_continuity": [
+      "interpolate"
+    ],
+    "representations": [
+      "inline_arrays",
+      "csv_file"
+    ]
+  },
+  "area_law": {
+    "bases": [
+      "constant",
+      "time",
+      "displacement"
+    ],
+    "representations": [
+      "inline_arrays",
+      "csv_file"
+    ],
+    "sides": [
+      "left",
+      "right"
+    ]
+  },
+  "damping": {
+    "sides": [
+      "left",
+      "right"
+    ],
+    "surface_friction": [
+      "constant",
+      "displacement"
+    ],
+    "viscous_friction": [
+      "constant"
+    ]
+  },
+  "body_forces": {
+    "types": [
+      "constant",
+      "time",
+      "displacement"
+    ],
+    "representations": [
+      "inline_arrays",
+      "csv_file"
+    ]
+  },
+  "events": {
+    "target": "P{piston}T{target}_passed",
+    "left_limit": "P{piston}L_limit",
+    "right_limit": "P{piston}R_limit"
+  },
+  "external_references": [
+    "assembly.orifices[*].flow_area_modulators[*].piston_idx",
+    "recursive triggering_event piston event patterns"
+  ],
+  "milestones": [
+    "P2.1-mounted-shell-topology",
+    "P2.2-core-constant-laws",
+    "P2.3-mass-laws",
+    "P2.4-area-laws",
+    "P2.5-damping-laws",
+    "P2.6-body-forces",
+    "P2.7-travel-targets-events",
+    "P2.8-orifice-modulators",
+    "P2.9-production-closure"
+  ],
+  "production_source_changed": false,
+  "declared_test_count": 497
+}

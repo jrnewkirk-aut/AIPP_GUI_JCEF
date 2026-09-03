@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "change_id": "AIPP-M1-2026-08-11",
+  "accepted_source_release": "P8.5.0-0.1",
+  "ai_foundation_release": "AI-1.0.0",
+  "application_id": "application.aipp",
+  "summary": "Create the AIPP Foundation M1 shell and status operation.",
+  "classification": "application-derivation-with-governed-identity-change",
+  "protected_files_changed": [
+    "app/app_config.sci"
+  ],
+  "application_files_changed": [
+    "application/application_manifest.json",
+    "application/scilab/application_registry.sci",
+    "application/scilab/application_state.sci",
+    "application/scilab/application_handlers.sci",
+    "application/browser/components/01_aipp_shell.html",
+    "application/browser/styles/aipp_m1.css",
+    "application/data/pyrolist.json",
+    "application/browser/assets/Autoliv.PNG",
+    "browser_files/js/application/02_aipp_status_service.js",
+    "browser_files/js/application/03_aipp_shell_controller.js",
+    "browser_files/js/testing/04l_aipp_m1_tests.js",
+    "browser_files/build/dependency_manifest.json",
+    "application/schemas/application.aipp.status.request.schema.json",
+    "application/schemas/application.aipp.status.response.schema.json"
+  ],
+  "public_operations_added": [
+    "application.aipp.status.request"
+  ],
+  "feature_parity_impact": "No current AIPP feature is replaced in M1; exact legacy source is staged unchanged and inactive.",
+  "tests_added": [
+    "AIPP-APP-001",
+    "AIPP-APP-004",
+    "AIPP-APP-006"
+  ],
+  "rollback": [
+    "Delete the AIPP_Foundation_M1 derivative.",
+    "Restore from the unmodified AI-1.0.0 accepted package.",
+    "Retain the original AIPP archive and Phase 1 evidence."
+  ],
+  "known_limitations": [
+    "AIPP editors, Cytoscape graph, file workflows, deck conversion, topology operations, and save transport are staged but not activated in M1.",
+    "Live Scilab/JCEF acceptance requires Scilab 2026.1.0 or newer outside this build container."
+  ]
+}

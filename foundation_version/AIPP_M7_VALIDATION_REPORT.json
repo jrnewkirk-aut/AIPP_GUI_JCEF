@@ -1,0 +1,12 @@
+{
+  "milestone": "M7 production workspace shell",
+  "application_version": "0.7.0-m7",
+  "accepted_baseline": "M6",
+  "baseline_tests": 233,
+  "added_tests": 8,
+  "expected_total": 241,
+  "production_launcher": "app/aipp_main.sce",
+  "qualification_launcher": "app/main.sce",
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "generated_bundles_edited_directly": false
+}

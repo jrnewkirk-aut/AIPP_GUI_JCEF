@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 01",
+  "application_version": "0.8.10-phase0.5b-candidate.1",
+  "foundation_version": "P6.4.0-0.1",
+  "baseline_live_acceptance": {
+    "scilab_version": "2026.1.0",
+    "declared_tests": 453,
+    "synthetic_inventory_results": 1,
+    "total_results": 454,
+    "passed": 454,
+    "failed": 0,
+    "skipped": 0,
+    "status": "accepted baseline evidence; not rerun for this candidate"
+  },
+  "static_results": [
+    {
+      "check": "Topology adapter JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Cytoscape view JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official source-hash and production build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B scope and production separation",
+      "status": "PASS"
+    },
+    {
+      "check": "Production offline dependency scan",
+      "status": "PASS",
+      "scanned_files": 72,
+      "remote_dependencies": 0
+    }
+  ],
+  "legacy_validator_findings": [
+    {
+      "validator": "tools/change/scan_source_authority.py",
+      "exit_code": 1,
+      "status": "PREEXISTING_POLICY_MISMATCH",
+      "finding": "{\"suite\": \"P8.4 modular source authority scan\", \"authored_javascript_files\": 130, \"generated_bundles\": 3, \"authored_files_over_200kb\": [\"browser_files/js/vendor/00_cytoscape_3_33_4.min.js\"], \"generated_is_primary_source\": false, \"result\": \"FAIL\"}",
+      "disposition": "Validator and required local Cytoscape vendor file were preserved unchanged."
+    },
+    {
+      "validator": "tools/validation/validate_p64.py",
+      "exit_code": 1,
+      "status": "PREEXISTING_INVENTORY_MISMATCH",
+      "finding": "{\n  \"status\": \"FAIL\",\n  \"errors\": [\n    \"TEST_INVENTORY:\",\n    \"PACKAGE_INVENTORY:[Errno 2] No such file or directory: '/mnt/data/phase05b_work/AIPP_M8_10_Phase_0_5B_Candidate01/package_inventory.json'\"\n  ],\n  \"test_count\": 177\n}",
+      "disposition": "Validator expects the historical 177-test foundation inventory; accepted application baseline declares 453 tests."
+    },
+    {
+      "validator": "tools/release/validate_release_identity.py",
+      "exit_code": 1,
+      "status": "EXPECTED_FOR_UNACCEPTED_CANDIDATE",
+      "finding": "{\"result\": \"FAIL\", \"errors\": [\"application identity mismatch\", \"hash mismatch browser_files/dist/bundle.prod.html\", \"hash mismatch browser_files/dist/bundle.test.html\", \"hash mismatch browser_files/build/dependency_manifest.json\", \"hash mismatch tests/manifests/feature_manifest.json\"], \"release_state\": \"accepted\"}",
+      "disposition": "Accepted release identity and hashes must not be promoted until the candidate passes live qualification."
+    }
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "result_not_simulated": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "steel":
+    {
+        "density": "7833.0 kg/m^3",
+        "specific_heat": "510.0 J/(kg K)",
+        "thermal_conductivity": "45.0 W/(m K)"
+    },
+    "aluminum":
+    {
+        "density": "2669.0 kg/m^3",
+        "specific_heat": "896.894 J/(kg K)",
+        "thermal_conductivity": "237.0 W/(m K)"
+    },
+    "copper":
+    {
+        "density": "8935 kg/m^3",
+        "specific_heat": "384.603 J/(kg K)",
+        "thermal_conductivity": "401.0 W/(m K)"
+    }
+}

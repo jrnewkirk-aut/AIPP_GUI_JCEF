@@ -1,0 +1,8 @@
+{
+  "patch": "AIPP-M8.3-native-roundtrip-01a",
+  "application_version": "0.8.3-m8.3",
+  "correction": "dependency manifest source hashes synchronized after generated 03_manifests.js update",
+  "updated_source_hashes": [
+    "browser_files/js/testing/03_manifests.js"
+  ]
+}

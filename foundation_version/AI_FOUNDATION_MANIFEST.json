@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "package_id": "scilab-jcef-ai-foundation-template",
+  "package_state": "accepted",
+  "ai_foundation_release": "AI-1.0.0",
+  "accepted_source_release": "P8.5.0-0.1",
+  "accepted_source_sha256": "12352876b510457b9dccb443d08360d4426e3902e64de84f9d906cdfc0426483",
+  "runtime_foundation_version": "P6.4.0-0.1",
+  "observability_version": "P7.5.0-0.1",
+  "protocol_version": 1,
+  "application_template_version": "1.0.0",
+  "minimum_scilab_version": "2026.1.0",
+  "canonical_starter": "app/starter_main.sce",
+  "qualification_harness": "app/main.sce",
+  "application_owned_roots": [
+    "application/",
+    "browser_files/js/application/"
+  ],
+  "foundation_owned_roots": [
+    "app/",
+    "scilab/",
+    "browser_files/js/protocol/",
+    "browser_files/js/observability/",
+    "browser_files/js/plotting/",
+    "protocol/",
+    "compatibility/",
+    "release/",
+    "upgrade/",
+    "change/",
+    "tools/"
+  ],
+  "generated_roots": [
+    "browser_files/dist/",
+    "results/"
+  ],
+  "source_policy": "modular-source-authoritative",
+  "notes": [
+    "Modular source is authoritative; generated bundles are outputs and must not be edited directly.",
+    "Application-owned roots must be preserved during foundation-only upgrades.",
+    "Foundation changes require feature-parity evidence and full regression."
+  ],
+  "live_acceptance": {
+    "status": "PASS",
+    "reported_by_user": true,
+    "scilab_version_requirement": "2026.1.0 or newer",
+    "failed": 0,
+    "skipped": 0,
+    "note": "Full live Scilab/JCEF acceptance reported complete before release promotion."
+  }
+}

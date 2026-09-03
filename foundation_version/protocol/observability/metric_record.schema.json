@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "title": "Scilab-JCEF performance metric record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timestamp",
+    "runtime",
+    "name",
+    "value",
+    "unit",
+    "status",
+    "request_id",
+    "transfer_id",
+    "details"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "runtime": {
+      "enum": [
+        "browser",
+        "scilab"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "enum": [
+        "ms",
+        "count",
+        "bytes",
+        "ratio"
+      ]
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+        "cancelled",
+        "timed_out"
+      ]
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transfer_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "details": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

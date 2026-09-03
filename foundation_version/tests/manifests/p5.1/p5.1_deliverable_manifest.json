@@ -1,0 +1,38 @@
+{
+  "version": "P5.1.0-0.1",
+  "baseline": {
+    "application_version": "P4.5.1-0.1",
+    "build_manifest_hash": "a89435a3de7203bb",
+    "automated_acceptance": {
+      "total": 83,
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "deliverables": [
+    "P5.1_architecture_test_plan.md",
+    "P5.1_decision_record.md",
+    "P5.1_dependency_map.md",
+    "P5.1_extraction_and_rollback_plan.md",
+    "P5.1_feature_parity_matrix.md",
+    "P5.1_module_interface_template.md",
+    "P5.1_module_inventory.csv",
+    "P5.1_module_inventory.md",
+    "P5.1_state_ownership_matrix.md",
+    "P5.1_target_repository.md"
+  ],
+  "classification_counts": {
+    "supporting/legacy": 1,
+    "foundation-shell": 6,
+    "test-only": 65,
+    "generated-artifact": 2,
+    "plotting-specific": 59,
+    "reusable-foundation": 31,
+    "foundation-documentation": 9,
+    "evidence/generated": 4
+  },
+  "feature_count": 12,
+  "test_count": 83,
+  "decision": "P5.2 may proceed only after review of P5.1 gates and must start from the P4.5.1 closure candidate."
+}

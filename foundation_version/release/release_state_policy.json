@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "states": [
+    "draft",
+    "candidate",
+    "qualified",
+    "accepted",
+    "superseded",
+    "withdrawn"
+  ],
+  "transitions": {
+    "draft": [
+      "candidate",
+      "withdrawn"
+    ],
+    "candidate": [
+      "qualified",
+      "withdrawn"
+    ],
+    "qualified": [
+      "accepted",
+      "candidate",
+      "withdrawn"
+    ],
+    "accepted": [
+      "superseded",
+      "withdrawn"
+    ],
+    "superseded": [],
+    "withdrawn": []
+  },
+  "gates": {
+    "candidate": [
+      "source hash validated",
+      "manifest schema valid"
+    ],
+    "qualified": [
+      "all candidate gates",
+      "compatibility matrix valid",
+      "build profiles valid",
+      "static/governance validation pass",
+      "full functional regression pass",
+      "clean final state"
+    ],
+    "accepted": [
+      "all qualified gates",
+      "acceptance evidence attached",
+      "rollback path declared",
+      "release identity consistent"
+    ]
+  },
+  "upgrade_source_allowed_states": [
+    "accepted"
+  ],
+  "prohibited": [
+    "A build-only result cannot produce qualified or accepted state.",
+    "Candidate, superseded, and withdrawn releases cannot be upgrade sources."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "milestone": "AIPP Foundation Integration M3",
+  "application_version": "0.3.0-m3",
+  "source_package": "AIPP_Foundation_M2_0_Candidate.zip",
+  "static_result": "PASS",
+  "foundation_build_validation": "PASS",
+  "live_scilab_build_path_simulation": "PASS",
+  "js_syntax_validation": "PASS",
+  "accepted_m2_baseline_tests": 186,
+  "m3_tests": 10,
+  "declared_tests": 196,
+  "formulations_expected": 79,
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "required_live_acceptance": {
+    "passed": 196,
+    "failed": 0,
+    "skipped": 0,
+    "missingTestIds": 0,
+    "unexpectedTestIds": 0,
+    "duplicateResultIds": 0,
+    "active_requests": 0,
+    "active_transfers": 0
+  }
+}

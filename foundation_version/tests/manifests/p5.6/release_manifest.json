@@ -1,0 +1,24 @@
+{
+  "version": "P6.4.0-0.1",
+  "status": "candidate_requires_live_scilab_jcef_acceptance",
+  "accepted_source_baseline": "P5.5.0-0.2",
+  "accepted_source_evidence": "protocol_results_5.5.0v2.json",
+  "accepted_source_result": {
+    "declared": 115,
+    "executed": 115,
+    "passed": 115,
+    "failed": 0,
+    "skipped": 0
+  },
+  "regression_baseline": "P5.5.0-0.2",
+  "protocol_version": 1,
+  "minimum_scilab_version": "2026.1.0",
+  "acceptance_target": {
+    "declared": 135,
+    "passed": 135,
+    "failed": 0,
+    "skipped": 0
+  },
+  "rollback_package": "scilab_jcef_foundation_p5.5.0_v0.2.zip",
+  "release_focus": "reproducible_release_upgrade_safety_developer_handoff"
+}

@@ -1,0 +1,10 @@
+"use strict";
+(function(){
+ const H=()=>P2.application.aippTopologyHoverCard,D=()=>P2.application.aippDeckDocument;
+ function fixture(){const n=D().blankNative(),a=n.aipp_calculation.assembly;a.chambers=[{label:"Source"},{label:"Tank"}];a.orifices=[{label:"Outlet",from:1,to:2,diameter:"5 mm",num_orif:2,open:false,one_way:true,viscous_flow_factor:.2,opens_at:"1.0E5 Pa",discharge_coefficient:{basis:"constant",Cd_value:.7}}];a.walls=[{label:"Shell",temperature:"294.15 K",area:"100 cm^2",thickness:"2 mm",material:"steel",left_connection:{type:"VARIABLE_COEFFICIENT",chamber_index:1,scale_factor:2.9},right_connection:{type:"CONSTANT_TEMPERATURE",temperature:"294.15 K"}}];return n}
+ function reg(n,name,run){P4.register({id:`AIPP-M810-${String(n).padStart(3,"0")}`,name,layer:"browser",requirements:["TST-001","TST-007","BLD-012"],tier:"standard",run})}
+ reg(11,"General topology hover-card service is registered",()=>{P4.assert.true(!!H());P4.assert.true(typeof H().content==="function");return{registered:true}});
+ reg(12,"Orifice hover summary resolves endpoints and flow properties",()=>{D().replace(fixture());const a=D().snapshot().native.aipp_calculation.assembly,html=H().content("orifice",a.orifices[0],1);P4.assert.true(html.includes("Source"));P4.assert.true(html.includes("Tank"));P4.assert.true(html.includes("5 mm"));P4.assert.true(html.includes("0.7"));return{orificeSummary:true}});
+ reg(13,"Wall hover summary resolves chamber and terminal boundaries",()=>{D().replace(fixture());const a=D().snapshot().native.aipp_calculation.assembly,html=H().content("wall",a.walls[0],1);P4.assert.true(html.includes("Source"));P4.assert.true(html.includes("Constant Temperature"));P4.assert.true(html.includes("294.15 K"));return{wallSummary:true}});
+ reg(14,"Topology hover summaries do not mutate native document",()=>{D().replace(fixture());const before=D().serialize(),a=D().snapshot().native.aipp_calculation.assembly;H().content("orifice",a.orifices[0],1);H().content("wall",a.walls[0],1);P4.assert.equal(D().serialize(),before);return{nativeUnchanged:true}});
+})();

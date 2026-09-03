@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "accepted_source_release": "P8.5.0-0.1",
+  "ai_foundation_release": "AI-1.0.0",
+  "count": 99,
+  "files": [
+    {
+      "path": "app/app_config.sci",
+      "sha256": "379dddfd9b6841e644277e228fe2c2c18058d6add68d04839363c046f513c6e6",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "app/app_manifest.json",
+      "sha256": "038a61657a9a23acc4c3fc3c35b7ef95e16f006d253b4ecaa7c57c32514f2bc0",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "app/main.sce",
+      "sha256": "a57aa1dc7e664878e31e84703604fbf7ea118f57c9ec199ac086e70eed47f6b6",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "app/starter_main.sce",
+      "sha256": "02b96d379cb117c317738e79380901578d875bfc8da841cfa19b621d179d225e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/build/dependency_manifest.json",
+      "sha256": "970accdf153d32eae2cebddba257b0c14a79fef0dd6353318139a4ca6dd2e072",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/build/dependency_manifest.schema.json",
+      "sha256": "d02616b445239ce267f1a1e9bbfcf91a621bda22f69572e89889c65ccc954e51",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/00_startup_error_collector.js",
+      "sha256": "eab5ee7f7533df9c4306ed41a68abb1f1c60eb99dd4d746ae778bf5b6bd80a42",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/01_observability_constants.js",
+      "sha256": "8cbc191c5a320bc4e3e494ee99689a3d6b4464fc5a35439da249929ec72b6177",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/02_payload_summary.js",
+      "sha256": "3ac0bc8940eb65a62880848a270d43caeecaaf86bb93abe409fdcce182a1d05f",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/03_observability_record.js",
+      "sha256": "9ce9cecf7c24957e8dd406dbfe8ec88b1ce42a9228e1bfa8f7b1242355ca4eac",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/04_observability_logger.js",
+      "sha256": "045da3db249cef7b8e87afb1e2dcc36089c066b8551f9527456b86c608106913",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/05_file_operation_events.js",
+      "sha256": "dfe7824f1eccf8347ada1d45c183f283c1b66efe0768007f6a9fab335a685e51",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/05_performance_registry.js",
+      "sha256": "9f487e04fde990b9681cfe9fe95c6f131460103b868133c17e124a842b6e00ba",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/observability/06_diagnostic_package_export.js",
+      "sha256": "73c540e18d53efc46185563967e590c90b763c5e64767f822040185bf2b8e381",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/plotting/01_plot_adapter.js",
+      "sha256": "faf4a8118a7c620239127930b3b09748073d507074250d2ed693b9b790d521db",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/plotting/02_reference_canvas_adapter.js",
+      "sha256": "b3bc025d73056c2c3fbd3fd6487f3a7bff55aeebd7243a65464160b4ba5c16c4",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/01_protocol_constants.js",
+      "sha256": "e7771fba1a372a39d7b0346d3bb7cc95a202ecd1506a67ef08241af97a4c652c",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/02_protocol_errors.js",
+      "sha256": "eb2513c22f17ef3780bcf9ecadf0472e851b2cda57f9c8ca1c0e2f101e870c2d",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/03_safe_codec.js",
+      "sha256": "fbbc34261393bcb3b847232f539c61ab8d7bff0e37cbb8bca40a6f8dde39f54d",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/04_protocol_validation.js",
+      "sha256": "d2c1ef6fece0db0e9abfa34f92c8c355cada5470cb05f2936ec4d6ae45ce6deb",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/05_request_registry.js",
+      "sha256": "a5ff4908ee2b8d68e464472d97febe892c3772e8876d3f131fc75f903317af73",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/06_protocol_transport.js",
+      "sha256": "1d7c264bbf00e0ab944a5e3456c43d85ce39927f2e50030598b6a184b4e8a21e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "sha256": "dc9cf979eaf742af3f3e991f2328a56e082420aa04e8788cdb82abeb14958aab",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/08_protocol_router.js",
+      "sha256": "33b45a7321a0b011495c7fffc16d46dd4265dc7a6cb179f39283a095fe2815a0",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/09_protocol_host.js",
+      "sha256": "62d2339202e6187bb77cc766a8ad8ea202205cfe8665ce6469617204ce3b716b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/10_transfer_registry.js",
+      "sha256": "aace8af3241f7316b3165465e7c7287901cf3f0ebc49a8e8dd3d35513559f11e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/11_numeric_transfer.js",
+      "sha256": "94a0c5dba7ac9003e6e5e0d9103390aa75dfce21bb73e040223463fd9315aa6d",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/12_transfer_handle.js",
+      "sha256": "0ca257075e26b6a1f44d42a16de6c451a962d89b6d9d9f21b61dc4c6990d5ddb",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/13_runtime_config.js",
+      "sha256": "09ecee05a5f48421f56877ba39e2c354715f9d2bbb885792f27839e2f3c85934",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/14_diagnostics.js",
+      "sha256": "44b81caa309d6564f581b0d12dd420295976aa83229286f34f326c208d12c579",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/15_viewport_service.js",
+      "sha256": "a99747229380b8de37c7b00504b4f6ae7dc03738da1bfc5d88079d860beb745d",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/16_logging.js",
+      "sha256": "4b360bebc7a15695386b933f9764552e09999969c4437911ee5de85cb0f18c19",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/17_schemas.js",
+      "sha256": "b7e320f0f90c8ca09d077b427a9efebccc3753aabe1e9b6dadb68806095b0742",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/18_capabilities.js",
+      "sha256": "33cba2f2e01ec14755168018c384345294cd53904c02665ec9cda357ebf89c41",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/19_data_adapter.js",
+      "sha256": "f8dc2ea738d2e1dabded704a1827664cb48cc64c3cd17bb5b5cc9d4c25ac2017",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/20_library.js",
+      "sha256": "b105d00edc208bfe03409e72938297d2a0625dc93ac20eb4604a156a6e40179a",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "browser_files/js/protocol/21_generic_transfer.js",
+      "sha256": "525efb932de7cc70e0e123fd44d2abdc7938054ba181b84cdbb1f50c0cb9befb",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "change/change_governance_policy.json",
+      "sha256": "d47db26de99622b822ac25e33988a282abe401270e75791d7726673c9a917066",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "change/change_package.json",
+      "sha256": "b8ee77d02fe2128db3f968165105c94ec2e7575008a5fce27bda2d6ed1fd447a",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "change/change_package.schema.json",
+      "sha256": "07519062122d8ba5dd43eb553b902f411e41708745a909ca23c37b40d99f3bd5",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "change/feature_parity_baseline.json",
+      "sha256": "bacbc26e8d469794cdec7376ef91886447c02f3857a1755d4beda06607bbaa38",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/compatibility_matrix.json",
+      "sha256": "e08c321c7ea3ae6b03df08cac9cd5b5a3a9c21279043694b08d6513507e1a6a8",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/compatibility_matrix.schema.json",
+      "sha256": "4c02269b0c760cccdc8b6df7ccae5ad641f5c530331c847439ee0925cc096ad3",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/scilab_api_registry.json",
+      "sha256": "9cb5bd9488118d0f75559e711a5aff59c6b1a7bebaffadaa7ca2ddde20acdab4",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/scilab_api_registry.schema.json",
+      "sha256": "52e5892311e762984776091186cdc75dad366324fe4c97856ed2fdbe312d1be9",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/workaround_registry.json",
+      "sha256": "4256dd081cd006a76f528dfc5a72dfe642123f39e07122ce7a8a9761f31a9295",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "compatibility/workaround_registry.schema.json",
+      "sha256": "f440e2adf5eca08b54d0b80083d621508080749ca51b5d13aafa58a73b096c23",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/diagnostic_package_export.schema.json",
+      "sha256": "483736aa09556bff2aed0d50867eaed2690a3a8e5a77b2bcfab6d9b5ff267354",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/diagnostic_package_manifest.schema.json",
+      "sha256": "bd9b637fdf9bad17382d1b8ceea8149d72a0cefe40c261f3e7c21eaa020932fb",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/event_catalog.json",
+      "sha256": "927481d5eba06dccb95919791363ea2a040a8936fb8974cd6deda209f4d862ef",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/log_record.schema.json",
+      "sha256": "55586dbe25113ab5531d3dbb9b8e80257c7166a3519f1aa8b27906ca7dd92570",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/metric_catalog.json",
+      "sha256": "1d3ab618e895a63c118076e9593c553613fa1dd917d7fcc491d6025cc5ced918",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/metric_record.schema.json",
+      "sha256": "2f5429845558747400880e3687a1a310dbc47fe1aa9aef554b98c0b07a5b430e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "protocol/observability/startup_error.schema.json",
+      "sha256": "6d9f6e46d13f9c9ed1e55fe42d60e47b58a1c5950721157f30cf0463cf478450",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "release/protocol_change_policy.json",
+      "sha256": "663850859ed3dc73ee07e1f738571ca21a5c1822beed9bdf0c16a895d6e35cca",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "release/protocol_contract_snapshot.json",
+      "sha256": "de0d91c64105b3df2245f7fc6d3afcb2cd395486d8df87599b262af1672751c7",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "release/release_manifest.json",
+      "sha256": "e1074369d20cb32c0d5c51ede1ccd64c8fac24a1d65b80cbb080cf57176c7205",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "release/release_manifest.schema.json",
+      "sha256": "3c05e795141422c379cc6aee9a06dd6a8d9ee932e6f998ec8696de723fcbd25e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "release/release_state_policy.json",
+      "sha256": "b3e9975d9ab0c1e6a433fbee5b960473026da1d25ba3702dc1f44775da20f773",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/bootstrap/module_loader.sci",
+      "sha256": "1ad7b9b2812d2de85cfaa57642fadd1ebb4396b282809ac4fa06114730c3d455",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/bootstrap/path_resolver.sci",
+      "sha256": "c6ce94c2285edb962434dd87148ae27268fa8fc94ece5559038ef8edbcb9390c",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/bootstrap/runtime_state.sci",
+      "sha256": "8aea87f4370224d78c43870c61477dbc6bb4ca00b8e19d59857da2439c111223",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/bootstrap/window_factory.sci",
+      "sha256": "c204a27328dfaebab86242460940cc6d3425a974a17987afc5df21fa77e31c89",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/diagnostic_package_export.sci",
+      "sha256": "94e6553caa5d14676302431cd7a1f0bcb0ae47e055892e47f6bc937a3aa28605",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/file_operation_log.sci",
+      "sha256": "40575ce521de806339acd08b609c24cd5609b364d78e2152ce52b38d6fae771f",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/observability_constants.sci",
+      "sha256": "88fab227bfcef0554314960a52853840f035d7ae0e9408db3b2144b42d73c1ea",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/observability_log.sci",
+      "sha256": "bd4cab05c55914772561ceb3f2762113d8366358e261ba22125e556b4c4ae45b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/observability_record.sci",
+      "sha256": "1eac318cb074d4c26c135da476a57c5eeab616d64a79993691842fed2dca4f74",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/payload_summary.sci",
+      "sha256": "a7f301bfdefa2ae4914d38e7c7a2ff87d536eb5b99533af02bef36803eacd49c",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/observability/performance_registry.sci",
+      "sha256": "dfe734ddece231f295da5c61e63e1edddf15cdb521954d4fb554255692222a9e",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/native_plot_adapter.sci",
+      "sha256": "d2401e88651d218b8f5cffc616b9e91d047243230f6ca6f400784763d02afae0",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_aift_dataset.sci",
+      "sha256": "feea92867dfd74b3b581d08e9d6b0da68a3315be796eecf197201bdb9025766b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_dataset.sci",
+      "sha256": "0ba66e2ee64740125a7dcc60dafdaa9ad55c01c3dd43fca66485edb5af8d8a0a",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_handlers.sci",
+      "sha256": "5fb1cdd028c0ab6b1aeab933ed63c8e579b78f579f5c2bba33dd1a07302b5935",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_pyramid_cache.sci",
+      "sha256": "f19cec412bca438d124963a1c64fd674787333643fabca00f8be96a76f0b0f9a",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_reduction.sci",
+      "sha256": "bd512cc1731908a98b82c7a59f5a3badbd77b428222af4958d80f51d31cbf179",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/plotting/plot_reduction_p32.sci",
+      "sha256": "fcc78bd6b00f916d969da1300b2568c29c195f5592092a0498a94de1b5103b47",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_codec.sci",
+      "sha256": "0ba1e9916aa952575ac6647c3fb582a887948597683a493e8278ab8264d1eff5",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_constants.sci",
+      "sha256": "6bd7d87bf9ccbeb358febd9d7eccbbe6fbef67678d3f5810f19f6f9af26c32ae",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_errors.sci",
+      "sha256": "bc2a97ca33f3cb2dfed06f75ae1832eb98ce73ab80c4153f68d9cbf8073a13b7",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_generic_transfer.sci",
+      "sha256": "53c8fef32237edb3e3b0ca74f4deaebaf4b1d88c95e6c3959bb0181eb71296c4",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_handlers.sci",
+      "sha256": "388b93dd1772ce95f80c774834c7b3d6433910cf8dd2cafe503a16202b7866b7",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_log.sci",
+      "sha256": "86ad9b804b9d92984d08739d90ff093e7cd4bf56d5d5b32d1221aacc45c0d422",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_router.sci",
+      "sha256": "528ca9b8eaca10336f0947251e8b68e497dc5def326973a9e9784088f0b0150b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_transfers.sci",
+      "sha256": "9ad034d78332ff14aa7a6223f81a248f84444dd417cb218daaf2a327763f95b3",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "scilab/protocol/protocol_validation.sci",
+      "sha256": "c315da425a24d37ed018052af3db07dab7c5affdbc9189b68ad1c6e50ce7b276",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/build/build_p62.py",
+      "sha256": "e43d1bdba1c95f5af23f3abc385a8b8b917df72fcc77a83eb855f768d0f75b68",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/build/build_p63.py",
+      "sha256": "d2ae0bdaa472a7144cdecacafe521ce96056cc264c738e0cb4106a8f8ef69dfa",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/build/validate_build.py",
+      "sha256": "cc760815ad8872b23c5a2b28acdaa9851ad2183c6c4576ebd5c400e64453ffe6",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/change/compare_feature_parity.py",
+      "sha256": "601c1330af2146b3e4f80ed241a2e3f031dc8f5adcb362f96a88c440921797e8",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/change/scan_source_authority.py",
+      "sha256": "952d4af724a3817c483f6146efc34c78e8c9d84e0385591ed126e74e70f6693b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/change/validate_change_package.py",
+      "sha256": "3cd2b67106288b23cd2bcc8adacefe2dd31fa71b43a3cd9e37fe7f9e79d64237",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/packaging/package_p64.py",
+      "sha256": "258be2323778232642561f869d1ed369fed656bf4360bec38522566672f5f928",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/release/compare_protocol_contracts.py",
+      "sha256": "02bf1d5edf6817e7e6b9806ce0125bea9ee9ef56886acf670f3914b918d2782b",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/release/validate_release_identity.py",
+      "sha256": "5951627ca191f91ad78f3648f86839066a516a38457633f03b61a89edced69d8",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/upgrade/apply_foundation_upgrade.py",
+      "sha256": "09a9a8fe8ba4f33f21431f339540545bc5e15454245317839934c079e18f56c5",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "tools/upgrade/verify_rollback.py",
+      "sha256": "ffbe96db384a67648d9c4d479aebe9749e7090f876b72f005f0b2ea4797a4dd9",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "upgrade/upgrade_contract.json",
+      "sha256": "fe2e11ab655a37c51d27ba7452665f9f89b9ab1d63cf05e3822db7ce59a6d28a",
+      "policy": "protected-foundation-change-package-required"
+    },
+    {
+      "path": "upgrade/upgrade_contract.schema.json",
+      "sha256": "63f15c6b59a2ebdf40d4c76e86121a3e2d6400af6cdfaa9d296325a0fbd363c0",
+      "policy": "protected-foundation-change-package-required"
+    }
+  ]
+}

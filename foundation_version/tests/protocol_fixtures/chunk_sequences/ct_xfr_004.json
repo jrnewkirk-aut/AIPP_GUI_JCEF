@@ -1,0 +1,17 @@
+{
+  "id": "CT-XFR-004",
+  "category": "chunk_sequence",
+  "name": "Missing chunk prevents completion",
+  "chunk_count": 3,
+  "sequence": [
+    0,
+    2
+  ],
+  "action": "complete",
+  "checksum_valid": true,
+  "expected": {
+    "accepted": false,
+    "error_code": "INCOMPLETE_TRANSFER",
+    "received_count": 2
+  }
+}

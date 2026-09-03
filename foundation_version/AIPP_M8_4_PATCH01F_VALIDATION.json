@@ -1,0 +1,26 @@
+{
+  "patch": "M8.4 Patch01f",
+  "status": "PASS_STATIC",
+  "root_cause": "The live Scilab launcher calls buildProtocolStarterHTML(), whose Scilab builder omitted browser_files/js/vendor/*.js and overwrote the prebuilt bundles before JCEF loaded them.",
+  "correction": "scilab/buildHTML.sci now adds the vendor source group before application source in dev, test, and prod runtime rebuilds.",
+  "evidence": {
+    "uploaded_run": {
+      "total": 276,
+      "passed": 275,
+      "failed": 1,
+      "failed_test": "AIPP-M84-009",
+      "production_bundle_bytes_seen": 148878
+    },
+    "node_same_realm_headless": {
+      "available": true,
+      "version": "3.33.4",
+      "nodes": 2,
+      "edges": 1
+    },
+    "expected_live_rebuilt_bundle_min_bytes": {
+      "dev": 581790,
+      "test": 767556,
+      "prod": 578851
+    }
+  }
+}

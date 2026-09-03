@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "application.aipp.pyrolist.response",
+  "title": "AIPP pyrolist response payload",
+  "type": "object",
+  "required": ["source", "count", "names", "application_version"],
+  "properties": {
+    "source": {"const": "application/data/pyrolist.json"},
+    "count": {"type": "integer", "minimum": 1},
+    "names": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "formulations": {"type": "object", "additionalProperties": {"type": "object"}},
+    "application_version": {"const": "0.2.0-m2"}
+  },
+  "additionalProperties": false
+}

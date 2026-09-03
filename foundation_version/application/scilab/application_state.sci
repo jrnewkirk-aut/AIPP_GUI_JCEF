@@ -1,0 +1,6 @@
+function p55InitializeApplicationState()
+ global P55_APPLICATION_STARTED P55_AIPP_MODEL_LOADED;P55_APPLICATION_STARTED=%t;P55_AIPP_MODEL_LOADED=%f;
+endfunction
+function p55ShutdownApplicationState()
+ global P55_APPLICATION_STARTED P55_AIPP_MODEL_LOADED;P55_APPLICATION_STARTED=%f;P55_AIPP_MODEL_LOADED=%f;
+endfunction

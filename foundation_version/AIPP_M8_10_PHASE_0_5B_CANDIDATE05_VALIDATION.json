@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 05 SVG correction",
+  "application_version": "0.8.10-phase0.5b-candidate.5",
+  "foundation_version": "P6.4.0-0.1",
+  "root_cause": "Candidate 04 SVG data images omitted the required SVG XML namespace, leaving transparent Cytoscape nodes while edges rendered.",
+  "corrections": {
+    "runtime_svg_namespace_restored": true,
+    "literal_remote_dependency_added": false,
+    "custom_wheel_sensitivity_removed": true,
+    "cytoscape_default_wheel_zoom": true,
+    "option_b_preserved": true,
+    "production_debug_enabled": true
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production dependency scan",
+      "status": "PASS",
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Representative namespaced SVG XML parse",
+      "status": "PASS"
+    },
+    {
+      "check": "Authored topology view omits wheelSensitivity",
+      "status": "PASS"
+    },
+    {
+      "check": "Unique test inventory",
+      "status": "PASS",
+      "declared_tests": 461
+    }
+  ],
+  "new_tests": [
+    "AIPP-M810-007",
+    "AIPP-M810-008"
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 461,
+    "result_not_simulated": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "milestone": "AIPP Foundation Integration M2",
+  "application_version": "0.2.0-m2",
+  "static_result": "PASS",
+  "foundation_build_validation": "PASS",
+  "live_scilab_build_path_simulation": "PASS",
+  "public_operation": "application.aipp.pyrolist.request",
+  "data_source": "application/data/pyrolist.json",
+  "data_size_bytes": 51567,
+  "declared_tests": 186,
+  "m2_tests": 6,
+  "required_live_acceptance": {
+    "failed": 0,
+    "skipped": 0,
+    "missingTestIds": 0,
+    "unexpectedTestIds": 0,
+    "duplicateResultIds": 0,
+    "active_requests": 0,
+    "active_transfers": 0
+  },
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "generated_bundles_edited_directly": false
+}

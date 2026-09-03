@@ -1,0 +1,45 @@
+{
+  "application_name": "AIPP Inflator Model Viewer - Qualification",
+  "application_version": "0.8.10-prep2-stabilization.candidate.6",
+  "minimum_scilab_version": "2026.1.0",
+  "canonical_launcher": "app/main.sce",
+  "compatibility_launcher": "main.sce",
+  "primary_browser_controls": 1,
+  "profiles": {
+    "test": {
+      "plotting": true,
+      "testing": true,
+      "bundle": "bundle.test.html"
+    },
+    "production": {
+      "plotting": false,
+      "testing": false,
+      "bundle": "bundle.prod.html",
+      "jcef_debug": true
+    },
+    "starter": {
+      "plotting": false,
+      "testing": false,
+      "jcef_debug": true,
+      "bundle": "bundle.prod.html"
+    }
+  },
+  "regression_baseline": "P4.5.1-0.1",
+  "canonical_starter_launcher": "app/starter_main.sce",
+  "qualification_launcher": "app/main.sce",
+  "foundation_version": "P6.4.0-0.1",
+  "pillar7_implementation_version": "P7.5.0-0.1",
+  "pillar7_closure_status": "COMPLETE",
+  "pillar7_completion_date": "2026-08-07",
+  "pillar7_acceptance_evidence": "Pillar07_Observability_Diagnostics/evidence/protocol_results_7.5.json",
+  "pillar8_implementation_version": "P8.5.0-0.1",
+  "pillar8_status": "COMPLETE",
+  "pillar8_accepted_source_sha256": "12352876b510457b9dccb443d08360d4426e3902e64de84f9d906cdfc0426483",
+  "pillar8_accepted_source_package": "Scilab_JCEF_Foundation_P8.4.0_Change_Governance_Feature_Parity.zip",
+  "compatibility_matrix": "compatibility/compatibility_matrix.json",
+  "workaround_registry": "compatibility/workaround_registry.json",
+  "canonical_release_manifest": "release/release_manifest.json",
+  "upgrade_contract": "upgrade/upgrade_contract.json",
+  "change_package": "change/change_package.json",
+  "pillar8_evidence_index": "Pillar08_Compatibility_Release_Governance/evidence/P8_EVIDENCE_INDEX.json"
+}

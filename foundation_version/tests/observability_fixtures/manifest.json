@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "observability_version": "1.0",
+  "valid_log_records": [
+    "valid_log_records/decode_failure.json"
+  ],
+  "invalid_log_records": [
+    "invalid_log_records/invalid_level.json"
+  ],
+  "payload_summaries": [
+    "payload_summaries/large_numeric_array.json"
+  ],
+  "valid_metrics": [
+    "valid_metrics/protocol_encode.json"
+  ]
+}

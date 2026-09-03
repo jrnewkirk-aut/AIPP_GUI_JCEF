@@ -1,0 +1,19 @@
+{
+  "id": "CT-MSG-001",
+  "category": "message",
+  "name": "Valid echo envelope",
+  "message": {
+    "protocol": "scilab-jcef",
+    "protocol_version": 1,
+    "type": "diagnostic.echo.request",
+    "request_id": "fixture-001",
+    "payload": {
+      "text": "hello"
+    }
+  },
+  "expected": {
+    "accepted": true,
+    "error_code": "",
+    "request_id_preserved": true
+  }
+}

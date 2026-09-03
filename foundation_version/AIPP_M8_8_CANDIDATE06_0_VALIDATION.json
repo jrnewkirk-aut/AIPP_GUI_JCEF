@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "candidate": "AIPP M8.8 Candidate 06.0",
+  "baseline": "Candidate 05.2",
+  "status": "PASS_STATIC",
+  "application_version": "0.8.8-candidate.6.0",
+  "minimum_scilab_version": "2026.1.0",
+  "declared_executable_tests": 345,
+  "phase2_additive_tests": 12,
+  "synthetic_inventory_declared": false,
+  "checks": {
+    "candidate05_2_live_functional_tests": "333_EXECUTED_PASS_BOOKKEEPING_FAIL_ONLY",
+    "canonical_test_manifest_count": "PASS",
+    "embedded_manifest_contains_candidate051": "PASS",
+    "embedded_manifest_contains_phase2": "PASS",
+    "phase2_modules_modular": "PASS",
+    "existing_pyro_filter_services_reused": "PASS",
+    "field_precision_preservation_contract": "PASS",
+    "explicit_preset_action": "PASS",
+    "javascript_syntax": "PASS",
+    "deterministic_build": "PASS",
+    "build_validation": "PASS"
+  },
+  "live_scilab_jcef": "REQUIRED_FOR_PROMOTION",
+  "expected_live_acceptance": {
+    "declaredExecutableTests": 345,
+    "executedExecutableTests": 345,
+    "passed": 345,
+    "failed": 0,
+    "skipped": 0,
+    "unexpectedIds": 0,
+    "missingIds": 0,
+    "duplicateIds": 0,
+    "syntheticInventoryResult": "PASS",
+    "possibleExportedResultRows": 346
+  }
+}

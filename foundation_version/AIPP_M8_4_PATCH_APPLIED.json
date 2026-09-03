@@ -1,0 +1,8 @@
+{
+  "patch": "AIPP-M8.4-Patch01d-JCEF-Graph-Runtime-and-Bundle-Integrity",
+  "application_version": "0.8.7-m8.7",
+  "static_validation": "PASS",
+  "bundle_integrity": "PASS",
+  "expected_live_inventory": 276,
+  "rollback": ".patch_rollback/AIPP-M8.4-Patch01d-20260814_152332"
+}

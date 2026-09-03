@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 07 topology hover summaries",
+  "application_version": "0.8.10-phase0.5b-candidate.7",
+  "foundation_version": "P6.4.0-0.1",
+  "changes": {
+    "single_reusable_hover_card": true,
+    "chamber_owned_entity_rows_preserved": true,
+    "orifice_summary": true,
+    "wall_summary": true,
+    "reference_labels_resolved": true,
+    "document_replacement_closes_card": true,
+    "read_only": true,
+    "production_debug_enabled": true
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Phase 0.5B validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production scan",
+      "status": "PASS",
+      "scanned_files": 74,
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Unique test inventory",
+      "status": "PASS",
+      "declared_tests": 467
+    }
+  ],
+  "new_tests": [
+    "AIPP-M810-011",
+    "AIPP-M810-012",
+    "AIPP-M810-013",
+    "AIPP-M810-014"
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 467,
+    "result_not_simulated": true
+  }
+}

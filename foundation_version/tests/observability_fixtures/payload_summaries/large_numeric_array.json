@@ -1,0 +1,11 @@
+{
+  "case": "large_numeric_array",
+  "input_count": 100000,
+  "expected": {
+    "kind": "numeric_array",
+    "count": 100000,
+    "estimated_bytes": 800000,
+    "full_payload_logged": false,
+    "maximum_sample_items": 6
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "milestone": "AIPP M4.2 chamber-pyro UX",
+  "application_version": "0.4.2-m4.2",
+  "source_package": "AIPP_Foundation_M4_1_Remediated_Candidate.zip",
+  "functional_baseline": {"declared": 208, "executed": 208, "passed": 208, "failed": 0, "skipped": 0},
+  "javascript_syntax": "PASS",
+  "foundation_build": "PASS",
+  "build_validation": "PASS",
+  "bundle_ux_markers": "PASS",
+  "preserved_dom_contract_ids": true,
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "required_live_acceptance": {"declared": 208, "executed": 208, "passed": 208, "failed": 0, "skipped": 0, "active_requests": 0, "active_transfers": 0}
+}

@@ -1,0 +1,38 @@
+{
+  "version": "P6.4.0-0.1",
+  "modules": [
+    {
+      "id": "application.registry.host",
+      "path": "application/scilab/application_registry.sci",
+      "owner": "application",
+      "interface": [
+        "p55RegisterApplicationRoute",
+        "p55RouteApplicationMessage"
+      ]
+    },
+    {
+      "id": "application.handler.ping",
+      "path": "application/scilab/application_handlers.sci",
+      "owner": "application",
+      "interface": [
+        "p55HandleReferencePing"
+      ]
+    },
+    {
+      "id": "application.registry.browser",
+      "path": "browser_files/js/application/01_application_registry.js",
+      "owner": "application",
+      "interface": [
+        "P2.application.registry"
+      ]
+    },
+    {
+      "id": "application.service.ping",
+      "path": "browser_files/js/application/02_reference_ping_service.js",
+      "owner": "application",
+      "interface": [
+        "P2.application.ping"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1584 @@
+{
+    "generic_pyro": {
+        "gas_yields": {
+            "H2O": "1.0 mol/kg",
+            "CO2": "1.0 mol/kg",
+            "N2": "1.0 mol/kg",
+            "H2": "1.0 mol/kg",
+            "CO": "1.0 mol/kg"
+        },
+        "Temperature": "1500 K",
+        "Density": "4.0 g/cm^3",
+        "reference_burn_rate": "10.0 mm/s",
+        "burn_rate_exponent": 0.5,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "1000 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.0,
+            "molar_mass": "50.0 g/mol",
+            "wc_gas_yield": "0.5 mol/kg"
+        }
+    },
+    "generic_pyro_increased_burn_rate": {
+        "gas_yields": {
+            "H2O": "1.0 mol/kg",
+            "CO2": "1.0 mol/kg",
+            "N2": "1.0 mol/kg",
+            "H2": "1.0 mol/kg",
+            "CO": "1.0 mol/kg"
+        },
+        "Temperature": "1500 K",
+        "Density": "4.0 g/cm^3",
+        "reference_burn_rate": "20.0 mm/s",
+        "burn_rate_exponent": 0.5,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "1000 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.0,
+            "molar_mass": "50.0 g/mol",
+            "wc_gas_yield": "0.5 mol/kg"
+        }
+    },
+    "generic_pyro_doubled_gas": {
+        "gas_yields": {
+            "H2O": "2.0 mol/kg",
+            "CO2": "2.0 mol/kg",
+            "N2": "2.0 mol/kg",
+            "H2": "2.0 mol/kg",
+            "CO": "2.0 mol/kg"
+        },
+        "Temperature": "1500 K",
+        "Density": "4.0 g/cm^3",
+        "reference_burn_rate": "10.0 mm/s",
+        "burn_rate_exponent": 0.5,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2000 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.0,
+            "molar_mass": "50.0 g/mol",
+            "wc_gas_yield": "1.0 mol/kg"
+        }
+    },
+    "generic_pyro_increased_flame_temp": {
+        "gas_yields": {
+            "H2O": "1.0 mol/kg",
+            "CO2": "1.0 mol/kg",
+            "N2": "1.0 mol/kg",
+            "H2": "1.0 mol/kg",
+            "CO": "1.0 mol/kg"
+        },
+        "Temperature": "2000 K",
+        "Density": "4.0 g/cm^3",
+        "reference_burn_rate": "10.0 mm/s",
+        "burn_rate_exponent": 0.5,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "1500 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.0,
+            "molar_mass": "50.0 g/mol",
+            "wc_gas_yield": "0.5 mol/kg"
+        }
+    },
+    "B7T_20250528": {
+        "gas_yields": {
+            "H2O": "8.1372 mol/kg",
+            "CO2": "4.4612 mol/kg",
+            "N2": "4.4224 mol/kg",
+            "H2": "5.8762 mol/kg",
+            "CO": "18.3089 mol/kg"
+        },
+        "Temperature": "2326.454 K",
+        "Density": "1.514 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3642.390 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.342000,
+            "molar_mass": "44.599000 g/mol",
+            "wc_gas_yield": "0.190800 mol/kg"
+        }
+    },
+    "BTU_20250528": {
+        "gas_yields": {
+            "H2O": "8.1372 mol/kg",
+            "CO2": "4.4612 mol/kg",
+            "N2": "4.4224 mol/kg",
+            "H2": "5.8762 mol/kg",
+            "CO": "18.3089 mol/kg"
+        },
+        "Temperature": "2326.454 K",
+        "Density": "1.514 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3642.390 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.342000,
+            "molar_mass": "44.599000 g/mol",
+            "wc_gas_yield": "0.190800 mol/kg"
+        }
+    },
+    "IM2_20250528": {
+        "gas_yields": {
+            "H2O": "0.001 mol/kg",
+            "CO2": "0.0004 mol/kg",
+            "N2": "2.2078 mol/kg",
+            "H2": "0.2041 mol/kg",
+            "CO": "0.6563 mol/kg"
+        },
+        "Temperature": "3213.845 K",
+        "Density": "2.190 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "7391.546 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.775000,
+            "molar_mass": "66.669000 g/mol",
+            "wc_gas_yield": "10.920800 mol/kg"
+        }
+    },
+    "JSS_BREED_NA103Bprod_20250528": {
+        "gas_yields": {
+            "H2O": "5.0055 mol/kg",
+            "CO2": "2.7826 mol/kg",
+            "N2": "11.944 mol/kg",
+            "H2": "0.3175 mol/kg",
+            "CO": "0.9492 mol/kg"
+        },
+        "Temperature": "2230.294 K",
+        "Density": "2.257 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3115.973 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.751000,
+            "molar_mass": "76.471000 g/mol",
+            "wc_gas_yield": "0.389100 mol/kg"
+        }
+    },
+    "JSS_BREED_NA251prod_20250528": {
+        "gas_yields": {
+            "H2O": "5.0566 mol/kg",
+            "CO2": "3.3008 mol/kg",
+            "N2": "11.7442 mol/kg",
+            "O2": "0.0015 mol/kg",
+            "H2": "0.0861 mol/kg",
+            "CO": "0.3144 mol/kg"
+        },
+        "Temperature": "2297.727 K",
+        "Density": "2.271 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3232.816 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.632000,
+            "molar_mass": "77.457000 g/mol",
+            "wc_gas_yield": "0.435000 mol/kg"
+        }
+    },
+    "MIP1152D_20250528": {
+        "gas_yields": {
+            "H2O": "0.0045 mol/kg",
+            "CO2": "0.0012 mol/kg",
+            "N2": "1.3742 mol/kg",
+            "H2": "1.0749 mol/kg",
+            "CO": "2.2308 mol/kg"
+        },
+        "Temperature": "3126.170 K",
+        "Density": "1.935 g/cm^3",
+        "reference_burn_rate": "41.10 mm/s",
+        "burn_rate_exponent": 0.220000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6601.036 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.209000,
+            "molar_mass": "65.196000 g/mol",
+            "wc_gas_yield": "11.700600 mol/kg"
+        }
+    },
+    "MIP1191_20250528": {
+        "gas_yields": {
+            "H2O": "0.0594 mol/kg",
+            "CO2": "0.0038 mol/kg",
+            "N2": "5.5567 mol/kg",
+            "H2": "4.2745 mol/kg",
+            "CO": "1.9436 mol/kg"
+        },
+        "Temperature": "2826.329 K",
+        "Density": "1.888 g/cm^3",
+        "reference_burn_rate": "38.30 mm/s",
+        "burn_rate_exponent": 0.310000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6145.357 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.509000,
+            "molar_mass": "62.593000 g/mol",
+            "wc_gas_yield": "11.470600 mol/kg"
+        }
+    },
+    "MNP352AMProduction_20250528": {
+        "gas_yields": {
+            "H2O": "15.3687 mol/kg",
+            "CO2": "4.0292 mol/kg",
+            "N2": "9.5162 mol/kg",
+            "H2": "0.4148 mol/kg",
+            "CO": "0.4218 mol/kg"
+        },
+        "Temperature": "1815.229 K",
+        "Density": "1.902 g/cm^3",
+        "reference_burn_rate": "20.21 mm/s",
+        "burn_rate_exponent": 0.392000,
+        "burn_rate_temperature_sensitivity": "0.00158 1/K",
+        "HEX": "2798.671 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.000000,
+            "molar_mass": "50.000000 g/mol",
+            "wc_gas_yield": "0.000000 mol/kg"
+        }
+    },
+    "MNP352LProduction_20250528": {
+        "gas_yields": {
+            "H2O": "15.3425 mol/kg",
+            "CO2": "4.2337 mol/kg",
+            "N2": "9.1777 mol/kg",
+            "O2": "0.0006 mol/kg",
+            "H2": "0.0188 mol/kg",
+            "CO": "0.0207 mol/kg"
+        },
+        "Temperature": "1845.893 K",
+        "Density": "1.952 g/cm^3",
+        "reference_burn_rate": "20.55 mm/s",
+        "burn_rate_exponent": 0.390000,
+        "burn_rate_temperature_sensitivity": "0.00158 1/K",
+        "HEX": "2822.067 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.157000,
+            "molar_mass": "45.549000 g/mol",
+            "wc_gas_yield": "0.010000 mol/kg"
+        }
+    },
+    "MNP358A3ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.3135 mol/kg",
+            "CO2": "4.1043 mol/kg",
+            "N2": "9.2635 mol/kg",
+            "H2": "0.1025 mol/kg",
+            "CO": "0.1152 mol/kg"
+        },
+        "Temperature": "1895.989 K",
+        "Density": "1.917 g/cm^3",
+        "reference_burn_rate": "22.32 mm/s",
+        "burn_rate_exponent": 0.374000,
+        "burn_rate_temperature_sensitivity": "0.00155 1/K",
+        "HEX": "2929.216 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.094000,
+            "molar_mass": "46.509000 g/mol",
+            "wc_gas_yield": "0.376100 mol/kg"
+        }
+    },
+    "MNP358A4ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.2437 mol/kg",
+            "CO2": "4.056 mol/kg",
+            "N2": "9.3032 mol/kg",
+            "H2": "0.1798 mol/kg",
+            "CO": "0.1963 mol/kg"
+        },
+        "Temperature": "1872.808 K",
+        "Density": "1.917 g/cm^3",
+        "reference_burn_rate": "22.33 mm/s",
+        "burn_rate_exponent": 0.388000,
+        "burn_rate_temperature_sensitivity": "0.00155 1/K",
+        "HEX": "2883.921 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.331000,
+            "molar_mass": "43.928000 g/mol",
+            "wc_gas_yield": "0.317700 mol/kg"
+        }
+    },
+    "MNP358A5ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.171 mol/kg",
+            "CO2": "4.0054 mol/kg",
+            "N2": "9.3438 mol/kg",
+            "H2": "0.2649 mol/kg",
+            "CO": "0.2804 mol/kg"
+        },
+        "Temperature": "1848.595 K",
+        "Density": "1.936 g/cm^3",
+        "reference_burn_rate": "22.22 mm/s",
+        "burn_rate_exponent": 0.382000,
+        "burn_rate_temperature_sensitivity": "0.00155 1/K",
+        "HEX": "2843.346 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.851000,
+            "molar_mass": "43.163000 g/mol",
+            "wc_gas_yield": "0.254900 mol/kg"
+        }
+    },
+    "MNP358B1Production_20250528": {
+        "gas_yields": {
+            "H2O": "15.0285 mol/kg",
+            "CO2": "4.0243 mol/kg",
+            "N2": "9.1795 mol/kg",
+            "H2": "0.1605 mol/kg",
+            "CO": "0.1723 mol/kg"
+        },
+        "Temperature": "1848.578 K",
+        "Density": "1.936 g/cm^3",
+        "reference_burn_rate": "20.61 mm/s",
+        "burn_rate_exponent": 0.410000,
+        "burn_rate_temperature_sensitivity": "0.00155 1/K",
+        "HEX": "2819.473 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.871000,
+            "molar_mass": "43.497000 g/mol",
+            "wc_gas_yield": "0.247900 mol/kg"
+        }
+    },
+    "MNP358KProduction_20250528": {
+        "gas_yields": {
+            "H2O": "15.5769 mol/kg",
+            "CO2": "4.2136 mol/kg",
+            "N2": "9.3821 mol/kg",
+            "H2": "0.061 mol/kg",
+            "CO": "0.0688 mol/kg"
+        },
+        "Temperature": "1891.504 K",
+        "Density": "1.927 g/cm^3",
+        "reference_burn_rate": "19.55 mm/s",
+        "burn_rate_exponent": 0.360000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2917.957 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.449000,
+            "molar_mass": "44.832000 g/mol",
+            "wc_gas_yield": "0.165000 mol/kg"
+        }
+    },
+    "MNP363HProduction_20250528": {
+        "gas_yields": {
+            "H2O": "16.8203 mol/kg",
+            "CO2": "2.9516 mol/kg",
+            "N2": "12.3443 mol/kg",
+            "H2": "1.9825 mol/kg",
+            "CO": "1.5936 mol/kg"
+        },
+        "Temperature": "2000.019 K",
+        "Density": "1.706 g/cm^3",
+        "reference_burn_rate": "26.58 mm/s",
+        "burn_rate_exponent": 0.550000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3402.419 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.331000,
+            "molar_mass": "39.362000 g/mol",
+            "wc_gas_yield": "0.005700 mol/kg"
+        }
+    },
+    "MNP409GProduction_20250528": {
+        "gas_yields": {
+            "H2O": "11.5984 mol/kg",
+            "CO2": "3.4122 mol/kg",
+            "N2": "9.3489 mol/kg",
+            "H2": "0.8533 mol/kg",
+            "CO": "0.8886 mol/kg"
+        },
+        "Temperature": "1730.281 K",
+        "Density": "2.200 g/cm^3",
+        "reference_burn_rate": "29.16 mm/s",
+        "burn_rate_exponent": 0.320000,
+        "burn_rate_temperature_sensitivity": "0.00104 1/K",
+        "HEX": "2325.868 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.314000,
+            "molar_mass": "17.031000 g/mol",
+            "wc_gas_yield": "0.001000 mol/kg"
+        }
+    },
+    "MPN127K_20250528": {
+        "gas_yields": {
+            "H2O": "3.841 mol/kg",
+            "CO2": "2.5955 mol/kg",
+            "N2": "7.0833 mol/kg",
+            "H2": "0.0006 mol/kg",
+            "CO": "0.0009 mol/kg"
+        },
+        "Temperature": "1424.768 K",
+        "Density": "2.920 g/cm^3",
+        "reference_burn_rate": "32.65 mm/s",
+        "burn_rate_exponent": 0.270000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "1203.438 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.000000,
+            "molar_mass": "50.000000 g/mol",
+            "wc_gas_yield": "0.000000 mol/kg"
+        }
+    },
+    "MPN152_20250528": {
+        "gas_yields": {
+            "H2O": "21.937 mol/kg",
+            "CO2": "1.8499 mol/kg",
+            "N2": "9.9698 mol/kg",
+            "O2": "0.1575 mol/kg",
+            "H2": "0.001 mol/kg"
+        },
+        "Temperature": "1776.813 K",
+        "Density": "2.920 g/cm^3",
+        "reference_burn_rate": "32.65 mm/s",
+        "burn_rate_exponent": 0.270000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3276.228 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.278000,
+            "molar_mass": "25.613000 g/mol",
+            "wc_gas_yield": "0.018300 mol/kg"
+        }
+    },
+    "NC_20250528": {
+        "gas_yields": {
+            "H2O": "9.1153 mol/kg",
+            "CO2": "5.1897 mol/kg",
+            "N2": "4.4961 mol/kg",
+            "H2": "4.7215 mol/kg",
+            "CO": "16.8364 mol/kg"
+        },
+        "Temperature": "2524.766 K",
+        "Density": "1.518 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "4007.485 kJ/kg",
+        "wild_card": {
+            "Cp/R": 3.268000,
+            "molar_mass": "6.719000 g/mol",
+            "wc_gas_yield": "0.042600 mol/kg"
+        }
+    },
+    "null": {
+        "gas_yields": {
+            "H2O": "12.4764 mol/kg",
+            "CO2": "4.7344 mol/kg",
+            "N2": "8.0946 mol/kg"
+        },
+        "Temperature": "0.000 K",
+        "Density": "0.00 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "0.000 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.000000,
+            "molar_mass": "50.000000 g/mol",
+            "wc_gas_yield": "0.000000 mol/kg"
+        }
+    },
+    "PIP1225_20250528": {
+        "gas_yields": {
+            "H2O": "0.0709 mol/kg",
+            "CO2": "0.0821 mol/kg",
+            "O2": "0.4606 mol/kg",
+            "H2": "0.0661 mol/kg",
+            "CO": "0.7436 mol/kg"
+        },
+        "Temperature": "5176.329 K",
+        "Density": "3.500 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6042.607 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.530000,
+            "molar_mass": "48.095000 g/mol",
+            "wc_gas_yield": "6.948500 mol/kg"
+        }
+    },
+    "PIP1226_20250528": {
+        "gas_yields": {
+            "H2O": "4.3309 mol/kg",
+            "CO2": "0.2286 mol/kg",
+            "O2": "1.0582 mol/kg",
+            "H2": "0.4512 mol/kg",
+            "CO": "0.208 mol/kg"
+        },
+        "Temperature": "3843.352 K",
+        "Density": "2.790 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6509.944 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.053000,
+            "molar_mass": "53.670000 g/mol",
+            "wc_gas_yield": "7.798700 mol/kg"
+        }
+    },
+    "PIP1226H_20250528": {
+        "gas_yields": {
+            "H2O": "2.6838 mol/kg",
+            "CO2": "0.022 mol/kg",
+            "O2": "0.0105 mol/kg",
+            "H2": "4.1806 mol/kg",
+            "CO": "0.3075 mol/kg"
+        },
+        "Temperature": "4050.376 K",
+        "Density": "2.910 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6420.990 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.770000,
+            "molar_mass": "50.729000 g/mol",
+            "wc_gas_yield": "6.757100 mol/kg"
+        }
+    },
+    "PIP1226K_20250528": {
+        "gas_yields": {
+            "H2O": "4.2304 mol/kg",
+            "CO2": "0.0825 mol/kg",
+            "O2": "0.2044 mol/kg",
+            "H2": "1.4063 mol/kg",
+            "CO": "0.2449 mol/kg"
+        },
+        "Temperature": "4022.653 K",
+        "Density": "2.860 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6674.273 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.985000,
+            "molar_mass": "51.500000 g/mol",
+            "wc_gas_yield": "7.527500 mol/kg"
+        }
+    },
+    "PIP1292_20250528": {
+        "gas_yields": {
+            "H2O": "0.0011 mol/kg",
+            "CO2": "0.0006 mol/kg",
+            "N2": "3.5488 mol/kg",
+            "H2": "0.1604 mol/kg",
+            "CO": "0.6859 mol/kg"
+        },
+        "Temperature": "3158.417 K",
+        "Density": "2.140 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6705.343 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.636000,
+            "molar_mass": "68.893000 g/mol",
+            "wc_gas_yield": "12.476400 mol/kg"
+        }
+    },
+    "PIP1402D2_20250528": {
+        "gas_yields": {
+            "H2O": "0.0016 mol/kg",
+            "CO2": "0.0005 mol/kg",
+            "N2": "2.0497 mol/kg",
+            "H2": "0.3564 mol/kg",
+            "CO": "0.8094 mol/kg"
+        },
+        "Temperature": "3202.604 K",
+        "Density": "2.220 g/cm^3",
+        "reference_burn_rate": "27.47 mm/s",
+        "burn_rate_exponent": 0.130000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "7333.024 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.704000,
+            "molar_mass": "65.990000 g/mol",
+            "wc_gas_yield": "10.949400 mol/kg"
+        }
+    },
+    "PIP1404B1_20250528": {
+        "gas_yields": {
+            "H2O": "0.1697 mol/kg",
+            "CO2": "0.3194 mol/kg",
+            "O2": "1.5744 mol/kg",
+            "H2": "0.0186 mol/kg",
+            "CO": "0.3161 mol/kg"
+        },
+        "Temperature": "4132.525 K",
+        "Density": "3.800 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3618.708 kJ/kg",
+        "wild_card": {
+            "Cp/R": 6.039000,
+            "molar_mass": "87.310000 g/mol",
+            "wc_gas_yield": "5.266900 mol/kg"
+        }
+    },
+    "PIP1407A1_20250528": {
+        "gas_yields": {
+            "H2O": "0.0137 mol/kg",
+            "CO2": "0.0012 mol/kg",
+            "N2": "3.0697 mol/kg",
+            "H2": "2.9465 mol/kg",
+            "CO": "1.9906 mol/kg"
+        },
+        "Temperature": "3157.193 K",
+        "Density": "2.014 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "6987.919 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.392000,
+            "molar_mass": "58.287000 g/mol",
+            "wc_gas_yield": "12.254300 mol/kg"
+        }
+    },
+    "PIP1407B4_20250528": {
+        "gas_yields": {
+            "H2O": "0.0083 mol/kg",
+            "CO2": "0.0009 mol/kg",
+            "N2": "2.1698 mol/kg",
+            "H2": "2.0289 mol/kg",
+            "CO": "1.618 mol/kg"
+        },
+        "Temperature": "3179.069 K",
+        "Density": "2.066 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "7540.501 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.392000,
+            "molar_mass": "59.893000 g/mol",
+            "wc_gas_yield": "11.863600 mol/kg"
+        }
+    },
+    "PIP1426E1_20250528": {
+        "gas_yields": {
+            "H2O": "1.5973 mol/kg",
+            "CO2": "1.5252 mol/kg",
+            "N2": "3.992 mol/kg",
+            "O2": "0.8965 mol/kg",
+            "H2": "0.0293 mol/kg",
+            "CO": "0.2108 mol/kg"
+        },
+        "Temperature": "3071.574 K",
+        "Density": "2.048 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "4679.044 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.863000,
+            "molar_mass": "67.863000 g/mol",
+            "wc_gas_yield": "11.163800 mol/kg"
+        }
+    },
+    "PNA24B_20250528": {
+        "gas_yields": {
+            "H2O": "12.964 mol/kg",
+            "CO2": "4.4012 mol/kg",
+            "N2": "10.4798 mol/kg",
+            "H2": "1.373 mol/kg",
+            "CO": "2.08 mol/kg"
+        },
+        "Temperature": "1967.769 K",
+        "Density": "1.842 g/cm^3",
+        "reference_burn_rate": "21.55 mm/s",
+        "burn_rate_exponent": 0.550000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2952.789 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.786000,
+            "molar_mass": "61.190000 g/mol",
+            "wc_gas_yield": "0.310000 mol/kg"
+        }
+    },
+    "PNP487A12Production_20250528": {
+        "gas_yields": {
+            "H2O": "15.3444 mol/kg",
+            "CO2": "4.1537 mol/kg",
+            "N2": "9.6463 mol/kg",
+            "H2": "0.3672 mol/kg",
+            "CO": "0.4252 mol/kg"
+        },
+        "Temperature": "1918.487 K",
+        "Density": "1.866 g/cm^3",
+        "reference_burn_rate": "21.12 mm/s",
+        "burn_rate_exponent": 0.610000,
+        "burn_rate_temperature_sensitivity": "0.00236 1/K",
+        "HEX": "2974.599 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.827000,
+            "molar_mass": "61.853000 g/mol",
+            "wc_gas_yield": "0.356300 mol/kg"
+        }
+    },
+    "PNP487A3Production_20250528": {
+        "gas_yields": {
+            "H2O": "15.7344 mol/kg",
+            "CO2": "4.2856 mol/kg",
+            "N2": "10.3004 mol/kg",
+            "H2": "0.5591 mol/kg",
+            "CO": "0.7426 mol/kg"
+        },
+        "Temperature": "2082.475 K",
+        "Density": "1.780 g/cm^3",
+        "reference_burn_rate": "44.21 mm/s",
+        "burn_rate_exponent": 0.520000,
+        "burn_rate_temperature_sensitivity": "0.00191 1/K",
+        "HEX": "3454.956 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.333000,
+            "molar_mass": "74.239000 g/mol",
+            "wc_gas_yield": "1.024700 mol/kg"
+        }
+    },
+    "PNP524B10Production_20250528": {
+        "gas_yields": {
+            "H2O": "8.9796 mol/kg",
+            "CO2": "3.1552 mol/kg",
+            "N2": "10.3416 mol/kg",
+            "H2": "8.1534 mol/kg",
+            "CO": "8.4008 mol/kg"
+        },
+        "Temperature": "1582.503 K",
+        "Density": "1.670 g/cm^3",
+        "reference_burn_rate": "44.56 mm/s",
+        "burn_rate_exponent": 0.310000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2384.599 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.272000,
+            "molar_mass": "36.486000 g/mol",
+            "wc_gas_yield": "2.001700 mol/kg"
+        }
+    },
+    "PNP538A15Production_20250528": {
+        "gas_yields": {
+            "H2O": "12.4764 mol/kg",
+            "CO2": "4.7344 mol/kg",
+            "N2": "8.0946 mol/kg",
+            "H2": "0.1965 mol/kg",
+            "CO": "0.2382 mol/kg"
+        },
+        "Temperature": "1645.762 K",
+        "Density": "2.119 g/cm^3",
+        "reference_burn_rate": "19.36 mm/s",
+        "burn_rate_exponent": 0.340000,
+        "burn_rate_temperature_sensitivity": "0.00187 1/K",
+        "HEX": "2294.173 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.011000,
+            "molar_mass": "47.996000 g/mol",
+            "wc_gas_yield": "0.268000 mol/kg"
+        }
+    },
+    "PNP538E26Production_20250528": {
+        "gas_yields": {
+            "H2O": "13.9849 mol/kg",
+            "CO2": "4.2389 mol/kg",
+            "N2": "7.1409 mol/kg",
+            "H2": "0.132 mol/kg",
+            "CO": "0.0856 mol/kg"
+        },
+        "Temperature": "1392.037 K",
+        "Density": "2.181 g/cm^3",
+        "reference_burn_rate": "18.56 mm/s",
+        "burn_rate_exponent": 0.370000,
+        "burn_rate_temperature_sensitivity": "0.00185 1/K",
+        "HEX": "2040.359 kJ/kg",
+        "wild_card": {
+            "Cp/R": 7.386000,
+            "molar_mass": "43.401000 g/mol",
+            "wc_gas_yield": "0.100900 mol/kg"
+        }
+    },
+    "PNP539A18ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.4711 mol/kg",
+            "CO2": "4.1643 mol/kg",
+            "N2": "9.8721 mol/kg",
+            "H2": "0.8993 mol/kg",
+            "CO": "1.0475 mol/kg"
+        },
+        "Temperature": "1858.462 K",
+        "Density": "1.853 g/cm^3",
+        "reference_burn_rate": "38.03 mm/s",
+        "burn_rate_exponent": 0.435000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2869.381 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.594000,
+            "molar_mass": "65.723000 g/mol",
+            "wc_gas_yield": "0.534900 mol/kg"
+        }
+    },
+    "PNP539A9Production_20250528": {
+        "gas_yields": {
+            "H2O": "14.7373 mol/kg",
+            "CO2": "4.5736 mol/kg",
+            "N2": "9.6766 mol/kg",
+            "H2": "0.336 mol/kg",
+            "CO": "0.4887 mol/kg"
+        },
+        "Temperature": "2029.048 K",
+        "Density": "1.875 g/cm^3",
+        "reference_burn_rate": "43.46 mm/s",
+        "burn_rate_exponent": 0.540000,
+        "burn_rate_temperature_sensitivity": "0.00206 1/K",
+        "HEX": "3214.737 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.446000,
+            "molar_mass": "73.530000 g/mol",
+            "wc_gas_yield": "0.911200 mol/kg"
+        }
+    },
+    "PNP553C1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.548 mol/kg",
+            "CO2": "4.1009 mol/kg",
+            "N2": "8.7689 mol/kg",
+            "H2": "0.099 mol/kg",
+            "CO": "0.1044 mol/kg"
+        },
+        "Temperature": "1845.918 K",
+        "Density": "1.897 g/cm^3",
+        "reference_burn_rate": "36.50 mm/s",
+        "burn_rate_exponent": 0.490000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2924.221 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.659000,
+            "molar_mass": "68.339000 g/mol",
+            "wc_gas_yield": "0.596300 mol/kg"
+        }
+    },
+    "PNP644A2Production_20250528": {
+        "gas_yields": {
+            "H2O": "11.5061 mol/kg",
+            "CO2": "2.26 mol/kg",
+            "N2": "7.105 mol/kg",
+            "O2": "0.0034 mol/kg",
+            "H2": "0.9211 mol/kg",
+            "CO": "1.2051 mol/kg"
+        },
+        "Temperature": "2675.501 K",
+        "Density": "1.992 g/cm^3",
+        "reference_burn_rate": "39.37 mm/s",
+        "burn_rate_exponent": 0.480000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "4479.103 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.749000,
+            "molar_mass": "65.903000 g/mol",
+            "wc_gas_yield": "2.961600 mol/kg"
+        }
+    },
+    "PNP670A3ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.1993 mol/kg",
+            "CO2": "4.856 mol/kg",
+            "N2": "9 mol/kg",
+            "H2": "0.4575 mol/kg",
+            "CO": "0.6717 mol/kg"
+        },
+        "Temperature": "1922.741 K",
+        "Density": "1.951 g/cm^3",
+        "reference_burn_rate": "39.68 mm/s",
+        "burn_rate_exponent": 0.460000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2928.448 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.486000,
+            "molar_mass": "77.293000 g/mol",
+            "wc_gas_yield": "0.550700 mol/kg"
+        }
+    },
+    "PNP678A2_20250528": {
+        "gas_yields": {
+            "H2O": "14.1725 mol/kg",
+            "CO2": "4.9638 mol/kg",
+            "N2": "7.4676 mol/kg",
+            "H2": "0.0089 mol/kg",
+            "CO": "0.0108 mol/kg"
+        },
+        "Temperature": "1711.977 K",
+        "Density": "2.072 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2532.487 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.118000,
+            "molar_mass": "60.797000 g/mol",
+            "wc_gas_yield": "0.110100 mol/kg"
+        }
+    },
+    "PNP684B1_20250528": {
+        "gas_yields": {
+            "H2O": "12.8854 mol/kg",
+            "CO2": "5.3935 mol/kg",
+            "N2": "7.6599 mol/kg",
+            "H2": "0.0055 mol/kg",
+            "CO": "0.0077 mol/kg"
+        },
+        "Temperature": "1671.618 K",
+        "Density": "2.134 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2320.495 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.637000,
+            "molar_mass": "69.349000 g/mol",
+            "wc_gas_yield": "0.101200 mol/kg"
+        }
+    },
+    "PNP688A1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.4151 mol/kg",
+            "CO2": "5.7952 mol/kg",
+            "N2": "6.2593 mol/kg",
+            "H2": "0.1742 mol/kg",
+            "CO": "0.2332 mol/kg"
+        },
+        "Temperature": "1622.655 K",
+        "Density": "2.137 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2299.488 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.182000,
+            "molar_mass": "37.570000 g/mol",
+            "wc_gas_yield": "0.126500 mol/kg"
+        }
+    },
+    "PNP694B2ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.0669 mol/kg",
+            "CO2": "4.5048 mol/kg",
+            "N2": "9.651 mol/kg",
+            "H2": "0.4315 mol/kg",
+            "CO": "0.5701 mol/kg"
+        },
+        "Temperature": "1956.146 K",
+        "Density": "1.861 g/cm^3",
+        "reference_burn_rate": "39.77 mm/s",
+        "burn_rate_exponent": 0.384000,
+        "burn_rate_temperature_sensitivity": "0.00169 1/K",
+        "HEX": "3078.319 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.119000,
+            "molar_mass": "70.205000 g/mol",
+            "wc_gas_yield": "0.655000 mol/kg"
+        }
+    },
+    "PNP703A2ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.7363 mol/kg",
+            "CO2": "4.4532 mol/kg",
+            "N2": "9.8079 mol/kg",
+            "H2": "0.5518 mol/kg",
+            "CO": "0.7485 mol/kg"
+        },
+        "Temperature": "1975.026 K",
+        "Density": "1.891 g/cm^3",
+        "reference_burn_rate": "43.32 mm/s",
+        "burn_rate_exponent": 0.412000,
+        "burn_rate_temperature_sensitivity": "0.0018 1/K",
+        "HEX": "3086.255 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.787000,
+            "molar_mass": "79.226000 g/mol",
+            "wc_gas_yield": "0.693600 mol/kg"
+        }
+    },
+    "PNP703AA1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.0662 mol/kg",
+            "CO2": "4.8112 mol/kg",
+            "N2": "8.8171 mol/kg",
+            "H2": "0.1775 mol/kg",
+            "CO": "0.2793 mol/kg"
+        },
+        "Temperature": "1917.161 K",
+        "Density": "2.058 g/cm^3",
+        "reference_burn_rate": "30.24 mm/s",
+        "burn_rate_exponent": 0.437000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2777.483 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.540000,
+            "molar_mass": "66.071000 g/mol",
+            "wc_gas_yield": "0.541700 mol/kg"
+        }
+    },
+    "PNP703AA2ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.0576 mol/kg",
+            "CO2": "4.7729 mol/kg",
+            "N2": "9.0943 mol/kg",
+            "H2": "0.3224 mol/kg",
+            "CO": "0.5421 mol/kg"
+        },
+        "Temperature": "2005.269 K",
+        "Density": "2.004 g/cm^3",
+        "reference_burn_rate": "44.24 mm/s",
+        "burn_rate_exponent": 0.398000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3011.891 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.487000,
+            "molar_mass": "71.392000 g/mol",
+            "wc_gas_yield": "0.909800 mol/kg"
+        }
+    },
+    "PNP703AC1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.9148 mol/kg",
+            "CO2": "4.5391 mol/kg",
+            "N2": "8.8053 mol/kg",
+            "O2": "0.0012 mol/kg",
+            "H2": "0.0245 mol/kg",
+            "CO": "0.0344 mol/kg"
+        },
+        "Temperature": "1927.425 K",
+        "Density": "1.999 g/cm^3",
+        "reference_burn_rate": "28.68 mm/s",
+        "burn_rate_exponent": 0.471000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2885.729 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.670000,
+            "molar_mass": "68.918000 g/mol",
+            "wc_gas_yield": "0.514700 mol/kg"
+        }
+    },
+    "PNP703AE1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "11.9724 mol/kg",
+            "CO2": "5.1773 mol/kg",
+            "N2": "8.286 mol/kg",
+            "O2": "0.0009 mol/kg",
+            "H2": "0.0193 mol/kg",
+            "CO": "0.0354 mol/kg"
+        },
+        "Temperature": "1907.390 K",
+        "Density": "2.168 g/cm^3",
+        "reference_burn_rate": "27.05 mm/s",
+        "burn_rate_exponent": 0.450000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2649.695 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.751000,
+            "molar_mass": "71.404000 g/mol",
+            "wc_gas_yield": "0.526400 mol/kg"
+        }
+    },
+    "PNP703AE3ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "12.8718 mol/kg",
+            "CO2": "4.7881 mol/kg",
+            "N2": "8.4789 mol/kg",
+            "O2": "0.0011 mol/kg",
+            "H2": "0.0227 mol/kg",
+            "CO": "0.0364 mol/kg"
+        },
+        "Temperature": "1928.202 K",
+        "Density": "2.083 g/cm^3",
+        "reference_burn_rate": "29.87 mm/s",
+        "burn_rate_exponent": 0.488000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2810.230 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.685000,
+            "molar_mass": "71.840000 g/mol",
+            "wc_gas_yield": "0.597600 mol/kg"
+        }
+    },
+    "PNP703AE5ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.9046 mol/kg",
+            "CO2": "4.2412 mol/kg",
+            "N2": "9.833 mol/kg",
+            "H2": "0.8605 mol/kg",
+            "CO": "1.1735 mol/kg"
+        },
+        "Temperature": "1970.083 K",
+        "Density": "1.876 g/cm^3",
+        "reference_burn_rate": "45.15 mm/s",
+        "burn_rate_exponent": 0.406000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3082.542 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.512000,
+            "molar_mass": "71.490000 g/mol",
+            "wc_gas_yield": "0.901100 mol/kg"
+        }
+    },
+    "PNP703AG3ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "12.8784 mol/kg",
+            "CO2": "4.7881 mol/kg",
+            "N2": "8.4789 mol/kg",
+            "O2": "0.0011 mol/kg",
+            "H2": "0.0227 mol/kg",
+            "CO": "0.0365 mol/kg"
+        },
+        "Temperature": "1928.358 K",
+        "Density": "2.075 g/cm^3",
+        "reference_burn_rate": "30.52 mm/s",
+        "burn_rate_exponent": 0.418000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2812.141 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.438000,
+            "molar_mass": "71.874000 g/mol",
+            "wc_gas_yield": "0.566600 mol/kg"
+        }
+    },
+    "PNP703AG4ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "12.2931 mol/kg",
+            "CO2": "4.9907 mol/kg",
+            "N2": "8.6446 mol/kg",
+            "H2": "0.1974 mol/kg",
+            "CO": "0.35 mol/kg"
+        },
+        "Temperature": "1942.365 K",
+        "Density": "2.116 g/cm^3",
+        "reference_burn_rate": "35.11 mm/s",
+        "burn_rate_exponent": 0.397000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2781.283 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.275000,
+            "molar_mass": "68.211000 g/mol",
+            "wc_gas_yield": "0.668400 mol/kg"
+        }
+    },
+    "PNP703AG5ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.907 mol/kg",
+            "CO2": "4.241 mol/kg",
+            "N2": "9.833 mol/kg",
+            "H2": "0.8605 mol/kg",
+            "CO": "1.1737 mol/kg"
+        },
+        "Temperature": "1970.513 K",
+        "Density": "1.877 g/cm^3",
+        "reference_burn_rate": "45.66 mm/s",
+        "burn_rate_exponent": 0.389000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3081.900 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.324000,
+            "molar_mass": "70.892000 g/mol",
+            "wc_gas_yield": "0.873000 mol/kg"
+        }
+    },
+    "PNP703AG6ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.6403 mol/kg",
+            "CO2": "4.5068 mol/kg",
+            "N2": "9.3862 mol/kg",
+            "H2": "0.4929 mol/kg",
+            "CO": "0.7265 mol/kg"
+        },
+        "Temperature": "1967.430 K",
+        "Density": "1.944 g/cm^3",
+        "reference_burn_rate": "42.00 mm/s",
+        "burn_rate_exponent": 0.356000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2993.185 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.266000,
+            "molar_mass": "68.784000 g/mol",
+            "wc_gas_yield": "0.758900 mol/kg"
+        }
+    },
+    "PNP703AM1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.907 mol/kg",
+            "CO2": "4.241 mol/kg",
+            "N2": "9.833 mol/kg",
+            "H2": "0.8605 mol/kg",
+            "CO": "1.1737 mol/kg"
+        },
+        "Temperature": "1970.513 K",
+        "Density": "1.877 g/cm^3",
+        "reference_burn_rate": "45.66 mm/s",
+        "burn_rate_exponent": 0.389000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3081.900 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.324000,
+            "molar_mass": "70.892000 g/mol",
+            "wc_gas_yield": "0.873000 mol/kg"
+        }
+    },
+    "PNP703B1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.7057 mol/kg",
+            "CO2": "4.4216 mol/kg",
+            "N2": "9.8079 mol/kg",
+            "H2": "0.5352 mol/kg",
+            "CO": "0.7245 mol/kg"
+        },
+        "Temperature": "1978.460 K",
+        "Density": "1.872 g/cm^3",
+        "reference_burn_rate": "42.37 mm/s",
+        "burn_rate_exponent": 0.397000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3107.907 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.460000,
+            "molar_mass": "76.238000 g/mol",
+            "wc_gas_yield": "0.691900 mol/kg"
+        }
+    },
+    "PNP703E1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.7057 mol/kg",
+            "CO2": "4.4216 mol/kg",
+            "N2": "9.8079 mol/kg",
+            "H2": "0.5352 mol/kg",
+            "CO": "0.7245 mol/kg"
+        },
+        "Temperature": "1978.460 K",
+        "Density": "1.872 g/cm^3",
+        "reference_burn_rate": "43.09 mm/s",
+        "burn_rate_exponent": 0.398000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3107.907 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.460000,
+            "molar_mass": "76.238000 g/mol",
+            "wc_gas_yield": "0.691900 mol/kg"
+        }
+    },
+    "PNP703F1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.6979 mol/kg",
+            "CO2": "4.4432 mol/kg",
+            "N2": "9.7827 mol/kg",
+            "H2": "0.5508 mol/kg",
+            "CO": "0.7455 mol/kg"
+        },
+        "Temperature": "1971.892 K",
+        "Density": "1.891 g/cm^3",
+        "reference_burn_rate": "43.49 mm/s",
+        "burn_rate_exponent": 0.412000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3087.040 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.807000,
+            "molar_mass": "79.357000 g/mol",
+            "wc_gas_yield": "0.691700 mol/kg"
+        }
+    },
+    "PNP703J1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.9256 mol/kg",
+            "CO2": "4.2651 mol/kg",
+            "N2": "9.5723 mol/kg",
+            "H2": "0.7341 mol/kg",
+            "CO": "0.9342 mol/kg"
+        },
+        "Temperature": "1886.401 K",
+        "Density": "1.930 g/cm^3",
+        "reference_burn_rate": "30.74 mm/s",
+        "burn_rate_exponent": 0.439000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2850.662 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.908000,
+            "molar_mass": "63.732000 g/mol",
+            "wc_gas_yield": "0.483000 mol/kg"
+        }
+    },
+    "PNP703J2ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.8891 mol/kg",
+            "CO2": "4.2379 mol/kg",
+            "N2": "9.833 mol/kg",
+            "H2": "0.8589 mol/kg",
+            "CO": "1.1768 mol/kg"
+        },
+        "Temperature": "1975.403 K",
+        "Density": "1.885 g/cm^3",
+        "reference_burn_rate": "45.95 mm/s",
+        "burn_rate_exponent": 0.377000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3085.818 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.043000,
+            "molar_mass": "67.528000 g/mol",
+            "wc_gas_yield": "0.852000 mol/kg"
+        }
+    },
+    "PNP703L1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.9259 mol/kg",
+            "CO2": "4.2648 mol/kg",
+            "N2": "9.5741 mol/kg",
+            "H2": "0.7357 mol/kg",
+            "CO": "0.9361 mol/kg"
+        },
+        "Temperature": "1886.330 K",
+        "Density": "1.930 g/cm^3",
+        "reference_burn_rate": "34.14 mm/s",
+        "burn_rate_exponent": 0.426000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2850.656 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.908000,
+            "molar_mass": "63.732000 g/mol",
+            "wc_gas_yield": "0.483000 mol/kg"
+        }
+    },
+    "PNP703N1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.575 mol/kg",
+            "CO2": "4.5672 mol/kg",
+            "N2": "9.1472 mol/kg",
+            "H2": "0.3629 mol/kg",
+            "CO": "0.52 mol/kg"
+        },
+        "Temperature": "1913.495 K",
+        "Density": "1.990 g/cm^3",
+        "reference_burn_rate": "32.30 mm/s",
+        "burn_rate_exponent": 0.468000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2830.846 kJ/kg",
+        "wild_card": {
+            "Cp/R": 4.895000,
+            "molar_mass": "63.737000 g/mol",
+            "wc_gas_yield": "0.485700 mol/kg"
+        }
+    },
+    "PNP703Q1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.5628 mol/kg",
+            "CO2": "4.5671 mol/kg",
+            "N2": "9.147 mol/kg",
+            "H2": "0.364 mol/kg",
+            "CO": "0.5201 mol/kg"
+        },
+        "Temperature": "1909.240 K",
+        "Density": "1.998 g/cm^3",
+        "reference_burn_rate": "32.79 mm/s",
+        "burn_rate_exponent": 0.422000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2827.058 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.545000,
+            "molar_mass": "65.827000 g/mol",
+            "wc_gas_yield": "0.541500 mol/kg"
+        }
+    },
+    "PNP703S1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.6162 mol/kg",
+            "CO2": "4.4988 mol/kg",
+            "N2": "9.1456 mol/kg",
+            "H2": "0.3637 mol/kg",
+            "CO": "0.5136 mol/kg"
+        },
+        "Temperature": "1917.606 K",
+        "Density": "2.016 g/cm^3",
+        "reference_burn_rate": "33.53 mm/s",
+        "burn_rate_exponent": 0.365000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2851.913 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.603000,
+            "molar_mass": "79.612000 g/mol",
+            "wc_gas_yield": "0.512400 mol/kg"
+        }
+    },
+    "PNP703U1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.6705 mol/kg",
+            "CO2": "4.2654 mol/kg",
+            "N2": "9.6185 mol/kg",
+            "H2": "0.8284 mol/kg",
+            "CO": "1.082 mol/kg"
+        },
+        "Temperature": "1894.548 K",
+        "Density": "1.933 g/cm^3",
+        "reference_burn_rate": "38.07 mm/s",
+        "burn_rate_exponent": 0.404000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2874.351 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.521000,
+            "molar_mass": "66.862000 g/mol",
+            "wc_gas_yield": "0.634200 mol/kg"
+        }
+    },
+    "PNP703W1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.0622 mol/kg",
+            "CO2": "4.7014 mol/kg",
+            "N2": "9.0054 mol/kg",
+            "H2": "0.3388 mol/kg",
+            "CO": "0.5258 mol/kg"
+        },
+        "Temperature": "1927.491 K",
+        "Density": "2.026 g/cm^3",
+        "reference_burn_rate": "34.78 mm/s",
+        "burn_rate_exponent": 0.397000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2829.681 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.498000,
+            "molar_mass": "66.802000 g/mol",
+            "wc_gas_yield": "0.639000 mol/kg"
+        }
+    },
+    "PNP703Y1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.5231 mol/kg",
+            "CO2": "4.7057 mol/kg",
+            "N2": "8.9797 mol/kg",
+            "H2": "0.1903 mol/kg",
+            "CO": "0.2856 mol/kg"
+        },
+        "Temperature": "1927.808 K",
+        "Density": "2.017 g/cm^3",
+        "reference_burn_rate": "31.26 mm/s",
+        "burn_rate_exponent": 0.428000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2838.395 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.535000,
+            "molar_mass": "65.831000 g/mol",
+            "wc_gas_yield": "0.544800 mol/kg"
+        }
+    },
+    "PNP708A1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.8246 mol/kg",
+            "CO2": "4.3137 mol/kg",
+            "N2": "9.5092 mol/kg",
+            "H2": "0.5472 mol/kg",
+            "CO": "0.6796 mol/kg"
+        },
+        "Temperature": "1916.170 K",
+        "Density": "1.900 g/cm^3",
+        "reference_burn_rate": "43.52 mm/s",
+        "burn_rate_exponent": 0.384000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "3008.993 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.535000,
+            "molar_mass": "78.058000 g/mol",
+            "wc_gas_yield": "0.589500 mol/kg"
+        }
+    },
+    "PNP708A2ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "14.943 mol/kg",
+            "CO2": "4.2019 mol/kg",
+            "N2": "9.2138 mol/kg",
+            "H2": "0.5631 mol/kg",
+            "CO": "0.6409 mol/kg"
+        },
+        "Temperature": "1858.523 K",
+        "Density": "1.920 g/cm^3",
+        "reference_burn_rate": "43.11 mm/s",
+        "burn_rate_exponent": 0.399000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2909.153 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.535000,
+            "molar_mass": "78.352000 g/mol",
+            "wc_gas_yield": "0.434400 mol/kg"
+        }
+    },
+    "PNP708A3ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "15.1679 mol/kg",
+            "CO2": "3.9824 mol/kg",
+            "N2": "8.6215 mol/kg",
+            "H2": "0.5969 mol/kg",
+            "CO": "0.5587 mol/kg"
+        },
+        "Temperature": "1736.646 K",
+        "Density": "1.930 g/cm^3",
+        "reference_burn_rate": "41.96 mm/s",
+        "burn_rate_exponent": 0.408000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2709.571 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.558000,
+            "molar_mass": "78.803000 g/mol",
+            "wc_gas_yield": "0.212300 mol/kg"
+        }
+    },
+    "PNP708D8ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "13.74 mol/kg",
+            "CO2": "4.6522 mol/kg",
+            "N2": "8.6136 mol/kg",
+            "H2": "0.0838 mol/kg",
+            "CO": "0.1187 mol/kg"
+        },
+        "Temperature": "1894.406 K",
+        "Density": "2.016 g/cm^3",
+        "reference_burn_rate": "33.97 mm/s",
+        "burn_rate_exponent": 0.497000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2830.571 kJ/kg",
+        "wild_card": {
+            "Cp/R": 5.590000,
+            "molar_mass": "68.904000 g/mol",
+            "wc_gas_yield": "0.629900 mol/kg"
+        }
+    },
+    "PNP711A1ProdDev_20250528": {
+        "gas_yields": {
+            "H2O": "12.2473 mol/kg",
+            "CO2": "4.6775 mol/kg",
+            "N2": "8.0947 mol/kg",
+            "H2": "0.1861 mol/kg",
+            "CO": "0.2512 mol/kg"
+        },
+        "Temperature": "1728.973 K",
+        "Density": "2.202 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "2393.906 kJ/kg",
+        "wild_card": {
+            "Cp/R": 8.371000,
+            "molar_mass": "46.317000 g/mol",
+            "wc_gas_yield": "0.283000 mol/kg"
+        }
+    },
+    "UIX171_20250528": {
+        "gas_yields": {
+            "N2": "1.8143 mol/kg"
+        },
+        "Temperature": "3194.848 K",
+        "Density": "2.126 g/cm^3",
+        "reference_burn_rate": "0.00 mm/s",
+        "burn_rate_exponent": 0.000000,
+        "burn_rate_temperature_sensitivity": "0.00000 1/K",
+        "HEX": "7317.654 kJ/kg",
+        "wild_card": {
+            "Cp/R": 9.782000,
+            "molar_mass": "70.527000 g/mol",
+            "wc_gas_yield": "11.423300 mol/kg"
+        }
+    }
+}

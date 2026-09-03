@@ -1,0 +1,19 @@
+{
+  "package": "AIPP_Piston_P2_1_Mounted_Shell_Candidate01",
+  "status": "CONTAINER_PASS_LIVE_PENDING",
+  "baseline_live": {
+    "declared": 497,
+    "executed": 497,
+    "failed": 0,
+    "scilab": "scilab-2026.1.0"
+  },
+  "declared_test_count": 507,
+  "new_tests": 10,
+  "checks": {
+    "javascript_syntax": "PASS",
+    "deterministic_build": "PASS",
+    "build_validation": "PASS",
+    "m810_validation": "PASS"
+  },
+  "live_validation_required": true
+}

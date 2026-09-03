@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "candidate": "AIPP M8.8 Candidate 05.1",
+  "baseline": "Candidate 04.7",
+  "status": "PASS_STATIC",
+  "application_version": "0.8.8-candidate.5.1",
+  "minimum_scilab_version": "2026.1.0",
+  "baseline_tests": 311,
+  "additive_tests": 22,
+  "expected_cumulative_tests": 333,
+  "checks": {
+    "javascript_syntax": "PASS",
+    "model_smoke": "PASS",
+    "build_reproducibility": "PASS",
+    "build_validation": "PASS",
+    "documented_shape_set": "PASS",
+    "separate_value_unit_controls": "PASS",
+    "unit_conversion": "PASS",
+    "grain_six_field_contract": "PASS",
+    "transactional_csv_import": "PASS",
+    "csv_dimensionality_validation": "PASS",
+    "tabular_constraints": "PASS",
+    "legacy_unsupported_geometry_preservation": "PASS"
+  },
+  "live_scilab_jcef": "REQUIRED_FOR_PROMOTION"
+}

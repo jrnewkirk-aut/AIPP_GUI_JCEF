@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "milestone": "M8.10 Phase 0.5B",
+  "candidate": "Candidate 04 Option B",
+  "application_version": "0.8.10-phase0.5b-candidate.4",
+  "foundation_version": "P6.4.0-0.1",
+  "implementation": {
+    "custom_svg_nodes": true,
+    "chamber_pyro_count_badge": true,
+    "chamber_filter_count_badge": true,
+    "single_transient_hover_card": true,
+    "individual_owned_entity_rows": true,
+    "pyro_filter_graph_nodes": false,
+    "selector_all_bundles": true,
+    "proposed_default_all_bundles": true,
+    "jcef_debug_test": true,
+    "jcef_debug_prod": true
+  },
+  "static_results": [
+    {
+      "check": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "check": "Deterministic dev/test/prod build",
+      "status": "PASS"
+    },
+    {
+      "check": "Official build validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Option B contract validation",
+      "status": "PASS"
+    },
+    {
+      "check": "Offline production dependency scan",
+      "status": "PASS",
+      "scanned_files": 74,
+      "remote_dependencies": 0
+    },
+    {
+      "check": "Unique test inventory",
+      "status": "PASS",
+      "declared_tests": 459
+    }
+  ],
+  "live_acceptance": {
+    "status": "REQUIRED",
+    "minimum_scilab_version": "2026.1.0",
+    "expected_declared_tests": 459,
+    "result_not_simulated": true
+  },
+  "review_notes": [
+    "Tooltip text spacing was increased relative to the HTML study.",
+    "Hover card hides on pan, zoom, resize, background tap, and pointer departure.",
+    "Production debugging remains temporarily enabled during single-user development."
+  ]
+}

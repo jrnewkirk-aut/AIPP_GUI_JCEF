@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "policy_version": "P8.4.0-0.1",
+  "requirements": {
+    "latest_accepted_source_required": true,
+    "exact_source_sha256_required": true,
+    "modular_source_required": true,
+    "monolithic_source_collapse_forbidden": true,
+    "changed_file_classification_required": true,
+    "impact_declaration_required": true,
+    "manifest_update_assessment_required": true,
+    "feature_parity_required_for_replacement": true,
+    "regression_checklist_or_validation_report_required": true,
+    "build_only_sufficient": false,
+    "rollback_required": true
+  },
+  "protected_roots": [
+    "scilab/",
+    "browser_files/js/protocol/",
+    "browser_files/js/observability/",
+    "browser_files/js/plotting/",
+    "browser_files/js/app/",
+    "browser_files/build/",
+    "protocol/"
+  ],
+  "application_roots": [
+    "application/",
+    "browser_files/js/application/"
+  ],
+  "generated_roots": [
+    "browser_files/dist/"
+  ],
+  "prohibited_patterns": [
+    "Replacing modular browser sources with one authored monolithic JavaScript source file.",
+    "Mixing modules from different package states.",
+    "Declaring feature parity without machine-readable comparison evidence.",
+    "Omitting known limitations or rollback steps."
+  ]
+}

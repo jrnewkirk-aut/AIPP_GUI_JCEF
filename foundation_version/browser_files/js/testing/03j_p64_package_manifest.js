@@ -1,0 +1,2 @@
+"use strict";
+P4.p64PackageMetadata={version:"P6.4.0-0.1",features:{canonicalPackageInventory:true,deterministicArchive:true,cacheExclusion:true,acceptedSourceEvidence:true,fullFileHashLedger:true},acceptedSource:{version:"P6.3.0-0.1",declared:167,executed:167,passed:167,failed:0,skipped:0,evidence:"protocol_results_6.3.0.json"},inventoryReport:"package_inventory.json",hashLedger:"SHA256SUMS.txt",packagingTool:"tools/packaging/package_p64.py",rollbackPackage:"scilab_jcef_foundation_p6.3.0_v0.1.zip",expectedInventory:177};

@@ -1,0 +1,14 @@
+{
+  "protocol": "scilab-jcef",
+  "protocol_version": 1,
+  "type": "transfer.generic.start",
+  "request_id": "fixture-start",
+  "payload": {
+    "transfer_id": "fixture-gx",
+    "chunk_count": 4,
+    "total_size": 20,
+    "checksum": 1234,
+    "timeout_ms": 2000,
+    "optional_future_field": "ignored"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "implementation_version": "P7.2.0-0.1",
+  "metrics": {
+    "control.encode.duration_ms": "ms",
+    "transport.callback.duration_ms": "ms",
+    "control.decode.duration_ms": "ms",
+    "calculation.duration_ms": "ms",
+    "plot.reduction.duration_ms": "ms",
+    "plot.render.duration_ms": "ms",
+    "plot.pipeline.duration_ms": "ms",
+    "transport.queue.depth": "count",
+    "request.pending.count": "count",
+    "transfer.active.count": "count",
+    "plot.source_points.visible": "count",
+    "plot.display_points.delivered": "count",
+    "browser.dataset.estimated_bytes": "bytes",
+    "request.failed.count": "count",
+    "request.cancelled.count": "count",
+    "request.timed_out.count": "count"
+  },
+  "retention": {
+    "browser_records": 200,
+    "scilab_records": 200
+  },
+  "rules": [
+    "Values are finite and nonnegative.",
+    "Durations use milliseconds.",
+    "Counters increment exactly once at terminal settlement.",
+    "Gauges reflect the authoritative registry at snapshot time."
+  ]
+}

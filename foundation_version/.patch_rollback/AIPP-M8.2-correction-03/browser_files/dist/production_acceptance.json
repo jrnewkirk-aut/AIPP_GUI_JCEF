@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "mode": "production_validate_only",
+  "bundle_path": "browser_files/dist/bundle.prod.html",
+  "bundle_sha256": "049a6e193fee5f9b2afd17439336775d82d483174aa3412ac116332180fd2db5",
+  "bundle_bytes": 124798,
+  "required_markers": [
+    "P6.4.0-0.1",
+    "P2.application.registry.register(\"ping\"",
+    "application.example.ping.request"
+  ],
+  "forbidden_markers": [
+    "__JCEF_TEST_API__",
+    "P4.register",
+    "<!-- P4_STYLES -->",
+    "<!-- P4_COMPONENTS -->",
+    "<!-- P4_SCRIPTS -->"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "candidate": "AIPP_Piston_Pre_P2_Stabilization_Candidate06",
+  "application_version": "0.8.10-prep2-stabilization.candidate.6",
+  "source_baseline": "Candidate05",
+  "status": "STATIC_VALIDATION_PASS_LIVE_JCEF_REQUIRED",
+  "declared_test_count": 497,
+  "candidate05_live_baseline": {
+    "declared": 489,
+    "executed": 489,
+    "failed": 0,
+    "scilab_version": "scilab-2026.1.0"
+  },
+  "candidate06_new_mounted_ui_tests": 8,
+  "checks": {
+    "javascript_syntax": {
+      "browser_files/js/application/06_aipp_pyro_editor_model.js": true,
+      "browser_files/js/application/09_aipp_chamber_pyro_view.js": true,
+      "browser_files/js/testing/04zzf_aipp_candidate06_formulation_selector_tests.js": true
+    },
+    "tools/build/validate_build.py": {
+      "pass": true,
+      "output": "{\n  \"status\": \"PASS\",\n  \"errors\": []\n}"
+    },
+    "tools/validation/validate_m810_phase05b.py": {
+      "pass": true,
+      "output": "{\n  \"status\": \"PASS\",\n  \"errors\": []\n}"
+    },
+    "manifest_sync": {
+      "feature_embedded": true,
+      "test_embedded": true,
+      "test_count": 497
+    },
+    "protected_formulations": 79,
+    "selector_contract": {
+      "searchField:[\"text\",\"value\"]": true,
+      "clearOptions()": true,
+      "addOptions(options)": true,
+      "ensureFormulationInventory": true,
+      "refreshFormulationInventory": true
+    },
+    "mounted_test_contract": {
+      "dispatchEvent(new Event(\"input\"": true,
+      "dropdown_content.querySelectorAll": true,
+      "target.click()": true,
+      "masterUnchanged": true,
+      "Imported_Unmatched_Formulation_C06": true
+    },
+    "rebuild": {
+      "pass": true,
+      "deterministic": true,
+      "hashes": {
+        "dev": "b3c2ed48858a669afbccfb2d19fe656f56a5a3d241bb09f26306e3e5ee316aff",
+        "test": "d498708f65bf55dc75f15ad40d31821e34eba788dc73ef03f8a2bed6ade71354",
+        "prod": "bcbd4d41ee92e4f6ace99eab9bbcea1b1431b7a559490698e1759dabe85d63f9"
+      }
+    }
+  },
+  "live_validation": {
+    "executed": false,
+    "required": true,
+    "minimum_scilab_version": "2026.1.0",
+    "claim": "No Candidate 06 live-suite pass is claimed."
+  }
+}

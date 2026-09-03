@@ -1,0 +1,14 @@
+{
+  "candidate": "06.14",
+  "baseline": "06.13",
+  "status": "PASS_STATIC_AND_BUILD",
+  "checks": {
+    "top_toolbar_markup": true,
+    "all_five_controls": true,
+    "bottom_toolbar_removed": true,
+    "responsive_css": true,
+    "prod_bundle": true,
+    "test_bundle": true
+  },
+  "full_live_scilab_jcef_required": true
+}

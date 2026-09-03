@@ -1,0 +1,77 @@
+{
+  "candidate": "AIPP_M8_8_Direct_Integration_Candidate06_1",
+  "base": "AIPP_M8_8_Direct_Integration_Candidate06_0",
+  "created_utc": "2026-08-18T19:49:07.749933+00:00",
+  "changed_files": [
+    {
+      "path": "application/browser/styles/aipp_m1.css",
+      "bytes": 33236,
+      "sha256": "e2ab96e5841b6abddf6c4bedfba181976d25ee9b0cca7f4de240e0f426cd6993"
+    },
+    {
+      "path": "browser_files/components_test/05_aipp_chamber_validation_environment.html",
+      "bytes": 2463,
+      "sha256": "615153cffebc95c11aa9475218e0ce875a8fb3975e50f1589d63ae2156526c89"
+    },
+    {
+      "path": "browser_files/js/application/28_aipp_chamber_editor_view.js",
+      "bytes": 4467,
+      "sha256": "d6721cf2b7df121b81560c47aa3c8880f5af1bf03aaec991317e66962b6d0a8b"
+    },
+    {
+      "path": "browser_files/js/testing/04zf_aipp_m88_phase2_chamber_editor_tests.js",
+      "bytes": 3966,
+      "sha256": "d398fbe2bb94969a2f485b8550b6c440987d1d37085c2a9946d1094c377abf96"
+    },
+    {
+      "path": "browser_files/build/dependency_manifest.json",
+      "bytes": 69714,
+      "sha256": "fd726ec45390dee5edd1229b97df3b4f0fe9c50300796add2ef71af7a9882a64"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.dev.json",
+      "bytes": 16727,
+      "sha256": "1546d1c4d7e4bbafc749bd2c7c2838e9f3c3f6a0f15973d0b5799807febb2fa6"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.test.json",
+      "bytes": 28639,
+      "sha256": "8375fccc66dbe437ad52908a722b4386609857c362410c7aff9b39c77c7183af"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.prod.json",
+      "bytes": 15625,
+      "sha256": "59ef2748173d21aacb1b9a85750a656a534c4e212818d5e4fed327b41a6a6507"
+    },
+    {
+      "path": "browser_files/dist/build_manifest.json",
+      "bytes": 487,
+      "sha256": "3e024431a8ffe04461f255ae0e6f2b3dcd2f6d9152f46da17e783b7917faa0f2"
+    },
+    {
+      "path": "browser_files/dist/bundle.dev.html",
+      "bytes": 702438,
+      "sha256": "896b484d4dcb485449119cb60e1404beaf5696caf037e79b3d95d4cbd10e4b24"
+    },
+    {
+      "path": "browser_files/dist/bundle.test.html",
+      "bytes": 911785,
+      "sha256": "335eaff2527e45d4451a3080e7b6c2b240e6a0ba598e60910f155ad8ad5532bf"
+    },
+    {
+      "path": "browser_files/dist/bundle.prod.html",
+      "bytes": 689515,
+      "sha256": "ec3f7c077e3bb91dd784fcde11303f7f7726dfdecffc2354f31b8918d61d5df4"
+    },
+    {
+      "path": "browser_files/dist/reproducibility_report.json",
+      "bytes": 11024,
+      "sha256": "a0a7e7feb37ff121f210ae7ee57b8dfdf387d66ab4e1404be115477c372c35db"
+    },
+    {
+      "path": "AIPP_M8_8_CANDIDATE06_1_CHAMBER_VALIDATION_ENVIRONMENT_REPORT.md",
+      "bytes": 1742,
+      "sha256": "c837658c711f9854ad534dab8d47aed0e611470535fb47f7d4277a3347e8adc1"
+    }
+  ]
+}

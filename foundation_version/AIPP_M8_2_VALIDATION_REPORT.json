@@ -1,0 +1,15 @@
+{
+  "milestone": "M8.2-json-file-lifecycle",
+  "date": "2026-08-14",
+  "baseline": "M8_1_latest.zip.txt",
+  "checks": {
+    "component_ids": true,
+    "routes": true,
+    "bundles": true,
+    "validator_exit": 0,
+    "build_exit": 0,
+    "protected_hash_reconciliation": "PASS"
+  },
+  "live_scilab_jcef": "NOT_RUN_IN_THIS_ENVIRONMENT",
+  "status": "PASS_STATIC_BUILD"
+}

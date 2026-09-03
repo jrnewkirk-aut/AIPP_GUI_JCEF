@@ -1,0 +1,20 @@
+{
+  "candidate": "06.16",
+  "baseline": "06.15",
+  "source_results": {
+    "total": 361,
+    "passed": 348,
+    "failed": 13
+  },
+  "status": "PASS_STATIC_AND_BUILD",
+  "checks": {
+    "declared_tests": true,
+    "summary_marker": true,
+    "stable_top_add": true,
+    "legacy_csv_headers_removed": true,
+    "exact_units_contract": true,
+    "prod_bundle_add": true,
+    "test_bundle_manifest": true
+  },
+  "full_live_scilab_jcef_required": true
+}

@@ -1,0 +1,15 @@
+{
+  "milestone": "AIPP M4.2.2 editability correction",
+  "application_version": "0.4.2.2-m4.2-edit-fix",
+  "root_cause": "The delegated click handler unconditionally called full render, destroying focused form controls.",
+  "correction": "Incremental input updates are separated from structural full renders.",
+  "javascript_syntax": "PASS",
+  "foundation_build": "PASS",
+  "build_validation": "PASS",
+  "editability_regression_gate": "ADDED_TO_AIPP-M4-011",
+  "gate_checks": ["multi-character value retained", "focus retained", "model updated", "stable ID retained", "single editor control"],
+  "test_inventory_count": 208,
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "required_live_acceptance": {"declared": 208, "executed": 208, "passed": 208, "failed": 0, "skipped": 0, "active_requests": 0, "active_transfers": 0}
+}

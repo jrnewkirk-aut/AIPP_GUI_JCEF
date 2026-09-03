@@ -1,0 +1,3 @@
+"use strict";
+P4.register({id:"BR-ARC-001",name:"Browser transport initializes independently of application views",layer:"browser",requirements:["ARC-009"],tier:"standard",run(){P4.assert.true(!!P2.transport&&typeof P2.transport.call==="function");P4.assert.true(!!P2.client&&typeof P2.client.request==="function");return{transport:true,client:true};}});
+P4.register({id:"BR-ARC-002",name:"Optional diagnostics can be disabled without startup failure",layer:"browser",requirements:["ARC-009"],tier:"standard",run(){const d=P2.diagnostics;P2.diagnostics=null;const envelope=P2.client.envelope("diagnostic.echo.request",{});P4.assert.true(P2.validation.envelope(envelope).pass);P2.diagnostics=d;return{disabledAndRestored:true};}});

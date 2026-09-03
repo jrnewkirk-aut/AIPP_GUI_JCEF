@@ -1,0 +1,882 @@
+{
+  "schema_version": 1,
+  "snapshot_version": "P8.4.0-0.1",
+  "accepted_source": {
+    "package": "Scilab_JCEF_Foundation_P8.3.0_Upgrade_Preservation_Rollback.zip",
+    "sha256": "829a58cdf13f2208533add649ce9be39d59682dfef447d080e00126647b27cd3"
+  },
+  "features": [
+    {
+      "id": "PROTOCOL-ENVELOPE-001",
+      "name": "Protocol envelope validation",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ],
+      "modules": [
+        "browser_files/js/protocol/04_protocol_validation.js",
+        "scilab/protocol/protocol_validation.sci"
+      ],
+      "tests": [
+        "BR-PRO-001",
+        "BR-PRO-002",
+        "SC-PRO-001",
+        "SC-PRO-002"
+      ]
+    },
+    {
+      "id": "REQUEST-LIFECYCLE-001",
+      "name": "Browser request lifecycle",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ],
+      "modules": [
+        "browser_files/js/protocol/05_request_registry.js"
+      ],
+      "tests": [
+        "BR-REQ-001",
+        "BR-REQ-002",
+        "BR-REQ-003"
+      ]
+    },
+    {
+      "id": "PLOT-ADAPTER-001",
+      "name": "Replaceable plot adapter",
+      "requirements": [
+        "PLT-002",
+        "PLT-010"
+      ],
+      "modules": [
+        "browser_files/js/plotting/01_plot_adapter.js",
+        "browser_files/js/plotting/02_reference_canvas_adapter.js"
+      ],
+      "tests": [
+        "BR-PLOT-001",
+        "BR-PLOT-002"
+      ]
+    },
+    {
+      "id": "REDUCTION-MINMAX-001",
+      "name": "Min/max extrema reduction",
+      "requirements": [
+        "PLT-006"
+      ],
+      "modules": [
+        "scilab/plotting/plot_reduction.sci"
+      ],
+      "tests": [
+        "SC-PLOT-001"
+      ]
+    },
+    {
+      "id": "TEST-HARNESS-UI-001",
+      "name": "Critical controls remain reachable",
+      "requirements": [
+        "TST-007"
+      ],
+      "modules": [
+        "browser_files/components_test/02_runner.html"
+      ],
+      "tests": [
+        "BR-UI-001"
+      ]
+    },
+    {
+      "id": "CONTRACT-FIXTURES-001",
+      "name": "Shared cross-runtime protocol fixtures",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ],
+      "modules": [
+        "tests/protocol_fixtures/manifest.json",
+        "browser_files/js/testing/04a_contract_tests.js",
+        "scilab/testing/test_runner.sci"
+      ],
+      "tests": [
+        "CT-MSG-001",
+        "CT-MSG-002",
+        "CT-MSG-003",
+        "CT-MSG-004",
+        "CT-MSG-005",
+        "CT-MSG-006",
+        "CT-XFR-001",
+        "CT-XFR-002",
+        "CT-XFR-003",
+        "CT-XFR-004",
+        "CT-XFR-005",
+        "CT-XFR-006"
+      ]
+    },
+    {
+      "id": "JCEF-INTEGRATION-001",
+      "name": "Real Scilab/JCEF integration and recovery scenarios",
+      "requirements": [
+        "TST-003",
+        "TST-005",
+        "TST-007",
+        "TST-008"
+      ],
+      "modules": [
+        "browser_files/js/testing/04b_integration_tests.js",
+        "browser_files/js/testing/01a_runtime_capture.js",
+        "scilab/testing/test_runner.sci",
+        "scilab/protocol_callback.sci"
+      ],
+      "tests": [
+        "INT-START-001",
+        "INT-START-002",
+        "INT-MSG-001",
+        "INT-MSG-002",
+        "INT-MSG-003",
+        "INT-MSG-004",
+        "INT-MSG-005",
+        "INT-XFR-001",
+        "INT-XFR-002",
+        "INT-XFR-003",
+        "INT-XFR-004",
+        "INT-XFR-005",
+        "INT-XFR-006",
+        "INT-LIFE-001",
+        "INT-UI-001",
+        "INT-HEALTH-001"
+      ]
+    },
+    {
+      "id": "GUI-VISUAL-001",
+      "name": "GUI layout and visual-contract regression",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "modules": [
+        "tests/visual_baselines/harness_contract.json",
+        "browser_files/js/testing/04c_visual_tests.js",
+        "browser_files/styles/main.css"
+      ],
+      "tests": [
+        "VIS-BASE-001",
+        "VIS-LAYOUT-001",
+        "VIS-LAYOUT-002",
+        "VIS-TABLE-001",
+        "VIS-DETAIL-001",
+        "VIS-STATE-001",
+        "VIS-STATUS-001",
+        "VIS-A11Y-001",
+        "VIS-RESP-001",
+        "VIS-SNAP-001"
+      ]
+    },
+    {
+      "id": "P45-CODEC-CLOSURE-001",
+      "name": "Direct cross-runtime codec qualification",
+      "requirements": [
+        "PRO-005",
+        "TRN-005"
+      ],
+      "modules": [
+        "scilab/protocol/protocol_codec.sci",
+        "browser_files/js/protocol/03_safe_codec.js",
+        "browser_files/js/testing/02b_closure_browser_tests.js"
+      ],
+      "tests": [
+        "SC-CODEC-001",
+        "SC-CODEC-002",
+        "SC-CODEC-003",
+        "P45-CODEC-001",
+        "P45-CODEC-002",
+        "P45-CODEC-003",
+        "P45-CODEC-004"
+      ]
+    },
+    {
+      "id": "P45-LIFECYCLE-CLOSURE-001",
+      "name": "Request, router, and transfer closure coverage",
+      "requirements": [
+        "PRO-003",
+        "PRO-006",
+        "PRO-009",
+        "PRO-010"
+      ],
+      "modules": [
+        "scilab/protocol/protocol_router.sci",
+        "scilab/protocol/protocol_generic_transfer.sci",
+        "browser_files/js/protocol/10_transfer_registry.js"
+      ],
+      "tests": [
+        "SC-ROUTE-001",
+        "SC-ROUTE-002",
+        "SC-XFR-003",
+        "SC-XFR-004",
+        "SC-XFR-005",
+        "SC-XFR-006",
+        "SC-XFR-007",
+        "P45-REQ-001",
+        "P45-REQ-002",
+        "P45-XFR-001",
+        "P45-XFR-002"
+      ]
+    },
+    {
+      "id": "P45-INTEGRATION-CLOSURE-001",
+      "name": "Representative repeated and large live JCEF workflows",
+      "requirements": [
+        "TRN-004",
+        "TST-003",
+        "TST-005",
+        "TST-007"
+      ],
+      "modules": [
+        "browser_files/js/testing/04d_closure_integration_tests.js",
+        "scilab/protocol_callback.sci"
+      ],
+      "tests": [
+        "P45-INT-001",
+        "P45-INT-002",
+        "P45-INT-003",
+        "P45-INT-004",
+        "P45-INT-005"
+      ]
+    },
+    {
+      "id": "P45-COMPLIANCE-001",
+      "name": "Pillar 4 compliance and manual fallback governance",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ],
+      "modules": [
+        "tests/manifests/pillar4_compliance_matrix.json",
+        "tests/manifests/manual_validation_manifest.json"
+      ],
+      "tests": [
+        "P45-MAN-001"
+      ]
+    }
+  ],
+  "browser_modules": [
+    {
+      "id": "shell.index",
+      "path": "browser_files/index.html",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "style.foundation",
+      "path": "browser_files/styles/main.css",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "component.prod",
+      "path": "browser_files/components_prod/01_prod.html",
+      "modes": [
+        "dev",
+        "prod"
+      ]
+    },
+    {
+      "id": "component.test.header",
+      "path": "browser_files/components_test/01_header.html",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "component.test.runner",
+      "path": "browser_files/components_test/02_runner.html",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "application.component.reference",
+      "path": "application/browser/components/01_reference_app.html",
+      "modes": []
+    },
+    {
+      "id": "application.style.reference",
+      "path": "application/browser/styles/application.css",
+      "modes": []
+    },
+    {
+      "id": "observability.startup.collector",
+      "path": "browser_files/js/observability/00_startup_error_collector.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.constants",
+      "path": "browser_files/js/observability/01_observability_constants.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.payload.summary",
+      "path": "browser_files/js/observability/02_payload_summary.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.record",
+      "path": "browser_files/js/observability/03_observability_record.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.logger",
+      "path": "browser_files/js/observability/04_observability_logger.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.performance",
+      "path": "browser_files/js/observability/05_performance_registry.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.diagnostic.export",
+      "path": "browser_files/js/observability/06_diagnostic_package_export.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "observability.file.operations",
+      "path": "browser_files/js/observability/05_file_operation_events.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.constants",
+      "path": "browser_files/js/protocol/01_protocol_constants.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.errors",
+      "path": "browser_files/js/protocol/02_protocol_errors.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.safe.codec",
+      "path": "browser_files/js/protocol/03_safe_codec.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.validation",
+      "path": "browser_files/js/protocol/04_protocol_validation.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.request.registry",
+      "path": "browser_files/js/protocol/05_request_registry.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.transport",
+      "path": "browser_files/js/protocol/06_protocol_transport.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.client",
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.router",
+      "path": "browser_files/js/protocol/08_protocol_router.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.protocol.host",
+      "path": "browser_files/js/protocol/09_protocol_host.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.transfer.registry",
+      "path": "browser_files/js/protocol/10_transfer_registry.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.numeric.transfer",
+      "path": "browser_files/js/protocol/11_numeric_transfer.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.transfer.handle",
+      "path": "browser_files/js/protocol/12_transfer_handle.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.runtime.config",
+      "path": "browser_files/js/protocol/13_runtime_config.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.diagnostics",
+      "path": "browser_files/js/protocol/14_diagnostics.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.viewport.service",
+      "path": "browser_files/js/protocol/15_viewport_service.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.logging",
+      "path": "browser_files/js/protocol/16_logging.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.schemas",
+      "path": "browser_files/js/protocol/17_schemas.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.capabilities",
+      "path": "browser_files/js/protocol/18_capabilities.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.data.adapter",
+      "path": "browser_files/js/protocol/19_data_adapter.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.library",
+      "path": "browser_files/js/protocol/20_library.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "protocol.generic.transfer",
+      "path": "browser_files/js/protocol/21_generic_transfer.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "plotting.plot.adapter",
+      "path": "browser_files/js/plotting/01_plot_adapter.js",
+      "modes": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "plotting.reference.canvas.adapter",
+      "path": "browser_files/js/plotting/02_reference_canvas_adapter.js",
+      "modes": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "app.01_minimal_ui",
+      "path": "browser_files/js/app/01_minimal_ui.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "application.application.registry",
+      "path": "browser_files/js/application/01_application_registry.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "application.reference.ping.service",
+      "path": "browser_files/js/application/02_reference_ping_service.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "application.reference.sum.service",
+      "path": "browser_files/js/application/03_reference_sum_service.js",
+      "modes": [
+        "dev",
+        "test",
+        "prod"
+      ]
+    },
+    {
+      "id": "testing.01.test.core",
+      "path": "browser_files/js/testing/01_test_core.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.01a.runtime.capture",
+      "path": "browser_files/js/testing/01a_runtime_capture.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.02.browser.tests",
+      "path": "browser_files/js/testing/02_browser_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.02b.closure.browser.tests",
+      "path": "browser_files/js/testing/02b_closure_browser_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.02c.architecture.browser.tests",
+      "path": "browser_files/js/testing/02c_architecture_browser_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03.manifests",
+      "path": "browser_files/js/testing/03_manifests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03a.contract.fixtures",
+      "path": "browser_files/js/testing/03a_contract_fixtures.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03b.visual.baseline",
+      "path": "browser_files/js/testing/03b_visual_baseline.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03c.pillar4.compliance",
+      "path": "browser_files/js/testing/03c_pillar4_compliance.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03d.starter.manifests",
+      "path": "browser_files/js/testing/03d_starter_manifests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03e.application.manifests",
+      "path": "browser_files/js/testing/03e_application_manifests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03f.release.manifests",
+      "path": "browser_files/js/testing/03f_release_manifests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04.manifest.tests",
+      "path": "browser_files/js/testing/04_manifest_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04a.contract.tests",
+      "path": "browser_files/js/testing/04a_contract_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04b.integration.tests",
+      "path": "browser_files/js/testing/04b_integration_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04c.visual.tests",
+      "path": "browser_files/js/testing/04c_visual_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04d.closure.integration.tests",
+      "path": "browser_files/js/testing/04d_closure_integration_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04e.architecture.tests",
+      "path": "browser_files/js/testing/04e_architecture_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04f.architecture.integration.tests",
+      "path": "browser_files/js/testing/04f_architecture_integration_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04g.starter.tests",
+      "path": "browser_files/js/testing/04g_starter_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04h.application.tests",
+      "path": "browser_files/js/testing/04h_application_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04i.release.tests",
+      "path": "browser_files/js/testing/04i_release_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04j.extension.browser.tests",
+      "path": "browser_files/js/testing/04j_extension_browser_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04k.extension.integration.tests",
+      "path": "browser_files/js/testing/04k_extension_integration_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.05.runner.ui",
+      "path": "browser_files/js/testing/05_runner_ui.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.06.bootstrap",
+      "path": "browser_files/js/testing/06_bootstrap.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.03g.p61.build.manifest",
+      "path": "browser_files/js/testing/03g_p61_build_manifest.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04l.p61.build.tests",
+      "path": "browser_files/js/testing/04l_p61_build_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "component.dev.diagnostics",
+      "path": "browser_files/components_dev/01_dev.html",
+      "modes": [
+        "dev"
+      ]
+    },
+    {
+      "id": "diagnostics.dev.panel",
+      "path": "browser_files/js/diagnostics/01_dev_panel.js",
+      "modes": [
+        "dev"
+      ]
+    },
+    {
+      "id": "testing.03h.p62.build.manifest",
+      "path": "browser_files/js/testing/03h_p62_build_manifest.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.04m.p62.build.tests",
+      "path": "browser_files/js/testing/04m_p62_build_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.p63.metadata",
+      "path": "browser_files/js/testing/03i_p63_build_manifest.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.p63.tests",
+      "path": "browser_files/js/testing/04n_p63_build_tests.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.p64.metadata",
+      "path": "browser_files/js/testing/03j_p64_package_manifest.js",
+      "modes": [
+        "test"
+      ]
+    },
+    {
+      "id": "testing.p64.tests",
+      "path": "browser_files/js/testing/04o_p64_package_tests.js",
+      "modes": [
+        "test"
+      ]
+    }
+  ],
+  "application_operations": [
+    "application.example.ping.request",
+    "application.example.sum.request"
+  ],
+  "public_protocol_contract": "release/protocol_contract_snapshot.json",
+  "ownership_contract": "docs/pillar8/P8_CHANGED_FILE_CLASSIFICATION.json"
+}

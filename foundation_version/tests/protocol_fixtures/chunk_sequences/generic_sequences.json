@@ -1,0 +1,34 @@
+{
+  "valid": {
+    "text": "alpha|beta|gamma|delta",
+    "chunk_size": 6
+  },
+  "out_of_order": {
+    "text": "out-of-order-generic-payload",
+    "chunk_size": 5
+  },
+  "duplicate": {
+    "text": "duplicate-chunk-test",
+    "chunk_size": 5
+  },
+  "missing": {
+    "text": "missing-chunk-test",
+    "chunk_size": 4
+  },
+  "wrong_size": {
+    "text": "size-mismatch",
+    "chunk_size": 4
+  },
+  "checksum": {
+    "text": "checksum-mismatch",
+    "chunk_size": 4
+  },
+  "cancel": {
+    "text": "cancel-this-transfer",
+    "chunk_size": 4
+  },
+  "timeout": {
+    "text": "timeout-transfer",
+    "chunk_size": 4
+  }
+}

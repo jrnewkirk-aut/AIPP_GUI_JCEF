@@ -1,0 +1,7 @@
+{
+  "application_version": "0.6.0-m6",
+  "baseline_tests": 224,
+  "new_tests": 9,
+  "expected_total": 233,
+  "live_status": "PENDING_RERUN"
+}

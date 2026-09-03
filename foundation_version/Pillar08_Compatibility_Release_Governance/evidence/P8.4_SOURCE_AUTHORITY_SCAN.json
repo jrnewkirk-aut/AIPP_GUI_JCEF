@@ -1,0 +1,10 @@
+{
+  "suite": "P8.4 modular source authority scan",
+  "authored_javascript_files": 132,
+  "generated_bundles": 3,
+  "authored_files_over_200kb": [
+    "browser_files/js/vendor/00_cytoscape_3_33_4.min.js"
+  ],
+  "generated_is_primary_source": false,
+  "result": "FAIL"
+}

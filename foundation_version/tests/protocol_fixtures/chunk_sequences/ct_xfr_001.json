@@ -1,0 +1,18 @@
+{
+  "id": "CT-XFR-001",
+  "category": "chunk_sequence",
+  "name": "Ordered chunk sequence",
+  "chunk_count": 3,
+  "sequence": [
+    0,
+    1,
+    2
+  ],
+  "action": "complete",
+  "checksum_valid": true,
+  "expected": {
+    "accepted": true,
+    "error_code": "",
+    "received_count": 3
+  }
+}

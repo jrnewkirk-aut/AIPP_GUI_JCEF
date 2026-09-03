@@ -1,0 +1,57 @@
+{
+  "patch": "M8.4 Patch01e",
+  "status": "PASS",
+  "purpose": "Regenerate executing bundles with Cytoscape and enforce embedded-source integrity",
+  "checks": {
+    "dev": {
+      "bytes": 585490,
+      "sha256": "948c00c27a1326dbad7725e3b92bd0323476978a0b1e91867a85dc321378760d",
+      "manifest_sha_match": true,
+      "vendor_source_marker": true,
+      "graph_runtime_marker": true,
+      "cytoscape_view_marker": true
+    },
+    "test": {
+      "bytes": 753418,
+      "sha256": "3da6658935e9da2a7639cf96b0eb6cede38ee7586bbd0b3dc76655e8b498c856",
+      "manifest_sha_match": true,
+      "vendor_source_marker": true,
+      "graph_runtime_marker": true,
+      "cytoscape_view_marker": true
+    },
+    "prod": {
+      "bytes": 572567,
+      "sha256": "e73d1e398ca320a9cae568b04f491f0561a78d9a3f8c33c2489638303992f70c",
+      "manifest_sha_match": true,
+      "vendor_source_marker": true,
+      "graph_runtime_marker": true,
+      "cytoscape_view_marker": true
+    },
+    "vendor": {
+      "bytes": 434082
+    },
+    "production_acceptance": {
+      "schema_version": 1,
+      "foundation_version": "P6.4.0-0.1",
+      "mode": "production_validate_only",
+      "bundle_path": "browser_files/dist/bundle.prod.html",
+      "bundle_sha256": "e73d1e398ca320a9cae568b04f491f0561a78d9a3f8c33c2489638303992f70c",
+      "bundle_bytes": 572567,
+      "required_markers": [
+        "P6.4.0-0.1",
+        "P2.application.registry.register(\"ping\"",
+        "application.example.ping.request",
+        "// SOURCE: browser_files/js/vendor/00_cytoscape_3_33_4.min.js",
+        "// SOURCE: browser_files/js/application/20a_aipp_graph_runtime.js",
+        "// SOURCE: browser_files/js/application/21_aipp_cytoscape_topology_view.js"
+      ],
+      "forbidden_markers": [
+        "__JCEF_TEST_API__",
+        "P4.register",
+        "<!-- P4_STYLES -->",
+        "<!-- P4_COMPONENTS -->",
+        "<!-- P4_SCRIPTS -->"
+      ]
+    }
+  }
+}

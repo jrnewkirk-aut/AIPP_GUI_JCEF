@@ -1,0 +1,32 @@
+{
+  "candidate": "AIPP M8.8 Candidate 06.9",
+  "baseline": "Candidate 06.8",
+  "status": "PASS_STATIC_AND_BUILD",
+  "full_live_scilab_jcef_required": true,
+  "changes": [
+    "Removed the editable chamber-pyro Name control from the chamber editor.",
+    "Uses the selected pyrolist formulation as the visible chamber-pyro identity in the list and detail heading.",
+    "Added a persistent dropdown arrow to the Tom Select formulation control.",
+    "Updated AIPP-M4-011 to qualify the revised UI contract and stable internal pyro ID."
+  ],
+  "checks": {
+    "node_syntax": true,
+    "p63_build_and_reproducibility": true,
+    "source_contract": true,
+    "prod_bundle_contains_change": true,
+    "test_bundle_contains_updated_test": true
+  },
+  "changed_files": [
+    "application/browser/styles/aipp_m1.css",
+    "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+    "browser_files/js/testing/04r_aipp_m4_tests.js",
+    "browser_files/dist/bundle.dev.html",
+    "browser_files/dist/bundle.test.html",
+    "browser_files/dist/bundle.prod.html",
+    "browser_files/dist/build_manifest.dev.json",
+    "browser_files/dist/build_manifest.test.json",
+    "browser_files/dist/build_manifest.prod.json",
+    "browser_files/dist/production_acceptance.json",
+    "browser_files/dist/reproducibility_report.json"
+  ]
+}

@@ -1,0 +1,564 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "application_version": "0.8.7-p2.2-bf2-candidate02",
+  "protocol_version": 1,
+  "build_mode": "dev",
+  "ordering_policy": "category_then_case_insensitive_lexicographic",
+  "bundle_path": "browser_files/dist/bundle.dev.html",
+  "bundle_sha256": "e3cb088fb6e28dac73104a996b797ee28596e015af1e8489206c58065666f3a4",
+  "bundle_bytes": 928504,
+  "module_count": 91,
+  "modules": [
+    {
+      "order": 1,
+      "id": "shell.index",
+      "path": "browser_files/index.html",
+      "sha256": "c871f7b8ac71410aec833832e06330e98c8fd733c3948a74c60aa241c5a91e01"
+    },
+    {
+      "order": 2,
+      "id": "style.foundation",
+      "path": "browser_files/styles/main.css",
+      "sha256": "0c7de683618865ca8662aa3dbc555c8a292177ba13225212bef95c900fdacafa"
+    },
+    {
+      "order": 3,
+      "id": "component.prod",
+      "path": "browser_files/components_prod/01_prod.html",
+      "sha256": "85615046a3d24effc6921226aab5ed61f434f9483558a3f622b1cf1b6fbc86a3"
+    },
+    {
+      "order": 4,
+      "id": "observability.startup.collector",
+      "path": "browser_files/js/observability/00_startup_error_collector.js",
+      "sha256": "eab5ee7f7533df9c4306ed41a68abb1f1c60eb99dd4d746ae778bf5b6bd80a42"
+    },
+    {
+      "order": 5,
+      "id": "observability.constants",
+      "path": "browser_files/js/observability/01_observability_constants.js",
+      "sha256": "8cbc191c5a320bc4e3e494ee99689a3d6b4464fc5a35439da249929ec72b6177"
+    },
+    {
+      "order": 6,
+      "id": "observability.payload.summary",
+      "path": "browser_files/js/observability/02_payload_summary.js",
+      "sha256": "3ac0bc8940eb65a62880848a270d43caeecaaf86bb93abe409fdcce182a1d05f"
+    },
+    {
+      "order": 7,
+      "id": "observability.record",
+      "path": "browser_files/js/observability/03_observability_record.js",
+      "sha256": "9ce9cecf7c24957e8dd406dbfe8ec88b1ce42a9228e1bfa8f7b1242355ca4eac"
+    },
+    {
+      "order": 8,
+      "id": "observability.logger",
+      "path": "browser_files/js/observability/04_observability_logger.js",
+      "sha256": "045da3db249cef7b8e87afb1e2dcc36089c066b8551f9527456b86c608106913"
+    },
+    {
+      "order": 9,
+      "id": "observability.performance",
+      "path": "browser_files/js/observability/05_performance_registry.js",
+      "sha256": "9f487e04fde990b9681cfe9fe95c6f131460103b868133c17e124a842b6e00ba"
+    },
+    {
+      "order": 10,
+      "id": "observability.diagnostic.export",
+      "path": "browser_files/js/observability/06_diagnostic_package_export.js",
+      "sha256": "73c540e18d53efc46185563967e590c90b763c5e64767f822040185bf2b8e381"
+    },
+    {
+      "order": 11,
+      "id": "observability.file.operations",
+      "path": "browser_files/js/observability/05_file_operation_events.js",
+      "sha256": "dfe7824f1eccf8347ada1d45c183f283c1b66efe0768007f6a9fab335a685e51"
+    },
+    {
+      "order": 12,
+      "id": "protocol.protocol.constants",
+      "path": "browser_files/js/protocol/01_protocol_constants.js",
+      "sha256": "e7771fba1a372a39d7b0346d3bb7cc95a202ecd1506a67ef08241af97a4c652c"
+    },
+    {
+      "order": 13,
+      "id": "protocol.protocol.errors",
+      "path": "browser_files/js/protocol/02_protocol_errors.js",
+      "sha256": "eb2513c22f17ef3780bcf9ecadf0472e851b2cda57f9c8ca1c0e2f101e870c2d"
+    },
+    {
+      "order": 14,
+      "id": "protocol.safe.codec",
+      "path": "browser_files/js/protocol/03_safe_codec.js",
+      "sha256": "fbbc34261393bcb3b847232f539c61ab8d7bff0e37cbb8bca40a6f8dde39f54d"
+    },
+    {
+      "order": 15,
+      "id": "protocol.protocol.validation",
+      "path": "browser_files/js/protocol/04_protocol_validation.js",
+      "sha256": "d2c1ef6fece0db0e9abfa34f92c8c355cada5470cb05f2936ec4d6ae45ce6deb"
+    },
+    {
+      "order": 16,
+      "id": "protocol.request.registry",
+      "path": "browser_files/js/protocol/05_request_registry.js",
+      "sha256": "a5ff4908ee2b8d68e464472d97febe892c3772e8876d3f131fc75f903317af73"
+    },
+    {
+      "order": 17,
+      "id": "protocol.protocol.transport",
+      "path": "browser_files/js/protocol/06_protocol_transport.js",
+      "sha256": "1d7c264bbf00e0ab944a5e3456c43d85ce39927f2e50030598b6a184b4e8a21e"
+    },
+    {
+      "order": 18,
+      "id": "protocol.protocol.client",
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "sha256": "dc9cf979eaf742af3f3e991f2328a56e082420aa04e8788cdb82abeb14958aab"
+    },
+    {
+      "order": 19,
+      "id": "protocol.protocol.router",
+      "path": "browser_files/js/protocol/08_protocol_router.js",
+      "sha256": "33b45a7321a0b011495c7fffc16d46dd4265dc7a6cb179f39283a095fe2815a0"
+    },
+    {
+      "order": 20,
+      "id": "protocol.protocol.host",
+      "path": "browser_files/js/protocol/09_protocol_host.js",
+      "sha256": "62d2339202e6187bb77cc766a8ad8ea202205cfe8665ce6469617204ce3b716b"
+    },
+    {
+      "order": 21,
+      "id": "protocol.transfer.registry",
+      "path": "browser_files/js/protocol/10_transfer_registry.js",
+      "sha256": "aace8af3241f7316b3165465e7c7287901cf3f0ebc49a8e8dd3d35513559f11e"
+    },
+    {
+      "order": 22,
+      "id": "protocol.numeric.transfer",
+      "path": "browser_files/js/protocol/11_numeric_transfer.js",
+      "sha256": "94a0c5dba7ac9003e6e5e0d9103390aa75dfce21bb73e040223463fd9315aa6d"
+    },
+    {
+      "order": 23,
+      "id": "protocol.transfer.handle",
+      "path": "browser_files/js/protocol/12_transfer_handle.js",
+      "sha256": "0ca257075e26b6a1f44d42a16de6c451a962d89b6d9d9f21b61dc4c6990d5ddb"
+    },
+    {
+      "order": 24,
+      "id": "protocol.runtime.config",
+      "path": "browser_files/js/protocol/13_runtime_config.js",
+      "sha256": "09ecee05a5f48421f56877ba39e2c354715f9d2bbb885792f27839e2f3c85934"
+    },
+    {
+      "order": 25,
+      "id": "protocol.diagnostics",
+      "path": "browser_files/js/protocol/14_diagnostics.js",
+      "sha256": "44b81caa309d6564f581b0d12dd420295976aa83229286f34f326c208d12c579"
+    },
+    {
+      "order": 26,
+      "id": "protocol.viewport.service",
+      "path": "browser_files/js/protocol/15_viewport_service.js",
+      "sha256": "a99747229380b8de37c7b00504b4f6ae7dc03738da1bfc5d88079d860beb745d"
+    },
+    {
+      "order": 27,
+      "id": "protocol.logging",
+      "path": "browser_files/js/protocol/16_logging.js",
+      "sha256": "4b360bebc7a15695386b933f9764552e09999969c4437911ee5de85cb0f18c19"
+    },
+    {
+      "order": 28,
+      "id": "protocol.schemas",
+      "path": "browser_files/js/protocol/17_schemas.js",
+      "sha256": "b7e320f0f90c8ca09d077b427a9efebccc3753aabe1e9b6dadb68806095b0742"
+    },
+    {
+      "order": 29,
+      "id": "protocol.capabilities",
+      "path": "browser_files/js/protocol/18_capabilities.js",
+      "sha256": "33cba2f2e01ec14755168018c384345294cd53904c02665ec9cda357ebf89c41"
+    },
+    {
+      "order": 30,
+      "id": "protocol.data.adapter",
+      "path": "browser_files/js/protocol/19_data_adapter.js",
+      "sha256": "f8dc2ea738d2e1dabded704a1827664cb48cc64c3cd17bb5b5cc9d4c25ac2017"
+    },
+    {
+      "order": 31,
+      "id": "protocol.library",
+      "path": "browser_files/js/protocol/20_library.js",
+      "sha256": "b105d00edc208bfe03409e72938297d2a0625dc93ac20eb4604a156a6e40179a"
+    },
+    {
+      "order": 32,
+      "id": "protocol.generic.transfer",
+      "path": "browser_files/js/protocol/21_generic_transfer.js",
+      "sha256": "525efb932de7cc70e0e123fd44d2abdc7938054ba181b84cdbb1f50c0cb9befb"
+    },
+    {
+      "order": 33,
+      "id": "plotting.plot.adapter",
+      "path": "browser_files/js/plotting/01_plot_adapter.js",
+      "sha256": "faf4a8118a7c620239127930b3b09748073d507074250d2ed693b9b790d521db"
+    },
+    {
+      "order": 34,
+      "id": "plotting.reference.canvas.adapter",
+      "path": "browser_files/js/plotting/02_reference_canvas_adapter.js",
+      "sha256": "b3bc025d73056c2c3fbd3fd6487f3a7bff55aeebd7243a65464160b4ba5c16c4"
+    },
+    {
+      "order": 35,
+      "id": "app.01_minimal_ui",
+      "path": "browser_files/js/app/01_minimal_ui.js",
+      "sha256": "1dcb7cd0d08ae56b06454c2e0a6a509cfd19136c294c5ae743f215fb0f474d95"
+    },
+    {
+      "order": 36,
+      "id": "application.application.registry",
+      "path": "browser_files/js/application/01_application_registry.js",
+      "sha256": "53c3033739436ccac67888d97514477d1e4f2f21c3baa8f4d7a9178ae91e8d37"
+    },
+    {
+      "order": 37,
+      "id": "component.dev.diagnostics",
+      "path": "browser_files/components_dev/01_dev.html",
+      "sha256": "b2992e82784417fda5298f19a01bccbb9f955dd06027d8477296f12393756ac0"
+    },
+    {
+      "order": 38,
+      "id": "diagnostics.dev.panel",
+      "path": "browser_files/js/diagnostics/01_dev_panel.js",
+      "sha256": "d5681bf5d7e94fc0010865b8c648a16e6e5469de39f63baeb647eb20b13f9e12"
+    },
+    {
+      "order": 39,
+      "id": "application.aipp.style",
+      "path": "application/browser/styles/aipp_m1.css",
+      "sha256": "695ced164698612940a4338c1596c20d20ffabfa49c8888df99116f0cb34a882"
+    },
+    {
+      "order": 40,
+      "id": "application.aipp.component",
+      "path": "application/browser/components/01_aipp_shell.html",
+      "sha256": "b1cc4c7a502a45e9093da41b9ab6a0b42d3f3f1ace5981006165a5d566b79b83"
+    },
+    {
+      "order": 41,
+      "id": "application.reference.ping.service",
+      "path": "browser_files/js/application/02_reference_ping_service.js",
+      "sha256": "9e29cb6801a3a420dfd47d692df120e9fd353e18fa24a4b7298f6ec284c27992"
+    },
+    {
+      "order": 42,
+      "id": "application.reference.sum.service",
+      "path": "browser_files/js/application/03_reference_sum_service.js",
+      "sha256": "97b34a323de7b88da6c1cb96d32076573898498d8cbd22820a245b610e0f9e9b"
+    },
+    {
+      "order": 43,
+      "id": "application.aipp.status.service",
+      "path": "browser_files/js/application/02_aipp_status_service.js",
+      "sha256": "0abc71e6031c5a481284a68d453d14b2c45bcb6a622cd8e5c7510e8927e5559b"
+    },
+    {
+      "order": 44,
+      "id": "application.aipp.shell.controller",
+      "path": "browser_files/js/application/03_aipp_shell_controller.js",
+      "sha256": "ac2bd591b63d81d0725dd549a34dd5107859ac86eb10c250045bed9a0599571e"
+    },
+    {
+      "order": 45,
+      "id": "application.aipp.pyrolist.service",
+      "path": "browser_files/js/application/04_aipp_pyrolist_service.js",
+      "sha256": "0fb5192a636a18c988060b24df79047447f6e935141ce657d13ad25e3c9962e7"
+    },
+    {
+      "order": 46,
+      "id": "application.aipp.host.adapter",
+      "path": "browser_files/js/application/05_aipp_host_adapter.js",
+      "sha256": "36520a587212886c339ef470700700f857ff73965613aee987c21dd94af70486"
+    },
+    {
+      "order": 47,
+      "id": "application.aipp.pyro.editor.model",
+      "path": "browser_files/js/application/06_aipp_pyro_editor_model.js",
+      "sha256": "a9abef2167120cfee41d6bdc55223b436c7208f4f0247cc2d9aaf9c5530676e3"
+    },
+    {
+      "order": 48,
+      "id": "application.aipp.pyro.editor.view",
+      "path": "browser_files/js/application/07_aipp_pyro_editor_view.js",
+      "sha256": "c45d61ade8175d67910121075372d9241e4847d4403e4393f113aa53a96b6ae5"
+    },
+    {
+      "order": 49,
+      "id": "application.aipp.chamber.pyro.model",
+      "path": "browser_files/js/application/08_aipp_chamber_pyro_model.js",
+      "sha256": "895c3b18ba3bc22975982103ac9b1431be8199d089726fe57a2c9b5f5841eef5"
+    },
+    {
+      "order": 50,
+      "id": "vendor.tomselect.js",
+      "path": "browser_files/js/vendor/00_tom-select.complete.min.js",
+      "sha256": "8f9d7d3420e938c2c9817818b56df43ea46feae5bf1f5a2e828863c034df0e37"
+    },
+    {
+      "order": 51,
+      "id": "application.aipp.chamber.pyro.view",
+      "path": "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+      "sha256": "4c18d10b93662ad9874482daba70a5645ef13fc0c5beae59562574695540d27d"
+    },
+    {
+      "order": 52,
+      "id": "application.aipp.material.library",
+      "path": "browser_files/js/application/09a_aipp_material_library.js",
+      "sha256": "bfa570184f6d155782baada1dd8da1c98acd8fceb385c00df752d92eb4108f00"
+    },
+    {
+      "order": 53,
+      "id": "application.aipp.chamber.filter.model",
+      "path": "browser_files/js/application/10_aipp_chamber_filter_model.js",
+      "sha256": "90c091c92ba697a076db1676dbcab23aa3945fbfe9a9f3499a42c1090ac48189"
+    },
+    {
+      "order": 54,
+      "id": "application.aipp.chamber.filter.view",
+      "path": "browser_files/js/application/11_aipp_chamber_filter_view.js",
+      "sha256": "e8586cc4fd9ae8f1dc63ce6c31537e1dd36e0290fbd0bea7bf3babd13460df23"
+    },
+    {
+      "order": 55,
+      "id": "application.aipp.workspace.shell",
+      "path": "browser_files/js/application/14_aipp_workspace_shell.js",
+      "sha256": "ec42febbab7029954866ae62950fe18d8027b280d48b9f044867f448471d699c"
+    },
+    {
+      "order": 56,
+      "id": "application.aipp.deck.document",
+      "path": "browser_files/js/application/15_aipp_deck_document.js",
+      "sha256": "3c791de4bb1427a6c545fb2f81272fffb4a860fcd9cc043e0d25f38eba4c4f75"
+    },
+    {
+      "order": 57,
+      "id": "application.aipp.runtime.view",
+      "path": "browser_files/js/application/37_aipp_runtime_view.js",
+      "sha256": "aad167411ac58640e4824f2dff8d72d51e4da718317d762a81a6834b5a76fb78"
+    },
+    {
+      "order": 58,
+      "id": "application.aipp.outputs.view",
+      "path": "browser_files/js/application/38_aipp_outputs_view.js",
+      "sha256": "acf663b13d79a03c3736a074928081e903f1a268166f6043a28c12072c377e10"
+    },
+    {
+      "order": 59,
+      "id": "application.aipp.deck.bindings",
+      "path": "browser_files/js/application/16_aipp_deck_bindings.js",
+      "sha256": "b9e3347fa0768bd069674571518b63ad8238d9d1a14a8825b667d69c013c313f"
+    },
+    {
+      "order": 60,
+      "id": "application.aipp.deck.file.service",
+      "path": "browser_files/js/application/17_aipp_deck_file_service.js",
+      "sha256": "da40d49aba91722e3f6d54117fd89b9aac7b56374d26695e6449710fa7bfdcea"
+    },
+    {
+      "order": 61,
+      "id": "application.aipp.native.deck.importer",
+      "path": "browser_files/js/application/19_aipp_native_deck_importer.js",
+      "sha256": "838de82dd28a6f276eb423f9754c3f2c117d94fe2b16c6d0a72c78d9d1519181"
+    },
+    {
+      "order": 62,
+      "id": "application.aipp.deck.lifecycle",
+      "path": "browser_files/js/application/18_aipp_deck_lifecycle.js",
+      "sha256": "2f050cc1b80e7e319254f63b9bf6b5e29c25647e449340880e74fc850faf81af"
+    },
+    {
+      "order": 63,
+      "id": "vendor.cytoscape.3.33.4",
+      "path": "browser_files/js/vendor/00_cytoscape_3_33_4.min.js",
+      "sha256": "18ce9844584337388182861fd698bb9bdb8ba8628eff6d7b8bc1fb4934ab757b"
+    },
+    {
+      "order": 64,
+      "id": "application.aipp.topology.graph.adapter",
+      "path": "browser_files/js/application/20_aipp_topology_graph_adapter.js",
+      "sha256": "f520d8892d3e75e4e179620d8664693e8eab9704a5b0c3647b50775822d4c356"
+    },
+    {
+      "order": 65,
+      "id": "application.aipp.topology.semantic.layout",
+      "path": "browser_files/js/application/23_aipp_topology_semantic_layout.js",
+      "sha256": "185d1b9acaf718405491bae221805440f36b806cae1202bb0ed399dc83f86722"
+    },
+    {
+      "order": 66,
+      "id": "application.aipp.graph.runtime",
+      "path": "browser_files/js/application/20a_aipp_graph_runtime.js",
+      "sha256": "52cde30e72eebee62037be0b27ed3e210520ac76ba3b99919e9e7709c84137b9"
+    },
+    {
+      "order": 67,
+      "id": "application.aipp.cytoscape.topology.view",
+      "path": "browser_files/js/application/21_aipp_cytoscape_topology_view.js",
+      "sha256": "b8df1464abd74bb3d9634db15f8aa8475ffd78b86642747abbb4e6cb81ccafc4"
+    },
+    {
+      "order": 68,
+      "id": "application.aipp.chamber.collection.model",
+      "path": "browser_files/js/application/26b_aipp_chamber_collection_model.js",
+      "sha256": "83e3ac7ead6a8ebe9fef7c3586664b13851232a0422691c0c74a9ae8ccf3ca68"
+    },
+    {
+      "order": 69,
+      "id": "application.aipp.orifice.collection.model",
+      "path": "browser_files/js/application/29b_aipp_orifice_collection_model.js",
+      "sha256": "e9a11f89c0541e9026485a31fe1514ff6b642e637cb7e97c540c308db54c5008"
+    },
+    {
+      "order": 70,
+      "id": "application.aipp.wall.collection.model",
+      "path": "browser_files/js/application/32b_aipp_wall_collection_model.js",
+      "sha256": "f8f09871d6a8d5e8781e7559e1b66388e3a892d1dff27ab44624604f2764740a"
+    },
+    {
+      "order": 71,
+      "id": "application.aipp.piston.collection.model",
+      "path": "browser_files/js/application/33_aipp_piston_collection_model.js",
+      "sha256": "85f501a384dd2767f4d8eb825a54c2cdc9020a3c443133b15bef839b4f1e6d06"
+    },
+    {
+      "order": 72,
+      "id": "application.aipp.topology.actions",
+      "path": "browser_files/js/application/21b_aipp_topology_actions.js",
+      "sha256": "729223d96615e985359a7a6d2f4d2ff608425a99d54e754a0f89c5c1c1e93e98"
+    },
+    {
+      "order": 73,
+      "id": "application.aipp.topology.navigation",
+      "path": "browser_files/js/application/22_aipp_topology_navigation.js",
+      "sha256": "b5efe58ebbc3315b5b0837f185719358487f15729cb67362e1cb0711c1cd1829"
+    },
+    {
+      "order": 74,
+      "id": "application.aipp.native.property.inspector.model",
+      "path": "browser_files/js/application/24_aipp_native_property_inspector_model.js",
+      "sha256": "4d2f2711b405ac45ccbb92100791c582abc5522cb3c0c1c15cb02d0498d040c0"
+    },
+    {
+      "order": 75,
+      "id": "application.aipp.native.property.inspector.view",
+      "path": "browser_files/js/application/25_aipp_native_property_inspector_view.js",
+      "sha256": "2d0903ee8aa9cff3916bd945bd0ca9d52e5edb157f6f92f9440d9a413f0e33c9"
+    },
+    {
+      "order": 76,
+      "id": "application.aipp.quaff.units",
+      "path": "browser_files/js/application/26a_aipp_quaff_units.js",
+      "sha256": "4821d444fe3ec77e2011c9091f7a2c851faafb277e98769c78e80ed25806d5a6"
+    },
+    {
+      "order": 77,
+      "id": "application.aipp.wall.editor.coordinator",
+      "path": "browser_files/js/application/31_aipp_wall_editor_coordinator.js",
+      "sha256": "711b6e070c331a83c7fbe0d0a8b2e07795292a69231ab7a989c30fcdd6132926"
+    },
+    {
+      "order": 78,
+      "id": "application.aipp.wall.editor.view",
+      "path": "browser_files/js/application/32_aipp_wall_editor_view.js",
+      "sha256": "9824317316f0a9a8866e6ba67b09f83c8947f082d796ffc036d6fed5adea6386"
+    },
+    {
+      "order": 79,
+      "id": "application.aipp.contextual.workspace",
+      "path": "browser_files/js/application/26_aipp_contextual_workspace.js",
+      "sha256": "c1d81e8916944b8a4c8a29750c625c7c92c51980cc69f90b1697b5276b64d7c1"
+    },
+    {
+      "order": 80,
+      "id": "application.aipp.deck.navigator.view",
+      "path": "browser_files/js/application/26c_aipp_deck_navigator_view.js",
+      "sha256": "1f91ba244ade13347aae36fc0fa8c57b173dc00f768bb13d9c297a523b1d2921"
+    },
+    {
+      "order": 81,
+      "id": "vendor.tomselect.css",
+      "path": "browser_files/styles/vendor/00_tom-select.default.min.css",
+      "sha256": "f1d39d120d83e42f08a4f0fbc33f99e92333079e05fecfecd3c22da37b8427c8"
+    },
+    {
+      "order": 82,
+      "id": "application.aipp.chamber.editor.coordinator",
+      "path": "browser_files/js/application/27_aipp_chamber_editor_coordinator.js",
+      "sha256": "91320aad6d26d711ded6ac96e07ceec6e8df362fb8fffbc01171ef3141b8abdd"
+    },
+    {
+      "order": 83,
+      "id": "application.aipp.chamber.editor.view",
+      "path": "browser_files/js/application/28_aipp_chamber_editor_view.js",
+      "sha256": "12fd028e25ac880681c745d2f22fe3fd60dde00dc37b585c3a2b2bc1852e08c8"
+    },
+    {
+      "order": 84,
+      "id": "application.aipp.orifice.editor.coordinator",
+      "path": "browser_files/js/application/29_aipp_orifice_editor_coordinator.js",
+      "sha256": "58d3c5836a669e1bf2fee4623c5ac676072214908c5a2fc3e6643c78158a27f8"
+    },
+    {
+      "order": 85,
+      "id": "application.aipp.orifice.editor.view",
+      "path": "browser_files/js/application/30_aipp_orifice_editor_view.js",
+      "sha256": "96b87180de27c6587db03e86be9fa31f99e8139f432c19d7d3c958e54c009b81"
+    },
+    {
+      "order": 86,
+      "id": "application.aipp.phase05b.presentation.control",
+      "path": "browser_files/js/application/24_aipp_phase05b_presentation_control.js",
+      "sha256": "173e1916ec74f04037e89ce89d56226f663cb972add9c96e9b82ce4d185ce663"
+    },
+    {
+      "order": 87,
+      "id": "application.aipp.chamber.hover.card",
+      "path": "browser_files/js/application/24b_aipp_chamber_hover_card.js",
+      "sha256": "8b09f9da19f7fbfe94923303cf26ab3e1d35cf314b97c4ecdbaa2f740a9fa336"
+    },
+    {
+      "order": 88,
+      "id": "application.aipp.master.working.projection",
+      "path": "browser_files/js/application/27a_aipp_master_json_working_projection.js",
+      "sha256": "30bac3284f73f3dac8a491eb7ea7c159edae810cd9e2e92d43f39be55176b306"
+    },
+    {
+      "order": 89,
+      "id": "application.aipp.piston.editor.coordinator",
+      "path": "browser_files/js/application/34_aipp_piston_editor_coordinator.js",
+      "sha256": "823c8a9353ccfc12d02e594b749f2944351f204bc14a2c00561333912a930c92"
+    },
+    {
+      "order": 90,
+      "id": "application.aipp.piston.editor.view",
+      "path": "browser_files/js/application/35_aipp_piston_editor_view.js",
+      "sha256": "ca508fd3acb70e2148859bbbd1b61a1e31a52c99d7bb76df8f89701cdaed85fd"
+    },
+    {
+      "order": 91,
+      "id": "application.aipp.raw.json.editor.view",
+      "path": "browser_files/js/application/36_aipp_raw_json_editor_view.js",
+      "sha256": "f8e5eaacdcf5e814a6d42af345851f4232030b98aaf062b9f1b7a7c45f4963ab"
+    }
+  ],
+  "validation": {
+    "errors": [],
+    "warnings": []
+  }
+}

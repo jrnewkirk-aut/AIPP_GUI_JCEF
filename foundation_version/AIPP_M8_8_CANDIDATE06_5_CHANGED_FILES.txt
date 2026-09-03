@@ -1,0 +1,15 @@
+Candidate06_5 changed files
+- browser_files/js/application/27_aipp_chamber_editor_coordinator.js
+- browser_files/js/application/28_aipp_chamber_editor_view.js
+- application/browser/styles/aipp_m1.css
+- browser_files/components_test/05_aipp_chamber_validation_environment.html (carried forward from Candidate06_4)
+- browser_files/dist/bundle.dev.html (rebuilt)
+- browser_files/dist/bundle.test.html (rebuilt)
+- browser_files/dist/bundle.prod.html (rebuilt)
+- browser_files/dist/build_manifest*.json (rebuilt)
+
+Targeted corrections
+- Restored legacy `air` preset compatibility required by AIPP-M88-P2-007.
+- Added Show all species / Show nonzero species display toggle without mutating hidden zero-valued entries.
+- Restyled Properties mixture editor to match accepted Pyros and Filters surfaces.
+- Hardened Pyros tab activation and chamber-pyro manager visibility for AIPP-M4-011.

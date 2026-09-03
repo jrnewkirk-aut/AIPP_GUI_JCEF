@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "matrix_version": "P8.1.0-0.1",
+  "release_identity": {
+    "foundation_version": "P6.4.0-0.1",
+    "application_version": "0.1.0",
+    "protocol_version": 1,
+    "pillar7_implementation_version": "P7.5.0-0.1",
+    "pillar8_implementation_version": "P8.1.0-0.1"
+  },
+  "tested_environments": [
+    {
+      "environment_id": "WIN-SCILAB-2026.1.0-JCEF",
+      "operating_system": {
+        "family": "Windows",
+        "version": "not captured in accepted evidence"
+      },
+      "architecture": null,
+      "scilab_version": "2026.1.0",
+      "jcef_source": "Scilab 2026.1.0 embedded browser control",
+      "jcef_version": null,
+      "status": "qualified",
+      "evidence": [
+        "Pillar07_Observability_Diagnostics/evidence/protocol_results_7.5.json",
+        "PILLAR7_COMPLETION_MANIFEST.json"
+      ]
+    },
+    {
+      "environment_id": "OTHER-OS",
+      "operating_system": {
+        "family": "Non-Windows",
+        "version": "not tested"
+      },
+      "architecture": null,
+      "scilab_version": "2026.1.0 or newer",
+      "jcef_source": "Not qualified",
+      "jcef_version": null,
+      "status": "not_tested",
+      "evidence": []
+    }
+  ],
+  "runtime_dependencies": {
+    "offline_runtime_required": true,
+    "remote_runtime_dependencies_allowed": false,
+    "scan_status": "PASS",
+    "scan_evidence": "Pillar08_Compatibility_Release_Governance/evidence/P8.1_OFFLINE_DEPENDENCY_SCAN.json",
+    "local_assets": [
+      "browser_files/",
+      "application/",
+      "scilab/",
+      "protocol/"
+    ],
+    "vendor_manifest": "docs/plotting/renderer_vendor_manifest.json"
+  },
+  "transport": {
+    "control_plane": "ASCII-safe JSON",
+    "protocol_name": "scilab-jcef",
+    "protocol_version": 1,
+    "unknown_optional_fields": "tolerated",
+    "unsupported_major_versions": "explicit_error",
+    "verified_representative_payloads": [
+      {
+        "kind": "generic_text",
+        "size_characters": 262148,
+        "evidence_test": "P45-INT-003"
+      },
+      {
+        "kind": "numeric_values",
+        "count": 100000,
+        "evidence_test": "P45-INT-004"
+      }
+    ],
+    "maximum_reliable_payload": "not established by Pillar 8 baseline; defer to transport benchmark evidence"
+  },
+  "build_profiles": {
+    "development": {
+      "bundle": "browser_files/dist/bundle.dev.html",
+      "diagnostics": true,
+      "testing": false
+    },
+    "test": {
+      "bundle": "browser_files/dist/bundle.test.html",
+      "diagnostics_runtime": true,
+      "testing": true
+    },
+    "production": {
+      "bundle": "browser_files/dist/bundle.prod.html",
+      "development_panel": false,
+      "test_hooks": false,
+      "offline": true
+    }
+  },
+  "evidence": [
+    "docs/Scilab_JCEF_Foundation_Spec.md",
+    "Pillar07_Observability_Diagnostics/evidence/protocol_results_7.5.json",
+    "browser_files/dist/production_acceptance.json",
+    "browser_files/dist/reproducibility_report.json",
+    "SHA256SUMS.txt"
+  ],
+  "limitations": [
+    "Qualified Windows version and CPU architecture were not captured in accepted test evidence.",
+    "Embedded JCEF component version is not independently exposed by the current runtime evidence.",
+    "Non-Windows platforms are not qualified.",
+    "Representative payloads are verified, but the maximum reliable transport ceiling is not asserted by this matrix."
+  ],
+  "workarounds": [
+    "WRK-001",
+    "WRK-002",
+    "WRK-003",
+    "WRK-004",
+    "WRK-005"
+  ]
+}

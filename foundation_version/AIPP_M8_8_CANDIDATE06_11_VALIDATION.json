@@ -1,0 +1,23 @@
+{
+  "candidate": "AIPP M8.8 Candidate 06.11",
+  "baseline": "Candidate 06.10",
+  "status": "PASS_STATIC_AND_BUILD",
+  "full_live_scilab_jcef_required": true,
+  "csv_contract": {
+    "row_1": [
+      "selected burn-distance unit",
+      "selected surface-area unit"
+    ],
+    "numeric_data_starts_row": 2,
+    "exact_gui_unit_match": true,
+    "atomic_import": true,
+    "columns": 2
+  },
+  "checks": {
+    "javascript_syntax": true,
+    "p63_build_reproducibility": true,
+    "build_validator": true,
+    "prod_bundle": true,
+    "test_bundle": true
+  }
+}

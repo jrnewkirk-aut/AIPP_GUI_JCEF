@@ -1,0 +1,25 @@
+{
+  "candidate": "AIPP M8.8 Candidate 06.10",
+  "baseline": "Candidate 06.9",
+  "status": "PASS_STATIC_AND_BUILD",
+  "full_live_scilab_jcef_required": true,
+  "checks": {
+    "javascript_syntax": true,
+    "p63_build_reproducibility": true,
+    "build_validator": true,
+    "conditional_quantity_contract": true,
+    "trigger_arrow_contract": true
+  },
+  "quantity_contract": {
+    "types": [
+      "mass",
+      "number"
+    ],
+    "mass_units": [
+      "g",
+      "kg"
+    ],
+    "number_positive_integer": true,
+    "inactive_value_retained": true
+  }
+}

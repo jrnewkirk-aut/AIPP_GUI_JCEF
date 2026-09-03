@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "mode": "production_validate_only",
+  "bundle_path": "browser_files/dist/bundle.prod.html",
+  "bundle_sha256": "245913e82c7d64f84f60ae92e54ce626720ad9457e2fedfd83edd858fff089f9",
+  "bundle_bytes": 915581,
+  "required_markers": [
+    "P6.4.0-0.1",
+    "P2.application.registry.register(\"ping\"",
+    "application.example.ping.request",
+    "// SOURCE: browser_files/js/vendor/00_cytoscape_3_33_4.min.js",
+    "// SOURCE: browser_files/js/application/20a_aipp_graph_runtime.js",
+    "// SOURCE: browser_files/js/application/21_aipp_cytoscape_topology_view.js"
+  ],
+  "forbidden_markers": [
+    "__JCEF_TEST_API__",
+    "P4.register",
+    "<!-- P4_STYLES -->",
+    "<!-- P4_COMPONENTS -->",
+    "<!-- P4_SCRIPTS -->"
+  ]
+}

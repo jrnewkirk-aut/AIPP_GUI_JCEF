@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "title": "Scilab-JCEF observability log record",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timestamp",
+    "runtime",
+    "level",
+    "category",
+    "event",
+    "request_id",
+    "transfer_id",
+    "details"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "runtime": {
+      "enum": [
+        "browser",
+        "scilab"
+      ]
+    },
+    "level": {
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ]
+    },
+    "category": {
+      "enum": [
+        "startup",
+        "build",
+        "transport",
+        "protocol",
+        "file_io",
+        "state",
+        "render",
+        "plot",
+        "performance",
+        "test"
+      ]
+    },
+    "event": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transfer_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "details": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "notes": {
+    "scilab_internal_timestamp": "Scilab records may use timestamp_s internally; export normalization converts it to timestamp."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "milestone": "AIPP M5 chamber filter management",
+  "application_version": "0.5.0-m5",
+  "accepted_baseline": "0.4.2.3-m4.2-test-fix",
+  "m4_live_acceptance": {
+    "declared": 208,
+    "executed": 208,
+    "passed": 208,
+    "failed": 0,
+    "skipped": 0,
+    "active_requests": 0,
+    "active_transfers": 0
+  },
+  "m5_scope": [
+    "chamber-owned filter collection",
+    "PERCENTAGE and KNTU methods",
+    "from-side orifice assignment",
+    "dependency scan and index remap",
+    "editable master-detail UI"
+  ],
+  "static_build_validation": "PASS",
+  "javascript_syntax": "PASS",
+  "declared_test_count": 218,
+  "new_test_count": 10,
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "required_live_acceptance": {
+    "declared": 218,
+    "executed": 218,
+    "passed": 218,
+    "failed": 0,
+    "skipped": 0,
+    "active_requests": 0,
+    "active_transfers": 0
+  }
+}

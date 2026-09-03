@@ -1,0 +1,15 @@
+{
+  "candidate": "06.15",
+  "baseline": "06.14",
+  "status": "PASS_STATIC_AND_BUILD",
+  "checks": {
+    "pyro_empty_button": true,
+    "filter_empty_button": true,
+    "pyro_handler": true,
+    "filter_handler": true,
+    "pyro_safe_defaults": true,
+    "filter_safe_defaults": true,
+    "production_bundle": true
+  },
+  "full_live_scilab_jcef_required": true
+}

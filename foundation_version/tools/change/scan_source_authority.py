@@ -1,0 +1,4 @@
+#!/usr/bin/env python3
+from pathlib import Path
+import json,sys
+r=Path(__file__).resolve().parents[2];auth=[p for p in (r/'browser_files/js').rglob('*.js') if p.is_file()];generated=[p for p in (r/'browser_files/dist').glob('bundle.*.html') if p.is_file()];large=[p.relative_to(r).as_posix() for p in auth if p.stat().st_size>200000];result={'suite':'P8.4 modular source authority scan','authored_javascript_files':len(auth),'generated_bundles':len(generated),'authored_files_over_200kb':large,'generated_is_primary_source':False,'result':'PASS' if len(auth)>10 and not large and len(generated)>=3 else 'FAIL'};out=r/'Pillar08_Compatibility_Release_Governance/evidence/P8.4_SOURCE_AUTHORITY_SCAN.json';out.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));sys.exit(0 if result['result']=='PASS' else 1)

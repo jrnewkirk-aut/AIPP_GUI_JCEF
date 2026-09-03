@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scilab_api_registry.schema.json",
+  "title": "Scilab API Verification Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "registry_version",
+    "minimum_scilab_version",
+    "qualified_scilab_versions",
+    "apis"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "registry_version": {
+      "type": "string"
+    },
+    "minimum_scilab_version": {
+      "type": "string"
+    },
+    "qualified_scilab_versions": {
+      "type": "array"
+    },
+    "apis": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "api",
+          "capability",
+          "used_by",
+          "minimum_version",
+          "verification",
+          "status",
+          "fallback"
+        ],
+        "properties": {
+          "api": {
+            "type": "string"
+          },
+          "capability": {
+            "type": "string"
+          },
+          "used_by": {
+            "type": "array"
+          },
+          "minimum_version": {
+            "type": "string"
+          },
+          "verification": {
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "qualified",
+              "qualified_with_workaround",
+              "statically_verified",
+              "optional"
+            ]
+          },
+          "fallback": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

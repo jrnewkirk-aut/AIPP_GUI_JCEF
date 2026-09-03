@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract_version": "P8.3.0-0.1",
+  "source_release": {
+    "package": "Scilab_JCEF_Foundation_P8.2.0_Release_Version_Governance.zip",
+    "sha256": "937210ba9f744d190150d6dca82faf4b977ff0088bc5fb5b8d64a1d58ebeddf1",
+    "state": "accepted"
+  },
+  "target_release": {
+    "pillar8_implementation_version": "P8.3.0-0.1",
+    "foundation_version": "P6.4.0-0.1"
+  },
+  "preserve_roots": [
+    "application/",
+    "browser_files/js/application/"
+  ],
+  "replace_roots": [
+    "scilab/",
+    "browser_files/js/protocol/",
+    "browser_files/js/observability/",
+    "browser_files/js/plotting/",
+    "browser_files/js/app/",
+    "browser_files/build/",
+    "protocol/",
+    "tools/"
+  ],
+  "generated_roots": [
+    "browser_files/dist/"
+  ],
+  "conflict_policy": {
+    "application_overwrite": "forbidden",
+    "foundation_merge": "forbidden",
+    "mixed_version_module_sets": "forbidden",
+    "generated_as_source": "forbidden",
+    "unknown_paths": "review_required"
+  },
+  "preflight": [
+    "Source release state is accepted.",
+    "Source archive hash matches.",
+    "Target package inventory and hash ledger validate.",
+    "Preserved roots are captured with SHA-256."
+  ],
+  "postflight": [
+    "Preserved-root hashes match preflight.",
+    "Application identity is unchanged.",
+    "Target release identity is active.",
+    "Generated artifacts are regenerated or validated.",
+    "Full regression and clean final state pass."
+  ],
+  "rollback": {
+    "package": "Scilab_JCEF_Foundation_P8.2.0_Release_Version_Governance.zip",
+    "sha256": "937210ba9f744d190150d6dca82faf4b977ff0088bc5fb5b8d64a1d58ebeddf1",
+    "restore_mode": "complete_foundation_set_then_restore_preserved_application",
+    "evidence_required": true
+  }
+}

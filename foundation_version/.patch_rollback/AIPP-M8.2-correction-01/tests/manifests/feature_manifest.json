@@ -1,0 +1,517 @@
+{
+  "version": "0.7.0-m7",
+  "features": [
+    {
+      "id": "PROTOCOL-ENVELOPE-001",
+      "name": "Protocol envelope validation",
+      "requirements": [
+        "PRO-001",
+        "PRO-002",
+        "PRO-003"
+      ],
+      "modules": [
+        "browser_files/js/protocol/04_protocol_validation.js",
+        "scilab/protocol/protocol_validation.sci"
+      ],
+      "tests": [
+        "BR-PRO-001",
+        "BR-PRO-002",
+        "SC-PRO-001",
+        "SC-PRO-002"
+      ]
+    },
+    {
+      "id": "REQUEST-LIFECYCLE-001",
+      "name": "Browser request lifecycle",
+      "requirements": [
+        "PRO-003",
+        "PRO-009"
+      ],
+      "modules": [
+        "browser_files/js/protocol/05_request_registry.js"
+      ],
+      "tests": [
+        "BR-REQ-001",
+        "BR-REQ-002",
+        "BR-REQ-003"
+      ]
+    },
+    {
+      "id": "PLOT-ADAPTER-001",
+      "name": "Replaceable plot adapter",
+      "requirements": [
+        "PLT-002",
+        "PLT-010"
+      ],
+      "modules": [
+        "browser_files/js/plotting/01_plot_adapter.js",
+        "browser_files/js/plotting/02_reference_canvas_adapter.js"
+      ],
+      "tests": [
+        "BR-PLOT-001",
+        "BR-PLOT-002"
+      ]
+    },
+    {
+      "id": "REDUCTION-MINMAX-001",
+      "name": "Min/max extrema reduction",
+      "requirements": [
+        "PLT-006"
+      ],
+      "modules": [
+        "scilab/plotting/plot_reduction.sci"
+      ],
+      "tests": [
+        "SC-PLOT-001"
+      ]
+    },
+    {
+      "id": "TEST-HARNESS-UI-001",
+      "name": "Critical controls remain reachable",
+      "requirements": [
+        "TST-007"
+      ],
+      "modules": [
+        "browser_files/components_test/02_runner.html"
+      ],
+      "tests": [
+        "BR-UI-001"
+      ]
+    },
+    {
+      "id": "CONTRACT-FIXTURES-001",
+      "name": "Shared cross-runtime protocol fixtures",
+      "requirements": [
+        "TST-002",
+        "TST-003"
+      ],
+      "modules": [
+        "tests/protocol_fixtures/manifest.json",
+        "browser_files/js/testing/04a_contract_tests.js",
+        "scilab/testing/test_runner.sci"
+      ],
+      "tests": [
+        "CT-MSG-001",
+        "CT-MSG-002",
+        "CT-MSG-003",
+        "CT-MSG-004",
+        "CT-MSG-005",
+        "CT-MSG-006",
+        "CT-XFR-001",
+        "CT-XFR-002",
+        "CT-XFR-003",
+        "CT-XFR-004",
+        "CT-XFR-005",
+        "CT-XFR-006"
+      ]
+    },
+    {
+      "id": "JCEF-INTEGRATION-001",
+      "name": "Real Scilab/JCEF integration and recovery scenarios",
+      "requirements": [
+        "TST-003",
+        "TST-005",
+        "TST-007",
+        "TST-008"
+      ],
+      "modules": [
+        "browser_files/js/testing/04b_integration_tests.js",
+        "browser_files/js/testing/01a_runtime_capture.js",
+        "scilab/testing/test_runner.sci",
+        "scilab/protocol_callback.sci"
+      ],
+      "tests": [
+        "INT-START-001",
+        "INT-START-002",
+        "INT-MSG-001",
+        "INT-MSG-002",
+        "INT-MSG-003",
+        "INT-MSG-004",
+        "INT-MSG-005",
+        "INT-XFR-001",
+        "INT-XFR-002",
+        "INT-XFR-003",
+        "INT-XFR-004",
+        "INT-XFR-005",
+        "INT-XFR-006",
+        "INT-LIFE-001",
+        "INT-UI-001",
+        "INT-HEALTH-001"
+      ]
+    },
+    {
+      "id": "GUI-VISUAL-001",
+      "name": "GUI layout and visual-contract regression",
+      "requirements": [
+        "TST-007",
+        "TST-009"
+      ],
+      "modules": [
+        "tests/visual_baselines/harness_contract.json",
+        "browser_files/js/testing/04c_visual_tests.js",
+        "browser_files/styles/main.css"
+      ],
+      "tests": [
+        "VIS-BASE-001",
+        "VIS-LAYOUT-001",
+        "VIS-LAYOUT-002",
+        "VIS-TABLE-001",
+        "VIS-DETAIL-001",
+        "VIS-STATE-001",
+        "VIS-STATUS-001",
+        "VIS-A11Y-001",
+        "VIS-RESP-001",
+        "VIS-SNAP-001"
+      ]
+    },
+    {
+      "id": "P45-CODEC-CLOSURE-001",
+      "name": "Direct cross-runtime codec qualification",
+      "requirements": [
+        "PRO-005",
+        "TRN-005"
+      ],
+      "modules": [
+        "scilab/protocol/protocol_codec.sci",
+        "browser_files/js/protocol/03_safe_codec.js",
+        "browser_files/js/testing/02b_closure_browser_tests.js"
+      ],
+      "tests": [
+        "SC-CODEC-001",
+        "SC-CODEC-002",
+        "SC-CODEC-003",
+        "P45-CODEC-001",
+        "P45-CODEC-002",
+        "P45-CODEC-003",
+        "P45-CODEC-004"
+      ]
+    },
+    {
+      "id": "P45-LIFECYCLE-CLOSURE-001",
+      "name": "Request, router, and transfer closure coverage",
+      "requirements": [
+        "PRO-003",
+        "PRO-006",
+        "PRO-009",
+        "PRO-010"
+      ],
+      "modules": [
+        "scilab/protocol/protocol_router.sci",
+        "scilab/protocol/protocol_generic_transfer.sci",
+        "browser_files/js/protocol/10_transfer_registry.js"
+      ],
+      "tests": [
+        "SC-ROUTE-001",
+        "SC-ROUTE-002",
+        "SC-XFR-003",
+        "SC-XFR-004",
+        "SC-XFR-005",
+        "SC-XFR-006",
+        "SC-XFR-007",
+        "P45-REQ-001",
+        "P45-REQ-002",
+        "P45-XFR-001",
+        "P45-XFR-002"
+      ]
+    },
+    {
+      "id": "P45-INTEGRATION-CLOSURE-001",
+      "name": "Representative repeated and large live JCEF workflows",
+      "requirements": [
+        "TRN-004",
+        "TST-003",
+        "TST-005",
+        "TST-007"
+      ],
+      "modules": [
+        "browser_files/js/testing/04d_closure_integration_tests.js",
+        "scilab/protocol_callback.sci"
+      ],
+      "tests": [
+        "P45-INT-001",
+        "P45-INT-002",
+        "P45-INT-003",
+        "P45-INT-004",
+        "P45-INT-005"
+      ]
+    },
+    {
+      "id": "P45-COMPLIANCE-001",
+      "name": "Pillar 4 compliance and manual fallback governance",
+      "requirements": [
+        "TST-001",
+        "TST-009"
+      ],
+      "modules": [
+        "tests/manifests/pillar4_compliance_matrix.json",
+        "tests/manifests/manual_validation_manifest.json"
+      ],
+      "tests": [
+        "P45-MAN-001"
+      ]
+    },
+    {
+      "id": "AIPP-FOUNDATION-M1",
+      "name": "AIPP Foundation shell and status service",
+      "requirements": [
+        "ARC-010",
+        "TST-001",
+        "BLD-006"
+      ],
+      "modules": [
+        "application/browser/components/01_aipp_shell.html",
+        "browser_files/js/application/02_aipp_status_service.js",
+        "browser_files/js/application/03_aipp_shell_controller.js",
+        "browser_files/js/testing/04l_aipp_m1_tests.js"
+      ],
+      "tests": [
+        "AIPP-APP-001",
+        "AIPP-APP-004",
+        "AIPP-APP-006"
+      ]
+    },
+    {
+      "id": "AIPP-PYROLIST-M2",
+      "name": "Foundation-native AIPP pyrolist service and host adapter",
+      "requirements": [
+        "ARC-005",
+        "ARC-010",
+        "PRO-009",
+        "PRO-011",
+        "TST-001",
+        "TST-003",
+        "TST-005",
+        "TST-008"
+      ],
+      "modules": [
+        "application/scilab/application_handlers.sci",
+        "browser_files/js/application/04_aipp_pyrolist_service.js",
+        "browser_files/js/application/05_aipp_host_adapter.js",
+        "application/schemas/application.aipp.pyrolist.request.schema.json",
+        "application/schemas/application.aipp.pyrolist.response.schema.json",
+        "browser_files/js/testing/04p_aipp_m2_tests.js"
+      ],
+      "tests": [
+        "AIPP-M2-001",
+        "AIPP-M2-002",
+        "AIPP-M2-003",
+        "AIPP-M2-004",
+        "AIPP-M2-005",
+        "AIPP-M2-006"
+      ]
+    },
+    {
+      "id": "AIPP-PYRO-EDITOR-M3",
+      "name": "AIPP pyro formulation editor and working-copy model",
+      "requirements": [
+        "ARC-005",
+        "ARC-010",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-005",
+        "TST-007",
+        "TST-008",
+        "TST-009"
+      ],
+      "modules": [
+        "browser_files/js/application/06_aipp_pyro_editor_model.js",
+        "browser_files/js/application/07_aipp_pyro_editor_view.js",
+        "application/browser/components/01_aipp_shell.html",
+        "browser_files/js/testing/04q_aipp_m3_tests.js"
+      ],
+      "tests": [
+        "AIPP-M3-001",
+        "AIPP-M3-002",
+        "AIPP-M3-003",
+        "AIPP-M3-004",
+        "AIPP-M3-005",
+        "AIPP-M3-006",
+        "AIPP-M3-007",
+        "AIPP-M3-008",
+        "AIPP-M3-009",
+        "AIPP-M3-010"
+      ]
+    },
+    {
+      "id": "AIPP-CHAMBER-PYROS-M4",
+      "name": "Chamber pyro assignment and management",
+      "requirements": [
+        "ARC-010",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-005",
+        "TST-007",
+        "TST-008",
+        "TST-009"
+      ],
+      "modules": [
+        "browser_files/js/application/08_aipp_chamber_pyro_model.js",
+        "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+        "application/browser/components/01_aipp_shell.html",
+        "browser_files/js/testing/04r_aipp_m4_tests.js"
+      ],
+      "tests": [
+        "AIPP-M4-001",
+        "AIPP-M4-002",
+        "AIPP-M4-003",
+        "AIPP-M4-004",
+        "AIPP-M4-005",
+        "AIPP-M4-006",
+        "AIPP-M4-007",
+        "AIPP-M4-008",
+        "AIPP-M4-009",
+        "AIPP-M4-010",
+        "AIPP-M4-011",
+        "AIPP-M4-012"
+      ]
+    },
+    {
+      "id": "AIPP-CHAMBER-FILTERS-M5",
+      "name": "Chamber filter management and orifice assignment",
+      "requirements": [
+        "ARC-010",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-008",
+        "TST-009"
+      ],
+      "modules": [
+        "browser_files/js/application/10_aipp_chamber_filter_model.js",
+        "browser_files/js/application/11_aipp_chamber_filter_view.js",
+        "application/browser/components/01_aipp_shell.html",
+        "browser_files/js/testing/04s_aipp_m5_tests.js"
+      ],
+      "tests": [
+        "AIPP-M5-001",
+        "AIPP-M5-002",
+        "AIPP-M5-003",
+        "AIPP-M5-004",
+        "AIPP-M5-005",
+        "AIPP-M5-006",
+        "AIPP-M5-007",
+        "AIPP-M5-008",
+        "AIPP-M5-009",
+        "AIPP-M5-010"
+      ]
+    },
+    {
+      "id": "AIPP-M531-RUNTIME-MATERIALS",
+      "name": "Runtime chamber-filter material qualification",
+      "requirements": [
+        "ARC-005",
+        "ARC-010",
+        "CMP-004",
+        "PRO-009",
+        "TST-001",
+        "TST-005",
+        "TST-008",
+        "TST-009"
+      ],
+      "modules": [
+        "application/data/material_list.json",
+        "application/scilab/application_handlers.sci",
+        "browser_files/js/application/09a_aipp_material_library.js",
+        "browser_files/js/application/10_aipp_chamber_filter_model.js",
+        "browser_files/js/application/11_aipp_chamber_filter_view.js",
+        "browser_files/js/testing/04t_aipp_m531_material_tests.js"
+      ],
+      "tests": [
+        "AIPP-M531-001",
+        "AIPP-M531-002",
+        "AIPP-M531-003",
+        "AIPP-M531-004",
+        "AIPP-M531-005",
+        "AIPP-M531-006"
+      ]
+    },
+    {
+      "id": "AIPP-TOPOLOGY-M6",
+      "name": "Chamber and orifice topology management",
+      "requirements": [
+        "ARC-010",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-008"
+      ],
+      "modules": [
+        "browser_files/js/application/12_aipp_topology_model.js",
+        "browser_files/js/application/13_aipp_topology_view.js",
+        "browser_files/js/testing/04u_aipp_m6_tests.js"
+      ],
+      "tests": [
+        "AIPP-M6-001",
+        "AIPP-M6-002",
+        "AIPP-M6-003",
+        "AIPP-M6-004",
+        "AIPP-M6-005",
+        "AIPP-M6-006",
+        "AIPP-M6-007",
+        "AIPP-M6-008",
+        "AIPP-M6-009"
+      ]
+    },
+    {
+      "id": "AIPP-PRODUCTION-WORKSPACE-M7",
+      "name": "Three-area production workspace shell",
+      "requirements": [
+        "ARC-010",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-007",
+        "TST-008"
+      ],
+      "modules": [
+        "application/browser/components/01_aipp_shell.html",
+        "browser_files/js/application/14_aipp_workspace_shell.js",
+        "browser_files/js/testing/04v_aipp_m7_workspace_tests.js",
+        "app/aipp_main.sce"
+      ],
+      "tests": [
+        "AIPP-M7-001",
+        "AIPP-M7-002",
+        "AIPP-M7-003",
+        "AIPP-M7-004",
+        "AIPP-M7-005",
+        "AIPP-M7-006",
+        "AIPP-M7-007",
+        "AIPP-M7-008"
+      ]
+    },
+    {
+      "id": "AIPP-DECK-DOCUMENT-M81",
+      "name": "Authoritative input-deck document and editor synchronization",
+      "requirements": [
+        "ARC-010",
+        "BLD-012",
+        "PRO-009",
+        "TST-001",
+        "TST-003",
+        "TST-008"
+      ],
+      "modules": [
+        "browser_files/js/application/15_aipp_deck_document.js",
+        "browser_files/js/application/16_aipp_deck_bindings.js",
+        "browser_files/js/testing/04w_aipp_m81_deck_document_tests.js"
+      ],
+      "tests": [
+        "AIPP-M81-001",
+        "AIPP-M81-002",
+        "AIPP-M81-003",
+        "AIPP-M81-004",
+        "AIPP-M81-005",
+        "AIPP-M81-006",
+        "AIPP-M81-007",
+        "AIPP-M81-008",
+        "AIPP-M81-009",
+        "AIPP-M81-010"
+      ]
+    }
+  ]
+}

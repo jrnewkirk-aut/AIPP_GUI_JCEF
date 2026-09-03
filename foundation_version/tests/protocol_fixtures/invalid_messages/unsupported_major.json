@@ -1,0 +1,7 @@
+{
+  "protocol": "scilab-jcef",
+  "protocol_version": 99,
+  "type": "diagnostic.echo.request",
+  "request_id": "fixture-version",
+  "payload": {}
+}

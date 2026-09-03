@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "timestamp": "2026-08-07T00:00:00.000Z",
+  "runtime": "browser",
+  "name": "control.encode.duration_ms",
+  "value": 0.25,
+  "unit": "ms",
+  "status": "success",
+  "request_id": "req-1",
+  "transfer_id": null,
+  "details": {
+    "stage": "request_encode_ms"
+  }
+}

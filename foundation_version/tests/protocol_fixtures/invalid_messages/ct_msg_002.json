@@ -1,0 +1,16 @@
+{
+  "id": "CT-MSG-002",
+  "category": "message",
+  "name": "Missing message type",
+  "message": {
+    "protocol": "scilab-jcef",
+    "protocol_version": 1,
+    "request_id": "fixture-002",
+    "payload": {}
+  },
+  "expected": {
+    "accepted": false,
+    "error_code": "MISSING_TYPE",
+    "request_id_preserved": true
+  }
+}

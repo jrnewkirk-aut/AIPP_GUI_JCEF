@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "application.aipp.materials.response",
+  "title": "AIPP materials response payload",
+  "type": "object",
+  "required": ["source", "count", "names", "materials", "application_version"],
+  "properties": {
+    "source": {"const": "application/data/material_list.json"},
+    "count": {"type": "integer", "minimum": 1},
+    "names": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "materials": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object", "additionalProperties": true}},
+    "application_version": {"const": "0.5.3-m5.3"}
+  },
+  "additionalProperties": false
+}

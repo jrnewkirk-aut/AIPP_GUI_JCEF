@@ -1,0 +1,1056 @@
+{
+  "schema_version": 1,
+  "foundation_version": "P6.4.0-0.1",
+  "application_version": "0.8.7-p2.2-bf2-candidate02",
+  "protocol_version": 1,
+  "build_mode": "test",
+  "ordering_policy": "category_then_case_insensitive_lexicographic",
+  "bundle_path": "browser_files/dist/bundle.test.html",
+  "bundle_sha256": "3c8c96d93c5edd61e1a9a28dba3eb1bee2858732c8b23f1507950e4adaaed81d",
+  "bundle_bytes": 1312259,
+  "module_count": 173,
+  "modules": [
+    {
+      "order": 1,
+      "id": "shell.index",
+      "path": "browser_files/index.html",
+      "sha256": "c871f7b8ac71410aec833832e06330e98c8fd733c3948a74c60aa241c5a91e01"
+    },
+    {
+      "order": 2,
+      "id": "style.foundation",
+      "path": "browser_files/styles/main.css",
+      "sha256": "0c7de683618865ca8662aa3dbc555c8a292177ba13225212bef95c900fdacafa"
+    },
+    {
+      "order": 3,
+      "id": "component.test.header",
+      "path": "browser_files/components_test/01_header.html",
+      "sha256": "e22c0169b44e908e7be2eb2ab9935c229261d128b14338349c0d016454a61348"
+    },
+    {
+      "order": 4,
+      "id": "component.test.runner",
+      "path": "browser_files/components_test/02_runner.html",
+      "sha256": "550535453980094e281257eddd1a50a6379f4ccc0f4abaea62e7ca8bd0395542"
+    },
+    {
+      "order": 5,
+      "id": "component.test.aipp.chamber.validation",
+      "path": "browser_files/components_test/05_aipp_chamber_validation_environment.html",
+      "sha256": "5374597a4fa6f42d55e4ec34686a0b34eb51a77c57928b1bfa8e34d63b71a44f"
+    },
+    {
+      "order": 6,
+      "id": "observability.startup.collector",
+      "path": "browser_files/js/observability/00_startup_error_collector.js",
+      "sha256": "eab5ee7f7533df9c4306ed41a68abb1f1c60eb99dd4d746ae778bf5b6bd80a42"
+    },
+    {
+      "order": 7,
+      "id": "observability.constants",
+      "path": "browser_files/js/observability/01_observability_constants.js",
+      "sha256": "8cbc191c5a320bc4e3e494ee99689a3d6b4464fc5a35439da249929ec72b6177"
+    },
+    {
+      "order": 8,
+      "id": "observability.payload.summary",
+      "path": "browser_files/js/observability/02_payload_summary.js",
+      "sha256": "3ac0bc8940eb65a62880848a270d43caeecaaf86bb93abe409fdcce182a1d05f"
+    },
+    {
+      "order": 9,
+      "id": "observability.record",
+      "path": "browser_files/js/observability/03_observability_record.js",
+      "sha256": "9ce9cecf7c24957e8dd406dbfe8ec88b1ce42a9228e1bfa8f7b1242355ca4eac"
+    },
+    {
+      "order": 10,
+      "id": "observability.logger",
+      "path": "browser_files/js/observability/04_observability_logger.js",
+      "sha256": "045da3db249cef7b8e87afb1e2dcc36089c066b8551f9527456b86c608106913"
+    },
+    {
+      "order": 11,
+      "id": "observability.performance",
+      "path": "browser_files/js/observability/05_performance_registry.js",
+      "sha256": "9f487e04fde990b9681cfe9fe95c6f131460103b868133c17e124a842b6e00ba"
+    },
+    {
+      "order": 12,
+      "id": "observability.diagnostic.export",
+      "path": "browser_files/js/observability/06_diagnostic_package_export.js",
+      "sha256": "73c540e18d53efc46185563967e590c90b763c5e64767f822040185bf2b8e381"
+    },
+    {
+      "order": 13,
+      "id": "observability.file.operations",
+      "path": "browser_files/js/observability/05_file_operation_events.js",
+      "sha256": "dfe7824f1eccf8347ada1d45c183f283c1b66efe0768007f6a9fab335a685e51"
+    },
+    {
+      "order": 14,
+      "id": "protocol.protocol.constants",
+      "path": "browser_files/js/protocol/01_protocol_constants.js",
+      "sha256": "e7771fba1a372a39d7b0346d3bb7cc95a202ecd1506a67ef08241af97a4c652c"
+    },
+    {
+      "order": 15,
+      "id": "protocol.protocol.errors",
+      "path": "browser_files/js/protocol/02_protocol_errors.js",
+      "sha256": "eb2513c22f17ef3780bcf9ecadf0472e851b2cda57f9c8ca1c0e2f101e870c2d"
+    },
+    {
+      "order": 16,
+      "id": "protocol.safe.codec",
+      "path": "browser_files/js/protocol/03_safe_codec.js",
+      "sha256": "fbbc34261393bcb3b847232f539c61ab8d7bff0e37cbb8bca40a6f8dde39f54d"
+    },
+    {
+      "order": 17,
+      "id": "protocol.protocol.validation",
+      "path": "browser_files/js/protocol/04_protocol_validation.js",
+      "sha256": "d2c1ef6fece0db0e9abfa34f92c8c355cada5470cb05f2936ec4d6ae45ce6deb"
+    },
+    {
+      "order": 18,
+      "id": "protocol.request.registry",
+      "path": "browser_files/js/protocol/05_request_registry.js",
+      "sha256": "a5ff4908ee2b8d68e464472d97febe892c3772e8876d3f131fc75f903317af73"
+    },
+    {
+      "order": 19,
+      "id": "protocol.protocol.transport",
+      "path": "browser_files/js/protocol/06_protocol_transport.js",
+      "sha256": "1d7c264bbf00e0ab944a5e3456c43d85ce39927f2e50030598b6a184b4e8a21e"
+    },
+    {
+      "order": 20,
+      "id": "protocol.protocol.client",
+      "path": "browser_files/js/protocol/07_protocol_client.js",
+      "sha256": "dc9cf979eaf742af3f3e991f2328a56e082420aa04e8788cdb82abeb14958aab"
+    },
+    {
+      "order": 21,
+      "id": "protocol.protocol.router",
+      "path": "browser_files/js/protocol/08_protocol_router.js",
+      "sha256": "33b45a7321a0b011495c7fffc16d46dd4265dc7a6cb179f39283a095fe2815a0"
+    },
+    {
+      "order": 22,
+      "id": "protocol.protocol.host",
+      "path": "browser_files/js/protocol/09_protocol_host.js",
+      "sha256": "62d2339202e6187bb77cc766a8ad8ea202205cfe8665ce6469617204ce3b716b"
+    },
+    {
+      "order": 23,
+      "id": "protocol.transfer.registry",
+      "path": "browser_files/js/protocol/10_transfer_registry.js",
+      "sha256": "aace8af3241f7316b3165465e7c7287901cf3f0ebc49a8e8dd3d35513559f11e"
+    },
+    {
+      "order": 24,
+      "id": "protocol.numeric.transfer",
+      "path": "browser_files/js/protocol/11_numeric_transfer.js",
+      "sha256": "94a0c5dba7ac9003e6e5e0d9103390aa75dfce21bb73e040223463fd9315aa6d"
+    },
+    {
+      "order": 25,
+      "id": "protocol.transfer.handle",
+      "path": "browser_files/js/protocol/12_transfer_handle.js",
+      "sha256": "0ca257075e26b6a1f44d42a16de6c451a962d89b6d9d9f21b61dc4c6990d5ddb"
+    },
+    {
+      "order": 26,
+      "id": "protocol.runtime.config",
+      "path": "browser_files/js/protocol/13_runtime_config.js",
+      "sha256": "09ecee05a5f48421f56877ba39e2c354715f9d2bbb885792f27839e2f3c85934"
+    },
+    {
+      "order": 27,
+      "id": "protocol.diagnostics",
+      "path": "browser_files/js/protocol/14_diagnostics.js",
+      "sha256": "44b81caa309d6564f581b0d12dd420295976aa83229286f34f326c208d12c579"
+    },
+    {
+      "order": 28,
+      "id": "protocol.viewport.service",
+      "path": "browser_files/js/protocol/15_viewport_service.js",
+      "sha256": "a99747229380b8de37c7b00504b4f6ae7dc03738da1bfc5d88079d860beb745d"
+    },
+    {
+      "order": 29,
+      "id": "protocol.logging",
+      "path": "browser_files/js/protocol/16_logging.js",
+      "sha256": "4b360bebc7a15695386b933f9764552e09999969c4437911ee5de85cb0f18c19"
+    },
+    {
+      "order": 30,
+      "id": "protocol.schemas",
+      "path": "browser_files/js/protocol/17_schemas.js",
+      "sha256": "b7e320f0f90c8ca09d077b427a9efebccc3753aabe1e9b6dadb68806095b0742"
+    },
+    {
+      "order": 31,
+      "id": "protocol.capabilities",
+      "path": "browser_files/js/protocol/18_capabilities.js",
+      "sha256": "33cba2f2e01ec14755168018c384345294cd53904c02665ec9cda357ebf89c41"
+    },
+    {
+      "order": 32,
+      "id": "protocol.data.adapter",
+      "path": "browser_files/js/protocol/19_data_adapter.js",
+      "sha256": "f8dc2ea738d2e1dabded704a1827664cb48cc64c3cd17bb5b5cc9d4c25ac2017"
+    },
+    {
+      "order": 33,
+      "id": "protocol.library",
+      "path": "browser_files/js/protocol/20_library.js",
+      "sha256": "b105d00edc208bfe03409e72938297d2a0625dc93ac20eb4604a156a6e40179a"
+    },
+    {
+      "order": 34,
+      "id": "protocol.generic.transfer",
+      "path": "browser_files/js/protocol/21_generic_transfer.js",
+      "sha256": "525efb932de7cc70e0e123fd44d2abdc7938054ba181b84cdbb1f50c0cb9befb"
+    },
+    {
+      "order": 35,
+      "id": "plotting.plot.adapter",
+      "path": "browser_files/js/plotting/01_plot_adapter.js",
+      "sha256": "faf4a8118a7c620239127930b3b09748073d507074250d2ed693b9b790d521db"
+    },
+    {
+      "order": 36,
+      "id": "plotting.reference.canvas.adapter",
+      "path": "browser_files/js/plotting/02_reference_canvas_adapter.js",
+      "sha256": "b3bc025d73056c2c3fbd3fd6487f3a7bff55aeebd7243a65464160b4ba5c16c4"
+    },
+    {
+      "order": 37,
+      "id": "app.01_minimal_ui",
+      "path": "browser_files/js/app/01_minimal_ui.js",
+      "sha256": "1dcb7cd0d08ae56b06454c2e0a6a509cfd19136c294c5ae743f215fb0f474d95"
+    },
+    {
+      "order": 38,
+      "id": "application.application.registry",
+      "path": "browser_files/js/application/01_application_registry.js",
+      "sha256": "53c3033739436ccac67888d97514477d1e4f2f21c3baa8f4d7a9178ae91e8d37"
+    },
+    {
+      "order": 39,
+      "id": "application.reference.ping.service",
+      "path": "browser_files/js/application/02_reference_ping_service.js",
+      "sha256": "9e29cb6801a3a420dfd47d692df120e9fd353e18fa24a4b7298f6ec284c27992"
+    },
+    {
+      "order": 40,
+      "id": "application.reference.sum.service",
+      "path": "browser_files/js/application/03_reference_sum_service.js",
+      "sha256": "97b34a323de7b88da6c1cb96d32076573898498d8cbd22820a245b610e0f9e9b"
+    },
+    {
+      "order": 41,
+      "id": "application.aipp.status.service",
+      "path": "browser_files/js/application/02_aipp_status_service.js",
+      "sha256": "0abc71e6031c5a481284a68d453d14b2c45bcb6a622cd8e5c7510e8927e5559b"
+    },
+    {
+      "order": 42,
+      "id": "application.aipp.shell.controller",
+      "path": "browser_files/js/application/03_aipp_shell_controller.js",
+      "sha256": "ac2bd591b63d81d0725dd549a34dd5107859ac86eb10c250045bed9a0599571e"
+    },
+    {
+      "order": 43,
+      "id": "testing.01.test.core",
+      "path": "browser_files/js/testing/01_test_core.js",
+      "sha256": "02cadf522228dbf0c3d45767757597f7e929f7bafcf42dd15d84dd28fc1f38e3"
+    },
+    {
+      "order": 44,
+      "id": "testing.01a.runtime.capture",
+      "path": "browser_files/js/testing/01a_runtime_capture.js",
+      "sha256": "4eb5eb03ed1dbbf50aebdfc08747cd5d6854b1ad6126d64179fba8706bfbd6e6"
+    },
+    {
+      "order": 45,
+      "id": "testing.02.browser.tests",
+      "path": "browser_files/js/testing/02_browser_tests.js",
+      "sha256": "96ccd0eedfbe44608890ac1beb7a8d553c8a68808e896a590806eb85dbe43ba3"
+    },
+    {
+      "order": 46,
+      "id": "testing.02b.closure.browser.tests",
+      "path": "browser_files/js/testing/02b_closure_browser_tests.js",
+      "sha256": "e785293818393dcfe0c5b7f6e39ad8ec49e760d224da163f307d9b61e35adc59"
+    },
+    {
+      "order": 47,
+      "id": "testing.02c.architecture.browser.tests",
+      "path": "browser_files/js/testing/02c_architecture_browser_tests.js",
+      "sha256": "70cb41acfc2aa4b0ef592bcaea8ce30b7bee45297237d1a6299e3227fd111596"
+    },
+    {
+      "order": 48,
+      "id": "testing.03.manifests",
+      "path": "browser_files/js/testing/03_manifests.js",
+      "sha256": "0e0845c16947b3e44128d9fd3957e2386e0c1173b18adaa60df946145f77697f"
+    },
+    {
+      "order": 49,
+      "id": "testing.03a.contract.fixtures",
+      "path": "browser_files/js/testing/03a_contract_fixtures.js",
+      "sha256": "f4129d8fb1732adbd0bb076b9558530673bef65d33c0fde780c37c8a64b0dad1"
+    },
+    {
+      "order": 50,
+      "id": "testing.03b.visual.baseline",
+      "path": "browser_files/js/testing/03b_visual_baseline.js",
+      "sha256": "a12dd25db27c6929b0d2deb57c61b3820b0b624958930fb3945d6b3fe551055f"
+    },
+    {
+      "order": 51,
+      "id": "testing.03c.pillar4.compliance",
+      "path": "browser_files/js/testing/03c_pillar4_compliance.js",
+      "sha256": "604dc917cfacd7fea1d141cb738d73f5bea0489e83c1a9a7aa1b55b594a396c8"
+    },
+    {
+      "order": 52,
+      "id": "testing.03d.starter.manifests",
+      "path": "browser_files/js/testing/03d_starter_manifests.js",
+      "sha256": "a91b093683f1712fcd4517d73bd97a71a36b1a52f89dd70a5c8d0d79b6d4f331"
+    },
+    {
+      "order": 53,
+      "id": "testing.03e.application.manifests",
+      "path": "browser_files/js/testing/03e_application_manifests.js",
+      "sha256": "cb83b6ff1eae52b57393264de84e6125bffc3ec1539d36670eb0c51a5ef2f5ea"
+    },
+    {
+      "order": 54,
+      "id": "testing.03f.release.manifests",
+      "path": "browser_files/js/testing/03f_release_manifests.js",
+      "sha256": "e935578a22e09c8ae4454d0beeca853885e759006bab0c7fa06893a02049ca93"
+    },
+    {
+      "order": 55,
+      "id": "testing.04.manifest.tests",
+      "path": "browser_files/js/testing/04_manifest_tests.js",
+      "sha256": "bb82395ebf0d7763853212ca69d7d8d0d05f56fcb91db0eb6265cd57939b0a39"
+    },
+    {
+      "order": 56,
+      "id": "testing.04a.contract.tests",
+      "path": "browser_files/js/testing/04a_contract_tests.js",
+      "sha256": "2bef8ad1f4403d55d5b2773debe5046d773acb1e241e69a8fa262d300310a315"
+    },
+    {
+      "order": 57,
+      "id": "testing.04b.integration.tests",
+      "path": "browser_files/js/testing/04b_integration_tests.js",
+      "sha256": "21c2b71ff4e0a9131f5a8f83666d04824c098edf637d3b80400fc54da706d870"
+    },
+    {
+      "order": 58,
+      "id": "testing.04c.visual.tests",
+      "path": "browser_files/js/testing/04c_visual_tests.js",
+      "sha256": "00d198b7a8fefc21f490dfd12e9b32651811237d9b6423ceeb96451a68e9b296"
+    },
+    {
+      "order": 59,
+      "id": "testing.04d.closure.integration.tests",
+      "path": "browser_files/js/testing/04d_closure_integration_tests.js",
+      "sha256": "3c623f8cea5990974db7cf10505c16ab92ff4ff8ec40c9514bffb5136febf038"
+    },
+    {
+      "order": 60,
+      "id": "testing.04e.architecture.tests",
+      "path": "browser_files/js/testing/04e_architecture_tests.js",
+      "sha256": "f595a7ec0b281dd68d1897b846ed1b5936544e89ca57bccea1e041c429362a04"
+    },
+    {
+      "order": 61,
+      "id": "testing.04f.architecture.integration.tests",
+      "path": "browser_files/js/testing/04f_architecture_integration_tests.js",
+      "sha256": "071ec36cfba7c2f09af44640c3c5f36acc60e84d47bf57a7b474c61d4d950e06"
+    },
+    {
+      "order": 62,
+      "id": "testing.04g.starter.tests",
+      "path": "browser_files/js/testing/04g_starter_tests.js",
+      "sha256": "7e9ac9daa27ca4ca2071777bd9414ca7a07b447a6cb3b8d71371da233a7f66cb"
+    },
+    {
+      "order": 63,
+      "id": "testing.04h.application.tests",
+      "path": "browser_files/js/testing/04h_application_tests.js",
+      "sha256": "c4b241de044c5c5342b835c0e77f2e92c0f4f0a9404c2b8974c987fd22167209"
+    },
+    {
+      "order": 64,
+      "id": "testing.04i.release.tests",
+      "path": "browser_files/js/testing/04i_release_tests.js",
+      "sha256": "b4ea3164bfa0bdc5d16c07bbdf78d45cf111eb786e4d05cae828056d31204777"
+    },
+    {
+      "order": 65,
+      "id": "testing.04j.extension.browser.tests",
+      "path": "browser_files/js/testing/04j_extension_browser_tests.js",
+      "sha256": "722caaa482d2202feadb2df4ea9c467d85e32385e9645af376ad0925e955b84f"
+    },
+    {
+      "order": 66,
+      "id": "testing.04k.extension.integration.tests",
+      "path": "browser_files/js/testing/04k_extension_integration_tests.js",
+      "sha256": "5c531eb25c4947e87f03dcb774f2df2a210bdd430b460aa8e7f2e537ecad37fe"
+    },
+    {
+      "order": 67,
+      "id": "testing.p63.metadata",
+      "path": "browser_files/js/testing/03i_p63_build_manifest.js",
+      "sha256": "62bd11042065a08256be00a7ddc4da6a90579669a40254945c72d96ebce3c0f6"
+    },
+    {
+      "order": 68,
+      "id": "testing.p63.tests",
+      "path": "browser_files/js/testing/04n_p63_build_tests.js",
+      "sha256": "81a48e2de680db7002fd882cadc6ffa2d2bebac6a3630661c4c00ca65520616d"
+    },
+    {
+      "order": 69,
+      "id": "testing.p64.metadata",
+      "path": "browser_files/js/testing/03j_p64_package_manifest.js",
+      "sha256": "79b7952419fe37870a85f3dc19f3e2c8772332d5cb1afad9e8f1712a8a333998"
+    },
+    {
+      "order": 70,
+      "id": "testing.p64.tests",
+      "path": "browser_files/js/testing/04o_p64_package_tests.js",
+      "sha256": "ca9c358b4e8f742b4f7ff2c8df4d7cc24ccdd277df911eaa45357490049e19bd"
+    },
+    {
+      "order": 71,
+      "id": "testing.05.runner.ui",
+      "path": "browser_files/js/testing/05_runner_ui.js",
+      "sha256": "7c6846c5422c9d3f31e47684293ac29919d253ac3ca624f9dfb7d0f3a5585c0b"
+    },
+    {
+      "order": 72,
+      "id": "testing.06.bootstrap",
+      "path": "browser_files/js/testing/06_bootstrap.js",
+      "sha256": "d6b725d1ddcb5f0d02ca70ff2b500cc558be4cca1d5d95c88a6f99e29c3bc0b4"
+    },
+    {
+      "order": 73,
+      "id": "testing.03g.p61.build.manifest",
+      "path": "browser_files/js/testing/03g_p61_build_manifest.js",
+      "sha256": "eeb1d27254c73bd6fee0bb22ce5756d1ea05c599af369dbcc361125917faaf28"
+    },
+    {
+      "order": 74,
+      "id": "testing.04l.p61.build.tests",
+      "path": "browser_files/js/testing/04l_p61_build_tests.js",
+      "sha256": "a44c7092a51739ff389d4f6d9ff5a0fca8f8aadb6be051cda72e13fc7dd2baf3"
+    },
+    {
+      "order": 75,
+      "id": "testing.03h.p62.build.manifest",
+      "path": "browser_files/js/testing/03h_p62_build_manifest.js",
+      "sha256": "3cb4459f72ce866b61b593c089d9d92d10a577231aa239212ab40b6f8e078d06"
+    },
+    {
+      "order": 76,
+      "id": "testing.04m.p62.build.tests",
+      "path": "browser_files/js/testing/04m_p62_build_tests.js",
+      "sha256": "538fa63b595f8b643587f43466501424900cdddb9b7b3c03678594140f17ac0f"
+    },
+    {
+      "order": 77,
+      "id": "application.aipp.style",
+      "path": "application/browser/styles/aipp_m1.css",
+      "sha256": "695ced164698612940a4338c1596c20d20ffabfa49c8888df99116f0cb34a882"
+    },
+    {
+      "order": 78,
+      "id": "component.test.aipp.m1.surface",
+      "path": "browser_files/components_test/03_aipp_m1_test_surface.html",
+      "sha256": "bb7d5dd3c00e5f6d3190def2f67acea6f789440bfab5ab1357339ddbdf8087de"
+    },
+    {
+      "order": 79,
+      "id": "testing.04l.aipp.m1.tests",
+      "path": "browser_files/js/testing/04l_aipp_m1_tests.js",
+      "sha256": "1f64d324a097403563e88f2f80980d9e57875b3541b3877891bd6e566cc78715"
+    },
+    {
+      "order": 80,
+      "id": "application.aipp.pyrolist.service",
+      "path": "browser_files/js/application/04_aipp_pyrolist_service.js",
+      "sha256": "0fb5192a636a18c988060b24df79047447f6e935141ce657d13ad25e3c9962e7"
+    },
+    {
+      "order": 81,
+      "id": "application.aipp.host.adapter",
+      "path": "browser_files/js/application/05_aipp_host_adapter.js",
+      "sha256": "36520a587212886c339ef470700700f857ff73965613aee987c21dd94af70486"
+    },
+    {
+      "order": 82,
+      "id": "testing.04p.aipp.m2.tests",
+      "path": "browser_files/js/testing/04p_aipp_m2_tests.js",
+      "sha256": "30ca19ce78dd3555bee19409fac29c26cde07907a2bd4d1d109a86730f1e3ef3"
+    },
+    {
+      "order": 83,
+      "id": "application.aipp.pyro.editor.model",
+      "path": "browser_files/js/application/06_aipp_pyro_editor_model.js",
+      "sha256": "a9abef2167120cfee41d6bdc55223b436c7208f4f0247cc2d9aaf9c5530676e3"
+    },
+    {
+      "order": 84,
+      "id": "application.aipp.pyro.editor.view",
+      "path": "browser_files/js/application/07_aipp_pyro_editor_view.js",
+      "sha256": "c45d61ade8175d67910121075372d9241e4847d4403e4393f113aa53a96b6ae5"
+    },
+    {
+      "order": 85,
+      "id": "testing.04q.aipp.m3.tests",
+      "path": "browser_files/js/testing/04q_aipp_m3_tests.js",
+      "sha256": "b2df93f914965c135b8336f9526da6910e2c46fb871c312e8a18fdbd453df8eb"
+    },
+    {
+      "order": 86,
+      "id": "application.aipp.chamber.pyro.model",
+      "path": "browser_files/js/application/08_aipp_chamber_pyro_model.js",
+      "sha256": "895c3b18ba3bc22975982103ac9b1431be8199d089726fe57a2c9b5f5841eef5"
+    },
+    {
+      "order": 87,
+      "id": "vendor.tomselect.js",
+      "path": "browser_files/js/vendor/00_tom-select.complete.min.js",
+      "sha256": "8f9d7d3420e938c2c9817818b56df43ea46feae5bf1f5a2e828863c034df0e37"
+    },
+    {
+      "order": 88,
+      "id": "application.aipp.chamber.pyro.view",
+      "path": "browser_files/js/application/09_aipp_chamber_pyro_view.js",
+      "sha256": "4c18d10b93662ad9874482daba70a5645ef13fc0c5beae59562574695540d27d"
+    },
+    {
+      "order": 89,
+      "id": "testing.04r.aipp.m4.tests",
+      "path": "browser_files/js/testing/04r_aipp_m4_tests.js",
+      "sha256": "a108719ded4387f4278d2ae6422323c624ff381be04d3b90126e065955abeb49"
+    },
+    {
+      "order": 90,
+      "id": "application.aipp.material.library",
+      "path": "browser_files/js/application/09a_aipp_material_library.js",
+      "sha256": "bfa570184f6d155782baada1dd8da1c98acd8fceb385c00df752d92eb4108f00"
+    },
+    {
+      "order": 91,
+      "id": "application.aipp.chamber.filter.model",
+      "path": "browser_files/js/application/10_aipp_chamber_filter_model.js",
+      "sha256": "90c091c92ba697a076db1676dbcab23aa3945fbfe9a9f3499a42c1090ac48189"
+    },
+    {
+      "order": 92,
+      "id": "application.aipp.chamber.filter.view",
+      "path": "browser_files/js/application/11_aipp_chamber_filter_view.js",
+      "sha256": "e8586cc4fd9ae8f1dc63ce6c31537e1dd36e0290fbd0bea7bf3babd13460df23"
+    },
+    {
+      "order": 93,
+      "id": "testing.04s.aipp.m5.tests",
+      "path": "browser_files/js/testing/04s_aipp_m5_tests.js",
+      "sha256": "ef82862dc1c6c0a8659355b08fb2feb655892cc740d0fb1092b5c6c6867ee50b"
+    },
+    {
+      "order": 94,
+      "id": "component.test.aipp.m5.filter.surface",
+      "path": "browser_files/components_test/04_aipp_m5_filter_test_surface.html",
+      "sha256": "d981158f0a8fbd966a9da8e0ead3650612a322d77367bd527a299ee1007faf3c"
+    },
+    {
+      "order": 95,
+      "id": "application.aipp.workspace.shell",
+      "path": "browser_files/js/application/14_aipp_workspace_shell.js",
+      "sha256": "ec42febbab7029954866ae62950fe18d8027b280d48b9f044867f448471d699c"
+    },
+    {
+      "order": 96,
+      "id": "application.aipp.deck.document",
+      "path": "browser_files/js/application/15_aipp_deck_document.js",
+      "sha256": "3c791de4bb1427a6c545fb2f81272fffb4a860fcd9cc043e0d25f38eba4c4f75"
+    },
+    {
+      "order": 97,
+      "id": "application.aipp.runtime.view",
+      "path": "browser_files/js/application/37_aipp_runtime_view.js",
+      "sha256": "aad167411ac58640e4824f2dff8d72d51e4da718317d762a81a6834b5a76fb78"
+    },
+    {
+      "order": 98,
+      "id": "application.aipp.outputs.view",
+      "path": "browser_files/js/application/38_aipp_outputs_view.js",
+      "sha256": "acf663b13d79a03c3736a074928081e903f1a268166f6043a28c12072c377e10"
+    },
+    {
+      "order": 99,
+      "id": "component.test.aipp.m7.workspace",
+      "path": "browser_files/components_test/06_aipp_m7_workspace_surface.html",
+      "sha256": "faf21b362a17c283dca966fcfcdcd59b04d3a62486fa64ca8f888633d8ea90ab"
+    },
+    {
+      "order": 100,
+      "id": "testing.04v.aipp.m7.workspace",
+      "path": "browser_files/js/testing/04v_aipp_m7_workspace_tests.js",
+      "sha256": "40d9b0f8b64e18de421a3cdda99123fe96a3cf178e86dfc30b507f11f41a5819"
+    },
+    {
+      "order": 101,
+      "id": "application.aipp.deck.bindings",
+      "path": "browser_files/js/application/16_aipp_deck_bindings.js",
+      "sha256": "b9e3347fa0768bd069674571518b63ad8238d9d1a14a8825b667d69c013c313f"
+    },
+    {
+      "order": 102,
+      "id": "application.aipp.chamber.collection.model",
+      "path": "browser_files/js/application/26b_aipp_chamber_collection_model.js",
+      "sha256": "83e3ac7ead6a8ebe9fef7c3586664b13851232a0422691c0c74a9ae8ccf3ca68"
+    },
+    {
+      "order": 103,
+      "id": "testing.aipp.m81",
+      "path": "browser_files/js/testing/04w_aipp_m81_deck_document_tests.js",
+      "sha256": "34ba653b1d16ddf1ba3ec301562d67de902644cc7457f44578a947686690da47"
+    },
+    {
+      "order": 104,
+      "id": "application.aipp.deck.file.service",
+      "path": "browser_files/js/application/17_aipp_deck_file_service.js",
+      "sha256": "da40d49aba91722e3f6d54117fd89b9aac7b56374d26695e6449710fa7bfdcea"
+    },
+    {
+      "order": 105,
+      "id": "application.aipp.native.deck.importer",
+      "path": "browser_files/js/application/19_aipp_native_deck_importer.js",
+      "sha256": "838de82dd28a6f276eb423f9754c3f2c117d94fe2b16c6d0a72c78d9d1519181"
+    },
+    {
+      "order": 106,
+      "id": "application.aipp.deck.lifecycle",
+      "path": "browser_files/js/application/18_aipp_deck_lifecycle.js",
+      "sha256": "2f050cc1b80e7e319254f63b9bf6b5e29c25647e449340880e74fc850faf81af"
+    },
+    {
+      "order": 107,
+      "id": "testing.aipp.m82",
+      "path": "browser_files/js/testing/04x_aipp_m82_file_lifecycle_tests.js",
+      "sha256": "0b31c5286ca8066546d2c579e3397a3d1cbb5ec5b8ffb41e81d5d78f772a0eb0"
+    },
+    {
+      "order": 108,
+      "id": "testing.aipp.m83",
+      "path": "browser_files/js/testing/04y_aipp_m83_native_roundtrip_tests.js",
+      "sha256": "1b91b1d5b514bd03320fc7dc55d51945b517c3cd26acde5908166c4a950f3733"
+    },
+    {
+      "order": 109,
+      "id": "vendor.cytoscape.3.33.4",
+      "path": "browser_files/js/vendor/00_cytoscape_3_33_4.min.js",
+      "sha256": "18ce9844584337388182861fd698bb9bdb8ba8628eff6d7b8bc1fb4934ab757b"
+    },
+    {
+      "order": 110,
+      "id": "application.aipp.topology.graph.adapter",
+      "path": "browser_files/js/application/20_aipp_topology_graph_adapter.js",
+      "sha256": "f520d8892d3e75e4e179620d8664693e8eab9704a5b0c3647b50775822d4c356"
+    },
+    {
+      "order": 111,
+      "id": "application.aipp.topology.semantic.layout",
+      "path": "browser_files/js/application/23_aipp_topology_semantic_layout.js",
+      "sha256": "185d1b9acaf718405491bae221805440f36b806cae1202bb0ed399dc83f86722"
+    },
+    {
+      "order": 112,
+      "id": "application.aipp.graph.runtime",
+      "path": "browser_files/js/application/20a_aipp_graph_runtime.js",
+      "sha256": "52cde30e72eebee62037be0b27ed3e210520ac76ba3b99919e9e7709c84137b9"
+    },
+    {
+      "order": 113,
+      "id": "application.aipp.cytoscape.topology.view",
+      "path": "browser_files/js/application/21_aipp_cytoscape_topology_view.js",
+      "sha256": "b8df1464abd74bb3d9634db15f8aa8475ffd78b86642747abbb4e6cb81ccafc4"
+    },
+    {
+      "order": 114,
+      "id": "application.aipp.orifice.collection.model",
+      "path": "browser_files/js/application/29b_aipp_orifice_collection_model.js",
+      "sha256": "e9a11f89c0541e9026485a31fe1514ff6b642e637cb7e97c540c308db54c5008"
+    },
+    {
+      "order": 115,
+      "id": "application.aipp.wall.collection.model",
+      "path": "browser_files/js/application/32b_aipp_wall_collection_model.js",
+      "sha256": "f8f09871d6a8d5e8781e7559e1b66388e3a892d1dff27ab44624604f2764740a"
+    },
+    {
+      "order": 116,
+      "id": "application.aipp.piston.collection.model",
+      "path": "browser_files/js/application/33_aipp_piston_collection_model.js",
+      "sha256": "85f501a384dd2767f4d8eb825a54c2cdc9020a3c443133b15bef839b4f1e6d06"
+    },
+    {
+      "order": 117,
+      "id": "application.aipp.topology.actions",
+      "path": "browser_files/js/application/21b_aipp_topology_actions.js",
+      "sha256": "729223d96615e985359a7a6d2f4d2ff608425a99d54e754a0f89c5c1c1e93e98"
+    },
+    {
+      "order": 118,
+      "id": "application.aipp.topology.navigation",
+      "path": "browser_files/js/application/22_aipp_topology_navigation.js",
+      "sha256": "b5efe58ebbc3315b5b0837f185719358487f15729cb67362e1cb0711c1cd1829"
+    },
+    {
+      "order": 119,
+      "id": "application.aipp.native.property.inspector.model",
+      "path": "browser_files/js/application/24_aipp_native_property_inspector_model.js",
+      "sha256": "4d2f2711b405ac45ccbb92100791c582abc5522cb3c0c1c15cb02d0498d040c0"
+    },
+    {
+      "order": 120,
+      "id": "application.aipp.native.property.inspector.view",
+      "path": "browser_files/js/application/25_aipp_native_property_inspector_view.js",
+      "sha256": "2d0903ee8aa9cff3916bd945bd0ca9d52e5edb157f6f92f9440d9a413f0e33c9"
+    },
+    {
+      "order": 121,
+      "id": "application.aipp.quaff.units",
+      "path": "browser_files/js/application/26a_aipp_quaff_units.js",
+      "sha256": "4821d444fe3ec77e2011c9091f7a2c851faafb277e98769c78e80ed25806d5a6"
+    },
+    {
+      "order": 122,
+      "id": "application.aipp.wall.editor.coordinator",
+      "path": "browser_files/js/application/31_aipp_wall_editor_coordinator.js",
+      "sha256": "711b6e070c331a83c7fbe0d0a8b2e07795292a69231ab7a989c30fcdd6132926"
+    },
+    {
+      "order": 123,
+      "id": "application.aipp.wall.editor.view",
+      "path": "browser_files/js/application/32_aipp_wall_editor_view.js",
+      "sha256": "9824317316f0a9a8866e6ba67b09f83c8947f082d796ffc036d6fed5adea6386"
+    },
+    {
+      "order": 124,
+      "id": "application.aipp.contextual.workspace",
+      "path": "browser_files/js/application/26_aipp_contextual_workspace.js",
+      "sha256": "c1d81e8916944b8a4c8a29750c625c7c92c51980cc69f90b1697b5276b64d7c1"
+    },
+    {
+      "order": 125,
+      "id": "application.aipp.deck.navigator.view",
+      "path": "browser_files/js/application/26c_aipp_deck_navigator_view.js",
+      "sha256": "1f91ba244ade13347aae36fc0fa8c57b173dc00f768bb13d9c297a523b1d2921"
+    },
+    {
+      "order": 126,
+      "id": "testing.aipp.m84.hydration.topology",
+      "path": "browser_files/js/testing/04z_aipp_m84_hydration_topology_tests.js",
+      "sha256": "f97f095aa9c04d0d1113b2d9e307ed34558a6f9245dd2f2ccf00ee94597908e2"
+    },
+    {
+      "order": 127,
+      "id": "testing.aipp.m85",
+      "path": "browser_files/js/testing/04za_aipp_m85_topology_navigation_tests.js",
+      "sha256": "66fc58194c727199ca54599444c15fc27b4d06441279d2e304d757117993974d"
+    },
+    {
+      "order": 128,
+      "id": "testing.aipp.m86",
+      "path": "browser_files/js/testing/04zb_aipp_m86_semantic_layout_tests.js",
+      "sha256": "5201c6fceb3bdeddab6ad27800b51830e900aebcdca4c0a996c7d9e433816b36"
+    },
+    {
+      "order": 129,
+      "id": "testing.aipp.m87",
+      "path": "browser_files/js/testing/04zc_aipp_m87_native_inspector_tests.js",
+      "sha256": "e9d679a88d4d6cb8249395bddf79676c3ae48e7ae7489e6433ffca1367958a89"
+    },
+    {
+      "order": 130,
+      "id": "vendor.tomselect.css",
+      "path": "browser_files/styles/vendor/00_tom-select.default.min.css",
+      "sha256": "f1d39d120d83e42f08a4f0fbc33f99e92333079e05fecfecd3c22da37b8427c8"
+    },
+    {
+      "order": 131,
+      "id": "testing.aipp.m88.direct",
+      "path": "browser_files/js/testing/04zd_aipp_m88_direct_editor_tests.js",
+      "sha256": "9666050c9fdd1b4d6b39c1005213f51504126e8247ab4835349c8587661bd56e"
+    },
+    {
+      "order": 132,
+      "id": "testing.aipp.m88.candidate051",
+      "path": "browser_files/js/testing/04ze_aipp_m88_candidate051_geometry_tests.js",
+      "sha256": "3aa7609707d4b504c85fd4d6ada7a75074c602de7fce175c3fe40d4cd337e804"
+    },
+    {
+      "order": 133,
+      "id": "testing.aipp.m88.candidate0611.csv",
+      "path": "browser_files/js/testing/04zg_aipp_m88_candidate0611_csv_tests.js",
+      "sha256": "33ceee724c179847b714bef26b7e1b5ad6e335c255d07fd10608c8b98f3f1748"
+    },
+    {
+      "order": 134,
+      "id": "application.aipp.chamber.editor.coordinator",
+      "path": "browser_files/js/application/27_aipp_chamber_editor_coordinator.js",
+      "sha256": "91320aad6d26d711ded6ac96e07ceec6e8df362fb8fffbc01171ef3141b8abdd"
+    },
+    {
+      "order": 135,
+      "id": "application.aipp.chamber.editor.view",
+      "path": "browser_files/js/application/28_aipp_chamber_editor_view.js",
+      "sha256": "12fd028e25ac880681c745d2f22fe3fd60dde00dc37b585c3a2b2bc1852e08c8"
+    },
+    {
+      "order": 136,
+      "id": "testing.aipp.m88.phase2",
+      "path": "browser_files/js/testing/04zf_aipp_m88_phase2_chamber_editor_tests.js",
+      "sha256": "112790c22160997dbeff5849984f960faaf43d2c5a14e3f9efdbb3d4735b06ce"
+    },
+    {
+      "order": 137,
+      "id": "testing.aipp.m88.candidate0613.burnrate",
+      "path": "browser_files/js/testing/04zh_aipp_m88_candidate0613_burn_rate_tests.js",
+      "sha256": "a717f95113cb4f9ea473749fcf7e2a3db4a5a6033d9bd652eaec64db1073d7c9"
+    },
+    {
+      "order": 138,
+      "id": "testing.aipp.m88.candidate0615.emptyentities",
+      "path": "browser_files/js/testing/04zi_aipp_m88_candidate0615_empty_entity_tests.js",
+      "sha256": "b991f82a016fa6e1bd1902c0bab756dfaee01d8c15225660a618ccb4774560c6"
+    },
+    {
+      "order": 139,
+      "id": "testing.aipp.m88.candidate083.production",
+      "path": "browser_files/js/testing/04zj_aipp_m88_candidate083_production_regression_tests.js",
+      "sha256": "7676b1f940a3f8e93c211eb3c9abbca9ebc8e680d29704047aeaab6a441d942d"
+    },
+    {
+      "order": 140,
+      "id": "application.aipp.orifice.editor.coordinator",
+      "path": "browser_files/js/application/29_aipp_orifice_editor_coordinator.js",
+      "sha256": "58d3c5836a669e1bf2fee4623c5ac676072214908c5a2fc3e6643c78158a27f8"
+    },
+    {
+      "order": 141,
+      "id": "application.aipp.orifice.editor.view",
+      "path": "browser_files/js/application/30_aipp_orifice_editor_view.js",
+      "sha256": "96b87180de27c6587db03e86be9fa31f99e8139f432c19d7d3c958e54c009b81"
+    },
+    {
+      "order": 142,
+      "id": "testing.aipp.m891.orifice.editor",
+      "path": "browser_files/js/testing/04zk_aipp_m891_orifice_editor_tests.js",
+      "sha256": "468ff0f5c9297875cc143cc66b3dd9caa8ade3ef0f89803f725c14aaa4944896"
+    },
+    {
+      "order": 143,
+      "id": "testing.aipp.m892.wall.editor",
+      "path": "browser_files/js/testing/04zl_aipp_m892_wall_editor_tests.js",
+      "sha256": "957c080eea412815e2c53c0e43dffed60f77e030a2a7ade30fe2fb81e9a1940d"
+    },
+    {
+      "order": 144,
+      "id": "application.aipp.phase05b.presentation.control",
+      "path": "browser_files/js/application/24_aipp_phase05b_presentation_control.js",
+      "sha256": "173e1916ec74f04037e89ce89d56226f663cb972add9c96e9b82ce4d185ce663"
+    },
+    {
+      "order": 145,
+      "id": "testing.aipp.m810.phase05b",
+      "path": "browser_files/js/testing/04zm_aipp_m810_phase05b_tests.js",
+      "sha256": "dc6ad96f418fb69c0d883d841e72acc0e75375a6f18a28a993a6f7d050a938e4"
+    },
+    {
+      "order": 146,
+      "id": "application.aipp.chamber.hover.card",
+      "path": "browser_files/js/application/24b_aipp_chamber_hover_card.js",
+      "sha256": "8b09f9da19f7fbfe94923303cf26ab3e1d35cf314b97c4ecdbaa2f740a9fa336"
+    },
+    {
+      "order": 147,
+      "id": "testing.aipp.m810.optionb",
+      "path": "browser_files/js/testing/04zn_aipp_m810_optionb_tests.js",
+      "sha256": "5cb2a2aeeda0089e7a6b8482c2a15f6141c642c4ef0113d3ea084855bfc92de7"
+    },
+    {
+      "order": 148,
+      "id": "testing.aipp.m810.candidate05.svg",
+      "path": "browser_files/js/testing/04zo_aipp_m810_candidate05_svg_tests.js",
+      "sha256": "e71d22da0c0b887592b157f0166f65dc9919fd417582fbe1e9f952ce57369b10"
+    },
+    {
+      "order": 149,
+      "id": "testing.aipp.m810.candidate06.badges",
+      "path": "browser_files/js/testing/04zp_aipp_m810_candidate06_badge_tests.js",
+      "sha256": "295baaa1d951cd33f3b2490211bb03949bd3309ec70da62e71456dfbc96c9231"
+    },
+    {
+      "order": 150,
+      "id": "testing.aipp.m810.candidate07.hover",
+      "path": "browser_files/js/testing/04zq_aipp_m810_candidate07_hover_tests.js",
+      "sha256": "d39a29bb20722a443d5667ee060ac909ec4ba3764e84e9c21d4c7988ec417677"
+    },
+    {
+      "order": 151,
+      "id": "testing.aipp.m810.phase05b.close",
+      "path": "browser_files/js/testing/04zr_aipp_m810_phase05b_close_tests.js",
+      "sha256": "b2f0105c8f5edc8a7c19f4a8481b751351a27d4946e6a71aa00adfc075e7c628"
+    },
+    {
+      "order": 152,
+      "id": "testing.aipp.piston.p1",
+      "path": "browser_files/js/testing/04zs_aipp_piston_p1_tests.js",
+      "sha256": "6d0d5529bc62ade6c180e3a1338e006e6180a0e1df6f35cde750bfaa0f4883e9"
+    },
+    {
+      "order": 153,
+      "id": "testing.aipp.chamber.c1",
+      "path": "browser_files/js/testing/04zzg_aipp_chamber_c1_tests.js",
+      "sha256": "2a7b9e2016b521f22d765f2b3436ef255f07b7a0644accdf6d6e5b43348c86bd"
+    },
+    {
+      "order": 154,
+      "id": "testing.aipp.orifice.o1",
+      "path": "browser_files/js/testing/04zzh_aipp_orifice_o1_tests.js",
+      "sha256": "25c3a77a13b427a4cfd38ca9ae000e9d574f2b8627153c99dd8218d8b37f5536"
+    },
+    {
+      "order": 155,
+      "id": "testing.aipp.wall.w1",
+      "path": "browser_files/js/testing/04zzi_aipp_wall_w1_tests.js",
+      "sha256": "2c3195e8dd641aaed9495b174f78c72972f5224779356690a45d3a5d273451ee"
+    },
+    {
+      "order": 156,
+      "id": "component.test.aipp.topology.actions",
+      "path": "browser_files/components_test/07_aipp_topology_actions_test_surface.html",
+      "sha256": "a7b9bd6a512240c0b6b65593411a4254f04c66eb927b090d2c08def80fcea8e2"
+    },
+    {
+      "order": 157,
+      "id": "testing.aipp.topology.actions",
+      "path": "browser_files/js/testing/04zzj_aipp_topology_actions_tests.js",
+      "sha256": "b71b2ed20a913dffc20abf36f1b9bee2f3cd38dac988999b21e00d2f23d6164b"
+    },
+    {
+      "order": 158,
+      "id": "application.aipp.master.working.projection",
+      "path": "browser_files/js/application/27a_aipp_master_json_working_projection.js",
+      "sha256": "30bac3284f73f3dac8a491eb7ea7c159edae810cd9e2e92d43f39be55176b306"
+    },
+    {
+      "order": 159,
+      "id": "testing.aipp.prep2.c03",
+      "path": "browser_files/js/testing/04zzd_aipp_prep2_candidate03_working_projection_tests.js",
+      "sha256": "7f96b6c9c067dac9ab6ddc3de70041854e7bd6869a90402395b66ea0867a6261"
+    },
+    {
+      "order": 160,
+      "id": "testing.aipp.prep2.candidate06.formulation.selector",
+      "path": "browser_files/js/testing/04zzf_aipp_candidate06_formulation_selector_tests.js",
+      "sha256": "b4bf3bbc44eb388d7c4d1ea8cd50a3b3b648e2eedb63ef74bcbff60f02b36866"
+    },
+    {
+      "order": 161,
+      "id": "application.aipp.piston.editor.coordinator",
+      "path": "browser_files/js/application/34_aipp_piston_editor_coordinator.js",
+      "sha256": "823c8a9353ccfc12d02e594b749f2944351f204bc14a2c00561333912a930c92"
+    },
+    {
+      "order": 162,
+      "id": "application.aipp.piston.editor.view",
+      "path": "browser_files/js/application/35_aipp_piston_editor_view.js",
+      "sha256": "ca508fd3acb70e2148859bbbd1b61a1e31a52c99d7bb76df8f89701cdaed85fd"
+    },
+    {
+      "order": 163,
+      "id": "testing.aipp.piston.p21",
+      "path": "browser_files/js/testing/04zt_aipp_piston_p21_tests.js",
+      "sha256": "288c922e6155ba2f1343db027abda73cc15c99fb603b3974111e7ba057e2d1a0"
+    },
+    {
+      "order": 164,
+      "id": "application.aipp.raw.json.editor.view",
+      "path": "browser_files/js/application/36_aipp_raw_json_editor_view.js",
+      "sha256": "f8e5eaacdcf5e814a6d42af345851f4232030b98aaf062b9f1b7a7c45f4963ab"
+    },
+    {
+      "order": 165,
+      "id": "testing.aipp.p22",
+      "path": "browser_files/js/testing/04zte_aipp_piston_p22_tests.js",
+      "sha256": "8f252f4cc8d51f14eb1a9ddad5ceefeeac22df53ed0e58ce8e9436b897a57d55"
+    },
+    {
+      "order": 166,
+      "id": "testing.aipp.p22.candidate02",
+      "path": "browser_files/js/testing/04ztf_aipp_piston_p22_candidate02_tests.js",
+      "sha256": "a03a5f606678955f61636ad94ea829c310f600ce0fc1dbdcbc73c2562905569d"
+    },
+    {
+      "order": 167,
+      "id": "testing.aipp.p22.candidate03.routing",
+      "path": "browser_files/js/testing/04ztg_aipp_piston_p22_candidate03_routing_tests.js",
+      "sha256": "0549251971cf0a22aeac60f9d1c8cab1308ee98631c6eaa94d3dd58b91f362b9"
+    },
+    {
+      "order": 168,
+      "id": "testing.aipp.p22.candidate04.csv.travel",
+      "path": "browser_files/js/testing/04zth_aipp_piston_p22_candidate04_csv_travel_tests.js",
+      "sha256": "e98cd791e3fc936c20181f391838cb9c4e59d93182dbf726b731b7f92f5132a3"
+    },
+    {
+      "order": 169,
+      "id": "testing.aipp.piston.bf1",
+      "path": "browser_files/js/testing/04zti_aipp_piston_bf1_tests.js",
+      "sha256": "f710a0885a62c2e7736f12cef26f371903ef4868fb01d8d24827ff9cd4dc559e"
+    },
+    {
+      "order": 170,
+      "id": "testing.aipp.piston.bf1.interaction.repair",
+      "path": "browser_files/js/testing/04ztj_aipp_piston_bf1_interaction_repair_tests.js",
+      "sha256": "1f550cd88d533771a9a8c1d4f8c254e3045d525a93a0cedbffb83b8e28f71a77"
+    },
+    {
+      "order": 171,
+      "id": "testing.aipp.piston.bf1.visual.closeout",
+      "path": "browser_files/js/testing/04ztl_aipp_piston_bf1_visual_closeout_tests.js",
+      "sha256": "858aff38164213aa123e2d40ae5fecf2f1a87260015251bd2d115c6b6890720e"
+    },
+    {
+      "order": 172,
+      "id": "testing.aipp.piston.bf2",
+      "path": "browser_files/js/testing/04ztm_aipp_piston_bf2_tests.js",
+      "sha256": "f88155aede7721da7233d20c0f26641b231a86115b0ddfaaba3db1fe26a91c50"
+    },
+    {
+      "order": 173,
+      "id": "testing.aipp.piston.bf2.candidate02",
+      "path": "browser_files/js/testing/04ztn_aipp_piston_bf2_candidate02_tests.js",
+      "sha256": "f75d9a3b931e0832583a94084a66974eb6d86c3a1a4d503ef56f7607e4a4644f"
+    }
+  ],
+  "validation": {
+    "errors": [],
+    "warnings": []
+  }
+}

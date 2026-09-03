@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "foundation_application_protocol_independent": true,
+  "protocol_rules": {
+    "optional_field_addition": "compatible_minor",
+    "optional_message_addition": "compatible_minor_when_old_runtimes_can_ignore",
+    "required_field_addition": "breaking_major",
+    "required_field_removal": "breaking_major",
+    "public_message_removal": "breaking_major",
+    "field_type_change": "breaking_major",
+    "error_semantics_change": "review_required",
+    "unknown_optional_fields": "tolerated",
+    "unknown_major_version": "explicit_failure"
+  },
+  "foundation_rules": {
+    "patch": "Compatible defect correction without public contract removal.",
+    "minor": "Backward-compatible foundation capability or optional public contract addition.",
+    "major": "Incompatible foundation ownership, API, or protocol change."
+  },
+  "application_rules": "Application version is owned independently from foundation and protocol.",
+  "migration_notes_required_for": [
+    "public message removal",
+    "required field addition/removal",
+    "field type or meaning change",
+    "protocol major change"
+  ],
+  "current_protocol_major": 1
+}

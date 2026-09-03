@@ -1,0 +1,17 @@
+{
+  "milestone": "AIPP M4.2.1 live CSS assembly correction",
+  "application_version": "0.4.2.1-m4.2-css-fix",
+  "root_cause": "The live Scilab builder injected only browser_files/styles/main.css and omitted application/browser/styles/*.css.",
+  "correction": "The live builder now concatenates application-owned styles in deterministic order.",
+  "javascript_syntax": "PASS",
+  "foundation_build": "PASS",
+  "build_validation": "PASS",
+  "exact_scilab_css_assembly_simulation": "PASS",
+  "application_stylesheets_assembled": 2,
+  "assembled_css_bytes": 15735,
+  "computed_style_gate": "ADDED_TO_AIPP-M4-011",
+  "test_inventory_count": 208,
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN",
+  "required_live_acceptance": {"declared": 208, "executed": 208, "passed": 208, "failed": 0, "skipped": 0, "active_requests": 0, "active_transfers": 0}
+}

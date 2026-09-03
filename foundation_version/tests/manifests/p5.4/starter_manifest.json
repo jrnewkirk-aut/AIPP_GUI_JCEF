@@ -1,0 +1,38 @@
+{
+  "version": "P6.4.0-0.1",
+  "minimum_scilab_version": "2026.1.0",
+  "canonical_starter_launcher": "app/starter_main.sce",
+  "qualification_launcher": "app/main.sce",
+  "production_bundle": "browser_files/dist/bundle.prod.html",
+  "qualification_bundle": "browser_files/dist/bundle.test.html",
+  "profile": {
+    "build_mode": "production",
+    "include_plotting": false,
+    "include_testing": false,
+    "jcef_debug": false
+  },
+  "extension_points": {
+    "host": "application/scilab/application_handlers.sci",
+    "browser": "browser_files/js/application/02_reference_ping_service.js"
+  },
+  "smoke_operation": "application.example.ping.request",
+  "required_modules": [
+    "app/app_config.sci",
+    "scilab/bootstrap/module_loader.sci",
+    "scilab/bootstrap/runtime_state.sci",
+    "scilab/bootstrap/window_factory.sci",
+    "application/scilab/application_registry.sci",
+    "application/scilab/application_state.sci",
+    "application/scilab/application_handlers.sci",
+    "browser_files/js/application/01_application_registry.js",
+    "browser_files/js/application/02_reference_ping_service.js",
+    "browser_files/js/application/03_reference_sum_service.js"
+  ],
+  "forbidden_production_tokens": [
+    "__JCEF_TEST_API__",
+    "P4.register",
+    "runAcceptanceButton",
+    "P3.",
+    "components_test"
+  ]
+}

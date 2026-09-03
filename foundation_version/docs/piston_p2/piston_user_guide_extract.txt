@@ -1,0 +1,259 @@
+
+
+## 4.6.5 A piston within the assembly
+Pistons are connected between chambers and facilitate the exchange of
+energy in the form of pressure-work ( W = ( P 1 A 1 − P 2 A 2 ) * Δ x )
+between the connected chambers.
+The piston’s center-of-mass motion of is tracked using its position
+and velocity during the time-integration. Additionally, the piston may
+have a mass that varies over the course of the simulation. The
+orientiation of the coordinate system for the piston’s position is
+assumed to have the positive x-direction pointed from left to right, i.e., moving from left to right will cause the value of the position
+to increase .
+All pistons have the following fields.
+mass - the mass of the piston. left_connection - the piston’s connection to the
+left chamber. right_connection - the piston’s connection to the
+right chamber. left_damping_force - the damping forces when the
+piston is traveling to the left. right_damping_force - the damping forces when the
+piston is traveling to the right. body_forces - the set of body forces acting on the
+piston. travel_units - the length units used to the define
+the piston’s travel. travel_targets - an array of travel targets that
+generate events for the piston.
+
+
+## 4.6.5.0.1 Lookup laws used by a piston
+Several piston properties may be expressed as a constant or as a
+lookup law that varies with time or piston displacement. The same
+general structure is used for piston mass, exposed surface area, surface
+friction, and body force. A lookup law may be supplied directly in the
+main input JSON using arrays or may be read from a CSV file.
+When arrays are supplied directly, the independent-variable array and
+dependent-variable array must contain the same number of entries. The
+independent-variable values should be listed in increasing order so that
+the law can be evaluated unambiguously throughout the simulation.
+The continuity field describes how values between
+the listed points are calculated. * “discrete” - the
+value is held constant between consecutive independent-variable entries,
+producing a step-wise law. * “interpolate” - a linear
+interpolation is used between consecutive entries.
+Values outside of the listed interval use the value at the closest
+end of the lookup table. This avoids extrapolating a piston law beyond
+the range explicitly defined by the user.
+When a CSV file is used, the first row identifies the units and the
+remaining rows contain paired numerical values. The units in the header
+must be valid for the quantities represented by the columns. A
+displacement-dependent force curve, for example, may use:
+mm,N
+0.0,10.0
+3.0,20.0
+8.0,30.0
+The equivalent array content is:
+{ "displacement_units" : "mm" , "force_units" : "N" , "displacement_array" : [ 0.0 , 3.0 , 8.0 ] , "force_array" : [ 10.0 , 20.0 , 30.0 ] , "continuity" : "interpolate" }
+Note:
+The CSV-file form remains an external file reference in the native
+AIPP input. The file must remain available at the referenced path when
+the simulation is initialized.
+Note:
+Positive displacement is directed from the left chamber toward the
+right chamber. The maximum displacement for the left connection is
+entered as a positive magnitude but defines the negative limit of the
+piston coordinate.
+
+
+## 4.6.5.1 The mass within a piston
+The mass of a piston may be constant, a function of displacement, or
+a function of time. The keys change depending on the basis
+( constant , time , or displacement ) for the
+mass
+Warning:
+The continuity for the mass law must only be prescribed as interpolate . This is required because the equation of
+motion for a time/displacement-dependent mass dictates that the mass is
+differentiable.
+JSON specification for a constant mass.
+{ "basis" : "constant" , "mass" : "100.0 g" }
+JSON for a displacement-dependent mass using JSON arrays.
+{ "basis" : "displacement" , "displacement_units" : "m" , "displacement_array" : [ 0.0 , 1.0 , 2.0 ] , "mass_units" : "kg" , "mass_array" : [ 0.0 , 0.001 , 0.008 ] , "continuity" : "interpolate" }
+JSON for a displacement-dependent mass using a csv file.
+{ "basis" : "displacement" , "csv_file" : "test/unit/reference_json/DISPLACEMENT_VS_MASS.csv" , "continuity" : "interpolate" }
+JSON for a time-dependent mass using JSON arrays.
+{ "basis" : "time" , "time_units" : "s" , "time_array" : [ 0.0 , 1.0 , 2.0 ] , "mass_units" : "kg" , "mass_array" : [ 0.0 , 0.001 , 0.008 ] , "continuity" : "interpolate" }
+JSON for a time-dependent mass using a csv file.
+{ "basis" : "time" , "csv_file" : "test/unit/reference_json/TIME_VS_MASS.csv" , "continuity" : "interpolate" }
+
+
+## 4.6.5.2 A left/right_connection within a piston
+The piston is connected to chambers on its left and right side. These
+relatationships are defined using piston_connections . A piston_connection always has the following fields.
+chamber_idx - the chamber that this side of the
+piston is connected to. area_law - the area of the piston that is exposed
+to the connected chamber. max_displacement - the maximum travel of the piston
+in the direction of this connection.
+Note:
+This is listed as a positive value for both left and right
+directions, but the positive value in the left direction is converted to
+a negative value internally.
+{ "chamber_idx" : 1 , "area_law" : { "basis" : "constant" , "surface_area" : "100.0 m^2" }, "max_displacement" : "1000 mm" }
+
+
+## 4.6.5.2.1 The area_law within a piston_connection
+The area_law describes any functional dependences
+(time/displacement) for the area of the piston that is exposed to the
+chamber’s gas.
+JSON for a constant area.
+{ "basis" : "constant" , "surface_area" : "100.0 m^2" }
+JSON for a displacement-dependent area using JSON arrays.
+{ "basis" : "displacement" , "displacement_units" : "m" , "displacement_array" : [ 0.0 , 1.0 , 2.0 ] , "area_units" : "m^2" , "area_array" : [ 0.0 , 0.001 , 0.008 ] , "continuity" : "discrete" }
+JSON for a displacement-dependent area using a csv file.
+{ "basis" : "displacement" , "csv_file" : "test/unit/reference_json/DISPLACEMENT_VS_SURFACE_AREA.csv" , "continuity" : "discrete" }
+JSON for a time-dependent area using a JSON array.
+{ "basis" : "time" , "time_units" : "s" , "time_array" : [ 0.0 , 1.0 , 2.0 ] , "area_units" : "m^2" , "area_array" : [ 0.0 , 0.001 , 0.008 ] , "continuity" : "discrete" }
+JSON for a time-dependent area using a csv file.
+{ "basis" : "time" , "csv_file" : "test/unit/reference_json/TIME_VS_SURFACE_AREA.csv" , "continuity" : "discrete" }
+
+
+## 4.6.5.3 A left/right_damping_force within a piston
+The piston’s motion can be resisted by a variety of damping
+sources.
+static_surface_friction - Resistance to the piston
+starting to move due to surface friction with the casing that will
+always match the applied force as a reaction force ( providing a net
+acceleration of zero ) until its value is exceeded. dynamic_surface_friction - Resistance to the
+piston’s motion due to surface friction with the casing that will act
+opposite the direction of the current velocity. viscous_friction = Resistance to the piston’s
+motion due to viscous dissipation in the chamber that the piston is
+moving toward. This term is specified as a proportionality factor that
+is then multiplied by the piston’s velocity.
+{ "static_surface_friction" : { "basis" : "constant" , "force" : "2.0 N" }, "dynamic_surface_friction" : { "basis" : "constant" , "force" : "1.0 N" }, "viscous_friction" : { "basis" : "constant" , "damping_constant" : "100.0 kg/s" } }
+
+
+## 4.6.5.3.1 The surface_friction within a damping_force
+The surface friction can either be constant or a function of the
+piston’s displacement.
+JSON for a constant friction value.
+{ "basis" : "constant" , "force" : "2.0 N" }
+JSON for a displacement-dependent friction using a JSON array.
+{ "basis" : "displacement" , "displacement_units" : "m" , "displacement_array" : [ 0.0 , 1.0 , 2.0 ] , "force_units" : "N" , "force_array" : [ 0.0 , 0.001 , 0.008 ] , "continuity" : "discrete" }
+JSON for a displacement-dependent friction using a csv file.
+{ "basis" : "displacement" , "csv_file" : "test/unit/reference_json/DISPLACEMENT_VS_FORCE.csv" , "continuity" : "discrete" }
+
+
+## 4.6.5.3.2 The viscous_friction within a damping force
+The only option for the viscous friction is a constant
+proportionality factor.
+TODO - extend viscous friction so that the proportionality
+factor is a function of the downstreamn chamber’s temperature and/or
+pressure.
+
+
+## 4.6.5.4 The body_forces within a piston
+The body forces are an array of the external forces assumed to be
+acting on the piston’s center of mass.
+All body forces have two fields:
+type - the type of body force. “constant” - the body force is a constant
+value. “displacement” - the body force is a function of
+the piston’s displacement. “time” - the body force is a function of the
+simulation time. body_force_details - the parameters describing the
+selected type of body force.
+“constant” - the body force is a constant
+value. “displacement” - the body force is a function of
+the piston’s displacement. “time” - the body force is a function of the
+simulation time.
+[ { "type" : "constant" , "body_force_details" : { "magnitude" : "1 N" } } , { "type" : "displacement" , "body_force_details" : { "csv_file" : "force_vs_displacement_curve.csv" , "continuity" : "interpolate" } } , { "type" : "time" , "body_force_details" : { "time_units" : "ms" , "force_units" : "N" , "time_array" : [ 1 , 3 , 8 ] , "force_array" : [ 10 , 20 , 30 ] , "continuity" : "discrete" } } ]
+JSON for a constant body force.
+{ "type" : "constant" , "body_force_details" : { "magnitude" : "1 N" } }
+JSON for a displacement-dependent body force using JSON arrays.
+{ "type" : "displacement" , "body_force_details" : { "displacement_units" : "mm" , "force_units" : "N" , "displacement_array" : [ 1 , 3 , 8 ] , "force_array" : [ 10 , 20 , 30 ] , "continuity" : "interpolate" } }
+JSON for a displacement-dependent body force using a csv file.
+{ "type" : "displacement" , "body_force_details" : { "csv_file" : "force_vs_displacement_curve.csv" , "continuity" : "interpolate" } }
+JSON for a time-dependent body force using JSON arrays.
+{ "type" : "time" , "body_force_details" : { "time_units" : "ms" , "force_units" : "N" , "time_array" : [ 1 , 3 , 8 ] , "force_array" : [ 10 , 20 , 30 ] , "continuity" : "discrete" } }
+JSON for a time-dependent body force using a csv file.
+{ "type" : "time" , "body_force_details" : { "csv_file" : "force_vs_time_curve.csv" , "continuity" : "discrete" } }
+
+
+## 4.6.5.5 The travel_targets within a piston
+The travel_targets are positions that generate
+events when passed by the piston. Values use travel_units . Travel targets are distinct from the
+maximum displacements in the left and right connections. The maximum
+displacements define physical travel limits, while travel targets define
+intermediate positions that may coordinate other actions.
+The event generated by target Y for piston X is PXTY_passed . Indices are one-based. Passing the first
+target of piston 1 generates P1T1_passed .
+{ "travel_units" : "mm" , "travel_targets" : [ 5.0 , 6.0 ] }
+A dependent orifice may reference the event as follows.
+"opens_at" : { "triggering_event" : "P1T1_passed" , "time_delay" : "0.0 ms" }
+A piston also generates PXL_limit or PXR_limit when piston X reaches the maximum
+displacement of the left or right connection.
+Note:
+Array order determines the target number in the event name.
+Reordering, inserting, or deleting a target can change event names
+referenced elsewhere. Review all event dependencies after changing the
+target array.
+Note:
+Travel targets should lie within the left and right travel limits, be
+listed in increasing signed-displacement order, and should not contain
+duplicates.
+
+
+## 4.6.5.6 Piston connections,
+pressure-work, and chamber volume
+For a simple piston with constant exposed areas, the pressure
+contribution to piston force is represented conceptually by:
+F p r e s s u r e = P l e f t A l e f t − P r i g h t A r i g h t
+A positive net force accelerates the piston toward the right. A
+negative net force accelerates the piston toward the left. Surface
+friction, viscous damping, and body forces are combined with the
+pressure contribution to determine the net force.
+Rightward piston motion increases the free volume of the left chamber
+and decreases the free volume of the right chamber. The corresponding
+pressure-work transfers energy between the piston and chamber gases. The
+left/right chamber assignments, exposed-area laws, and displacement
+convention must therefore be reviewed together.
+Note:
+A piston should connect two different valid chambers. Reversing the
+left and right assignments reverses the physical orientation and may
+change the signs of force, velocity, displacement, work, and
+piston-dependent orifice modulation.
+
+
+## 4.6.3.2 The flow_area_modulators within an orifice
+The optional flow_area_modulators field contains
+piston-dependent lookup laws that modify the effective flow area of an
+orifice. This can represent an orifice that is progressively covered or
+uncovered by a moving piston, such as a diffuser port that closes as the
+piston advances.
+Each modulator contains: * piston_idx - the
+one-based index of the controlling piston. * displacement_units - the length units for displacement_array . * displacement_array - piston positions at which
+modulation values are prescribed. * modulation_array -
+dimensionless multipliers applied to the base orifice flow area. * continuity - the scheme used between listed
+displacement points.
+"flow_area_modulators" : [ { "piston_idx" : 1 , "displacement_units" : "mm" , "displacement_array" : [ 0.0 , 6.0 ] , "modulation_array" : [ 1.0 , 0.0 ] , "continuity" : "interpolate" } ]
+This example applies the full base area at 0 mm and reduces the
+effective area linearly to zero at 6 mm. Values outside the listed
+interval use the closest endpoint value.
+A flow-area modulator is independent of the discharge_coefficient . The discharge coefficient
+modifies nonideal flow behavior, while the modulator changes the
+available geometric flow area. Both effects participate in determining
+the resulting flow.
+Note:
+piston_idx must reference an existing piston.
+Adding, deleting, or reordering pistons can change one-based indices and
+should be followed by review of each modulator.
+Note:
+A modulation of 0 closes the modulated area, a value between 0 and 1
+partially restricts the area, and 1 leaves the base area unchanged.
+Negative values should not be used.
+Note:
+displacement_array and modulation_array must have equal lengths, and
+displacement values should be listed in increasing order.
+
+
+## 4.6.3.3 Combining piston modulation
+with event-dependent opening
+Piston motion can influence an orifice in two separate ways. A flow_area_modulator continuously changes effective area
+with piston displacement. A piston travel event may separately open or
+close an orifice after the piston reaches a specified position.
+"orifices" : [ { "label" : "Piston-controlled diffuser" , "from" : 2 , "to" : 4 , "diameter" : "10.4 mm" , "num_orif" : 1 , "open" : false , "one_way" : false , "discharge_coefficient" : { "basis" : "constant" , "Cd_value" : 1.0 }, "flow_area_modulators" : [ { "piston_idx" : 1 , "displacement_units" : "mm" , "displacement_array" : [ 0.0 , 6.0 ] , "modulation_array" : [ 1.0 , 0.0 ] , "continuity" : "interpolate" } ] , "viscous_flow_factor" : 0.0 , "opens_at" : { "triggering_event" : "SimStart" , "time_delay" : "0.0 ms" } } , { "label" : "Piston-triggered supply orifice" , "from" : 3 , "to" : 2 , "diameter" : "3.1 mm" , "num_orif" : 1 , "open" : false , "one_way" : false , "discharge_coefficient" : { "basis" : "constant" , "Cd_value" : 1.0 }, "viscous_flow_factor" : 0.0 , "opens_at" : { "triggering_event" : "P1T1_passed" , "time_delay" : "0.0 ms" } } ]
+This arrangement is useful when piston travel continuously changes
+one flow path and then activates another after a prescribed
+displacement.

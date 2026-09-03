@@ -1,0 +1,8 @@
+{
+  "duplicate_chunk": "DUPLICATE_CHUNK",
+  "missing_chunk": "INCOMPLETE_TRANSFER",
+  "size": "TOTAL_SIZE_MISMATCH",
+  "chunk_checksum": "CHUNK_CHECKSUM_MISMATCH",
+  "transfer_checksum": "TRANSFER_CHECKSUM_MISMATCH",
+  "version": "UNSUPPORTED_VERSION"
+}

@@ -1,0 +1,25 @@
+{
+  "remediation_version": "0.1.1-m1.1",
+  "source_live_results": "protocol_results_M1.json",
+  "source_summary": {
+    "total": 182,
+    "passed": 145,
+    "failed": 37,
+    "skipped": 0
+  },
+  "promotion_to_m2": "BLOCKED_PENDING_RERUN",
+  "static_build_validation": "PASS",
+  "corrections": [
+    "Restored inherited ping and sum routes and services",
+    "Declared AIPP tests in test manifest",
+    "Mapped AIPP M1 feature in feature manifest",
+    "Changed AIPP tests to Foundation assertions",
+    "Rebuilt dev/test/prod bundles"
+  ],
+  "required_acceptance": {
+    "failed": 0,
+    "skipped": 0,
+    "active_requests": 0,
+    "active_transfers": 0
+  }
+}

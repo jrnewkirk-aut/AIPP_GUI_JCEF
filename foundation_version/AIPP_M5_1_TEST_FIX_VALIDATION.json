@@ -1,0 +1,19 @@
+{
+  "fix_version": "0.5.1-m5.1",
+  "source_results": "protocol_results_M5.json",
+  "result": "PASS",
+  "static_build_validation": "PASS",
+  "live_build_path_simulation": "PASS",
+  "resolved_tests": [
+    "AIPP-M5-002",
+    "AIPP-M5-009"
+  ],
+  "required_dom_id_counts": {
+    "aippChamberFilterManager": 1,
+    "aippChamberFilterAdd": 1,
+    "aippChamberFilterList": 1,
+    "aippChamberFilterDetail": 1
+  },
+  "generated_bundles_edited_directly": false,
+  "live_scilab_jcef_status": "PENDING_RERUN"
+}

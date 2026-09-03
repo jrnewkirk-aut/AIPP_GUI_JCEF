@@ -1,0 +1,73 @@
+{
+  "candidate": "06_7",
+  "based_on": "Candidate06_5 plus Candidate06_6 corrections",
+  "live_failure_evidence": {
+    "source": "protocol_results_M8-8_06_6.json",
+    "summary": {
+      "total": 346,
+      "passed": 344,
+      "failed": 2,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "test_id": "AIPP-M88-P2-012",
+        "cause": "Apply canonicalized an untouched legacy volume field.",
+        "correction": "Only explicitly edited quantity fields are normalized or converted during Apply; untouched native text remains unchanged."
+      },
+      {
+        "test_id": "AIPP-M4-011",
+        "cause": "The remounted chamber-pyro manager could remain under a hidden context pane.",
+        "correction": "Pyro-tab activation synchronously unhides the pyros pane and remounted manager."
+      }
+    ]
+  },
+  "unit_selector_correction": {
+    "legacy_aliases_accepted_on_import": [
+      "m3",
+      "cm3",
+      "mm3",
+      "degC",
+      "kg/m3",
+      "g/cm3"
+    ],
+    "legacy_aliases_exposed_as_dropdown_options": [],
+    "volume_options": [
+      "m^3",
+      "cm^3",
+      "mm^3",
+      "L",
+      "ft^3"
+    ],
+    "temperature_options": [
+      "K",
+      "C"
+    ],
+    "pressure_options": [
+      "Pa",
+      "kPa",
+      "MPa",
+      "bar"
+    ],
+    "mass_options": [
+      "kg",
+      "g"
+    ],
+    "density_options": [
+      "kg/m^3",
+      "g/m^3",
+      "g/cm^3"
+    ],
+    "moles_options": [
+      "mol",
+      "kmol"
+    ]
+  },
+  "local_validation": {
+    "javascript_syntax": "PASS",
+    "deterministic_build": "PASS",
+    "build_validation": "PASS",
+    "legacy_option_source_scan": "PASS"
+  },
+  "live_scilab_jcef_required": true
+}

@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "snapshot_version": "P8.2.0-0.1",
+  "protocol_name": "scilab-jcef",
+  "protocol_major_version": 1,
+  "source": "browser_files/js/protocol/17_schemas.js",
+  "message_types": [
+    {
+      "type": "application.example.ping.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "application.example.sum.request",
+      "required_fields": [
+        "values"
+      ],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "diagnostic.echo.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "diagnostic.encoding_metric.request",
+      "required_fields": [
+        "request_id"
+      ],
+      "field_types": {
+        "request_id": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "diagnostic.host_log.clear",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "diagnostic.host_log.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.cache.clear",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.cache.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.compare.prepare.request",
+      "required_fields": [
+        "x_min",
+        "x_max",
+        "pixel_width",
+        "curve_ids"
+      ],
+      "field_types": {
+        "x_min": "number",
+        "x_max": "number",
+        "pixel_width": "positive_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.dataset.create.request",
+      "required_fields": [
+        "curve_count",
+        "points_per_curve",
+        "seed"
+      ],
+      "field_types": {
+        "curve_count": "positive_integer",
+        "points_per_curve": "positive_integer",
+        "seed": "nonnegative_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.dataset.metadata.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.experience.memory.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.native.destroy.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.native.prepared.request",
+      "required_fields": [
+        "prepared_id",
+        "strategy",
+        "sample_memory"
+      ],
+      "field_types": {
+        "prepared_id": "string",
+        "strategy": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.native.render.request",
+      "required_fields": [
+        "x_min",
+        "x_max",
+        "pixel_width",
+        "curve_ids",
+        "mode",
+        "strategy"
+      ],
+      "field_types": {
+        "x_min": "number",
+        "x_max": "number",
+        "pixel_width": "positive_integer",
+        "mode": "string",
+        "strategy": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.native.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.native.visibility.request",
+      "required_fields": [
+        "visible_curve_ids"
+      ],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.point.query.request",
+      "required_fields": [
+        "curve_id",
+        "x"
+      ],
+      "field_types": {
+        "curve_id": "positive_integer",
+        "x": "number"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.clear",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.prepare.cancel",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.prepare.start",
+      "required_fields": [
+        "curve_count",
+        "batch_size"
+      ],
+      "field_types": {
+        "curve_count": "positive_integer",
+        "batch_size": "positive_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.prepare.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.prepare.step",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.pyramid.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "plot.viewport.request",
+      "required_fields": [
+        "x_min",
+        "x_max",
+        "pixel_width",
+        "curve_ids",
+        "algorithm"
+      ],
+      "field_types": {
+        "x_min": "number",
+        "x_max": "number",
+        "pixel_width": "positive_integer",
+        "algorithm": "string",
+        "validation_mode": "boolean"
+      },
+      "status": "public"
+    },
+    {
+      "type": "protocol.capabilities.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "protocol.handshake.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "protocol.initialize.request",
+      "required_fields": [
+        "library_version"
+      ],
+      "field_types": {
+        "library_version": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "protocol.lifecycle.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "protocol.shutdown.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "test.build.artifact.inspect.request",
+      "required_fields": [
+        "module_paths_text"
+      ],
+      "field_types": {
+        "module_paths_text": "string"
+      },
+      "status": "test_only"
+    },
+    {
+      "type": "test.contract.evaluate.request",
+      "required_fields": [
+        "fixture_json"
+      ],
+      "field_types": {
+        "fixture_json": "string"
+      },
+      "status": "test_only"
+    },
+    {
+      "type": "test.host.notification.request",
+      "required_fields": [
+        "token"
+      ],
+      "field_types": {
+        "token": "string"
+      },
+      "status": "test_only"
+    },
+    {
+      "type": "test.scilab.run.request",
+      "required_fields": [
+        "tier"
+      ],
+      "field_types": {
+        "tier": "string"
+      },
+      "status": "test_only"
+    },
+    {
+      "type": "transfer.cancel.request",
+      "required_fields": [
+        "transfer_id",
+        "viewport_id",
+        "reason"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "viewport_id": "number",
+        "reason": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.generic.cancel",
+      "required_fields": [
+        "transfer_id",
+        "reason"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "reason": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.generic.chunk",
+      "required_fields": [
+        "transfer_id",
+        "chunk_index",
+        "data",
+        "chunk_checksum"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "chunk_index": "nonnegative_integer",
+        "data": "string",
+        "chunk_checksum": "nonnegative_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.generic.complete",
+      "required_fields": [
+        "transfer_id"
+      ],
+      "field_types": {
+        "transfer_id": "string"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.generic.start",
+      "required_fields": [
+        "transfer_id",
+        "chunk_count",
+        "total_size",
+        "checksum",
+        "timeout_ms"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "chunk_count": "positive_integer",
+        "total_size": "nonnegative_integer",
+        "checksum": "nonnegative_integer",
+        "timeout_ms": "positive_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.generic.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    },
+    {
+      "type": "transfer.numeric.ack",
+      "required_fields": [
+        "transfer_id",
+        "viewport_id",
+        "batch_index"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "viewport_id": "number",
+        "batch_index": "nonnegative_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.numeric.start",
+      "required_fields": [
+        "transfer_id",
+        "viewport_id",
+        "batch_count",
+        "value_count",
+        "window_size"
+      ],
+      "field_types": {
+        "transfer_id": "string",
+        "viewport_id": "number",
+        "batch_count": "positive_integer",
+        "value_count": "positive_integer",
+        "window_size": "positive_integer"
+      },
+      "status": "public"
+    },
+    {
+      "type": "transfer.status.request",
+      "required_fields": [],
+      "field_types": {},
+      "status": "public"
+    }
+  ],
+  "error_codes": [
+    "MISSING_TYPE",
+    "MISSING_REQUEST_ID",
+    "INVALID_PROTOCOL",
+    "UNSUPPORTED_VERSION",
+    "SCHEMA_VALIDATION_FAILED",
+    "UNSUPPORTED_TYPE",
+    "HOST_CALLBACK_EXCEPTION",
+    "TIMEOUT",
+    "TRANSFER_CANCELLED",
+    "DUPLICATE_CHUNK",
+    "INCOMPLETE_TRANSFER",
+    "TRANSFER_CHECKSUM_MISMATCH"
+  ],
+  "compatibility_rules": {
+    "optional_field_addition": "compatible_minor",
+    "optional_message_addition": "compatible_minor_when_old_runtimes_can_ignore",
+    "required_field_addition": "breaking_major",
+    "required_field_removal": "breaking_major",
+    "public_message_removal": "breaking_major",
+    "field_type_change": "breaking_major",
+    "error_semantics_change": "review_required",
+    "unknown_optional_fields": "tolerated",
+    "unknown_major_version": "explicit_failure"
+  }
+}

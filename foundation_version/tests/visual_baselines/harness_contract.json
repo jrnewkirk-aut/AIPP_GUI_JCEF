@@ -1,0 +1,23 @@
+{
+  "version": "P4.5.1-0.1",
+  "tokens": {
+    "bodyBackground": "rgb(238, 242, 247)",
+    "cardBackground": "rgb(255, 255, 255)",
+    "primaryButton": "rgb(23, 105, 224)",
+    "readyBadge": "rgb(220, 247, 231)",
+    "detailBackground": "rgb(16, 24, 39)"
+  },
+  "requiredRegions": [
+    "connectionBadge",
+    "runSelectedButton",
+    "runAcceptanceButton",
+    "stopButton",
+    "progressBar",
+    "resultsBody",
+    "resultDetail",
+    "eventLog"
+  ],
+  "minimumControlHeight": 31,
+  "minimumViewportWidth": 900,
+  "tableMaxHeight": 390
+}

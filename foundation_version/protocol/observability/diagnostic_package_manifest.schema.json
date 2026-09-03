@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "title": "Diagnostic package manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "package_kind",
+    "created_utc",
+    "committed_utc",
+    "correlation_id",
+    "files",
+    "collection"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "package_kind": {
+      "const": "scilab-jcef-diagnostic"
+    },
+    "payload_bodies_included": {
+      "const": false
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "size_chars",
+          "hash_algorithm",
+          "content_hash",
+          "collection_status"
+        ]
+      }
+    },
+    "collection": {
+      "type": "array"
+    }
+  }
+}

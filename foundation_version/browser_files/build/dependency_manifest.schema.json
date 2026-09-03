@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Scilab-JCEF dependency manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "foundation_version",
+    "ordering_policy",
+    "modules"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer"
+    },
+    "foundation_version": {
+      "type": "string"
+    },
+    "ordering_policy": {
+      "type": "string"
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "category",
+          "required",
+          "modes",
+          "depends_on",
+          "public_symbols",
+          "reason",
+          "content_sha256"
+        ]
+      }
+    }
+  }
+}
